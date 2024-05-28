@@ -1,0 +1,5575 @@
+#library "codbw"
+#include "zcommon.acs"
+
+global int 1:PlayerPIN[];		//PINumber of an ID
+global int 2:PlayerXP[];		//XP earned for the PIN
+global int 3:PlayerStatus[];		//Can't remember
+global int 4:PlayerLogged[];		//Is player logged in or not?
+global int 5:SavedXP[];			//XP stored after logout
+global int 6:SavedPassword[];		//PIN stored after logout
+global int 7:PlayerRank[];		//Rank determined by XP
+global int 8:KillStreak[];		//Current amount of Kills without dying
+global int 9:KillSession[];		//Total amount of kills since started playing 
+global int 10:PlayerFlags[];		//Special FLAGS 
+global int 11:SavedFlags[];		//Special FLAGS saved after logout
+global int 12:PlayerSpentXP[];		//XP spent on upgrades and unlocks
+global int 13:SavedSpentXP[];		//XP spent stored after logout
+global int 14:PlayerFlags2[];		//Second set of special FLAGS
+global int 15:SavedFlags2[];
+global int 16:PlayerFlags3[];		//Third set of special FLAGS
+global int 17:SavedFlags3[];
+global int 18:DeathStreak[];		//Current amount of deaths without getting a kill
+global str 19:Perk1[];			//Icon of the perks
+global str 20:Perk2[];
+global str 21:Perk3[];
+global int 22:Perk1Amount[];		//Having more than 1 perk in each slot replaces the icon
+global int 23:Perk2Amount[];
+global int 24:Perk3Amount[];
+global int 25:Perk1Name[];		//Name of the perk
+global int 26:Perk2Name[];
+global int 27:Perk3Name[];
+global str 28:KillStreak1[];		//Killstreak rewards
+global str 29:KillStreak2[];
+global str 30:KillStreak3[];
+global int 31:CustomPrimary[];		//Primary weapon
+global int 32:CustomSecondary[];	//Secondary weapon
+global int 33:CustomLethal[];		//Lethal equipment
+global int 34:CustomTactical[];		//Tactical equipment
+
+int PointStreak[32]; 			//This streak doesn't reset when killed, so it should reset at the end of each map instead
+int RiotShieldCount[32];		//Every 10 hits taken on the riot shield will give 10 XP
+
+int HeadshotCount[32];
+bool TacticalInsertion[32];
+bool HardcoreMode;
+bool DoubleXP;
+bool StandOffMode;
+
+bool HadUAV[32];
+bool HadRecon[32];
+bool HadVest[32];
+
+//PLAYER FLAGS
+//Perk unlocks
+#define FLAG1_PERK1_SOH 1
+#define FLAG1_PERK1_ExCon 2
+#define FLAG1_PERK1_Hardline 4
+#define FLAG1_PERK1_Scavenger 8
+#define FLAG1_PERK2_Juggernaut 16
+#define FLAG1_PERK2_BlastShield 32
+#define FLAG1_PERK2_Assassin 64
+#define FLAG1_PERK2_QuickDraw 128
+#define FLAG1_PERK3_SteadyAim 256
+#define FLAG1_PERK3_SitRep 512
+#define FLAG1_PERK3_DeadSilence 1024
+#define FLAG1_PERK3_Stalker 2048
+#define FLAG1_PERK1_Something 4096
+#define FLAG1_PERK2_Overkill 8192
+#define FLAG1_PERK3_LastStand 16384
+//Pro versions
+#define FLAG1_PERK1_SOHPro 32768
+#define FLAG1_PERK1_ExConPro 65536
+#define FLAG1_PERK1_HardlinePro 131072
+#define FLAG1_PERK1_ScavengerPro 262144
+#define FLAG1_PERK2_JuggernautPro 524288
+#define FLAG1_PERK2_BlastShieldPro 268435456
+#define FLAG1_PERK2_AssassinPro 1048576
+#define FLAG1_PERK2_QuickDrawPro 2097152
+#define FLAG1_PERK3_SteadyAimPro 4194304
+#define FLAG1_PERK3_SitRepPro 8388608
+#define FLAG1_PERK3_DeadSilencePro 16777216
+#define FLAG1_PERK3_StalkerPro 33554432
+#define FLAG1_PERK1_SomethingPro 67108864
+#define FLAG1_PERK2_OverkillPro 134217728
+
+//GUN FLAGS
+//#define FLAG2_AR_M4A1 1  		//already unlocked
+//#define FLAG2_AR_M16A4 2  		//already unlocked
+#define FLAG2_AR_SCARL 1
+#define FLAG2_AR_G36C 2
+#define FLAG2_AR_MK14 4
+#define FLAG2_AR_AK47 8
+#define FLAG2_AR_FAD 16
+//#define FLAG2_SMG_UMP45 1  		//already unlocked
+//#define FLAG2_SMG_MP5 1  		//already unlocked
+#define FLAG2_SMG_PP90M1 32
+#define FLAG2_SMG_P90 64
+#define FLAG2_SMG_PM9 128
+#define FLAG2_SMG_MP7 256
+//#define FLAG2_LMG_L86 1  		//already unlocked
+#define FLAG2_LMG_PKP 512
+#define FLAG2_LMG_MK46 1024
+//#define FLAG2_SNIP_50C 1  		//already unlocked
+#define FLAG2_SNIP_L118A 2048
+#define FLAG2_SNIP_DRAG 4096
+#define FLAG2_SNIP_MSR 8192
+//#define FLAG2_SG_KSG12 1  		//already unlocked
+#define FLAG2_SG_AA12 16384
+#define FLAG2_SG_MODEL 32768
+#define FLAG2_RIOTSHIELD 65536
+//#define FLAG2_HG_USP45 1  		//already unlocked
+#define FLAG2_HG_P99 131072
+#define FLAG2_HG_MP412 262144
+#define FLAG2_HG_DEAGLE 524288
+//#define FLAG2_LA_SMAW 1  		//already unlocked
+#define FLAG2_LA_JAV 1048576
+#define FLAG2_LA_GLM 2097152
+
+//EQUIPMENT FLAGS
+//#define FLAG3_LE_FRAG 1  		//already unlocked
+//#define FLAG3_LE_SEMTEX 1  		//already unlocked
+#define FLAG3_LE_KNIFE 1
+#define FLAG3_LE_BETTY 2
+#define FLAG3_LE_CLAY 4
+#define FLAG3_LE_C4 8
+//#define FLAG3_TA_FLASH 1  		//already unlocked
+//#define FLAG3_TA_STUN 1  		//already unlocked
+#define FLAG3_TA_SMOKE 16
+#define FLAG3_TA_TACT 32
+#define FLAG3_TA_TROPH 64
+#define FLAG3_TA_RADAR 128
+
+Script "CoDBWInitialize" ENTER
+{
+	TakeInventory("NightVisionActive", 1);
+	TakeInventory("Called_Price", 1);
+	TakeInventory("Called_Woods", 1);
+
+	if (CheckInventory("Called_Akid"))
+	{
+		Spawn("Marine_Akid_A", GetActorX(0)-32, GetActorY(0), GetActorZ(0), 0, 0);
+	}
+
+	if (CheckInventory("Called_Iris"))
+	{
+		Spawn("Marine_Iris_A", GetActorX(0)-32, GetActorY(0), GetActorZ(0), 0, 0);
+	}
+
+	if (CheckInventory("Called_Sakuya"))
+	{
+		Spawn("Marine_Sakuya_A", GetActorX(0)-32, GetActorY(0), GetActorZ(0), 0, 0);
+	}
+
+	if (CheckInventory("Called_China"))
+	{
+		Spawn("Marine_China_A", GetActorX(0)-32, GetActorY(0), GetActorZ(0), 0, 0);
+	}
+
+	if (CheckInventory("Called_Maiko"))
+	{
+		Spawn("Marine_Maiko_A", GetActorX(0)-32, GetActorY(0), GetActorZ(0), 0, 0);
+	}
+
+	if (CheckInventory("Called_Meryl"))
+	{
+		Spawn("Marine_Meryl_A", GetActorX(0)-32, GetActorY(0), GetActorZ(0), 0, 0);
+	}
+}
+
+// 713
+Script "CoDBOSelectFire" (void) NET
+{
+	GiveInventory("BOSelectFire", 1); 
+}
+
+// 714
+Script "CoDBOSelectScope" (void) NET
+{
+	GiveInventory("BOSelectScope", 1); 
+}
+
+// 715
+Script "CoDBOWeaponLook" (void) NET
+{
+	GiveInventory("BOWeaponlook", 1); 
+}
+
+// 716
+Script "CoDBONVStart" (void) NET
+{
+	GiveInventory("BONVstart", 1); 
+}
+
+//717
+Script "CoDBOFriendCall" (void) NET
+{
+	GiveInventory("BOFriendcall", 1); 
+}
+
+// 718
+Script "CoDC4" (void) NET
+{
+	GiveInventory("C4DetonatorCheck", 1); 
+	GiveInventory("C4Activekey", 1); 
+	ActivatorSound("c4/click", 127);
+}
+
+// Fire Select Icon
+// 994
+Script "CoDFireSelectIcon" (int Which)
+{
+	if(Which == 1) //Full
+	{
+		SetResultValue(1);
+		SetFont("IIRE_FA");
+	    SetHudSize(1920, 1080, 1);
+		HudMessage(s:"A"; HUDMSG_PLAIN, 824, CR_Green, 1700.0, 950.0, 0, 0.25);
+		
+	}
+	else if(Which == 2) //2
+	{
+		SetResultValue(1);
+		SetFont("IIRE_2");
+	    SetHudSize(1920, 1080, 1);
+		HudMessage(s:"A"; HUDMSG_PLAIN, 824, CR_Green, 1700.0, 950.0, 0, 0.25);
+
+	}
+	else if(Which == 3) //3
+	{
+		SetResultValue(1);
+		SetFont("IIRE_3");
+	    SetHudSize(1920, 1080, 1);
+		HudMessage(s:"A"; HUDMSG_PLAIN, 824, CR_Green, 1700.0, 950.0, 0, 0.25);
+
+	}
+	else if(Which == 4) //Semi
+	{
+		SetResultValue(1);
+		SetFont("IIRE_SA");
+	    SetHudSize(1920, 1080, 1);
+		HudMessage(s:"A"; HUDMSG_PLAIN, 824, CR_Green, 1700.0, 950.0, 0, 0.25);
+	}
+	else if(Which == 5) //Single
+	{
+		SetResultValue(1);
+		SetFont("IIRE_SNG");
+	    SetHudSize(1920, 1080, 1);
+		HudMessage(s:"A"; HUDMSG_PLAIN, 824, CR_Green, 1700.0, 950.0, 0, 0.25);
+	}
+	else if(Which == 6) //Dual
+	{
+		SetResultValue(1);
+		SetFont("IIRE_DAL");
+	    SetHudSize(1920, 1080, 1);
+		HudMessage(s:"A"; HUDMSG_PLAIN, 824, CR_Green, 1700.0, 950.0, 0, 0.25);
+	}
+	else if(Which == 7) //Buck
+	{
+		SetResultValue(1);
+		SetFont("IIRE_BKS");
+	    SetHudSize(1920, 1080, 1);
+		HudMessage(s:"A"; HUDMSG_PLAIN, 824, CR_Green, 1700.0, 950.0, 0, 0.25);
+	}
+	else if(Which == 8) //Frag
+	{
+		SetResultValue(1);
+		SetFont("IIRE_FRG");
+	    SetHudSize(1920, 1080, 1);
+		HudMessage(s:"A"; HUDMSG_PLAIN, 824, CR_Green, 1700.0, 950.0, 0, 0.25);
+	}
+	else if(Which == 9) //Rapid
+	{
+		SetResultValue(1);
+		SetFont("IIRE_RF");
+	    SetHudSize(1920, 1080, 1);
+		HudMessage(s:"A"; HUDMSG_PLAIN, 824, CR_Green, 1700.0, 950.0, 0, 0.25);
+	}
+	else if(Which == 10) //HE Grenade
+	{
+		SetResultValue(1);
+		SetFont("IIRE_GRH");
+	    SetHudSize(1920, 1080, 1);
+		HudMessage(s:"A"; HUDMSG_PLAIN, 824, CR_Green, 1700.0, 950.0, 0, 0.25);
+	}
+	else if(Which == 11) //RAD Grenade
+	{
+		SetResultValue(1);
+		SetFont("IIRE_GRR");
+	    SetHudSize(1920, 1080, 1);
+		HudMessage(s:"A"; HUDMSG_PLAIN, 824, CR_Green, 1700.0, 950.0, 0, 0.25);
+	}
+	else if(Which == 12) 
+	{
+		SetResultValue(1);
+		SetFont("IIRE_IRG");
+	    SetHudSize(1920, 1080, 1);
+		HudMessage(s:"A"; HUDMSG_PLAIN, 824, CR_Green, 1700.0, 950.0, 0, 0.25);
+	}
+	else if(Which == 13) //IR Grenade
+	{
+		SetResultValue(1);
+		SetFont("IIRE_HSG");
+	    SetHudSize(1920, 1080, 1);
+		HudMessage(s:"A"; HUDMSG_PLAIN, 824, CR_Green, 1700.0, 950.0, 0, 0.25);
+	}
+	else if(Which == 14) //HS Grenade
+	{
+		SetResultValue(1);
+		SetFont("IIRE_IRG");
+	    SetHudSize(1920, 1080, 1);
+		HudMessage(s:"A"; HUDMSG_PLAIN, 824, CR_Green, 1700.0, 950.0, 0, 0.25);
+	}
+	else if(Which == 15) //CN GAS
+	{
+		SetResultValue(1);
+		SetFont("IIRE_SRN");
+	    SetHudSize(1920, 1080, 1);
+		HudMessage(s:"A"; HUDMSG_PLAIN, 824, CR_Green, 1700.0, 950.0, 0, 0.25);
+	}
+	else if(Which == 99) //Clear
+	{
+		SetResultValue(1);
+		SetFont("INOTHING");
+	    SetHudSize(1920, 1080, 1);
+		HudMessage(s:"A"; HUDMSG_PLAIN, 824, CR_Green, 1700.0, 950.0, 0, 0.25);
+	}
+	else
+		SetResultValue(0);
+}
+
+// Fire Select
+// 894
+Script "CoDFireSelect" (int Which)
+{
+	if(Which == 1) //Full
+	{
+		SetResultValue(1);
+		SetFont("FIRE_FA");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 878, CR_Green, 1700.0, 950.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 2) //2
+	{
+		SetResultValue(1);
+		SetFont("FIRE_2");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 878, CR_Green, 1700.0, 950.0, 1.0, 0.25);
+
+	}
+	else if(Which == 3) //3
+	{
+		SetResultValue(1);
+		SetFont("FIRE_3");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 878, CR_Green, 1700.0, 950.0, 1.0, 0.25);
+
+	}
+	else if(Which == 4) //Semi
+	{
+		SetResultValue(1);
+		SetFont("FIRE_SA");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 878, CR_Green, 1700.0, 950.0, 1.0, 0.25);
+	}
+	else if(Which == 7) //M30 shotgun
+	{
+		SetResultValue(1);
+		SetFont("FIRE_BKS");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 878, CR_Green, 1700.0, 950.0, 1.0, 0.25);
+	}
+	else if(Which == 8) //M30 Combination
+	{
+		SetResultValue(1);
+		SetFont("FIRE_FRG");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 878, CR_Green, 1700.0, 950.0, 1.0, 0.25);
+	}
+	else if(Which == 9) //M30 Rifle
+	{
+		SetResultValue(1);
+		SetFont("FIRE_RF");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 878, CR_Green, 1700.0, 950.0, 1.0, 0.25);
+	}
+	else if(Which == 10) //Scope mode
+	{
+		SetResultValue(1);
+		SetFont("FIRE_GRH");
+	    SetHudSize(1920, 1080, 1);
+		HudMessage(s:"A"; HUDMSG_FADEINOUT, 878, CR_Green, 1700.0, 950.0, 1.0, 0.25);
+	}
+	else if(Which == 11) //Dot mode
+	{
+		SetResultValue(1);
+		SetFont("FIRE_GRR");
+	    SetHudSize(1920, 1080, 1);
+		HudMessage(s:"A"; HUDMSG_FADEINOUT, 878, CR_Green, 1700.0, 950.0, 1.0, 0.25);
+	}
+	else if(Which == 12) //Need FRAG12 KIT
+	{
+		SetResultValue(1);
+		SetFont("NOTFRAG");
+	    SetHudSize(1920, 1080, 1);
+		HudMessage(s:"A"; HUDMSG_FADEINOUT, 878, CR_Green, 1700.0, 950.0, 1.0, 0.25);
+	}
+	else if(Which == 13) //HS Grenade
+	{
+		SetResultValue(1);
+		SetFont("FIRE_HSG");
+	    SetHudSize(1920, 1080, 1);
+		HudMessage(s:"A"; HUDMSG_FADEINOUT, 878, CR_Green, 1700.0, 950.0, 1.0, 0.25);
+	}
+	else if(Which == 14) //IR Grenade
+	{
+		SetResultValue(1);
+		SetFont("FIRE_IRG");
+	    SetHudSize(1920, 1080, 1);
+		HudMessage(s:"A"; HUDMSG_FADEINOUT, 878, CR_Green, 1700.0, 950.0, 1.0, 0.25);
+	}
+	else if(Which == 15) //Benelli Pump
+	{
+		SetResultValue(1);
+		SetFont("FIRE_SRN");
+	    SetHudSize(1920, 1080, 1);
+		HudMessage(s:"A"; HUDMSG_FADEINOUT, 878, CR_Green, 1700.0, 950.0, 1.0, 0.25);
+	}
+	else
+		SetResultValue(0);
+}
+
+// Scope Select
+// 895
+Script "CoDScopeSelect" (int Which)
+{
+	if(Which == 1) //scope
+	{
+		SetResultValue(1);
+		SetFont("SCOPE_X3");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 988, CR_Green, 300.0, 300.0, 2, 0.25);
+		
+	}
+	else if(Which == 2) //dot
+	{
+		SetResultValue(1);
+		SetFont("SCOPE_DT");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 988, CR_Green, 300.0, 300.0, 2, 0.25);
+
+	}
+	else if(Which == 3) //SilencerON
+	{
+		SetResultValue(1);
+		SetFont("FIRE_SON");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 988, CR_Green, 300.0, 300.0, 2, 0.25);
+	}
+	else if(Which == 4) //SilencerOFF
+	{
+		SetResultValue(1);
+		SetFont("FIRE_SOF");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 988, CR_Green, 300.0, 300.0, 2, 0.25);
+	}
+	else if(Which == 5) //Rifle mode
+	{
+		SetResultValue(1);
+		SetFont("FIRE_GSR");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 988, CR_Green, 300.0, 300.0, 2, 0.25);
+	}
+	else if(Which == 6) //Grenade mode
+	{
+		SetResultValue(1);
+		SetFont("FIRE_GSG");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 988, CR_Green, 300.0, 300.0, 2, 0.25);
+	}
+	else if(Which == 7) //VMR x2
+	{
+		SetResultValue(1);
+		SetFont("SCOPE_V1");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 988, CR_Green, 300.0, 300.0, 2, 0.25);
+	}
+	else if(Which == 8) //VMR x6
+	{
+		SetResultValue(1);
+		SetFont("SCOPE_V2");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 988, CR_Green, 300.0, 300.0, 2, 0.25);
+	}
+	else if(Which == 9) //VMR x1.4
+	{
+		SetResultValue(1);
+		SetFont("SCOPE_V3");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 988, CR_Green, 300.0, 300.0, 2, 0.25);
+	}
+	else if(Which == 10) //VMR x3
+	{
+		SetResultValue(1);
+		SetFont("SCOPE_V4");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 988, CR_Green, 300.0, 300.0, 2, 0.25);
+	}
+	else if(Which == 11) //Scope 4
+	{
+		SetResultValue(1);
+		SetFont("SCOPEZ4");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 988, CR_Green, 300.0, 300.0, 2, 0.25);
+	}
+	else if(Which == 12) //Scope 8
+	{
+		SetResultValue(1);
+		SetFont("SCOPEZ8");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 988, CR_Green, 300.0, 300.0, 2, 0.25);
+	}
+	else if(Which == 13) //MAUL
+	{
+		SetResultValue(1);
+		SetFont("FIRE_MSG");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 988, CR_Green, 300.0, 300.0, 2, 0.25);
+	}
+	else if(Which == 14) //MAUL25
+	{
+		SetResultValue(1);
+		SetFont("FIRE_MGL");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 988, CR_Green, 300.0, 300.0, 2, 0.25);
+	}
+	else if(Which == 15) //Scope 4
+	{
+		SetResultValue(1);
+		SetFont("SCOPMSG");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 988, CR_Green, 300.0, 300.0, 2, 0.25);
+	}
+	else if(Which == 16) //Scope 8
+	{
+		SetResultValue(1);
+		SetFont("SCOPMGL");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 988, CR_Green, 300.0, 300.0, 2, 0.25);
+	}
+	else
+		SetResultValue(0);
+}
+
+// Scope Select Icon
+// 995
+Script "CoDScopeSelectIcon" (int Which)
+{
+	if(Which == 1) //scope
+	{
+		SetResultValue(1);
+		SetFont("ICOPE_X3");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 825, CR_Green, 1700.0, 950.0, 0, 0.25);
+		
+	}
+	else if(Which == 2) //dot
+	{
+		SetResultValue(1);
+		SetFont("ICOPE_DT");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 825, CR_Green, 1700.0, 950.0, 0, 0.25);
+
+	}
+	else if(Which == 3) //SilencerON
+	{
+		SetResultValue(1);
+		SetFont("IIRE_SON");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 825, CR_Green, 1700.0, 950.0, 0, 0.25);
+	}
+	else if(Which == 4) //SilencerOFF
+	{
+		SetResultValue(1);
+		SetFont("IIRE_SOF");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 825, CR_Green, 1700.0, 950.0, 0, 0.25);
+	}
+	else if(Which == 5) //Rifle mode
+	{
+		SetResultValue(1);
+		SetFont("IIRE_GSR");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 825, CR_Green, 1700.0, 950.0, 0, 0.25);
+	}
+	else if(Which == 6) //Grenade mode
+	{
+		SetResultValue(1);
+		SetFont("IIRE_GSG");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 825, CR_Green, 1700.0, 950.0, 0, 0.25);
+	}
+	else if(Which == 7) //VMR x2
+	{
+		SetResultValue(1);
+		SetFont("ICOPE_V1");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 825, CR_Green, 1700.0, 950.0, 0, 0.25);
+	}
+	else if(Which == 8) //VMR x6
+	{
+		SetResultValue(1);
+		SetFont("ICOPE_V2");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 825, CR_Green, 1700.0, 950.0, 0, 0.25);
+	}
+	else if(Which == 9) //VMR x1.4
+	{
+		SetResultValue(1);
+		SetFont("ICOPE_V3");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 825, CR_Green, 1700.0, 950.0, 0, 0.25);
+	}
+	else if(Which == 10) //VMR x3
+	{
+		SetResultValue(1);
+		SetFont("ICOPE_V4");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 825, CR_Green, 1700.0, 950.0, 0, 0.25);
+	}
+	else if(Which == 11) //Scope 4
+	{
+		SetResultValue(1);
+		SetFont("ICOPEZ4");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 825, CR_Green, 1700.0, 950.0, 0, 0.25);
+	}
+	else if(Which == 12) //Scope 8
+	{
+		SetResultValue(1);
+		SetFont("ICOPEZ8");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 825, CR_Green, 1700.0, 950.0, 0, 0.25);
+	}
+	else if(Which == 13) //MAUL
+	{
+		SetResultValue(1);
+		SetFont("IIRE_MSG");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 825, CR_Green, 1700.0, 950.0, 0, 0.25);
+	}
+	else if(Which == 14) //MAUL25
+	{
+		SetResultValue(1);
+		SetFont("IIRE_MGL");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 825, CR_Green, 1700.0, 950.0, 0, 0.25);
+	}
+	else if(Which == 15) //Scope 4
+	{
+		SetResultValue(1);
+		SetFont("ICOPMSG");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 825, CR_Green, 1700.0, 950.0, 0, 0.25);
+	}
+	else if(Which == 16) //Scope 8
+	{
+		SetResultValue(1);
+		SetFont("ICOPMGL");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 825, CR_Green, 1700.0, 950.0, 0, 0.25);
+	}
+	else if(Which == 99) //Clear
+	{
+		SetResultValue(1);
+		SetFont("INOTHING");
+	    SetHudSize(1920, 1080, 1);
+		HudMessage(s:"A"; HUDMSG_PLAIN, 825, CR_Green, 1700.0, 950.0, 0, 0.25);
+	}
+	else
+		SetResultValue(0);
+}
+
+// Weapon Look
+// 893
+Script "CoDWeaponLook" (int Which)
+{
+	if(Which == 1) //&& CheckInventory("MP412") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLMP412");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 2) //&& CheckInventory("KSG 12") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLKSG");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+
+	}
+	else if(Which == 3) //&& CheckInventory("L118A") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLAWM");
+	    SetHudSize(1920, 1080, 1);
+		HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+
+	}
+	else if(Which == 4) //&& CheckInventory("PM9") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLPM9");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 5) //&& CheckInventory("SCAR-L") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLSCARL");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+
+	}
+	else if(Which == 6) //&& CheckInventory("M320 GLM") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLM320");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+	}
+	else if(Which == 7) //&& CheckInventory("Desert Eagle") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLDE");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+
+	}
+	else if(Which == 8) //&& CheckInventory("AA-12") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLAA12");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+	
+	}
+	else if(Which == 9) //&& CheckInventory("MK46") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLMK46");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 10) //&& CheckInventory("MP7") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLMP7");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 11) //&& CheckInventory("AK-47") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLAK103");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 12) //&& CheckInventory("MSR") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLMSR");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+	
+	}
+	else if(Which == 13) //&& CheckInventory("Javelin") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLCGS");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 14) //&& CheckInventory("M4A1") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLPPSH");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 15) //&& CheckInventory("M16A4") == 0)
+	{
+		SetResultValue(1);
+
+		SetFont("WLMP15");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 16) //&& CheckInventory("P90") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLP90");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+	
+	}
+	else if(Which == 17) //&& CheckInventory("Model 1887") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLM1887");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+
+	}
+	else if(Which == 18) //&& CheckInventory("PP90M1") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLSPAS");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+
+	}
+	else if(Which == 19) //&& CheckInventory("Dragunov") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLSKS");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+
+	}
+	else if(Which == 20) //&& CheckInventory("P99") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WL44MAG");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+
+	}
+	else if(Which == 21) //&& CheckInventory("L86 LSW") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLL86");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+	
+	}
+	else if(Which == 22) //&& CheckInventory("G36C") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLG36C");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+
+	}
+	else if(Which == 23) //&& CheckInventory("M14 EBR") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLMK14");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+
+	}
+	else if(Which == 24) //&& CheckInventory("PKP Pecheneg") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLPKP");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+
+	}
+	else if(Which == 25) //&& CheckInventory("Riot Shield") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLMEDI");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+	
+	}
+	else if(Which == 26) //&& CheckInventory("Barrett 50cal") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLDM");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+	
+	}
+	else if(Which == 27) //&& CheckInventory("UMP45") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLUMP");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+
+	}
+	else if(Which == 28) //&& CheckInventory("MP5") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLMP5");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+
+	else if(Which == 29) //&& CheckInventory("Type 95") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLQBZ95");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+	
+	}
+	else if(Which == 30) //&& CheckInventory("CM901") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLCM901");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 31) //&& CheckInventory("ACR 6.8") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLACR");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 33) //&& CheckInventory("Pro20") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLPRO20");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 34) //&& CheckInventory("M4S") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLM1014");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 35) //&& CheckInventory("AR15") == 0)
+	{
+		SetResultValue(1);
+		
+		SetFont("WLAR15");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 36) //&& CheckInventory("Mosin-Nagant") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLMOSIN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+
+	}
+	else if(Which == 37) //&& CheckInventory("Vector") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLVECTOR");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+
+	}
+	else if(Which == 38) //&& CheckInventory("M1Garand") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLM1G");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+
+	}
+	else if(Which == 39) //&& CheckInventory("TT33") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLTT33");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+	
+	}
+	else if(Which == 40) //&& CheckInventory("BREN") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLBREN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 41) //&& CheckInventory("TOZ34") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLTOZ34");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 42) //&& CheckInventory("MSS20") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLMSS20");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+
+	}
+	else if(Which == 43) //&& CheckInventory("TacticalInsertion") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLRADIO");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+
+	}
+	else if(Which == 44) //&& CheckInventory("ClaymoreHand") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLCLAY");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+	
+	}
+	else if(Which == 45) //&& CheckInventory("PDW") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLPDW");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+
+	}
+	else if(Which == 46) //&& CheckInventory("MP402") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLMP40");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+	
+	}
+	else if(Which == 47) //&& CheckInventory("Saiga") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLSAIGA");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 48) //&& CheckInventory("C4Hand") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLC4");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 49) //&& CheckInventory("BeaconHand") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLBEACON");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 50) //&& CheckInventory("Kar98k") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLKAR98K");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 51) //&& CheckInventory("Luger") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLLUGER");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 52) //&& CheckInventory("STG44") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLSTG44");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 53) //&& CheckInventory("Gew43") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLG43");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 54) //&& CheckInventory("PPS42") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLMP709");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 55) //&& CheckInventory("Thompson") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLM1A1");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 56) //&& CheckInventory("Handing") == 0)
+	{
+		SetResultValue(1);
+		SetFont("");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:""; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 57) //&& CheckInventory("M1911A1") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLM1911");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 58) //&& CheckInventory("W99") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLW99");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 59) //&& CheckInventory("M1897") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLM1897");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 60) //&& CheckInventory("EAD") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLEAD");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 61) //&& CheckInventory("USM9") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLUSM9");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 62) //&& CheckInventory("Anaconda") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLAnac");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 63) //&& CheckInventory("USS41") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLUSS41");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 64) //&& CheckInventory("USS41W") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLUSS41W");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 65) //&& CheckInventory("L42A1") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLL42");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 66) //&& CheckInventory("UMP9") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLUMP9");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 67) //&& CheckInventory("UZI") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLUZI");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 68) //&& CheckInventory("NDM68") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLNDM");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 69) //&& CheckInventory("F2000") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLF2000");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 70) //&& CheckInventory("TMP") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLTMP");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 71) //&& CheckInventory("TMPDual") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLTMPD");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 72) //&& CheckInventory("M2HMG") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLM2");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 73) //&& CheckInventory("RPD") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLRPD");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 74) //&& CheckInventory("C96") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLC96");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 75) //&& CheckInventory("IMG") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLIMG");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 76) //&& CheckInventory("G18") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLG18");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 77) //&& CheckInventory("RPG") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLRPG");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 78) //&& CheckInventory("SCAR-H") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLSCARH");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 79) //&& CheckInventory("M2Flame") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLM2F");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 80) //&& CheckInventory("M2Flame") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLM2F");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 81) //&& CheckInventory("M2Flame") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLM2F");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 82) //&& CheckInventory("M3G") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLM3G");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 83) //&& CheckInventory("STEN") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLSTEN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 84) //&& CheckInventory("3U1") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WL3U1");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 85) //&& CheckInventory("USM9W") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLUSM9W");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 86) //&& CheckInventory("LE6940") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLLE694");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 87) //&& CheckInventory("Katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLKATAN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 88) //&& CheckInventory("Katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLRPK");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 89) //&& CheckInventory("Katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLM27");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 90) //&& CheckInventory("Katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLSR1MP");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 91) //&& CheckInventory("Katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLMP155");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 92) //&& CheckInventory("Katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLW1921");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 93) //&& CheckInventory("Katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLTOZ19");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 94) //&& CheckInventory("Katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLMP43");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 95) //&& CheckInventory("Katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLSP44");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 96) //&& CheckInventory("Katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLOTS33");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 97) //&& CheckInventory("Katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLOPSKS");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 98) //&& CheckInventory("Katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLSPIKE");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 99) //&& CheckInventory("Katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLM3TAC");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 100) //&& CheckInventory("Katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLVITYA");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 101) //&& CheckInventory("Katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLPMM");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 102) //&& CheckInventory("Katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLMG338");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 103) //&& CheckInventory("Katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLMCX");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 104) //&& CheckInventory("Katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLMCXP");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 105) //&& CheckInventory("Katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLSR762");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 106) //&& CheckInventory("Katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLRSASS");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 107) //&& CheckInventory("Katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLKEDR");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 108) //&& CheckInventory("Katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLSTM45");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 109) //&& CheckInventory("Katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLVSS");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 110) //&& CheckInventory("Katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLASVAL");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 111) //&& CheckInventory("Katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLGROZA");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 112) //&& CheckInventory("Katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLP2W");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 32) //&& CheckInventory("FAD") == 0)
+	{
+		SetResultValue(1);
+		SetFont("WLFAL");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 899, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else
+		SetResultValue(0);
+}
+
+// 958
+Script "CoDFriendSelect" (int Which) //Friend Select
+{
+	if(Which == 1) //
+	{
+		SetResultValue(1);
+		SetFont("FRSPWN1");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 2) //
+	{
+		SetResultValue(1);
+		SetFont("FRSPWN2");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+
+	}
+	else if(Which == 3) //
+	{
+		SetResultValue(1);
+		SetFont("FRSPWN3");
+	    SetHudSize(1920, 1080, 1);
+		HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+
+	}
+	else if(Which == 4) //
+	{
+		SetResultValue(1);
+		SetFont("FRSPWN4");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 5) //
+	{
+		SetResultValue(1);
+		SetFont("FRSPWN5");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+
+	}
+	else if(Which == 6) //
+	{
+		SetResultValue(1);
+		SetFont("FRSPWN6");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+	}
+	else if(Which == 7) //
+	{
+		SetResultValue(1);
+		SetFont("FRSPWN7");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+
+	}
+	else if(Which == 8) //
+	{
+		SetResultValue(1);
+		SetFont("FRSPWN8");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+	
+	}
+	else if(Which == 9) //
+	{
+		SetResultValue(1);
+		SetFont("FRSPWN9");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 10) //
+	{
+		SetResultValue(1);
+		SetFont("FRSPWN10");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 11) //
+	{
+		SetResultValue(1);
+		SetFont("FRSPWN11");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 12) //
+	{
+		SetResultValue(1);
+		SetFont("FRSPWN12");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+	
+	}
+	else if(Which == 13) //
+	{
+		SetResultValue(1);
+		SetFont("FRSPWN13");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 14) //
+	{
+		SetResultValue(1);
+		SetFont("FRSPWN14");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 15) //
+	{
+		SetResultValue(1);
+
+		SetFont("INOTHING");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:""; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else
+		SetResultValue(0);
+}
+
+// 938
+Script "CoDWeaponSelect" (int Which) //Weapon Select
+{
+	if(Which == 1) //&& CheckInventory("MP412") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWMP412");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 2) //&& CheckInventory("KSG 12") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWKSG");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+
+	}
+	else if(Which == 3) //&& CheckInventory("L118A") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWAWM");
+	    SetHudSize(1920, 1080, 1);
+		HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+
+	}
+	else if(Which == 4) //&& CheckInventory("PM9") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWPM9");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 5) //&& CheckInventory("SCAR-L") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWSCARL");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+
+	}
+	else if(Which == 6) //&& CheckInventory("M320 GLM") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWM320");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+	}
+	else if(Which == 7) //&& CheckInventory("Desert Eagle") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWDE");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+
+	}
+	else if(Which == 8) //&& CheckInventory("AA-12") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWAA12");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+	
+	}
+	else if(Which == 9) //&& CheckInventory("MK46") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWMK46");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 10) //&& CheckInventory("MP7") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWMP7");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 11) //&& CheckInventory("AK-47") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWAK103");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 12) //&& CheckInventory("MSR") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWMSR");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+	
+	}
+	else if(Which == 13) //&& CheckInventory("Javelin") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWCGS");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 14) //&& CheckInventory("M4A1") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWPPSH");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 15) //&& CheckInventory("M16A4") == 0)
+	{
+		SetResultValue(1);
+
+		SetFont("SWMP15");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 16) //&& CheckInventory("P90") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWP90");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+	
+	}
+	else if(Which == 17) //&& CheckInventory("Model 1887") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWM1887");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+
+	}
+	else if(Which == 18) //&& CheckInventory("PP90M1") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWSPAS");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+
+	}
+	else if(Which == 19) //&& CheckInventory("Dragunov") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWSKS");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+
+	}
+	else if(Which == 20) //&& CheckInventory("P99") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SW44MAG");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+
+	}
+	else if(Which == 21) //&& CheckInventory("L86 LSW") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWL86");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+	
+	}
+	else if(Which == 22) //&& CheckInventory("G36C") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWG36C");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+
+	}
+	else if(Which == 23) //&& CheckInventory("M14 EBR") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWMK14");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+
+	}
+	else if(Which == 24) //&& CheckInventory("PKP Pecheneg") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWPKP");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+
+	}
+	else if(Which == 25) //&& CheckInventory("Riot Shield") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWMEDI");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+	
+	}
+	else if(Which == 26) //&& CheckInventory("Barrett 50cal") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWDM");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+	
+	}
+	else if(Which == 27) //&& CheckInventory("UMP45") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWUMP");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+
+	}
+	else if(Which == 28) //&& CheckInventory("MP5") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWMP5");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+
+	else if(Which == 29) //&& CheckInventory("Type 95") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWQBZ95");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+	
+	}
+	else if(Which == 30) //&& CheckInventory("CM901") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWCM901");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 31) //&& CheckInventory("ACR 6.8") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWACR");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 33) //&& CheckInventory("Pro20") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWPRO20");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 34) //&& CheckInventory("M4S") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWM1014");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 35) //&& CheckInventory("AR15") == 0)
+	{
+		SetResultValue(1);
+		
+		SetFont("SWAR15");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 36) //&& CheckInventory("Mosin-Nagant") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWMOSIN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+
+	}
+	else if(Which == 37) //&& CheckInventory("Vector") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWVECTOR");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+
+	}
+	else if(Which == 38) //&& CheckInventory("M1Garand") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWM1G");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+
+	}
+	else if(Which == 39) //&& CheckInventory("TT33") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWTT33");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+	
+	}
+	else if(Which == 40) //&& CheckInventory("BREN") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWBREN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 41) //&& CheckInventory("TOZ34") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWTOZ34");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 42) //&& CheckInventory("MSS20") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWMSS20");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+
+	}
+	else if(Which == 43) //&& CheckInventory("TacticalInsertion") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWRADIO");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+
+	}
+	else if(Which == 44) //&& CheckInventory("ClaymoreHand") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWCLAY");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+	
+	}
+	else if(Which == 45) //&& CheckInventory("PDW") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWPDW");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+
+	}
+	else if(Which == 46) //&& CheckInventory("MP402") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWMP40");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+	
+	}
+	else if(Which == 47) //&& CheckInventory("Saiga") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWSAIGA");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 48) //&& CheckInventory("C4Hand") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWC4");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 49) //&& CheckInventory("BeaconHand") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWBEACON");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else if(Which == 50) //&& CheckInventory("Kar98k") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWKAR98K");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 51) //&& CheckInventory("Luger") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWLUGER");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 52) //&& CheckInventory("STG44") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWSTG44");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 53) //&& CheckInventory("Gew43") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWG43");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 54) //&& CheckInventory("PPS42") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWMP709");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 55) //&& CheckInventory("Thompson") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWM1A1");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 56) //&& CheckInventory("Handing") == 0)
+	{
+		SetResultValue(1);
+		SetFont("");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:""; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 57) //&& CheckInventory("M1911A1") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWM1911");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 58) //&& CheckInventory("W99") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWW99");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 59) //&& CheckInventory("M1897") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWM1897");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 60) //&& CheckInventory("EAD") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWEAD");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 61) //&& CheckInventory("USM9") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWUSM9");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 62) //&& CheckInventory("Anaconda") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWAnac");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 63) //&& CheckInventory("USS41") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWUSS41");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 64) //&& CheckInventory("USS41W") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWUSS41W");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 65) //&& CheckInventory("L42A1") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWL42");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 66) //&& CheckInventory("UMP9") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWUMP9");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 67) //&& CheckInventory("UZI") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWUZI");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 68) //&& CheckInventory("NDM68") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWNDM");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 69) //&& CheckInventory("F2000") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWF2000");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 70) //&& CheckInventory("TMP") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWTMP");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 71) //&& CheckInventory("TMPDual") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWTMPD");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 72) //&& CheckInventory("M2HMG") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWM2");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 73) //&& CheckInventory("RPD") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWRPD");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 74) //&& CheckInventory("C96") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWC96");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 75) //&& CheckInventory("IMG") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWIMG");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 76) //&& CheckInventory("G18") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWG18");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 77) //&& CheckInventory("RPG") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWRPG");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 78) //&& CheckInventory("SCAR-H") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWSCARH");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 79) //&& CheckInventory("M2Flame") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWM2F");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 80) //&& CheckInventory("M2Flame") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWM2F");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 81) //&& CheckInventory("M2Flame") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWM2F");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 82) //&& CheckInventory("M3G") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWM3G");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 83) //&& CheckInventory("STEN") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWSTEN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 84) //&& CheckInventory("3U1") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SW3U1");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 85) //&& CheckInventory("USM9W") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWUSM9W");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 86) //&& CheckInventory("LE6940") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWLE694");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 87) //&& CheckInventory("Katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWKATAN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 88) //&& CheckInventory("RPK") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWRPK");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 89) //&& CheckInventory("RPK") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWM27");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 90) //&& CheckInventory("RPK") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWSR1MP");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 91) //&& CheckInventory("RPK") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWMP155");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 92) //&& CheckInventory("RPK") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWW1921");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 93) //&& CheckInventory("RPK") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWTOZ19");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 94) //&& CheckInventory("RPK") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWMP43");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 95) //&& CheckInventory("RPK") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWSP44");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 96) //&& CheckInventory("RPK") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWOTS33");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 97) //&& CheckInventory("RPK") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWOPSKS");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 98) //&& CheckInventory("RPK") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWSPIKE");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 99) //&& CheckInventory("RPK") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWM3TAC");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 100) //&& CheckInventory("RPK") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWVITYA");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);		
+	}
+	else if(Which == 32) //&& CheckInventory("FAD") == 0)
+	{
+		SetResultValue(1);
+		SetFont("SWFAL");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 898, CR_Green, 960.0, 450.0, 2, 0.25);
+		
+	}
+	else
+		SetResultValue(0);
+}
+
+// New Weapon
+// 707
+Script "CoDNewWeapon" (int Which)
+{
+	if(Which == 1) //&& CheckInventory("MP412") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMP412N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 2) //&& CheckInventory("KSG 12") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICKSGN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+
+	}
+	else if(Which == 3) //&& CheckInventory("L118A") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICAWMN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+
+	}
+	else if(Which == 4) //&& CheckInventory("PM9") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICPM9N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 5) //&& CheckInventory("SCAR-L") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICSCARLN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+
+	}
+	else if(Which == 6) //&& CheckInventory("M320 GLM") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICM320N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+
+	}
+	else if(Which == 7) //&& CheckInventory("Desert Eagle") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICDEN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+
+	}
+	else if(Which == 8) //&& CheckInventory("AA-12") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICAA12N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+	
+	}
+	else if(Which == 9) //&& CheckInventory("MK46") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMK46N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 10) //&& CheckInventory("MP7") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMP7N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 11) //&& CheckInventory("AK-47") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICAK103N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 12) //&& CheckInventory("MSR") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMSRN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+	
+	}
+	else if(Which == 13) //&& CheckInventory("Javelin") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICCGSN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 14) //&& CheckInventory("M4A1") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICPPSHN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 15) //&& CheckInventory("M16A4") == 0)
+	{
+		SetResultValue(1);
+
+		SetFont("ICMP15N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 16) //&& CheckInventory("P90") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICP90N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+	
+	}
+	else if(Which == 17) //&& CheckInventory("Model 1887") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICM1887N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+
+	}
+	else if(Which == 18) //&& CheckInventory("PP90M1") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICSPASN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+
+	}
+	else if(Which == 19) //&& CheckInventory("Dragunov") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICSKSN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+
+	}
+	else if(Which == 20) //&& CheckInventory("P99") == 0)
+	{
+		SetResultValue(1);
+		SetFont("IC44MAGN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+
+	}
+	else if(Which == 21) //&& CheckInventory("L86 LSW") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICL86N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+	
+	}
+	else if(Which == 22) //&& CheckInventory("G36C") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICG36CN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+
+	}
+	else if(Which == 23) //&& CheckInventory("M14 EBR") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMK14N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+
+	}
+	else if(Which == 24) //&& CheckInventory("PKP Pecheneg") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICPKPN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+
+	}
+	else if(Which == 25) //&& CheckInventory("Riot Shield") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMEDI");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+	
+	}
+	else if(Which == 26) //&& CheckInventory("Barrett 50cal") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICDMN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+	
+	}
+	else if(Which == 27) //&& CheckInventory("UMP45") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICUMPN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+
+	}
+	else if(Which == 28) //&& CheckInventory("MP5") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMP5N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+
+	else if(Which == 29) //&& CheckInventory("Type 95") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICQBZ95N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+	
+	}
+	else if(Which == 30) //&& CheckInventory("CM901") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICCM901N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 31) //&& CheckInventory("ACR 6.8") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICACRN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 33) //&& CheckInventory("Pro20") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICPRO20N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 34) //&& CheckInventory("M4S") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICM1014N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 35) //&& CheckInventory("AR15") == 0)
+	{
+		SetResultValue(1);
+		
+		SetFont("ICAR15N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 36) //&& CheckInventory("Mosin-Nagant") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMOSINN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+
+	}
+	else if(Which == 37) //&& CheckInventory("Vector") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICVECN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+
+	}
+	else if(Which == 38) //&& CheckInventory("M1Garand") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICM1GN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+
+	}
+	else if(Which == 39) //&& CheckInventory("TT33") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICTT33N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+	
+	}
+	else if(Which == 40) //&& CheckInventory("BREN") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICBRENN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 41) //&& CheckInventory("TOZ34") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICTOZ34N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 42) //&& CheckInventory("MSS20") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMSS20N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+
+	}
+	else if(Which == 43) //&& CheckInventory("TacticalInsertion") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICRADION");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+
+	}
+	else if(Which == 44) //&& CheckInventory("ClaymoreHand") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICCLAYN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+	
+	}
+	else if(Which == 45) //&& CheckInventory("PDW") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICPDWN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+
+	}
+	else if(Which == 46) //&& CheckInventory("MP402") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMP40N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+	
+	}
+	else if(Which == 47) //&& CheckInventory("Saiga") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICSAIGAN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 48) //&& CheckInventory("C4Hand") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICC4N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 49) //&& CheckInventory("BeaconHand") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICBEACNN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 50) //&& CheckInventory("Kar98k") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICKAR98N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 51) //&& CheckInventory("Luger") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICLUGERN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 52) //&& CheckInventory("STG44") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICSTG44N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 53) //&& CheckInventory("Gew43") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICG43N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 54) //&& CheckInventory("PPS42") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMP709N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 55) //&& CheckInventory("Thompson") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICM1A1N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 57) //&& CheckInventory("M1911A1") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICM1911N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 58) //&& CheckInventory("W99") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICW99N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 59) //&& CheckInventory("M1897") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICM1897N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 60) //&& CheckInventory("EAD") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICEADN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 61) //&& CheckInventory("USM9") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICUSM9N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 62) //&& CheckInventory("Anaconda") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICAnacN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 63) //&& CheckInventory("USS41") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICUSS41N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 64) //&& CheckInventory("USS41W") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICUSSWN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 65) //&& CheckInventory("L42A1") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICL42N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 66) //&& CheckInventory("UMP9") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICUMP9N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 67) //&& CheckInventory("UZI") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICUZIN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 68) //&& CheckInventory("NDM86") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICNDMN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 69) //&& CheckInventory("F2000") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICF2000N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 70) //&& CheckInventory("TMP") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICTMPN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 71) //&& CheckInventory("TMPDual") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICTMPDN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 72) //&& CheckInventory("M2HMG") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICM2N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+		else if(Which == 73) //&& CheckInventory("RPD") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICRPDN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+		else if(Which == 74) //&& CheckInventory("C96") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICC96N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+		else if(Which == 75) //&& CheckInventory("IMG28") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICIMGN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+		else if(Which == 76) //&& CheckInventory("G18") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICG18N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+		else if(Which == 77) //&& CheckInventory("RPG") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICRPGN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+		else if(Which == 78) //&& CheckInventory("SCAR-H") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICSCARHN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 79) //&& CheckInventory("M2Flame") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICM2FN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 80) //Change on
+	{
+		SetResultValue(1);
+		SetFont("ATCNGEON");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 750.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 81) //Change off
+	{
+		SetResultValue(1);
+		SetFont("ATCNGEOF");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 750.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 82) //&& CheckInventory("M3G") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICM3GN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 83) //&& CheckInventory("STEN") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICSTENN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 84) //&& CheckInventory("3U1") == 0)
+	{
+		SetResultValue(1);
+		SetFont("IC3U1N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 85) //&& CheckInventory("USM9") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICUSM9WN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 86) //&& CheckInventory("LE6940") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICLE694N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 87) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICKATANN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 88) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICRPKN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 89) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICM27N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 90) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICSR1MPN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 91) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMP155N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 92) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICW1921N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 93) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICTOZ19N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 94) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMP43N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 95) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICSP44N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 96) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICOTS33N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 97) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICOPSKSN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 98) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICSPIKEN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 99) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICM3TACN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 100) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICVITYAN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 101) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICPMMN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 102) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMG338N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 103) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMCXN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 104) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMCXPN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 105) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICSR762N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 106) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICRSASSN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 107) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICKEDRN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 108) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICSTM45N");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 109) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICVSSN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 110) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICASVALN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 111) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICGROZAN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 112) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICP2WN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 32) //&& CheckInventory("FAD") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICFALN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 960.0, 180.0, 4.5, 0.25);
+		
+	}
+	else
+		SetResultValue(0);
+}
+
+// 712
+Script "CoDNotPickup" (int Which)
+{
+	if(Which == 1) //&& CheckInventory("MP412") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMP412U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 2) //&& CheckInventory("KSG 12") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICKSGU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+
+	}
+	else if(Which == 3) //&& CheckInventory("L118A") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICAWMU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+
+	}
+	else if(Which == 4) //&& CheckInventory("PM9") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICPM9U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 5) //&& CheckInventory("SCAR-L") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICSCARLU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+
+	}
+	else if(Which == 6) //&& CheckInventory("M320 GLM") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICM320U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+
+	}
+	else if(Which == 7) //&& CheckInventory("Desert Eagle") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICDEU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+
+	}
+	else if(Which == 8) //&& CheckInventory("AA-12") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICAA12U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+	
+	}
+	else if(Which == 9) //&& CheckInventory("MK46") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMK46U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 10) //&& CheckInventory("MP7") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMP7U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 11) //&& CheckInventory("AK-47") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICAK103U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 12) //&& CheckInventory("MSR") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMSRU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+	
+	}
+	else if(Which == 13) //&& CheckInventory("Javelin") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICCGSU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 14) //&& CheckInventory("M4A1") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICPPSHU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 15) //&& CheckInventory("M16A4") == 0)
+	{
+		SetResultValue(1);
+
+		SetFont("ICMP15U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 16) //&& CheckInventory("P90") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICP90U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+	
+	}
+	else if(Which == 17) //&& CheckInventory("Model 1887") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICM1887U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+
+	}
+	else if(Which == 18) //&& CheckInventory("PP90M1") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICSPASU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+
+	}
+	else if(Which == 19) //&& CheckInventory("Dragunov") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICSKSU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+
+	}
+	else if(Which == 20) //&& CheckInventory("P99") == 0)
+	{
+		SetResultValue(1);
+		SetFont("IC44MAGU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+
+	}
+	else if(Which == 21) //&& CheckInventory("L86 LSW") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICL86U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+	
+	}
+	else if(Which == 22) //&& CheckInventory("G36C") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICG36CU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+
+	}
+	else if(Which == 23) //&& CheckInventory("M14 EBR") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMK14U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+
+	}
+	else if(Which == 24) //&& CheckInventory("PKP Pecheneg") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICPKPU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+
+	}
+	else if(Which == 25) //&& CheckInventory("Riot Shield") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMEDI");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+	
+	}
+	else if(Which == 26) //&& CheckInventory("Barrett 50cal") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICDMU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+	
+	}
+	else if(Which == 27) //&& CheckInventory("UMP45") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICUMPU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+
+	}
+	else if(Which == 28) //&& CheckInventory("MP5") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMP5U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+
+	else if(Which == 29) //&& CheckInventory("Type 95") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICQBZ95U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+	
+	}
+	else if(Which == 30) //&& CheckInventory("CM901") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICCM901U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 31) //&& CheckInventory("ACR 6.8") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICACRU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 33) //&& CheckInventory("Pro20") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICPRO20U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 34) //&& CheckInventory("M4S") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICM1014U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 35) //&& CheckInventory("AR15") == 0)
+	{
+		SetResultValue(1);
+		
+		SetFont("ICAR15U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 36) //&& CheckInventory("Mosin-Nagant") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMOSINU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+
+	}
+	else if(Which == 37) //&& CheckInventory("Vector") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICVECU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+
+	}
+	else if(Which == 38) //&& CheckInventory("M1Garand") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICM1GU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+
+	}
+	else if(Which == 39) //&& CheckInventory("TT33") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICTT33U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+	
+	}
+	else if(Which == 40) //&& CheckInventory("BREN") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICBRENU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 41) //&& CheckInventory("TOZ34") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICTOZ34U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 42) //&& CheckInventory("MSS20") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMSS20U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+
+	}
+	else if(Which == 43) //&& CheckInventory("TacticalInsertion") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICRADIOU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+
+	}
+	else if(Which == 44) //&& CheckInventory("ClaymoreHand") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICCLAYU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+	
+	}
+	else if(Which == 45) //&& CheckInventory("PDW") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICPDWU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+
+	}
+	else if(Which == 46) //&& CheckInventory("MP402") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMP40U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+	
+	}
+	else if(Which == 47) //&& CheckInventory("Saiga") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICSAIGAU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 48) //&& CheckInventory("C4Hand") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICC4U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 49) //&& CheckInventory("BeaconHand") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICBEACNU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 50) //&& CheckInventory("Kar98k") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICKAR98U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 51) //&& CheckInventory("Luger") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICLUGERU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 52) //&& CheckInventory("STG44") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICSTG44U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 53) //&& CheckInventory("Gew43") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICG43U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 54) //&& CheckInventory("PPS42") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMP709U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 55) //&& CheckInventory("Thompson") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICM1A1U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 57) //&& CheckInventory("M1911A1") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICM1911U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 58) //&& CheckInventory("W99") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICW99U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 59) //&& CheckInventory("M1897") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICM1897U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 60) //&& CheckInventory("EAD") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICEADU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 61) //&& CheckInventory("USM9") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICUSM9U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 62) //&& CheckInventory("Anaconda") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICAnacU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 63) //&& CheckInventory("USS41") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICUSS41U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 64) //&& CheckInventory("USS41W") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICUSSWU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 65) //&& CheckInventory("L42A1") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICL42U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 66) //&& CheckInventory("UMP9") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICUMP9U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 67) //&& CheckInventory("UZI") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICUZIU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 68) //&& CheckInventory("NDM86") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICNDMU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 69) //&& CheckInventory("F2000") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICF2000U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 70) //&& CheckInventory("TMP") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICTMPU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 71) //&& CheckInventory("TMPDual") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICTMPDU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 72) //&& CheckInventory("M2HMG") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICM2U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+		else if(Which == 73) //&& CheckInventory("RPD") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICRPDU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+		else if(Which == 74) //&& CheckInventory("C96") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICC96U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+		else if(Which == 75) //&& CheckInventory("IMG28") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICIMGU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+		else if(Which == 76) //&& CheckInventory("G18") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICG18U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+		else if(Which == 77) //&& CheckInventory("RPG") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICRPGU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+		else if(Which == 78) //&& CheckInventory("SCAR-H") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICSCARHU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 79) //&& CheckInventory("M2Flame") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICM2FU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 80) //Change on
+	{
+		SetResultValue(1);
+		SetFont("ATCNGEOU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 750.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 81) //Change off
+	{
+		SetResultValue(1);
+		SetFont("ATCNGEOF");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 666, CR_Green, 750.0, 180.0, 4.5, 0.25);
+		
+	}
+	else if(Which == 82) //&& CheckInventory("M3G") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICM3GU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 83) //&& CheckInventory("STEN") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICSTENU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 84) //&& CheckInventory("3U1") == 0)
+	{
+		SetResultValue(1);
+		SetFont("IC3U1U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 85) //&& CheckInventory("USM9") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICUSM9WU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 86) //&& CheckInventory("LE6940") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICLE694U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 87) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICKATANU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 88) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICRPKU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 89) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICM27U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 90) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICSR1MPU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 91) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMP155U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 92) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICW1921U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 93) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICTOZ19U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 94) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMP43U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 95) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICSP44U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 96) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICOTS33U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 97) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICOPSKSU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 98) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICSPIKEU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 99) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICM3TACU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 100) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICVITYAU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 101) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICPMMU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 102) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMG338U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 103) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMCXU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 104) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMCXPU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 105) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICSR762U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 106) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICRSASSU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 107) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICKEDRU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 108) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICSTM45U");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 109) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICVSSU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 110) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICASVALU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 111) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICGROZAU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 112) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICP2WU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else if(Which == 32) //&& CheckInventory("FAD") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICFALU");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 810, CR_Green, 960.0, 880.0, 1.0, 0.25);
+		
+	}
+	else
+		SetResultValue(0);
+}
+
+// Recoil/Kickback
+// 900
+Script "CoDRecoil" (int Strength, int Reverse, int Mode) NET CLIENTSIDE
+{
+	if(!GetCvar("codbw_recoil"))
+	{
+		terminate;
+	}
+
+	int SideKick = 40 + (random(0, 10)*10);
+	int VerticalKick = 40 + (random(0, 12)*10);
+
+	if(CheckInventory("Perk3_SteadyAim") == 1)
+	{
+		SideKick = 30 + (random(0, 10)*6);
+		VerticalKick = 30 + (random(0, 8)*6);
+	}
+
+	if(Strength == 0)
+	{
+		Strength = 600;
+		Reverse = 600;
+		Mode = 0;
+	}
+
+	if(Mode == 8 || Mode == 9)
+	{
+		if(Mode == 9)
+			SideKick += 50;
+		if(random(0, 3) == 0)		Mode = 0;
+		else if(random(0, 3) == 1)	Mode = 6;
+		else if(random(0, 3) == 2)	Mode = 7;
+		else	Mode = 8;
+
+	}
+
+	if(Mode == 0)
+	{
+		if(random(0, 1) == 0)		Mode = 0;
+		else	Mode = 6;
+	}
+
+	int Counter;
+	if(Mode == 0)
+	{
+		while(Counter < Strength)
+		{
+			SetActorAngle(0, GetActorAngle(0)-SideKick);
+			SetActorPitch(0, GetActorPitch(0)-VerticalKick);
+			Counter += 150;
+		}
+		Counter = 0;
+		while(Counter < Reverse)
+		{
+			SetActorAngle(0, GetActorAngle(0)+SideKick);
+			SetActorPitch(0, GetActorPitch(0)+VerticalKick);
+			Counter += 150;
+			Delay(1);
+		}
+	}
+	else if(Mode == 6)
+	{
+		while(Counter < Strength)
+		{
+			SetActorAngle(0, GetActorAngle(0)+SideKick);
+			SetActorPitch(0, GetActorPitch(0)-VerticalKick);
+			Counter += 150;
+		}
+		Counter = 0;
+		while(Counter < Reverse)
+		{
+			SetActorAngle(0, GetActorAngle(0)-SideKick);
+			SetActorPitch(0, GetActorPitch(0)+VerticalKick);
+			Counter += 150;
+			Delay(1);
+		}
+	}
+	else if(Mode == 7)
+	{
+		while(Counter < Strength)
+		{
+			SetActorAngle(0, GetActorAngle(0)-SideKick);
+			SetActorPitch(0, GetActorPitch(0)+VerticalKick);
+			Counter += 150;
+		}
+		Counter = 0;
+		while(Counter < Reverse)
+		{
+			SetActorAngle(0, GetActorAngle(0)+SideKick);
+			SetActorPitch(0, GetActorPitch(0)-VerticalKick);
+			Counter += 150;
+			Delay(1);
+		}
+	}
+	else if(Mode == 8)
+	{
+		while(Counter < Strength)
+		{
+			SetActorAngle(0, GetActorAngle(0)+SideKick);
+			SetActorPitch(0, GetActorPitch(0)+VerticalKick);
+			Counter += 150;
+		}
+		Counter = 0;
+		while(Counter < Reverse)
+		{
+			SetActorAngle(0, GetActorAngle(0)-SideKick);
+			SetActorPitch(0, GetActorPitch(0)-VerticalKick);
+			Counter += 150;
+			Delay(1);
+		}
+	}
+	else if(Mode == 1) //Melee from right
+	{
+		while(Counter < Strength)
+		{
+			SetActorAngle(0, GetActorAngle(0)-500);
+			SetActorPitch(0, GetActorPitch(0)-500);
+			Counter += 150;
+			Delay(1);
+		}
+
+		Counter = 0;
+		while(Counter < Reverse)
+		{
+			SetActorAngle(0, GetActorAngle(0)+500);
+			SetActorPitch(0, GetActorPitch(0)+500);
+			Counter += 150;
+			Delay(1);
+		}
+	}
+	else if(Mode == 2) //Melee to left
+	{
+		while(Counter < Strength)
+		{
+			SetActorAngle(0, GetActorAngle(0)+500);
+			SetActorPitch(0, GetActorPitch(0)-500);
+			Counter += 150;
+			Delay(1);
+		}
+
+		Counter = 0;
+		while(Counter < Reverse)
+		{
+			SetActorAngle(0, GetActorAngle(0)-500);
+			SetActorPitch(0, GetActorPitch(0)+500);
+			Counter += 150;
+			Delay(1);
+		}
+	}
+	else if(Mode == 3)
+	{
+		if(CheckInventory("BreathWait") != 0)
+			terminate;
+		else
+			delay(2);
+		while(CheckInventory("Aiming") == 1 || CheckInventory("BreathWait") != 0)
+		{
+			int buttons = GetPlayerInput(-1, INPUT_BUTTONS);
+			int Pin = PlayerPIN[PlayerNumber()];
+			int Flags2 = PlayerFlags2[Pin];
+
+			Strength = CheckInventory("BreathWait")*2;
+			Counter = 0;
+			while(Counter < 2 && CheckInventory("HoldBreath") == 0)
+			{
+				if(CheckInventory("Aiming") == 1)
+				{
+					SetActorAngle(0, GetActorAngle(0)+random(-50, 50)+(random(-10, 10)*Strength));
+					SetActorPitch(0, GetActorPitch(0)-random(-50, 50)+(random(-10, 10)*Strength));
+					delay(1);
+					SetActorAngle(0, GetActorAngle(0)+random(-50, 50)+(random(-10, 10)*Strength));
+					SetActorPitch(0, GetActorPitch(0)-random(-50, 50)+(random(-10, 10)*Strength));
+					delay(1);
+					SetActorAngle(0, GetActorAngle(0)+random(-50, 50)+(random(-10, 10)*Strength));
+					SetActorPitch(0, GetActorPitch(0)-random(-50, 50)+(random(-10, 10)*Strength));
+					delay(1);
+				}
+				else
+				{
+					SetActorAngle(0, GetActorAngle(0)+random(-50, 50)+(random(-3, 3)*Strength));
+					SetActorPitch(0, GetActorPitch(0)-random(-50, 50)+(random(-3, 3)*Strength));
+					delay(1);
+					SetActorAngle(0, GetActorAngle(0)+random(-50, 50)+(random(-3, 3)*Strength));
+					SetActorPitch(0, GetActorPitch(0)-random(-50, 50)+(random(-3, 3)*Strength));
+					delay(1);
+					SetActorAngle(0, GetActorAngle(0)+random(-50, 50)+(random(-3, 3)*Strength));
+					SetActorPitch(0, GetActorPitch(0)-random(-50, 50)+(random(-3, 3)*Strength));
+					delay(1);
+				}
+				TakeInventory("BreathWait", 1);
+				Counter += 1;
+				if(Counter == 2 && CheckInventory("Aiming") == 1 && CheckInventory("BreathWait") == 0 && CheckInventory("Firing") == 0)
+				{
+					SetFont("CONFONT");
+					HudMessage(s:"\ccHold \cf", k:"+speed", s:"[bind key +speed] \ccto steady aim"; HUDMSG_FADEINOUT, 0, CR_WHITE, 0.5, 0.55, 0.0, 0.16, 0.16);
+					HudMessage(s:"\cc[\cfbind key +speed \ccif unbound]"; HUDMSG_FADEINOUT, 0, CR_WHITE, 0.5, 0.575, 0.0, 0.16, 0.16);
+				}
+			}
+
+			if(CheckInventory("HoldBreath") == 0 && CheckInventory("BreathWait") == 0)
+			{
+				if(buttons & BT_SPEED && CheckInventory("Firing") == 0)
+				{
+					ActivatorSound("player/holdbreath", 127);
+					GiveInventory("HoldBreath", 35);
+				}
+			}
+			else if(CheckInventory("HoldBreath") != 0 && buttons & BT_SPEED && CheckInventory("Firing") == 0)
+			{
+				//if((Flags2 & XPFLAG_S_SNIPER)) //Sniper specialty increases hold breath time
+				if(CheckInventory("Perk3_SteadyAim_Pro") == 1) //Steady Aim pro increases hold breath time
+					Delay(33);
+				else
+					Delay(24);
+				TakeInventory("HoldBreath", 5);
+				GiveInventory("BreathWait", 5);
+				ActivatorSound("player/heartbeat", 127);		
+				if(CheckInventory("HoldBreath") == 0)
+					ActivatorSound("player/exhale1", 127);		
+			}
+			else if(CheckInventory("HoldBreath") != 0)
+			{
+				if(CheckInventory("HoldBreath") < 10)
+					ActivatorSound("player/exhale1", 127);		
+				else if(CheckInventory("HoldBreath") < 20)
+					ActivatorSound("player/exhale2", 127);		
+				else
+					ActivatorSound("player/exhale3", 127);		
+				TakeInventory("HoldBreath", 35);
+			}
+
+
+			delay(1);
+		}
+	}
+	else if(Mode == 4)
+	{
+		while(Counter < Strength)
+		{
+			SetActorAngle(0, GetActorAngle(0)-100);
+			SetActorPitch(0, GetActorPitch(0)-800);
+			Counter += 800;
+			Delay(1);
+		}
+		Counter = 0;
+		while(Counter < Reverse)
+		{
+			SetActorAngle(0, GetActorAngle(0)+100);
+			SetActorPitch(0, GetActorPitch(0)+800);
+			Counter += 800;
+			Delay(1);
+		}
+	}
+	else if(Mode == 5)
+	{
+		while(Counter < Strength)
+		{
+			SetActorAngle(0, GetActorAngle(0)+1200);
+			SetActorPitch(0, GetActorPitch(0)-2000);
+			Counter += 2000;
+			Delay(1);
+		}
+		Counter = 0;
+		while(Counter < Reverse)
+		{
+			SetActorAngle(0, GetActorAngle(0)-300);
+			SetActorPitch(0, GetActorPitch(0)+400);
+			Counter += 400;
+			Delay(1);
+		}
+	}
+}
+
+// Reload
+// 939
+Script "CoDReload" (void) NET
+{
+	GiveInventory("Reloading", 1);
+}
+
+// 698
+Script "CoDWeaponSelectMode" (int a)
+{
+	// SetActorProperty(0, APROP_SPEED, a*65535/100);
+	SetPlayerProperty(0, a, PROP_FROZEN);
+}
+
+// Sets player speed, affected by "ExtremeConditioning pro" perk and Stalker
+// 931
+Script "CoDPlayerSpeed" (int mode)
+{
+	int Pin = PlayerPIN[PlayerNumber()];
+	int Flags = PlayerFlags[Pin];
+	int SpeedBonus = 0;
+	int SpeedBonusAim = 0;
+	
+	/*if((Flags & XPFLAG_P_SPEED))
+	{
+		SpeedBonus = 0.1;
+		SpeedBonusAim = 0.05;
+	}*/
+
+	if(CheckInventory("Perk3_Stalker") == 1)
+	{
+		SpeedBonusAim = 0.125;
+	}
+
+	if(CheckInventory("Perk1_ExtremeConditioning_Pro") == 1)
+	{
+		SpeedBonus = 0.1;
+		SpeedBonusAim = 0.075;
+	}
+
+	if(CheckInventory("Weight") == 1 && CheckInventory("Aiming") == 0)
+		SetActorProperty(0, APROP_Speed, 1.1+SpeedBonus);
+	else if(CheckInventory("Weight") == 2 && CheckInventory("Aiming") == 0)
+		SetActorProperty(0, APROP_Speed, 1.0+SpeedBonus);
+	else if(CheckInventory("Weight") == 3 && CheckInventory("Aiming") == 0)
+		SetActorProperty(0, APROP_Speed, 0.9+SpeedBonus);
+	else if(CheckInventory("Weight") == 4 && CheckInventory("Aiming") == 0)
+		SetActorProperty(0, APROP_Speed, 0.7+SpeedBonus);
+	else if(CheckInventory("Weight") == 5 && CheckInventory("Aiming") == 0)
+		SetActorProperty(0, APROP_Speed, 0.6+SpeedBonus);
+	else if(CheckInventory("Weight") == 6 && CheckInventory("Aiming") == 0)
+		SetActorProperty(0, APROP_Speed, 0.4+SpeedBonus);
+	else if(CheckInventory("Weight") == 9 && CheckInventory("Aiming") == 0)
+		SetActorProperty(0, APROP_Speed, 0.0+SpeedBonus);
+
+	if(CheckInventory("Weight") == 1 && CheckInventory("Aiming") == 1)
+		SetActorProperty(0, APROP_Speed, 0.7+SpeedBonusAim);
+	else if(CheckInventory("Weight") == 2 && CheckInventory("Aiming") == 1)
+		SetActorProperty(0, APROP_Speed, 0.6+SpeedBonusAim);			//Lighter weapons (SMG and Handgun) get less slowdown from Aim
+	else if(CheckInventory("Weight") == 3 && CheckInventory("Aiming") == 1)
+		SetActorProperty(0, APROP_Speed, 0.45+SpeedBonusAim);
+	else if(CheckInventory("Weight") == 4 && CheckInventory("Aiming") == 1)
+		SetActorProperty(0, APROP_Speed, 0.3+(SpeedBonusAim*2));
+	else if(CheckInventory("Weight") == 5 && CheckInventory("Aiming") == 1)
+		SetActorProperty(0, APROP_Speed, 0.1+(SpeedBonusAim*2));
+	else if(CheckInventory("Weight") == 6 && CheckInventory("Aiming") == 1)
+		SetActorProperty(0, APROP_Speed, 0.1+(SpeedBonusAim*2));
+	else if(CheckInventory("Weight") == 9 && CheckInventory("Aiming") == 1)
+		SetActorProperty(0, APROP_Speed, 0.0+(SpeedBonusAim*2));
+
+    ACS_NamedExecuteAlways("BDPBULD", 0, 0, 0, 0);
+}
+
+// Throw Grenade
+// 932
+Script "CoDThrowGrenade" (void) NET
+{
+	if((CheckInventory("FragGrenadeAmmo") != 0 && CheckInventory("ThrowingGrenade") == 0) || (PlayerIsBot(PlayerNumber()) || GetCvar("sv_infiniteammo") == 1))
+	{
+		GiveInventory("ThrowingGrenade", 1);
+		//if(CheckInventory("Reloading") == 1)
+			GiveInventory("KnifeAttack", 1);
+		//ACS_ExecuteAlways(615, 0, 4, 0, 0); //Grenade out voice
+	}
+	else if(CheckInventory("FragGrenadeAmmo") == 0)
+	{
+		If(CheckInventory("SemtexInventory") > 0)
+			UseInventory("SemtexInventory");
+		else if(CheckInventory("ThrowingKnifeInventory") > 0)
+			UseInventory("ThrowingKnifeInventory");
+		else if(CheckInventory("ClaymoreInventory") > 0)
+			UseInventory("ClaymoreInventory");
+		else if(CheckInventory("BettyInventory") > 0)
+			UseInventory("BettyInventory");
+		else if(CheckInventory("C4Inventory") > 0)
+			UseInventory("C4Inventory");
+	}
+	/*else if(CheckInventory("SmokeGrenadeAmmo") != 0 && CheckInventory("ThrowingGrenade") == 0)
+	{
+		SetWeapon("Smoke Grenade");
+		SetWeapon("Smoke Grenade ");
+		Delay(15);
+		//ACS_ExecuteAlways(615, 0, 5, 0, 0); //Smoke out voice
+		GiveInventory("ThrowingGrenade", 1);
+		//if(CheckInventory("Reloading") == 1)
+			GiveInventory("KnifeAttack", 1);
+	}*/
+}
+
+// Use Knife
+// 933
+Script "CoDUseKnife" (void) NET
+{
+	GiveInventory("KnifeAttack", 1); // Hack, refer to decorate coding.
+}
+
+// Weapon Icon
+// 701
+Script "CoDWeaponIcon" (int Which)
+{
+	if(Which == 1) //&& CheckInventory("MP412") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMP412");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+		
+	}
+	else if(Which == 2) //&& CheckInventory("KSG 12") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICKSG");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+
+	}
+	else if(Which == 3) //&& CheckInventory("L118A") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICAWM");
+	    SetHudSize(1920, 1080, 1);
+		HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+
+	}
+	else if(Which == 4) //&& CheckInventory("PM9") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICPM9");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+		
+	}
+	else if(Which == 5) //&& CheckInventory("SCAR-L") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICSCARL");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+
+	}
+	else if(Which == 6) //&& CheckInventory("M320 GLM") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICM320");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+	}
+	else if(Which == 7) //&& CheckInventory("Desert Eagle") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICDE");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+
+	}
+	else if(Which == 8) //&& CheckInventory("AA-12") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICAA12");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+	
+	}
+	else if(Which == 9) //&& CheckInventory("MK46") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMK46");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+		
+	}
+	else if(Which == 10) //&& CheckInventory("MP7") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMP7");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+		
+	}
+	else if(Which == 11) //&& CheckInventory("AK-47") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICAK103");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+		
+	}
+	else if(Which == 12) //&& CheckInventory("MSR") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMSR");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+	
+	}
+	else if(Which == 13) //&& CheckInventory("Javelin") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICCGS");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+		
+	}
+	else if(Which == 14) //&& CheckInventory("M4A1") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICPPSH");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+		
+	}
+	else if(Which == 15) //&& CheckInventory("M16A4") == 0)
+	{
+		SetResultValue(1);
+
+		SetFont("ICMP15");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+		
+	}
+	else if(Which == 16) //&& CheckInventory("P90") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICP90");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+	
+	}
+	else if(Which == 17) //&& CheckInventory("Model 1887") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICM1887");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+
+	}
+	else if(Which == 18) //&& CheckInventory("PP90M1") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICSPAS");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+
+	}
+	else if(Which == 19) //&& CheckInventory("Dragunov") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICSKS");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+
+	}
+	else if(Which == 20) //&& CheckInventory("P99") == 0)
+	{
+		SetResultValue(1);
+		SetFont("IC44MAG");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+
+	}
+	else if(Which == 21) //&& CheckInventory("L86 LSW") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICL86");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+	
+	}
+	else if(Which == 22) //&& CheckInventory("G36C") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICG36C");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+
+	}
+	else if(Which == 23) //&& CheckInventory("M14 EBR") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMK14");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+
+	}
+	else if(Which == 24) //&& CheckInventory("PKP Pecheneg") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICPKP");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+
+	}
+	else if(Which == 25) //&& CheckInventory("Riot Shield") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMEDI");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+	
+	}
+	else if(Which == 26) //&& CheckInventory("Barrett 50cal") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICDM");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+	
+	}
+	else if(Which == 27) //&& CheckInventory("UMP45") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICUMP");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+
+	}
+	else if(Which == 28) //&& CheckInventory("MP5") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMP5");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+		
+	}
+
+	else if(Which == 29) //&& CheckInventory("Type 95") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICQBZ95");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+	
+	}
+	else if(Which == 30) //&& CheckInventory("CM901") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICCM901");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+		
+	}
+	else if(Which == 31) //&& CheckInventory("ACR 6.8") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICACR");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+		
+	}
+	else if(Which == 33) //&& CheckInventory("Pro20") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICPRO20");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+		
+	}
+	else if(Which == 34) //&& CheckInventory("M4S") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICM1014");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+		
+	}
+	else if(Which == 35) //&& CheckInventory("AR15") == 0)
+	{
+		SetResultValue(1);
+		
+		SetFont("ICAR15");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+		
+	}
+	else if(Which == 36) //&& CheckInventory("Mosin-Nagant") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMOSIN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+
+	}
+	else if(Which == 37) //&& CheckInventory("Vector") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICVECTOR");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+
+	}
+	else if(Which == 38) //&& CheckInventory("M1Garand") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICM1G");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+
+	}
+	else if(Which == 39) //&& CheckInventory("TT33") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICTT33");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+	
+	}
+	else if(Which == 40) //&& CheckInventory("BREN") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICBREN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+		
+	}
+	else if(Which == 41) //&& CheckInventory("TOZ34") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICTOZ34");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+		
+	}
+	else if(Which == 42) //&& CheckInventory("MSS20") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMSS20");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+
+	}
+	else if(Which == 43) //&& CheckInventory("TacticalInsertion") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICRADIO");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+
+	}
+	else if(Which == 44) //&& CheckInventory("ClaymoreHand") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICCLAY");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+	
+	}
+	else if(Which == 45) //&& CheckInventory("PDW") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICPDW");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+
+	}
+	else if(Which == 46) //&& CheckInventory("MP402") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMP40");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+	
+	}
+	else if(Which == 47) //&& CheckInventory("Saiga") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICSAIGA");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+		
+	}
+	else if(Which == 48) //&& CheckInventory("C4Hand") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICC4");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+		
+	}
+	else if(Which == 49) //&& CheckInventory("BeaconHand") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICBEACON");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+		
+	}
+	else if(Which == 50) //&& CheckInventory("Kar98k") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICKAR98K");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);		
+	}
+	else if(Which == 51) //&& CheckInventory("Luger") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICLUGER");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);		
+	}
+	else if(Which == 52) //&& CheckInventory("STG44") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICSTG44");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);		
+	}
+	else if(Which == 53) //&& CheckInventory("Gew43") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICG43");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);		
+	}
+	else if(Which == 54) //&& CheckInventory("PPS42") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICMP709");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);		
+	}
+	else if(Which == 55) //&& CheckInventory("Thompson") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICM1A1");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);		
+	}
+	else if(Which == 56) //&& CheckInventory("Handing") == 0)
+	{
+		SetResultValue(1);
+		SetFont(""); //SetFont("ICKNIFE");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:""; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);		
+	}
+	else if(Which == 57) //&& CheckInventory("M1911A1") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICM1911");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);		
+	}
+	else if(Which == 58) //&& CheckInventory("W99") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICW99");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);		
+	}
+	else if(Which == 59) //&& CheckInventory("M1897") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICM1897");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);		
+	}
+	else if(Which == 60) //&& CheckInventory("EAD") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICEAD");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);		
+	}
+	else if(Which == 61) //&& CheckInventory("USM9") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICUSM9");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);		
+	}
+	else if(Which == 62) //&& CheckInventory("Anaconda") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICAnac");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);		
+	}
+	else if(Which == 63) //&& CheckInventory("USS41") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICUSS41");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);		
+	}
+	else if(Which == 64) //&& CheckInventory("USS41W") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICUSS41W");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);		
+	}
+	else if(Which == 65) //&& CheckInventory("L42A1") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICL42");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);		
+	}
+	else if(Which == 66) //&& CheckInventory("UMP9") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICUMP9");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);		
+	}
+	else if(Which == 67) //&& CheckInventory("UZI") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICUZI");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);		
+	}
+	else if(Which == 68) //&& CheckInventory("NDM68") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICNDM");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);		
+	}
+	else if(Which == 69) //&& CheckInventory("F2000") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICF2000");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);		
+	}
+	else if(Which == 70) //&& CheckInventory("TMP") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICTMP");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);		
+	}
+	else if(Which == 71) //&& CheckInventory("TMPDual") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICTMPD");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);		
+	}
+	else if(Which == 72) //&& CheckInventory("M2HMG") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICM2");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);		
+	}
+	else if(Which == 73) //&& CheckInventory("RPD") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICRPD");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);		
+	}
+	else if(Which == 74) //&& CheckInventory("C96") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICC96");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);		
+	}
+	else if(Which == 75) //&& CheckInventory("IMG") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICIMG");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);		
+	}
+	else if(Which == 76) //&& CheckInventory("G18") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICG18");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);		
+	}
+	else if(Which == 77) //&& CheckInventory("RPG") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICRPG");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);		
+	}
+	else if(Which == 78) //&& CheckInventory("SCAR-H") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICSCARH");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);		
+	}
+	else if(Which == 79) //&& CheckInventory("M2Flame") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICM2F");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);		
+	}
+	else if(Which == 80) //&& CheckInventory("M2Flame") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICM2F");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);		
+	}
+	else if(Which == 81) //&& CheckInventory("M2Flame") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICM2F");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);		
+	}
+	else if(Which == 82) //&& CheckInventory("M3G") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICM3G");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);		
+	}
+	else if(Which == 83) //&& CheckInventory("STEN") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICSTEN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);		
+	}
+	else if(Which == 84) //&& CheckInventory("3U1") == 0)
+	{
+		SetResultValue(1);
+		SetFont("IC3U1");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);		
+	}
+	else if(Which == 85) //&& CheckInventory("USM9W") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICUSM9W");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);		
+	}
+	else if(Which == 86) //&& CheckInventory("LE6940") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICLE694");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);		
+	}
+	else if(Which == 87) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICKATAN");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);		
+	}
+	else if(Which == 88) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICRPK");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);		
+	}
+	else if(Which == 89) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICM27");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);		
+	}
+	else if(Which == 90) //&& CheckInventory("katana") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICSR1MP");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);		
+	}
+	else if(Which == 32) //&& CheckInventory("FAD") == 0)
+	{
+		SetResultValue(1);
+		SetFont("ICFAL");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_PLAIN, 777, CR_Green, 1700.0, 950.0, 0, 0.25);
+		
+	}
+	else
+		SetResultValue(0);
+}
+
+// Class/Tip
+// 709
+Script "CoDTip" (int Which)
+{
+	if(Which == 1) //LONE SURVIVOR
+	{
+		SetResultValue(1);
+		SetFont("CLASS_1");
+	    SetHudSize(1920, 1080, 1);
+		TakeInventory("bd_classicmonsters", 1);
+		TakeInventory("bd_TraditionalMode", 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 888, CR_Green, 300.0, 300.0, 11.5, 0.25);
+		
+	}
+	else if(Which == 2) //UAC
+	{
+		SetResultValue(1);
+		SetFont("CLASS_2");
+	    SetHudSize(1920, 1080, 1);
+		TakeInventory("bd_classicmonsters", 1);
+		TakeInventory("bd_TraditionalMode", 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 888, CR_Green, 300.0, 300.0, 11.5, 0.25);
+
+	}
+	else if(Which == 3) //US
+	{
+		SetResultValue(1);
+		SetFont("CLASS_3");
+	    SetHudSize(1920, 1080, 1);
+		TakeInventory("bd_classicmonsters", 1);
+		TakeInventory("bd_TraditionalMode", 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 888, CR_Green, 300.0, 300.0, 11.5, 0.25);
+
+	}
+	else if(Which == 4) //UK
+	{
+		SetResultValue(1);
+		SetFont("CLASS_4");
+	    SetHudSize(1920, 1080, 1);
+		TakeInventory("bd_classicmonsters", 1);
+		TakeInventory("bd_TraditionalMode", 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 888, CR_Green, 300.0, 300.0, 11.5, 0.25);
+		
+	}
+	else if(Which == 5) //UACE
+	{
+		SetResultValue(1);
+		SetFont("CLASS_5");
+	    SetHudSize(1920, 1080, 1);
+		TakeInventory("bd_classicmonsters", 1);
+		TakeInventory("bd_TraditionalMode", 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 888, CR_Green, 300.0, 300.0, 11.5, 0.25);
+
+	}
+	else if(Which == 6) //USSR
+	{
+		SetResultValue(1);
+		SetFont("CLASS_6");
+	    SetHudSize(1920, 1080, 1);
+		TakeInventory("bd_classicmonsters", 1);
+		TakeInventory("bd_TraditionalMode", 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 888, CR_Green, 300.0, 300.0, 11.5, 0.25);
+
+	}
+	else if(Which == 7) //HIDEO
+	{
+		SetResultValue(1);
+		SetFont("CLASS_7");
+	    SetHudSize(1920, 1080, 1);
+		TakeInventory("bd_classicmonsters", 1);
+		TakeInventory("bd_TraditionalMode", 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 888, CR_Green, 300.0, 300.0, 11.5, 0.25);
+
+	}
+	else if(Which == 8) //UACRADIO
+	{
+		SetResultValue(1);
+		SetFont("DMES001");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 888, CR_Green, 300.0, 300.0, 15.0 , 0.25);
+
+	}
+	else if(Which == 9) //Reset
+	{
+		SetResultValue(1);
+		SetFont("");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:""; HUDMSG_FADEINOUT, 888, CR_Green, 300.0, 300.0, 0 , 0.25);
+
+	}
+	else if(Which == 10) //C4
+	{
+		SetResultValue(1);
+		SetFont("DMES002");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 888, CR_Green, 300.0, 300.0, 15.0 , 0.25);
+
+	}
+	else if(Which == 11) //MEDIKIT
+	{
+		SetResultValue(1);
+		SetFont("DMES003");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 888, CR_Green, 300.0, 300.0, 15.0 , 0.25);
+
+	}
+	else if(Which == 12) //BEACON
+	{
+		SetResultValue(1);
+		SetFont("DMES004");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 888, CR_Green, 300.0, 300.0, 15.0 , 0.25);
+
+	}
+		else if(Which == 13) //Claymore
+	{
+		SetResultValue(1);
+		SetFont("DMES005");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 888, CR_Green, 300.0, 300.0, 15.0 , 0.25);
+
+	}
+	else if(Which == 14) //FULL
+	{
+		SetResultValue(1);
+		SetFont("DMES006");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 888, CR_Green, 300.0, 300.0, 1.0 , 0.25);
+
+	}
+		else if(Which == 15) //SLUG
+	{
+		SetResultValue(1);
+		SetFont("DMES007");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 888, CR_Green, 300.0, 300.0, 1.0 , 0.25);
+
+	}
+		else if(Which == 16) //BUCK
+	{
+		SetResultValue(1);
+		SetFont("DMES008");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 888, CR_Green, 300.0, 300.0, 1.0 , 0.25);
+
+	}
+		else if(Which == 17) //FRAG
+	{
+		SetResultValue(1);
+		SetFont("DMES009");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 888, CR_Green, 300.0, 300.0, 1.0 , 0.25);
+
+	}
+		else if(Which == 18) //SHOTGUN
+	{
+		SetResultValue(1);
+		SetFont("DMES010");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 888, CR_Green, 300.0, 300.0, 1.0 , 0.25);
+
+	}
+	else if(Which == 19) //CHANGE
+	{
+		SetResultValue(1);
+		SetFont("DMES0AT");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 888, CR_Green, 300.0, 300.0, 30.0 , 0.25);
+
+	}
+	else if(Which == 20) //WW2
+	{
+		SetResultValue(1);
+		SetFont("CLASS_8");
+	    SetHudSize(1920, 1080, 1);
+		TakeInventory("bd_classicmonsters", 1);
+		TakeInventory("bd_TraditionalMode", 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 888, CR_Green, 300.0, 300.0, 11.5, 0.25);
+
+	}
+	else if(Which == 21) //WW2
+	{
+		SetResultValue(1);
+		SetFont("CLASS_9");
+	    SetHudSize(1920, 1080, 1);
+		TakeInventory("bd_classicmonsters", 1);
+		TakeInventory("bd_TraditionalMode", 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 888, CR_Green, 300.0, 300.0, 11.5, 0.25);
+
+	}
+	else if(Which == 22) //WW2
+	{
+		SetResultValue(1);
+		SetFont("CLASS_10");
+	    SetHudSize(1920, 1080, 1);
+		TakeInventory("bd_classicmonsters", 1);
+		TakeInventory("bd_TraditionalMode", 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 888, CR_Green, 300.0, 300.0, 11.5, 0.25);
+
+	}
+	else if(Which == 23) //WW2
+	{
+		SetResultValue(1);
+		SetFont("CLASS_11");
+	    SetHudSize(1920, 1080, 1);
+		TakeInventory("bd_classicmonsters", 1);
+		TakeInventory("bd_TraditionalMode", 1);
+	    HudMessage(s:"A"; HUDMSG_FADEINOUT, 888, CR_Green, 300.0, 300.0, 11.5, 0.25);
+
+	}
+	else if(Which == 24) //BUG
+	{
+		SetResultValue(1);
+		SetFont("CLASSBUG");
+	    SetHudSize(1920, 1080, 1);
+	    HudMessage(s:"A"; HUDMSG_FADEOUT, 888, CR_Green, 640.0, 300.0, 30, 0.25);
+
+	}
+	else
+		SetResultValue(0);
+}
+
+
+
+// 637
+Script "CoDTeamPlay" (void)
+{
+	if(GetCvar("Teamplay") == 1 || GetCvar("TeamLMS") == 1 || GetCvar("CTF") == 1 || GetCvar("OneFlagCTF") == 1)
+	{
+	if(PlayerTeam() == TEAM_RED)
+		SetResultValue(0);
+	else if(PlayerTeam() == TEAM_BLUE)
+		SetResultValue(1);
+	else if(PlayerTeam() == 2)
+		SetResultValue(2);
+	else if(PlayerTeam() == 3)
+		SetResultValue(3);
+	}
+	else SetResultValue(4);
+}
+
+// 640
+Script "CoDTeamType" (int Team, int Type)
+{
+	int counter;
+	
+		for(counter=0; counter < 32; counter++)
+		{
+			if(Team == 0 && Type == 0 && ThingCount(T_NONE, 8000+counter) == 0) // Claymore
+			{
+				Thing_ChangeTID(0, 8000+counter);
+				terminate;
+			}
+			else if(Team == 1 && Type == 0 && ThingCount(T_NONE, 8050+counter) == 0)
+			{
+				Thing_ChangeTID(0, 8050+counter);
+				terminate;
+			}
+			else if(Team == 0 && Type == 1 && ThingCount(T_NONE, 8100+counter) == 0) // Betty
+			{
+				Thing_ChangeTID(0, 8100+counter);
+				terminate;
+			}
+			else if(Team == 1 && Type == 1 && ThingCount(T_NONE, 8150+counter) == 0)
+			{
+				Thing_ChangeTID(0, 8150+counter);
+				terminate;
+			}
+			else if(Team == 0 && Type == 2 && ThingCount(T_NONE, 8200+counter) == 0) // C4
+			{
+				Thing_ChangeTID(0, 8200+counter);
+				terminate;
+			}
+			else if(Team == 1 && Type == 2 && ThingCount(T_NONE, 8250+counter) == 0)
+			{
+				Thing_ChangeTID(0, 8250+counter);
+				terminate;
+			}
+			else if(Team == 0 && Type == 3 && ThingCount(T_NONE, 8300+counter) == 0) // Trophy
+			{
+				Thing_ChangeTID(0, 8300+counter);
+				terminate;
+			}
+			else if(Team == 1 && Type == 3 && ThingCount(T_NONE, 8350+counter) == 0)
+			{
+				Thing_ChangeTID(0, 8350+counter);
+				terminate;
+			}
+		}
+}

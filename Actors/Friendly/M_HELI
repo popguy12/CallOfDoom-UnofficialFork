@@ -1,0 +1,629 @@
+ACTOR RGA_Heli
+{ 
+   Health 3000
+   Speed 3
+   Radius 130
+   Height 120
+   PainChance 100
+   Mass 400
+   MONSTER
+   +FLOORCLIP 
+   +NOGRAVITY 
+   +FLOAT 
+   +FLOATBOB
+   +SPAWNFLOAT
+   +NOBLOOD
+   +NOTARGET
+   +NORADIUSDMG
+   +LOOKALLAROUND
+   +NORADIUSDMG
+   +NOBLOCKMONST
+   +FRIENDLY
+   +NEVERFAST
+   +DONTSPLASH
+   +DONTBLAST
+   +DONTHURTSPECIES 
+   +MISSILEMORE
+   +FIXMAPTHINGPOS
+   +SLIDESONWALLS
+   +FORCEXYBILLBOARD
+   +ACTIVATEIMPACT
+   //+THRUSPECIES
+   +PUSHABLE
+   +SLIDESONWALLS
+   +QUICKTORETALIATE 
+   DONTHURTSHOOTER
+   +FULLVOLDEATH
+   +NOVERTICALMELEERANGE
+   +NOTELEPORT
+   scale 1.8
+   seesound "heli/sight"
+   attacksound "spider/attack"
+   painsound "TANK/pain"
+   deathsound "heli/die"
+   dropitem RGA_helipod
+   damagefactor "FriendBullet", 0.0
+    damagefactor "Blood", 0.0    damagefactor "GreenBlood", 0.0    damagefactor "BlueBlood", 0.0    damagefactor "Taunt", 0.0    damagefactor "KillMe", 0.0
+    damagefactor "Blood", 0.0 damagefactor "BlueBlood", 0.0 damagefactor "GreenBlood", 0.0
+    damagefactor "Shrapnel", 0.3
+	damagefactor "SpawnMarine", 0.0
+	DamageFactor "CauseObjectsToSplash", 0.0
+	Species "Marines"
+	damagefactor "TeleportRemover", 0.0
+	damagefactor "GibRemoving", 0.0
+	damagefactor "Leg", 0.0
+	damagefactor "Shotgun", 0.0
+	damagefactor "Cutless", 0.0
+	damagefactor "SSG", 0.0
+	damagefactor "Trample", 0.0
+	damagefactor "bullet", 0.0
+	damagefactor "cutless", 0.0
+	damagefactor "ExplosiveImpact", 0.0
+	damagefactor "shotgun", 0.0
+	damagefactor "ssg", 0.0
+	damagefactor "Friendry", 	0.0
+	damagefactor "InstakillMarines", 40.0
+	PainChance "Kick", 0
+	PainChance "FriendBullet", 0
+    PainChance "Blood", 0    
+	PainChance "GreenBlood", 0  
+	PainChance "BlueBlood", 0  
+	PainChance "Taunt", 0   
+	PainChance "KillMe", 0
+    PainChance "Blood", 0 
+	PainChance "BlueBlood", 0
+	PainChance "GreenBlood", 0
+    PainChance "Shrapnel", 0
+	PainChance "SpawnMarine", 0
+	PainChance "HelperMarineFatallity", 0
+   States 
+   { 
+   Spawn: 
+      TNT1 A 0 A_PlaySound("HELSTAR", 6)
+	  HELI ABC 5 
+	  HELI ABC 4
+	  HELI ABC 3
+	  TNT1 A 0 ThrustThingZ(0, 15, 0, 0)
+	  HELI ABC 2 
+	  TNT1 A 0 ThrustThingZ(0, 15, 0, 0)
+	  HELI ABC 0 A_PlaySound("heli/sight", 6)
+	  HELI ABC 2 
+	  TNT1 A 0 ThrustThingZ(0, 15, 0, 0)
+	  HELI ABC 2 
+	  TNT1 A 0 ThrustThingZ(0, 15, 0, 0)
+      Goto See 
+   See: 
+	  HELI ABC 0 A_PlaySound("heli/sight", 6)
+	  HELI A 1  A_Chase
+	  HELI A 1  A_Chase
+	  HELI B 1  A_Chase
+	  HELI B 1  A_Chase
+	  HELI C 1  A_Chase
+	  HELI C 1  A_Chase
+	  TNT1 A 0 A_Recoil(-1)
+	  HELI A 1  A_Chase
+	  HELI A 1  A_Chase
+	  HELI B 1  A_Chase
+	  HELI B 1  A_Chase
+	  HELI C 1  A_Chase
+	  HELI C 1  A_Chase
+	  TNT1 A 0 A_Recoil(-1)
+	  HELI A 1  A_Chase
+	  HELI A 1  A_Chase
+	  HELI B 1  A_Chase
+	  HELI B 1  A_Chase
+	  HELI C 1  A_Chase
+	  HELI C 1  A_Chase
+	  TNT1 A 0 A_Recoil(-1)
+	  TNT1 A 0 A_Jump(32, "ClearTarget")
+	  //TNT1 A 0 A_Jump(64, "UP")
+	  TNT1 A 0 A_JumpIfCloser(900, "fallBack")
+	  Loop
+		
+	ClearTarget:
+      TNT1 A 0 A_ClearTarget
+      Goto See 
+	  
+	UP:
+      TNT1 A 0 ThrustThingZ(0, 15, 0, 0)
+      Goto See 
+
+	FallBack:
+		HELI A 1
+		HELI A 0 A_Recoil(-2)
+		HELI B 1
+		HELI A 0 A_Recoil(-2)
+		HELI C 1
+		HELI A 0 A_Recoil(-2)
+		Goto See
+	  
+  Missile:   
+      TNT1 A 0 A_JumpIfInTargetInventory("TargetIsAMarine", 1, "See")//
+	  TNT1 A 0 A_JumpIfInTargetInventory("IsPlayer", 1, "See")
+	  HELI ABC 0 A_PlaySound("heli/sight", 6)
+	   HELI ABC 0 A_Jump(46, "rpg")
+	  TNT1 A 0 A_JumpIfCloser(300, "Shotchange")
+	  HELI ABC 1 A_FaceTarget
+	  TNT1 A 0 A_JumpIfInTargetInventory("TargetIsAMarine", 1, "See")//
+	  TNT1 A 0 A_JumpIfInTargetInventory("IsPlayer", 1, "See")
+	  TNT1 A 0 A_JumpIfInTargetInventory("PassClaymore", 1, "See")
+      TNT1 E 0 A_custommissile("bia_gunflashH", 10, 0) 
+	  TNT1 A 0 A_PlaySound("HELLHMG")
+	  HELI ABC 1 BRIGHT A_CustomMissile("RGAHeli_Tracer", 10, 0, random(-7, 7), 1, random(-4, 2))
+	  TNT1 AA 0 A_SpawnItem ("HVEmptyBrass", 0, 30, 0)
+	  HELI ABC 1 A_FaceTarget
+	  TNT1 A 0 A_JumpIfInTargetInventory("TargetIsAMarine", 1, "See")//
+	  TNT1 A 0 A_JumpIfInTargetInventory("IsPlayer", 1, "See")
+	  TNT1 A 0 A_JumpIfInTargetInventory("PassClaymore", 1, "See")
+      TNT1 E 0 A_custommissile("bia_gunflashH", 10, 0) 
+	  TNT1 A 0 A_PlaySound("HELLHMG")
+	  HELI ABC 1 BRIGHT A_CustomMissile("RGAHeli_Tracer", 10, 0, random(-7, 7), 1, random(-4, 2))
+	  TNT1 AA 0 A_SpawnItem ("HVEmptyBrass", 0, 30, 0)
+	   TNT1 A 0 A_JumpIfCloser(300, "Shotchange")
+	  HELI ABC 1 A_FaceTarget
+	  TNT1 A 0 A_JumpIfInTargetInventory("TargetIsAMarine", 1, "See")//
+	  TNT1 A 0 A_JumpIfInTargetInventory("IsPlayer", 1, "See")
+	  TNT1 A 0 A_JumpIfInTargetInventory("PassClaymore", 1, "See")
+      TNT1 E 0 A_custommissile("bia_gunflashH", 10, 0) 
+	  TNT1 A 0 A_PlaySound("HELLHMG")
+	  HELI ABC 1 BRIGHT A_CustomMissile("RGAHeli_Tracer", 10, 0, random(-7, 7), 1, random(-4, 2))
+	  TNT1 AA 0 A_SpawnItem ("HVEmptyBrass", 0, 30, 0)
+	  HELI ABC 1 A_FaceTarget
+	 TNT1 A 0 A_JumpIfInTargetInventory("TargetIsAMarine", 1, "See")//
+	  TNT1 A 0 A_JumpIfInTargetInventory("IsPlayer", 1, "See")
+	  TNT1 A 0 A_JumpIfInTargetInventory("PassClaymore", 1, "See")
+      TNT1 E 0 A_custommissile("bia_gunflashH", 10, 0) 
+	  TNT1 A 0 A_PlaySound("HELLHMG")
+	  HELI ABC 1 BRIGHT A_CustomMissile("RGAHeli_Tracer", 10, 0, random(-7, 7), 1, random(-4, 2))
+	  TNT1 AA 0 A_SpawnItem ("HVEmptyBrass", 0, 30, 0)
+	  HELI ABC 1 A_FaceTarget
+	   TNT1 A 0 A_JumpIfInTargetInventory("TargetIsAMarine", 1, "See")//
+	  TNT1 A 0 A_JumpIfInTargetInventory("IsPlayer", 1, "See")
+	  TNT1 A 0 A_JumpIfInTargetInventory("PassClaymore", 1, "See")
+      TNT1 E 0 A_custommissile("bia_gunflashH", 10, 0) 
+	  TNT1 A 0 A_PlaySound("HELLHMG")
+	  HELI ABC 1 BRIGHT A_CustomMissile("RGAHeli_Tracer", 10, 0, random(-7, 7), 1, random(-4, 2))
+	  TNT1 AA 0 A_SpawnItem ("HVEmptyBrass", 0, 30, 0)
+	  HELI ABC 1 A_FaceTarget
+	   TNT1 A 0 A_JumpIfInTargetInventory("TargetIsAMarine", 1, "See")//
+	  TNT1 A 0 A_JumpIfInTargetInventory("IsPlayer", 1, "See")
+	  TNT1 A 0 A_JumpIfInTargetInventory("PassClaymore", 1, "See")
+      TNT1 E 0 A_custommissile("bia_gunflashH", 10, 0) 
+	  TNT1 A 0 A_PlaySound("HELLHMG")
+	  HELI ABC 1 BRIGHT A_CustomMissile("RGAHeli_Tracer", 10, 0, random(-7, 7), 1, random(-4, 2))
+	  TNT1 AA 0 A_SpawnItem ("HVEmptyBrass", 0, 30, 0)
+	  TNT1 A 0 ThrustThingZ(0, 10, 0, 0)
+	  TNT1 A 0 A_JumpIfCloser(300, "Shotchange")
+	  HELI ABC 1 A_CPosRefire
+      Goto Missile
+	  
+	Shotchange:
+	   TNT1 A 0 A_JumpIfInTargetInventory("TargetIsAMarine", 1, "See")//
+	  TNT1 A 0 A_JumpIfInTargetInventory("IsPlayer", 1, "See")
+	  TNT1 A 0 A_JumpIfInTargetInventory("PassClaymore", 1, "See")
+	  HELI ABC 0 A_PlaySound("heli/sight", 6)
+	  HELI ABC 0 A_Jump(46, "rpg")
+	  HELI ABC 1 A_FaceTarget
+	  TNT1 A 0 A_JumpIfInTargetInventory("TargetIsAMarine", 1, "See")//
+	  TNT1 A 0 A_JumpIfInTargetInventory("IsPlayer", 1, "See")
+	  TNT1 A 0 A_JumpIfInTargetInventory("PassClaymore", 1, "See")
+      TNT1 E 0 A_custommissile("bia_gunflashH", 10, 0) 
+	  TNT1 A 0 A_PlaySound("HELLHMG")
+	  TNT1 AA 0 A_SpawnItem ("HVEmptyBrass", 0, 30, 0)
+	  HELI ABC 1 BRIGHT A_CustomMissile("RGAHeli_Tracer", 10, 0, random(-7, 7), 1, random(-4, 2))
+	  TNT1 AA 0 A_SpawnItem ("HVEmptyBrass", 0, 30, 0)
+	  HELI ABC 1 A_FaceTarget
+	  TNT1 A 0 A_JumpIfInTargetInventory("TargetIsAMarine", 1, "See")//
+	  TNT1 A 0 A_JumpIfInTargetInventory("IsPlayer", 1, "See")
+	  TNT1 A 0 A_JumpIfInTargetInventory("PassClaymore", 1, "See")
+      TNT1 E 0 A_custommissile("bia_gunflashH", 10, 0) 
+	  TNT1 A 0 A_PlaySound("HELLHMG")
+	  TNT1 AA 0 A_SpawnItem ("HVEmptyBrass", 0, 30, 0)
+	  HELI ABC 1 BRIGHT A_CustomMissile("RGAHeli_Tracer", 10, 0, random(-7, 7), 1, random(-4, 2))
+	  TNT1 AA 0 A_SpawnItem ("HVEmptyBrass", 0, 30, 0)
+	  TNT1 A 0 A_Recoil(1)
+	  HELI ABC 1 A_FaceTarget
+	  TNT1 A 0 A_JumpIfInTargetInventory("TargetIsAMarine", 1, "See")//
+	  TNT1 A 0 A_JumpIfInTargetInventory("IsPlayer", 1, "See")
+	  TNT1 A 0 A_JumpIfInTargetInventory("PassClaymore", 1, "See")
+      TNT1 E 0 A_custommissile("bia_gunflashH", 10, 0) 
+	  TNT1 A 0 A_PlaySound("HELLHMG")
+	  TNT1 AA 0 A_SpawnItem ("HVEmptyBrass", 0, 30, 0)
+	  HELI ABC 1 BRIGHT A_CustomMissile("RGAHeli_Tracer", 10, 0, random(-7, 7), 1, random(-4, 2))
+	  TNT1 AA 0 A_SpawnItem ("HVEmptyBrass", 0, 30, 0)
+	  HELI ABC 1 A_FaceTarget
+	  TNT1 A 0 A_JumpIfInTargetInventory("TargetIsAMarine", 1, "See")//
+	  TNT1 A 0 A_JumpIfInTargetInventory("IsPlayer", 1, "See")
+	  TNT1 A 0 A_JumpIfInTargetInventory("PassClaymore", 1, "See")
+      TNT1 E 0 A_custommissile("bia_gunflashH", 10, 0) 
+	  TNT1 A 0 A_PlaySound("HELLHMG")
+	  TNT1 AA 0 A_SpawnItem ("HVEmptyBrass", 0, 30, 0)
+	  HELI ABC 1 BRIGHT A_CustomMissile("RGAHeli_Tracer", 10, 0, random(-7, 7), 1, random(-4, 2))
+	  TNT1 AA 0 A_SpawnItem ("HVEmptyBrass", 0, 30, 0)
+	  HELI ABC 1 A_FaceTarget
+	  TNT1 A 0 A_JumpIfInTargetInventory("TargetIsAMarine", 1, "See")//
+	  TNT1 A 0 A_JumpIfInTargetInventory("IsPlayer", 1, "See")
+	  TNT1 A 0 A_JumpIfInTargetInventory("PassClaymore", 1, "See")
+      TNT1 E 0 A_custommissile("bia_gunflashH", 10, 0) 
+	  TNT1 A 0 A_PlaySound("HELLHMG")
+	  TNT1 AA 0 A_SpawnItem ("HVEmptyBrass", 0, 30, 0)
+	  HELI ABC 1 BRIGHT A_CustomMissile("RGAHeli_Tracer", 10, 0, random(-7, 7), 1, random(-4, 2))
+	  TNT1 AA 0 A_SpawnItem ("HVEmptyBrass", 0, 30, 0)
+	  TNT1 A 0 ThrustThingZ(0, 10, 0, 0)
+	  TNT1 A 0 A_Recoil(1)
+	  HELI ABC 1 A_CPosRefire
+	    Goto Shotchange
+
+  rpg:
+      TNT1 A 0 A_JumpIfInTargetInventory("TargetIsAMarine", 1, "See")//
+	  TNT1 A 0 A_JumpIfInTargetInventory("IsPlayer", 1, "See")
+	  TNT1 A 0 A_JumpIfInTargetInventory("PassClaymore", 1, "See")
+      TNT1 A 0 ThrustThingZ(0, 15, 0, 0)
+	  TNT1 A 0 A_Recoil(1)
+	  HELI ABC 1 A_FaceTarget
+	  TNT1 A 0 A_JumpIfInTargetInventory("TargetIsAMarine", 1, "See")//
+	  TNT1 A 0 A_JumpIfInTargetInventory("IsPlayer", 1, "See")
+	  TNT1 A 0 A_JumpIfInTargetInventory("PassClaymore", 1, "See")
+	  TNT1 A 0 A_PlaySound("heli/miss")
+	  TNT1 A 0 A_CustomMissile("heli_Missile", 32, 8, Random(-2, 2), 0) 
+	  HELI ABC 1 Bright 
+	  HELI ABC 1 A_FaceTarget
+	  TNT1 A 0 A_JumpIfInTargetInventory("TargetIsAMarine", 1, "See")//
+	  TNT1 A 0 A_JumpIfInTargetInventory("IsPlayer", 1, "See")
+	  TNT1 A 0 A_JumpIfInTargetInventory("PassClaymore", 1, "See")
+	  TNT1 A 0 A_PlaySound("heli/miss")
+	  TNT1 A 0 A_CustomMissile("heli_Missile", 32, 8, Random(-2, 2), 0) 
+	  HELI ABC 1 A_FaceTarget
+	  TNT1 A 0 A_JumpIfInTargetInventory("TargetIsAMarine", 1, "See")//
+	  TNT1 A 0 A_JumpIfInTargetInventory("IsPlayer", 1, "See")
+	  TNT1 A 0 A_JumpIfInTargetInventory("PassClaymore", 1, "See")
+	  TNT1 A 0 A_PlaySound("heli/miss")
+	  TNT1 A 0 A_CustomMissile("heli_Missile", 32, 8, Random(-2, 2), 0) 
+	  HELI ABC 1 A_FaceTarget
+	  TNT1 A 0 A_JumpIfInTargetInventory("TargetIsAMarine", 1, "See")//
+	  TNT1 A 0 A_JumpIfInTargetInventory("IsPlayer", 1, "See")
+	  TNT1 A 0 A_JumpIfInTargetInventory("PassClaymore", 1, "See")
+	  TNT1 A 0 A_PlaySound("heli/miss")
+	  TNT1 A 0 A_CustomMissile("heli_Missile", 32, 8, Random(-2, 2), 0) 
+      HELI ABC 1 A_CPosRefire
+	  TNT1 A 0 ThrustThingZ(0, 20, 0, 0)
+      Goto See 
+   Pain: 
+	  HELI A 0 ThrustThing (angle*190/360, 3, 1, 0)
+	  TNT1 A 0 A_Recoil(1)
+	  HELI ABC 0 A_PlaySound("heli/sight")
+      Goto See 
+   Death: 
+   HELI A 5 
+   TNT1 A 0 A_PlaySound("HELSTOP", 6)
+      EXPL A 0 Radius_Quake (2, 16, 0, 15, 0)
+        TNT1 A 0 A_SpawnItemEx ("DetectFloorCrater", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+	    TNT1 A 0 A_SpawnItemEx ("DetectCeilCrater", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+	    TNT1 A 0 A_SpawnItemEx ("UnderwaterExplosion", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+        TNT1 A 0 A_SpawnItemEx ("ExplosionFlareSpawner", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+		TNT1 A 0 
+        TNT1 AAA 0 A_CustomMissile ("ExplosionParticleHeavy", 0, 0, random (0, 360), 2, random (0, 180))
+		 HELI B 5
+        TNT1 AAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("ExplosionParticleHeavy", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 AAAAAAAAA 0 A_CustomMissile ("ExplosionParticleVeryFast", 0, 0, random (0, 360), 2, random (0, 360))
+        TNT1 AAAAAAA 0 A_CustomMissile ("MediumExplosionFlames", 0, 0, random (0, 360), 2, random (0, 360))
+        EXPL AAAAAA 0 A_CustomMissile ("ExplosionSmokeFast22", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 A 0 A_PlaySound("FAREXPL", 3)
+      HELI A 5 A_PlaySound("heli/die")
+      HELI B 5 A_Scream
+      HELI C 5 A_NoBlocking 
+	  TNT1 AAA 0 A_CustomMissile ("HeavyExplosionSmoke", 2, 0, random (0, 360), 2, random (0, 360))
+	  HELI D 0
+      Stop    
+   } 
+}
+
+Actor RGAHeli_Tracer: Tracer
+{
++BLOODSPLATTER 
++THRUGHOST
+-DONTSPLASH
+speed 90
+damage 6
+scale .2
+RenderStyle Add
+Alpha 0.9
+seesound "SSHFIRE"
+Species "Marines"
+damagetype "FriendBullet"
+Decal "Scorch"
+States
+{
+
+	Spawn:
+		TNT1 A 1 BRIGHT A_SpawnItemEx("MastermindTracerTrail", 0,               0,              2)
+        TNT1 A 0 A_SpawnItemEx("MastermindTracerTrail2", (2 *momx)/-35.0, -(2 *momy)/-35.0, 2+(2 *momz)/-35.0, 0, 0, 0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("MastermindTracerTrail3", (4 *momx)/-35.0, -(4 *momy)/-35.0, 2+(4 *momz)/-35.0, 0, 0, 0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("MastermindTracerTrail4", (6 *momx)/-35.0, -(6 *momy)/-35.0, 2+(6 *momz)/-35.0, 0, 0, 0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("MastermindTracerTrail5", (8 *momx)/-35.0, -(8 *momy)/-35.0, 2+(8 *momz)/-35.0, 0, 0, 0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("MastermindTracerTrail6", (10*momx)/-35.0, -(10*momy)/-35.0, 2+(10*momz)/-35.0, 0, 0, 0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("MastermindTracerTrail7", (12*momx)/-35.0, -(12*momy)/-35.0, 2+(12*momz)/-35.0, 0, 0, 0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("MastermindTracerTrail8", (14*momx)/-35.0, -(14*momy)/-35.0, 2+(14*momz)/-35.0, 0, 0, 0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("MastermindTracerTrail9", (16*momx)/-35.0, -(16*momy)/-35.0, 2+(16*momz)/-35.0, 0, 0, 0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("MastermindTracerTrail10", (18*momx)/-35.0, -(18*momy)/-35.0, 2+(18*momz)/-35.0, 0, 0, 0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("MastermindTracerTrail11", (20*momx)/-35.0, -(20*momy)/-35.0, 2+(20*momz)/-35.0, 0, 0, 0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("MastermindTracerTrail12", (22*momx)/-35.0, -(22*momy)/-35.0, 2+(22*momz)/-35.0, 0, 0, 0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("MastermindTracerTrail13", (24*momx)/-35.0, -(24*momy)/-35.0, 2+(24*momz)/-35.0, 0, 0, 0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("MastermindTracerTrail14", (26*momx)/-35.0, -(26*momy)/-35.0, 2+(26*momz)/-35.0, 0, 0, 0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("MastermindTracerTrail15", (28*momx)/-35.0, -(28*momy)/-35.0, 2+(28*momz)/-35.0, 0, 0, 0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("MastermindTracerTrail15", (30*momx)/-35.0, -(30*momy)/-35.0, 2+(30*momz)/-35.0, 0, 0, 0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("MastermindTracerTrail16", (32*momx)/-35.0, -(32*momy)/-35.0, 2+(32*momz)/-35.0, 0, 0, 0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("MastermindTracerTrail17", (34*momx)/-35.0, -(34*momy)/-35.0, 2+(34*momz)/-35.0, 0, 0, 0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("MastermindTracerTrail18", (36*momx)/-35.0, -(36*momy)/-35.0, 2+(36*momz)/-35.0, 0, 0, 0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("MastermindTracerTrail18", (38*momx)/-35.0, -(38*momy)/-35.0, 2+(38*momz)/-35.0, 0, 0, 0, 0, SXF_ABSOLUTEANGLE)
+        TNT1 A 0 A_SpawnItemEx("MastermindTracerTrail18", (40*momx)/-35.0, -(40*momy)/-35.0, 2+(40*momz)/-35.0, 0, 0, 0, 0, SXF_ABSOLUTEANGLE)
+		Loop
+	Death:
+		EXPL A 0 
+		TNT1 A 0 A_SpawnItemEx ("ExplosionFlareSpawner", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+        TNT1 AA 0 A_CustomMissile ("ExplosionParticleHeavy", 0, 0, random (0, 360), 2, random (0, 180))
+        TNT1 AAAA 0 A_CustomMissile ("ExplosionParticleHeavy", 0, 0, random (0, 180), 2, random (0, 180))
+	    XXXX A 0 //A_CustomMissile ("ShakeShakeShake", 1, 0, random (0, 360), 2, random (0, 160))
+        TNT1 AAAA 0 A_CustomMissile ("SmallExplosionFlames", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 A 0 A_SpawnItem("WhiteShockwaveSmall")
+		TNT1 AAA 0 A_CustomMissile ("ExplosionParticleHeavy", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 AAA 0 A_CustomMissile ("ExplosionParticleVeryFast", 0, 0, random (0, 360), 2, random (0, 40))
+		
+		        TNT1 A 0 A_PlaySound("FAREXPL")
+				TNT1 AAAAAAAA 4 A_CustomMissile ("PlasmaSmoke", 2, 0, random (0, 360), 2, random (0, 360))
+    Stop
+
+	XDeath:
+		EXPL A 0 
+		TNT1 A 0 A_SpawnItemEx ("ExplosionFlareSpawner", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+        TNT1 AA 0 A_CustomMissile ("ExplosionParticleHeavy", 0, 0, random (0, 360), 2, random (0, 180))
+        TNT1 AAAA 0 A_CustomMissile ("ExplosionParticleHeavy", 0, 0, random (0, 180), 2, random (0, 180))
+	    XXXX A 0 //A_CustomMissile ("ShakeShakeShake", 1, 0, random (0, 360), 2, random (0, 160))
+        TNT1 AAAA 0 A_CustomMissile ("SmallExplosionFlames", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 A 0 A_SpawnItem("WhiteShockwaveSmall")
+		TNT1 AAA 0 A_CustomMissile ("ExplosionParticleVeryFast", 0, 0, random (0, 360), 2, random (0, 40))
+		        TNT1 A 0 A_PlaySound("FAREXPL")
+				TNT1 AAAAAAAA 4
+    Stop
+  }
+}
+
+ACTOR RGA_helipod : SwitchableDecoration
+{ 
+   Health 100000
+   Speed 0 
+   Radius 20
+   Height 50
+   PainChance 1
+   Mass 10000
+   MONSTER
+   +FLOORCLIP 
+   +NOBLOOD
+   +NOTARGET
+   +NORADIUSDMG
+   +LOOKALLAROUND
+   +NOBLOCKMONST
+   +FRIENDLY
+   +DONTSPLASH
+   +DONTBLAST
+   +DONTHURTSPECIES
+   +USESPECIAL
+   DONTHURTSHOOTER
+   +NOVERTICALMELEERANGE
+   Activation THINGSPEC_Activate
+   scale 1.5
+   States 
+   { 
+   Active:
+		TNT1 A 0 A_SpawnItem("heli_dead")
+		stop
+   Spawn: 
+      HLPD A 3 
+	  HLPD BCD 3
+      Goto see
+   See: 
+	  HLPD E 10 
+	  HLPD E 0 A_SpawnItem("RedFlareMedium", 0, 0)
+		Goto Death
+   Death: 
+      TNT1 AAAAAA 0 A_CustomMissile ("ExplosionSpawner", 50, 0, random (0, 360), 2, random (0, 360))
+      HLPD E 3 A_Fall
+	  TNT1 AAAAAA 0 A_CustomMissile ("ExplosionSpawner", 10, 0, random (0, 360), 2, random (0, 360))
+	  HLPD E 3 A_Scream  
+	  TNT1 A 0 A_CustomMissile ("RidiculousExplosionSpawner", 30, 0, random (0, 360), 2, 90)
+	  TNT1 A 0 A_SpawnItem("GenericBurningGuy", 0, 8)
+	  TNT1 A 0 A_SpawnItem("heli_dead", 0, 8)
+      Stop    
+	Death2: 
+      TNT1 AAAAAA 0 A_CustomMissile ("ExplosionSpawner", 50, 0, random (0, 360), 2, random (0, 360))
+      HLPD E 3 A_Fall
+	  TNT1 AAAAAA 0 A_CustomMissile ("ExplosionSpawner", 10, 0, random (0, 360), 2, random (0, 360))
+	  HLPD E 3 A_Scream  
+	  TNT1 A 0 A_CustomMissile ("RidiculousExplosionSpawner", 30, 0, random (0, 360), 2, 90)
+	  TNT1 A 0 A_SpawnItem("heli_dead", 0, 8)
+      Stop   
+   } 
+} 
+
+actor heli_dead
+{
+	Radius 1
+	Height 1
+	Speed 0
+	Damage 0
+        +NoBlockmap
+        +ActivatePCross
+        +ActivateImpact
+        -NoTeleport
+        +DropOff
+		  +CANBOUNCEWATER
+        +DontFall
+        +Missile
+         +DOOMBOUNCE
+          +BOUNCEONACTORS
+		  +DONTSPLASH
+		  Scale 1.5
+		  translation "112:127=2:0"
+	States
+	{
+	Spawn:
+		HLPD E 20 
+		HLPD E 0 A_SpawnItem("RedFlareMedium", 0, 0)
+	  HLPD E 20 
+	  HLPD E 0 A_SpawnItem("RedFlareMedium", 0, 0)
+	  HLPD E 10  
+	  HLPD E 0 A_SpawnItemEx ("ExplosionFlareSpawner", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+	  HLPD E 10
+	  HLPD E 0 A_SpawnItemEx ("ExplosionFlareSpawner", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+	  EXPL AA 0 A_CustomMissile ("ExplosionSmoke", 32, 0, random (0, 360), 2, random (0, 360))
+	  HLPD E 50 
+	  HLPD E 0 A_SpawnItemEx ("ExplosionFlareSpawner", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+	  EXPL AA 0 A_CustomMissile ("ExplosionSmoke", 32, 0, random (0, 360), 2, random (0, 360))
+	  EXPL AA 0 A_CustomMissile ("ExplosionSmoke", 32, 0, random (0, 360), 2, random (0, 360))
+	  HLPD E 50 
+	   HLPD E 0 A_SpawnItemEx ("ExplosionFlareSpawner", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+	  EXPL AA 0 A_CustomMissile ("ExplosionSmoke", 32, 0, random (0, 360), 2, random (0, 360))
+	  EXPL AA 0 A_CustomMissile ("ExplosionSmoke", 32, 0, random (0, 360), 2, random (0, 360))
+	  HLPD E 20 
+	  HLPD E 0 A_SpawnItemEx ("ExplosionFlareSpawner", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+	  EXPL AA 0 A_CustomMissile ("ExplosionSmoke", 32, 0, random (0, 360), 2, random (0, 360))
+	  EXPL AA 0 A_CustomMissile ("ExplosionSmoke", 32, 0, random (0, 360), 2, random (0, 360))
+	  EXPL AA 0 A_CustomMissile ("ExplosionSmoke", 32, 0, random (0, 360), 2, random (0, 360))
+	  HLPD E 30
+		Goto Death
+	Death:
+		TNT1 AAAAAA 0 A_CustomMissile ("ExplosionSpawner", 50, 0, random (0, 360), 2, random (0, 360))
+      HLPD E 3 A_Fall
+	  TNT1 AAAAAA 0 A_CustomMissile ("ExplosionSpawner", 10, 0, random (0, 360), 2, random (0, 360))
+	  HLPD E 3 A_Scream  
+	  TNT1 A 0 A_CustomMissile ("RidiculousExplosionSpawner", 30, 0, random (0, 360), 2, 90)
+	  HLPD E -1
+		Stop
+	}
+}
+ 
+actor heli_Missile
+{
+  Radius 4
+  Height 2
+  Speed 20
+  Damage 100
+  Projectile
+  +DEHEXPLOSION
+  +ROCKETTRAIL
+  +FRIENDLY
+  DONTHURTSHOOTER
+  +DONTHURTSPECIES
+  +NOGRAVITY
+    +EXTREMEDEATH
+    +BLOODSPLATTER 
+	+THRUSPECIES
+	+MTHRUSPECIES
+	+SEEKERMISSILE
+	DeathSound "Explosion"
+	Species "Marines"
+	Damagetype "FriendBullet"
+  States
+  {
+	Spawn:
+		TNT1 A 0
+		TNT1 A 0 //ACS_ExecuteAlways(719, 0, 0, 0, 0)//Check if Coop
+
+	Spawn1:
+	   PNZR A 1 Bright 
+		TNT1 A 0 A_PlaySound("DSRLAUN")
+		TNT1 A 0 A_JumpIf(waterlevel > 1, "SpawnUnderwater")
+		TNT1 A 0 A_SpawnItem("RocketFlare", -20, 0)
+		//TNT1 A 0 A_CustomMissile ("RocketSmokeTrail52", 2, 0, random (70, 110), 2, random (0, 360))
+		//TNT1 A 0 A_SpawnItem ("RocketSmokeTrail52")
+		
+		//TNT1 A 0 A_CustomMissile ("RocketSmokeTrail52Moving", 2, 0, random (160, 210), 2, random (-30, 30))
+		//TNT1 A 0 A_SpawnItem ("RocketSmokeTrail52")
+		TNT1 A 0 A_SpawnItem ("OldschoolRocketSmokeTrail2")
+		TNT1 A 0 A_CustomMissile ("OldschoolRocketSmokeTrail2", 2, 0, random (160, 210), 2, random (-30, 30))
+		Loop
+	
+	SpawnUnderwater:
+		TNT1 A 0 A_SpawnItem("RocketFlare", -20, 0)
+	    TNT1 A 0 A_CustomMissile ("BUBULZ", 0, 0, random (0, 360), 2, random (0, 180))
+	    Goto Spawn1
+  Death:
+        EXPL A 0 Radius_Quake (2, 16, 0, 15, 0)
+        TNT1 A 0 A_SpawnItemEx ("DetectFloorCrater", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+	    TNT1 A 0 A_SpawnItemEx ("DetectCeilCrater", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+	    TNT1 A 0 A_SpawnItemEx ("UnderwaterExplosion", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+        TNT1 A 0 A_SpawnItemEx ("ExplosionFlareSpawner", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+		TNT1 A 0 A_SpawnItemEx ("HelishotExplosion", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+        TNT1 AAA 0 A_CustomMissile ("ExplosionParticleHeavy", 0, 0, random (0, 360), 2, random (0, 180))
+        TNT1 AAAAAAAAAAAAAAAAAA 0 A_CustomMissile ("ExplosionParticleHeavy", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 AAAAAAAAA 0 A_CustomMissile ("ExplosionParticleVeryFast", 0, 0, random (0, 360), 2, random (0, 360))
+        TNT1 AAAAAAA 0 A_CustomMissile ("MediumExplosionFlames", 0, 0, random (0, 360), 2, random (0, 360))
+        EXPL AAAAAA 0 A_CustomMissile ("ExplosionSmokeFast22", 0, 0, random (0, 360), 2, random (0, 360))
+		TNT1 A 1
+		TNT1 A 0 A_PlaySound("FAREXPL", 3)
+		TNT1 AAAAAAAAAAAAA 3 A_CustomMissile ("HeavyExplosionSmoke", 2, 0, random (0, 360), 2, random (0, 360))
+		Stop
+  }
+}
+
+actor HelishotExplosion
+{
+  RenderStyle None
+  -RANDOMIZE
+  +NOCLIP
+  +FRIENDLY
+  +DONTHURTSPECIES
+  Species "Marines"
+  PROJECTILE
+  Speed 1
+  Damage 0
+  Scale 0.7
+  Damagetype "FriendBullet"
+  states
+  {
+  Spawn:
+    TNT1 A 0
+    TNT1 A 0 A_Explode(50, 150)
+    TNT1 A 1 A_Explode(30, 300)
+    stop
+  }  
+}
+
+ACTOR bia_gunflashH
+{
+	Radius 16
+	Height 16
+	Speed 25
+	Damage 0
+	scale 0.3
+	Projectile 
+	+RANDOMIZE
+	+NOCLIP
+	RenderStyle Add
+	Alpha 0.6
+	States
+	{
+	Spawn:
+		TNT1 A 5
+		MUZB A 0 A_Jump(256, "p1", "p2", "p3", "p4", "p5", "p6")
+		stop
+	p1:
+      MUZB A 1 bright 
+	  stop
+	p2:
+      MUZB B 1 bright 
+	  stop
+	p3:
+      MUZB C 1 bright 
+	  stop
+	p4:
+      MUZB D 1 bright 
+	  stop
+	p5:
+      MUZB E 1 bright 
+	  stop
+	p6:
+      MUZB F 1 bright 
+	  stop
+	}
+}
