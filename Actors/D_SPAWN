@@ -1,0 +1,554 @@
+// ACTOR CoDSpawner can be found in d_defaul.
+ACTOR AmmoSpawner1 : CoDSpawner Replaces Clip
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 0 A_Jump(16, "45ACP", "AKM", "AK74")
+		TNT1 A 0 A_Jump(256, "PM", "TT33", "9mm")
+	PM:
+		TNT1 A -1 A_SpawnItemEx("PM_Ammo1", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	TT33:
+		TNT1 A -1 A_SpawnItemEx("TT33_Ammo1", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	9mm:
+		TNT1 A -1 A_SpawnItemEx("SMGAmmo1", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	45ACP:
+		TNT1 A -1 A_SpawnItemEx("SMGAmmo2", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	AKM:
+		TNT1 A -1 A_SpawnItemEx("ARRAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	AK74:
+		TNT1 A -1 A_SpawnItemEx("ARHAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	}
+}
+
+ACTOR AmmoSpawner1L : CoDSpawner Replaces Clip1Drop
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A -1 A_SpawnItemEx("AmmoSpawner1", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	}
+}
+
+ACTOR AmmoSpawner1S : CoDSpawner Replaces Clip1
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A -1 A_SpawnItemEx("AmmoSpawner1", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	}
+}
+
+ACTOR AmmoSpawner2 : CoDSpawner Replaces ArmorBonus
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 0 A_Jump(16, "AKM", "AK74", "Ammo556")
+		TNT1 A 0 A_Jump(128, "45ACP", "P90", "SR2M")
+		TNT1 A 0 A_Jump(256, "PM", "TT33", "9mm")
+	PM:
+		TNT1 A -1 A_SpawnItemEx("PM_Ammo1", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	TT33:
+		TNT1 A -1 A_SpawnItemEx("TT33_Ammo1", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	9mm:
+		TNT1 A -1 A_SpawnItemEx("SMGAmmo1", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	45ACP:
+		TNT1 A -1 A_SpawnItemEx("SMGAmmo2", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	AKM:
+		TNT1 A -1 A_SpawnItemEx("ARRAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	AK74:
+		TNT1 A -1 A_SpawnItemEx("ARHAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	Ammo556:
+		TNT1 A -1 A_SpawnItemEx("ARAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	P90:
+		TNT1 A -1 A_SpawnItemEx("PDWAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	SR2M:
+		TNT1 A -1 A_SpawnItemEx("SR2_Ammo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		
+	}
+}
+
+ACTOR AmmoSpawner2B : CoDSpawner Replaces ArmorShard
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A -1 A_SpawnItemEx("AmmoSpawner2", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	}
+}
+
+ACTOR AmmoRGA1Spawner : CoDSpawner Replaces Stimpack
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 0 A_Jump(256, "PM", "TT33", "9mm", "45ACP", "P90", "SR2M", "AKM", "AK74", "Ammo556", "44mag", "SVD", "12GA", "20GA")
+	PM:
+		TNT1 A -1 A_SpawnItemEx("PM_Ammo1", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	TT33:
+		TNT1 A -1 A_SpawnItemEx("TT33_Ammo1", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	9mm:
+		TNT1 A -1 A_SpawnItemEx("SMGAmmo1", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	45ACP:
+		TNT1 A -1 A_SpawnItemEx("SMGAmmo2", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	P90:
+		TNT1 A -1 A_SpawnItemEx("PDWAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	SR2M:
+		TNT1 A -1 A_SpawnItemEx("SR2_Ammo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	AKM:
+		TNT1 A -1 A_SpawnItemEx("ARRAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	AK74:
+		TNT1 A -1 A_SpawnItemEx("ARHAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	Ammo556:
+		TNT1 A -1 A_SpawnItemEx("ARAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	44mag:
+		TNT1 A -1 A_SpawnItemEx("MagnumAmmo1", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	SVD:
+		TNT1 A -1 A_SpawnItemEx("SVD_Ammo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	12GA:
+	    TNT1 A -1 A_SpawnItemEx("SGHAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	20GA:
+	    TNT1 A -1 A_SpawnItemEx("20GA_Ammo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	}
+}
+
+ACTOR AmmoRGA2Spawner : CoDSpawner Replaces Medikit
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 0 A_Jump(32, "Ammo556", "AKM", "AK74", "45ACP", "P90Ammo", "SR2MAmmo", "MP7Ammo")
+		TNT1 A -1 A_SpawnItemEx("Medicalkit_COD", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	AKM:
+		TNT1 A -1 A_SpawnItemEx("AKBigAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	AK74:
+		TNT1 A -1 A_SpawnItemEx("LMGBigAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	Ammo556:
+		TNT1 A -1 A_SpawnItemEx("LMGAmmo_COD", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	45ACP:
+		TNT1 A -1 A_SpawnItemEx("SMGAmmo2Box", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	P90Ammo:
+		TNT1 A -1 A_SpawnItemEx("PDWAmmoBox", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	SR2MAmmo:
+		TNT1 A -1 A_SpawnItemEx("SR2_AmmoBox", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	MP7Ammo:
+		TNT1 A -1 A_SpawnItemEx("MP7_AmmoBox", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	}
+}
+
+
+ACTOR AmmoSpawner4 : CoDSpawner Replaces ClipBox
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 0 A_Jump(32, "P90Ammo", "SR2MAmmo", "MP7Ammo")
+		TNT1 A 0 A_Jump(64, "45ACPAmmo", "MP40", "S1100", "MP5", "BIZON")
+		TNT1 A 0 A_Jump(256, "PMAmmo", "TT33Ammo", "9mmAmmo")
+	PMAmmo:
+		TNT1 A -1 A_SpawnItemEx("PM_Ammo1Box", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	TT33Ammo:
+		TNT1 A -1 A_SpawnItemEx("TT33_Ammo1Box", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	9mmAmmo:
+		TNT1 A -1 A_SpawnItemEx("SMGAmmo1Box", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	45ACPAmmo:
+		TNT1 A -1 A_SpawnItemEx("SMGAmmo2Box", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	P90Ammo:
+		TNT1 A -1 A_SpawnItemEx("PDWAmmoBox", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	SR2MAmmo:
+		TNT1 A -1 A_SpawnItemEx("SR2_AmmoBox", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	MP7Ammo:
+		TNT1 A -1 A_SpawnItemEx("MP7_AmmoBox", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	MP40:
+		TNT1 A 0 A_SpawnItemEx("SMGAmmo1_E2", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		TNT1 A -1 A_SpawnItemEx("MP40_Pickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	S1100:
+		TNT1 A 0 A_SpawnItemEx("TT33_Ammo1_E2", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		TNT1 A -1 A_SpawnItemEx("S1100_Pickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	MP5:
+	    TNT1 A 0 A_SpawnItemEx("SMGAmmo1_E2", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+	    TNT1 A -1 A_SpawnItemEx("MP5_Pickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+	    Stop
+	BIZON:
+	  TNT1 A 0 A_SpawnItemEx("PM_Ammo1_E2", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+	  TNT1 A -1 A_SpawnItemEx("BIZON_Pickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+	  Stop
+	}
+}
+
+ACTOR AmmoSpawner3 : CoDSpawner Replaces Shell
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 0 A_Jump(64, "45ACP", "AKM", "AK74", "Ammo556", "SVD")
+		TNT1 A 0 A_Jump(256, "12GA", "20GA", "PM", "TT33", "9mm")
+	12GA:
+	    TNT1 A -1 A_SpawnItemEx("SGHAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	20GA:
+	    TNT1 A -1 A_SpawnItemEx("20GA_Ammo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	PM:
+		TNT1 A -1 A_SpawnItemEx("PM_Ammo1", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	TT33:
+		TNT1 A -1 A_SpawnItemEx("TT33_Ammo1", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	9mm:
+		TNT1 A -1 A_SpawnItemEx("SMGAmmo1", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	45ACP:
+		TNT1 A -1 A_SpawnItemEx("SMGAmmo2", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	AKM:
+		TNT1 A -1 A_SpawnItemEx("ARRAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	AK74:
+		TNT1 A -1 A_SpawnItemEx("ARHAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	Ammo556:
+		TNT1 A -1 A_SpawnItemEx("ARAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	SVD:
+		TNT1 A -1 A_SpawnItemEx("SVD_Ammo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	}
+}
+
+ACTOR AmmoSpawner3E : CoDSpawner Replaces ShellBox
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 0 A_Jump(32, "45ACP", "Ammo556", "44mag", "SVD", "P90Ammo", "SR2MAmmo", "MP7Ammo")
+		TNT1 A 0 A_Jump(256, "12GA", "20GA", "Grenade", "PMAmmo", "TT33Ammo", "9mmAmmo", "AKM", "AK74")
+	12GA:
+	    TNT1 A -1 A_SpawnItemEx("SGHAmmoBox", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	20GA:
+	    TNT1 A -1 A_SpawnItemEx("20GA_AmmoBox", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	Grenade:
+		TNT1 A -1 A_SpawnItemEx("GrenadesAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	PMAmmo:
+		TNT1 A -1 A_SpawnItemEx("PM_Ammo1Box", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	TT33Ammo:
+		TNT1 A -1 A_SpawnItemEx("TT33_Ammo1Box", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	9mmAmmo:
+		TNT1 A -1 A_SpawnItemEx("SMGAmmo1Box", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	45ACP:
+		TNT1 A -1 A_SpawnItemEx("SMGAmmo1Box", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	AKM:
+		TNT1 A -1 A_SpawnItemEx("AKBigAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	AK74:
+		TNT1 A -1 A_SpawnItemEx("LMGBigAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	Ammo556:
+		TNT1 A -1 A_SpawnItemEx("LMGAmmo_COD", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	44mag:
+		TNT1 A -1 A_SpawnItemEx("MagnumAmmo2", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	SVD:
+		TNT1 A -1 A_SpawnItemEx("SVD_AmmoBOX", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	P90Ammo:
+		TNT1 A -1 A_SpawnItemEx("PDWAmmoBox", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	SR2MAmmo:
+		TNT1 A -1 A_SpawnItemEx("SR2_AmmoBox", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	MP7Ammo:
+		TNT1 A -1 A_SpawnItemEx("MP7_AmmoBox", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	}
+}
+
+
+ACTOR AmmoSpawner5 : CoDSpawner Replaces RocketAmmo
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 0 A_Jump(256, "AKM", "AK74", "Ammo556", "44mag", "SVD", "KS23", "Ammo762", "Ammo338", "Grenade")
+	AKM:
+		TNT1 A -1 A_SpawnItemEx("ARRAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	AK74:
+		TNT1 A -1 A_SpawnItemEx("ARHAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	Ammo556:
+		TNT1 A -1 A_SpawnItemEx("ARAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	44mag:
+		TNT1 A -1 A_SpawnItemEx("MagnumAmmo1", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	SVD:
+		TNT1 A -1 A_SpawnItemEx("SVD_Ammo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	KS23:
+		TNT1 A -1 A_SpawnItemEx("SGAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	Ammo762:
+		TNT1 A -1 A_SpawnItemEx("BRAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	Ammo338:
+		TNT1 A -1 A_SpawnItemEx("SRAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	Grenade:
+		TNT1 A -1 A_SpawnItemEx("GrenadesAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	}
+}
+
+ACTOR AmmoSpawner7 : CoDSpawner Replaces RocketBox
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 0 A_Jump(128, "45ACP", "Ammo556", "44mag", "SVD", "KS23", "RSH12", "40mm", "Claymore", "C4", "M2Flame", "AT4")
+	    TNT1 A 0 A_Jump(256, "12GA", "20GA", "Grenade", "AKM", "AK74")
+	12GA:
+	    TNT1 A -1 A_SpawnItemEx("SGHAmmoBox", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	20GA:
+	    TNT1 A -1 A_SpawnItemEx("20GA_AmmoBox", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	Grenade:
+		TNT1 A -1 A_SpawnItemEx("GrenadesAmmoBox", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	45ACP:
+		TNT1 A -1 A_SpawnItemEx("SMGAmmo1Box", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	AKM:
+		TNT1 A -1 A_SpawnItemEx("AKBigAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	AK74:
+		TNT1 A -1 A_SpawnItemEx("LMGBigAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	Ammo556:
+		TNT1 A -1 A_SpawnItemEx("LMGAmmo_COD", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	44mag:
+		TNT1 A -1 A_SpawnItemEx("MagnumAmmo2", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	SVD:
+		TNT1 A -1 A_SpawnItemEx("SVD_AmmoBOX", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	KS23:
+		TNT1 A -1 A_SpawnItemEx("SGAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		TNT1 A -1 A_SpawnItemEx("SGAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	RSH12:
+		TNT1 A -1 A_SpawnItemEx("RSH_Ammo1", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		
+	40mm:	
+	    TNT1 A -1 A_SpawnItemEx("EXAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	Claymore:
+		TNT1 A -1 A_SpawnItemEx("ClaymoreHandPickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	C4:
+		TNT1 A -1 A_SpawnItemEx("C4HandPickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	M2Flame:
+		TNT1 A -1 A_SpawnItemEx("M2FuelAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	AT4:
+		TNT1 A -1 A_SpawnItemEx("M72LAWPickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	}
+}
+
+ACTOR AmmoSpawner8 : CoDSpawner Replaces FlameCannon
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A -1 A_SpawnItemEx("AmmoSpawner7", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	}
+}
+
+ACTOR AmmoSpawner8I : CoDSpawner Replaces Infrared
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A -1 A_SpawnItemEx("AmmoSpawner5", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	}
+}
+
+ACTOR AmmoSpawner9 : CoDSpawner Replaces HellishMissileLauncher
+{
+States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A -1 A_SpawnItemEx("AmmoSpawner5", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	}
+}
+
+ACTOR AmmoSpawnerSPCT : CoDSpawner Replaces SuperBlurSphere
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A -1 A_SpawnItemEx("AmmoSpawner7", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	}
+}
+
+ACTOR AmmoSpawner10 : CoDSpawner Replaces Cell
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 0 A_Jump(32, "P90Ammo", "SR2MAmmo", "MP7Ammo")
+		TNT1 A 0 A_Jump(256, "Ammo556", "44mag", "Ammo762", "Ammo338", "RSH12")
+	Ammo556:
+		TNT1 A -1 A_SpawnItemEx("ARAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	44mag:
+		TNT1 A -1 A_SpawnItemEx("MagnumAmmo1", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	Ammo762:
+		TNT1 A -1 A_SpawnItemEx("BRAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	Ammo338:
+		TNT1 A -1 A_SpawnItemEx("SRAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	RSH12:
+		TNT1 A -1 A_SpawnItemEx("RSH_Ammo1", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	P90Ammo:
+		TNT1 A -1 A_SpawnItemEx("PDWAmmoBox", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	SR2MAmmo:
+		TNT1 A -1 A_SpawnItemEx("SR2_AmmoBox", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	MP7Ammo:
+		TNT1 A -1 A_SpawnItemEx("MP7_AmmoBox", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	}
+}
+
+ACTOR AmmoSpawner11 : CoDSpawner Replaces CellPack
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 0 A_Jump(256, "Ammo556", "Ammo762", "Ammo338", "RSH12", "40mm", "AT4", "RPG7")
+	Ammo556:
+		TNT1 A -1 A_SpawnItemEx("LMGAmmo_COD", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	Ammo762:
+		TNT1 A -1 A_SpawnItemEx("BRBigAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	Ammo338:
+		TNT1 A -1 A_SpawnItemEx("SRAmmoBox", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	SVD:
+		TNT1 A -1 A_SpawnItemEx("SVD_AmmoBox", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	RSH12:
+		TNT1 A -1 A_SpawnItemEx("RSH_Ammo2", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	40mm:	
+	    TNT1 A -1 A_SpawnItemEx("EXAmmoBox", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	AT4:
+		TNT1 A -1 A_SpawnItemEx("M72LAWPickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	RPG7:
+		TNT1 A -1 A_SpawnItemEx("M202Ammo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	}
+}
+
+ACTOR AmmoSpawner6 : CoDSpawner Replaces GrenadeAmmo
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A -1 A_SpawnItemEx("GrenadesAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	}
+}

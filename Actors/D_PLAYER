@@ -1,0 +1,403 @@
+ACTOR CoD_Player : Doomer
+{
+	DamageFactor "Friendry", 0
+}
+
+ACTOR You_are_loading_the_files_in_the_wrong_order__The_mod_will_start_when_the_files_are_loaded_in_the_correct_order_of_A-B-C : CoD_Player
+{
+	Player.DisplayName "UAC Marine"
+	
+	Player.StartItem "IsPlayer"
+	Player.StartItem "FragGrenadeAmmo", 2
+	Player.StartItem "StunGrenadeInventory", 2
+
+	Player.StartItem "Gun3SV_Mode"
+	
+	Player.StartItem "GunSUBSV", 1
+	Player.StartItem "M9A3"
+	Player.StartItem "Ammo9mm", 51
+	Player.StartItem "M9A3Empty"
+
+	Player.StartItem "Handing"
+	Player.StartItem "Medicalkit_CoD"
+	Player.StartItem "MedicalAmmo", 50
+}
+
+
+ACTOR CoDPlayer_Gun4SV : CoD_Player
+{
+	Player.DisplayName "UAC Marine"
+	
+	Player.StartItem "IsPlayer"
+	Player.StartItem "FragGrenadeAmmo", 2
+	Player.StartItem "StunGrenadeInventory", 2
+
+	Player.StartItem "Gun3SV_Mode"
+	
+	Player.StartItem "GunSUBSV", 1
+	Player.StartItem "M9A3"
+	Player.StartItem "Ammo9mm", 51
+	Player.StartItem "M9A3Empty"
+	
+	Player.StartItem "Handing"
+	Player.StartItem "TIP_CLASS1"
+	Player.StartItem "Medicalkit_CoD"
+	Player.StartItem "MedicalAmmo", 50
+}
+
+
+ACTOR CoDPlayer_SCAV : CoD_Player
+{
+	Player.DisplayName "Scavenger"
+	
+	Player.StartItem "IsPlayer"
+	Player.StartItem "FragGrenadeAmmo", 2
+	Player.StartItem "StunGrenadeInventory", 4
+
+	Player.StartItem "Gun3SV_Mode"
+	
+	Player.StartItem "Gun3SV", 1
+	Player.StartItem "Mosin-Nagant"
+	Player.StartItem "MosinClip", 5
+	Player.StartItem "AmmoSVD", 40
+	
+	Player.StartItem "Gun3SV", 1
+	Player.StartItem "PPSH41"
+	Player.StartItem "PPSH41Clip" 71
+	Player.StartItem "AmmoTT33", 132
+	
+	Player.StartItem "Gun3SV", 1
+	Player.StartItem "ADAR"
+	Player.StartItem "ADARClip" 20
+	Player.StartItem "Ammo556", 90
+	
+	Player.StartItem "GunSUBSV", 1
+	Player.StartItem "MP43"
+	Player.StartItem "MP43Clip", 2
+	Player.StartItem "Ammo12G", 25
+	
+	Player.StartItem "GunSUBSV", 1
+	Player.StartItem "M1917"
+	Player.StartItem "M1917Clip", 6
+	Player.StartItem "Ammo45ACP", 50
+	
+	Player.StartItem "Gun3SV", 1
+	Player.StartItem "MP18"
+	Player.StartItem "MP18Clip", 1
+	Player.StartItem "Ammo338", 30
+	
+	Player.StartItem "Handing"
+	Player.StartItem "TIP_CLASS8"
+	Player.StartItem "Medicalkit_CoD"
+	Player.StartItem "MedicalAmmo", 75
+	Player.StartItem "CoDArmor_PACA"
+	
+	Player.StartItem "Backpack", 1
+}
+
+
+ACTOR CoDPlayer_USEC : CoD_Player
+{
+	Player.DisplayName "USEC PMC"
+	
+	Player.StartItem "IsPlayer"
+	Player.StartItem "FragGrenadeAmmo", 2
+	Player.StartItem "StunGrenadeInventory", 2
+	Player.StartItem "CoDArmor_PACA", 1
+
+	Player.StartItem "Gun3SV_Mode"
+	
+	Player.StartItem "Gun3SV", 1
+	Player.StartItem "MP5"
+	Player.StartItem "MP5Empty"
+	Player.StartItem "Ammo9mm", 180
+	
+	Player.StartItem "Gun3SV", 1
+	Player.StartItem "M870P"
+	Player.StartItem "M870PClip" 8
+	Player.StartItem "Ammo12g", 30
+	
+	Player.StartItem "GunSUBSV", 1
+	Player.StartItem "USP45"
+	Player.StartItem "USP45Clip" 12
+	Player.StartItem "Ammo45ACP", 48
+
+	Player.StartItem "Handing"
+	Player.StartItem "TIP_CLASS2"
+	Player.StartItem "Medicalkit_CoD"
+	Player.StartItem "MedicalAmmo", 50
+}
+
+ACTOR CoDPlayer_USEC_DX : CoD_Player
+{
+	Player.DisplayName "(DX Edition)USEC PMC"
+	
+	Player.StartItem "IsPlayer"
+	Player.StartItem "FragGrenadeAmmo", 5
+	Player.StartItem "StunGrenadeInventory", 5
+	Player.StartItem "CoDArmor_GK", 1
+
+	Player.StartItem "Gun3SV_Mode"
+	
+	Player.StartItem "Gun3SV", 1
+	Player.StartItem "SOPMOD"
+	Player.StartItem "SOPMODEmpty"
+	Player.StartItem "Ammo556", 180
+	
+	Player.StartItem "Gun3SV", 1
+	Player.StartItem "M3Tactical"
+	Player.StartItem "M3Tactical_FireSet"
+	Player.StartItem "M3TacticalClip" 11
+	Player.StartItem "Ammo12g", 40
+	
+	Player.StartItem "GunSUBSV", 1
+	Player.StartItem "Glock17"
+	Player.StartItem "Glock17Clip" 21
+	Player.StartItem "Ammo9mm", 63
+		
+	Player.StartItem "ClaymoreHand"
+	Player.StartItem "ClaymoreAmmo" 3
+	Player.StartItem "C4Hand"
+	Player.StartItem "C4Ammo" 3
+
+	Player.StartItem "Handing"
+	Player.StartItem "TIP_CLASS3"
+	Player.StartItem "Medicalkit_CoD"
+	Player.StartItem "MedicalAmmo", 50
+}
+
+ACTOR CoDPlayer_USEC_P2W : CoD_Player
+{
+	Player.DisplayName "(P2W Edition)USEC PMC"
+	
+	Player.StartItem "IsPlayer"
+	Player.StartItem "FragGrenadeAmmo", 9
+	Player.StartItem "StunGrenadeInventory", 9
+
+	Player.StartItem "Gun3SV_Mode"
+	
+	Player.StartItem "Gun3SV", 1
+	Player.StartItem "TX15"
+	Player.StartItem "TX15Empty"
+	Player.StartItem "Ammo556", 300
+	
+	Player.StartItem "Gun3SV", 1
+	Player.StartItem "AXMC"
+	Player.StartItem "AXMCClip" 10
+	Player.StartItem "Ammo338", 40 //40
+	
+	Player.StartItem "Gun3SV", 1
+	Player.StartItem "MP7"
+	Player.StartItem "MP7Clip" 40
+	Player.StartItem "AmmoMP7", 400 //200
+	
+	Player.StartItem "GunSUBSV", 1
+	Player.StartItem "DesertEagle"
+	Player.StartItem "DeagleClip" 8
+	Player.StartItem "Ammo44mag", 54 //64
+	
+	Player.StartItem "ClaymoreHand"
+	Player.StartItem "ClaymoreAmmo" 7
+	Player.StartItem "C4Hand"
+	Player.StartItem "C4Ammo" 7
+
+	Player.StartItem "Handing"
+	Player.StartItem "TIP_CLASS4"
+	Player.StartItem "Medicalkit_CoD"
+	Player.StartItem "MedicalAmmo", 75
+	
+	Player.StartItem "COD_EnergySphere", 1
+	Player.StartItem "Backpack", 1
+}
+
+
+ACTOR CoDPlayer_BEAR : CoD_Player
+{
+	Player.DisplayName "BEAR PMC"
+	
+	Player.StartItem "IsPlayer"
+	Player.StartItem "FragGrenadeAmmo", 2
+	Player.StartItem "StunGrenadeInventory", 2
+	Player.StartItem "CoDArmor_PACA", 1
+
+	Player.StartItem "Gun3SV_Mode"
+	
+	Player.StartItem "Gun3SV", 1
+	Player.StartItem "AK74"
+	Player.StartItem "AK74Empty"
+	Player.StartItem "Ammo762k", 150
+	
+	Player.StartItem "Gun3SV", 1
+	Player.StartItem "SV98"
+	Player.StartItem "SV98Clip", 10
+	Player.StartItem "AmmoSVD", 30
+	
+	Player.StartItem "GunSUBSV", 1
+	Player.StartItem "MakarovPMM"
+	Player.StartItem "MakarovPMMClip" 12
+	Player.StartItem "AmmoPM", 60
+	
+	Player.StartItem "Handing"
+	Player.StartItem "TIP_CLASS5"
+	Player.StartItem "Medicalkit_CoD"
+	Player.StartItem "MedicalAmmo", 50
+}
+
+
+ACTOR CoDPlayer_BEAR_DX : CoD_Player
+{
+	Player.DisplayName "(DX Edition)BEAR PMC"
+	
+	Player.StartItem "IsPlayer"
+	Player.StartItem "FragGrenadeAmmo", 5
+	Player.StartItem "StunGrenadeInventory", 5
+	Player.StartItem "CoDArmor_GK", 1
+
+	Player.StartItem "Gun3SV_Mode"
+	
+	Player.StartItem "Gun3SV", 1
+	Player.StartItem "AK12"
+	Player.StartItem "AK12Empty"
+	Player.StartItem "Ammo762k", 180
+	
+	Player.StartItem "Gun3SV", 1
+	Player.StartItem "SVDS"
+	Player.StartItem "SVDSClip" 20
+	Player.StartItem "AmmoSVD", 60
+	
+	Player.StartItem "GunSUBSV", 1
+	Player.StartItem "OTS33"
+	Player.StartItem "OTS33Clip" 27
+	Player.StartItem "AmmoPM", 120
+	
+	Player.StartItem "ClaymoreHand"
+	Player.StartItem "ClaymoreAmmo" 3
+	Player.StartItem "C4Hand"
+	Player.StartItem "C4Ammo" 3
+
+	Player.StartItem "Handing"
+	Player.StartItem "TIP_CLASS6"
+	Player.StartItem "Medicalkit_CoD"
+	Player.StartItem "MedicalAmmo", 50
+}
+
+ACTOR CoDPlayer_BEAR_P2W : CoD_Player
+{
+	Player.DisplayName "(P2W Edition)BEAR PMC"
+	
+	Player.StartItem "IsPlayer"
+	Player.StartItem "FragGrenadeAmmo", 9
+	Player.StartItem "StunGrenadeInventory", 9
+
+	Player.StartItem "Gun3SV_Mode"
+	
+	Player.StartItem "Gun3SV", 1
+	Player.StartItem "AK74M"
+	Player.StartItem "AK74MGLClip" 1
+	Player.StartItem "AK74MEmpty"
+	Player.StartItem "Ammo762k", 300
+	Player.StartItem "M320Ammo", 6
+	
+	Player.StartItem "Gun3SV", 1
+	Player.StartItem "SR2M"
+	Player.StartItem "SR2MClip" 30
+	Player.StartItem "AmmoSR2", 300
+		
+	Player.StartItem "Gun3SV", 1
+	Player.StartItem "Saiga"
+	Player.StartItem "SaigaClip" 10
+	Player.StartItem "Ammo12g", 40
+	
+	Player.StartItem "GunSUBSV", 1
+	Player.StartItem "RSH12"
+	Player.StartItem "RSH12Clip" 5
+	Player.StartItem "AmmoRSH12", 40
+	
+	Player.StartItem "ClaymoreHand"
+	Player.StartItem "ClaymoreAmmo" 7
+	Player.StartItem "C4Hand"
+	Player.StartItem "C4Ammo" 7
+
+	Player.StartItem "Handing"
+	Player.StartItem "TIP_CLASS7"
+	Player.StartItem "Medicalkit_CoD"
+	Player.StartItem "MedicalAmmo", 75
+	
+	Player.StartItem "COD_EnergySphere", 1
+	Player.StartItem "Backpack", 1
+}
+
+ACTOR CoDPlayer_HARDCORE : CoD_Player
+{
+	Player.DisplayName "HARDCORE Mode"
+	
+	Player.StartItem "IsPlayer"
+	//Player.StartItem "FragGrenadeAmmo", 2
+	Player.StartItem "StunGrenadeInventory", 2
+
+	Player.StartItem "Gun3SV_Mode"
+	
+	Player.StartItem "GunSUBSV", 1
+	Player.StartItem "Makarov"
+	Player.StartItem "MakarovEmpty"
+	Player.StartItem "AmmoPM", 16	
+
+	Player.StartItem "Handing"
+	Player.StartItem "TIP_CLASS9"
+	Player.StartItem "Medicalkit_CoD"
+	//Player.StartItem "MedicalAmmo", 50
+	
+	Player.StartItem "Backpack", 1
+	Player.StartItem "Gun3SV", 2
+	Player.StartItem "GunSUBSV", 1
+}
+
+
+ACTOR CoDPlayer_MuleKick : CoD_Player
+{
+	Player.DisplayName "Unlimited Weapon Mode"
+	
+	Player.StartItem "IsPlayer"
+	Player.StartItem "FragGrenadeAmmo", 2
+	Player.StartItem "StunGrenadeInventory", 2
+	
+	Player.StartItem "MuleKick"
+	Player.StartItem "MuleKick_Mode"
+
+    Player.StartItem "GunSUBSV", 1
+	Player.StartItem "M9A3"
+	Player.StartItem "Ammo9mm", 51
+	Player.StartItem "M9A3Empty"
+
+	Player.StartItem "Handing"
+	Player.StartItem "TIP_CLASS10"
+	Player.StartItem "Medicalkit_CoD"
+	Player.StartItem "MedicalAmmo", 50
+}
+
+
+ACTOR CoDPlayer_Unheard : CoD_Player
+{
+	Player.DisplayName "The Unheard Edition"
+	
+	Player.StartItem "IsPlayer"
+	Player.StartItem "FragGrenadeAmmo", 5
+	Player.StartItem "StunGrenadeInventory", 2
+
+	Player.StartItem "Gun3SV_Mode"
+	
+	Player.StartItem "TruebelieverEdition"
+	//Player.StartItem "P2WClip", 250
+	
+	Player.StartItem "Makarov250"
+	Player.StartItem "Makarov250Clip", 250
+	Player.StartItem "P2WAmmo", 250
+	
+	Player.StartItem "CoDArmor_P2W"
+	Player.StartItem "COD_EnergySphereP2W"
+
+	Player.StartItem "Handing"
+	Player.StartItem "TIP_CLASS11"
+	Player.StartItem "Medicalkit_CoD"
+	Player.StartItem "MedicalAmmo", 25
+}

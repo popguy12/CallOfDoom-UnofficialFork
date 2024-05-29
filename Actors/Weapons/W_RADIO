@@ -1,0 +1,1985 @@
+actor TacticalInventory : CustomInventory
+{
+  inventory.pickupmessage "Tactical Insertion"
+  inventory.pickupsound "tactical/insert"
+  Inventory.MaxAmount 3
+  Scale 0.5
+  +INVENTORY.INVBAR
+  inventory.respawntics 2100
+  states
+  {
+  Spawn:
+    BROK A -1 
+    stop
+  Use:
+    TNT1 A 0 A_GiveInventory("TacticalInsertion", 1)
+    TNT1 A 0 A_SelectWeapon("TacticalInsertion") 
+    stop
+  }
+}
+
+actor TacticalInventory2 : TacticalInventory
+{
+  +INVENTORY.AUTOACTIVATE
+  inventory.amount 0
+}
+
+actor Select_Friends : Inventory
+{
+    inventory.amount 0
+    inventory.maxamount 20
+}
+
+actor ECAmmo1 : Ammo
+{
+    inventory.amount 1
+    inventory.maxamount 5
+    ammo.backpackamount 1
+    ammo.backpackmaxamount 10
+    +IGNORESKILL
+}
+
+actor Called_SWAT : Inventory
+{
+    inventory.amount 0
+    inventory.maxamount 1
+}
+
+actor Called_Price : Inventory
+{
+    inventory.amount 0
+    inventory.maxamount 1
+}
+
+actor Called_Soap : Inventory
+{
+    inventory.amount 0
+    inventory.maxamount 1
+}
+
+actor Called_Ghost : Inventory
+{
+    inventory.amount 0
+    inventory.maxamount 1
+}
+
+actor Called_Woods : Inventory
+{
+    inventory.amount 0
+    inventory.maxamount 1
+}
+
+actor Called_Akid : Inventory
+{
+    inventory.amount 0
+    inventory.maxamount 1
+}
+
+actor Called_IRIS : Inventory
+{
+    inventory.amount 0
+    inventory.maxamount 1
+}
+
+actor Called_Sakuya : Inventory
+{
+    inventory.amount 0
+    inventory.maxamount 1
+}
+
+actor Called_Meryl : Inventory
+{
+    inventory.amount 0
+    inventory.maxamount 1
+}
+
+actor Called_Maiko : Inventory
+{
+    inventory.amount 0
+    inventory.maxamount 1
+}
+
+actor Called_China : Inventory
+{
+    inventory.amount 0
+    inventory.maxamount 1
+}
+
+actor UACRadioPickup : CustomInventory
+{
+  inventory.pickupmessage "UAC Satellite Phone"  
+  inventory.pickupsound "RADIOCALL"
+  +INVENTORY.AUTOACTIVATE
+  +DONTGIB
+  scale 0.14
+  States
+  {
+  Spawn:
+    AMMR W 10 BRIGHT A_SpawnItem("BlueFlareSmall", 0, 7)
+	AMMR W 10 BRIGHT
+    loop
+  Pickup:
+    GUNP A 0
+    GUNP A 0 A_JumpIfInventory("TacticalInsertion", 1, "AmmoPickup") // If the player already has this weapon, they get more ammo for it
+    GUNP A 0 A_GiveInventory("TacticalInsertion", 1)
+	GUNP A 0 A_GiveInventory("ECAmmo1", 1)
+	GUNP A 0 ACS_NamedExecuteWithResult("CoDNewWeapon", 43, 0, 0)
+	stop
+  AmmoPickup:
+    GUNP A 0
+    GUNP A 0 A_JumpIfInventory("ECAmmo1", 0, "FailPickup")
+    GUNP A 0 A_GiveInventory("ECAmmo1", 1)
+    stop
+  FailPickup:
+    AMMR W 1
+    fail
+  FailPickup2:
+    AMMR W 1 
+    GUNP A 0 ACS_ExecuteAlways(620, 0, 2, 0, 0)
+    fail
+  }
+}
+
+actor TacticalInsertion : RGUWeapon
+{
+  weapon.selectionorder 667
+  Tag "Satellite Phone"
+  weapon.ammotype1 "ECAmmo1"
+  weapon.ammouse1 1
+  weapon.ammogive1 1
+  inventory.pickupsound "RADIOCALL"
+  inventory.pickupmessage "UAC Satellite Phone"  
+  +NOAUTOFIRE
+  +INVENTORY.UNDROPPABLE
+  States
+  {
+  Spawn:
+	AMMR W 10 BRIGHT A_SpawnItem("BlueFlareSmall", 0, 7)
+	AMMR W 10 BRIGHT
+	loop
+  Select:
+    TNT1 A 1 A_Raise
+    TNT1 AA 0 A_Raise
+    loop
+  Ready:
+    TNT1 A 0 A_TakeInventory("Weight")
+    TNT1 A 0 A_GiveInventory("Weight")
+    TNT1 A 0 ACS_NamedExecuteAlways("CoDPlayerSpeed", 0, 0, 0, 0)
+    TNT1 A 0 ACS_NamedExecuteWithResult("CoDWeaponLook", 56, 0, 0)
+    TNT1 A 0 ACS_NamedExecuteWithResult("CoDFireSelectIcon", 99, 0, 0)
+    TNT1 A 0 ACS_NamedExecuteWithResult("CoDScopeSelectIcon", 99, 0, 0)
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDWeaponIcon", 43, 0, 0)
+	TNT1 A 0 A_TakeInventory("BOSelectFire", 1)
+	TNT1 A 0 A_TakeInventory("BOSelectScope", 1)
+	TNT1 A 0 A_TakeInventory("BOWeaponlook", 1)
+	TNT1 A 0 A_TakeInventory("BOWeaponlooking", 1)
+	TNT1 A 0 A_TakeInventory("Reloading", 1)
+	TNT1 A 0 A_TakeInventory("Aiming", 1)
+	TNT1 A 0 A_PlayWeaponSound("weapon/select")
+    PHON ABCDE 2 A_WeaponReady(WRF_NOFIRE)
+	TNT1 A 0 A_PlayWeaponSound("M4A1/reload2")
+	PHON FGHIJKLM 2 A_WeaponReady(WRF_NOFIRE)
+	TNT1 A 0 A_PlayWeaponSound("RADIOSET2")
+	PHON NOP 2 A_WeaponReady(WRF_NOFIRE)
+	TNT1 A 0 A_PlayWeaponSound("RADIOSET2")
+	PHON QRS 2 A_WeaponReady(WRF_NOFIRE)
+	TNT1 A 0 A_PlayWeaponSound("M4A1/reload3")
+	PHON TUVW 2 A_WeaponReady(WRF_NOFIRE)
+    goto InHand	
+  Ready2:
+    TNT1 A 0 //A_GiveInventory("Weight", 1)
+	TNT1 A 0 ACS_NamedExecuteAlways("CoDPlayerSpeed", 0, 0, 0, 0)
+	TNT1 A 0 A_PlayWeaponSound("mp412/select")
+    PHON ZYX 2 A_WeaponReady(WRF_NOFIRE)
+    goto InHand
+  InHand: 		
+  Friend1S: //MBOX
+	TNT1 A 0 A_TakeInventory("Select_Friends", 0)//Reset
+	TNT1 A 0 A_TakeInventory("BOSelectScope", 1)
+	TNT1 A 0 A_TakeInventory("BOSelectFire", 1)
+	TNT1 A 0 A_GiveInventory("Select_Friends", 1)//1
+	TNT1 A 0 //A_PlayWeaponSound("RADIOSET2")
+	TNT1 A 0
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDFriendSelect", 1, 0, 0)
+	TNT1 A 0 A_JumpIfInventory("BOSelectScope", 1, "Friend2")//down
+	TNT1 A 0 A_JumpIfInventory("BOSelectFire", 1, "Friend14")//up
+	PHON W 1 A_WeaponReady
+    goto Friend1S+5
+  Friend1: //MBOX
+	TNT1 A 0 A_TakeInventory("Select_Friends", 0)//Reset
+	TNT1 A 0 A_TakeInventory("BOSelectScope", 1)
+	TNT1 A 0 A_TakeInventory("BOSelectFire", 1)
+	TNT1 A 0 A_GiveInventory("Select_Friends", 1)//1
+	TNT1 A 0 A_PlayWeaponSound("RADIOSET2")
+	TNT1 A 0
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDFriendSelect", 1, 0, 0)
+	TNT1 A 0 A_JumpIfInventory("BOSelectScope", 1, "Friend2")//down
+	TNT1 A 0 A_JumpIfInventory("BOSelectFire", 1, "Friend14")//up
+	PHON W 1 A_WeaponReady
+    goto Friend1+5
+	
+  Friend2: //Medikit
+	TNT1 A 0 A_TakeInventory("Select_Friends", 0)//Reset
+	TNT1 A 0 A_TakeInventory("BOSelectScope", 1)
+	TNT1 A 0 A_TakeInventory("BOSelectFire", 1)
+	TNT1 A 0 A_GiveInventory("Select_Friends", 2)//2
+	TNT1 A 0 A_PlayWeaponSound("RADIOSET2")
+	TNT1 A 0
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDFriendSelect", 2, 0, 0)
+	TNT1 A 0 A_JumpIfInventory("BOSelectScope", 1, "Friend3")//down
+	TNT1 A 0 A_JumpIfInventory("BOSelectFire", 1, "Friend1")//up
+	PHON W 1 A_WeaponReady
+    goto Friend2+5
+  Friend2S: //Medikit
+	TNT1 A 0 A_TakeInventory("Select_Friends", 0)//Reset
+	TNT1 A 0 A_TakeInventory("BOSelectScope", 1)
+	TNT1 A 0 A_TakeInventory("BOSelectFire", 1)
+	TNT1 A 0 A_GiveInventory("Select_Friends", 2)//2
+	TNT1 A 0 //A_PlayWeaponSound("RADIOSET2")
+	TNT1 A 0
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDFriendSelect", 2, 0, 0)
+	TNT1 A 0 A_JumpIfInventory("BOSelectScope", 1, "Friend3")//down
+	TNT1 A 0 A_JumpIfInventory("BOSelectFire", 1, "Friend1")//up
+	PHON W 1 A_WeaponReady
+    goto Friend2S+5
+	
+  Friend3: //Armor
+	TNT1 A 0 A_TakeInventory("Select_Friends", 0)//Reset
+	TNT1 A 0 A_TakeInventory("BOSelectScope", 1)
+	TNT1 A 0 A_TakeInventory("BOSelectFire", 1)
+	TNT1 A 0 A_GiveInventory("Select_Friends", 3)//3
+	TNT1 A 0 A_PlayWeaponSound("RADIOSET2")
+	TNT1 A 0
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDFriendSelect", 3, 0, 0)
+	TNT1 A 0 A_JumpIfInventory("BOSelectScope", 1, "Friend4")//down
+	TNT1 A 0 A_JumpIfInventory("BOSelectFire", 1, "Friend2")//up
+	PHON W 1 A_WeaponReady
+    goto Friend3+5
+  Friend3S: //Armor
+	TNT1 A 0 A_TakeInventory("Select_Friends", 0)//Reset
+	TNT1 A 0 A_TakeInventory("BOSelectScope", 1)
+	TNT1 A 0 A_TakeInventory("BOSelectFire", 1)
+	TNT1 A 0 A_GiveInventory("Select_Friends", 3)//3
+	TNT1 A 0 //A_PlayWeaponSound("RADIOSET2")
+	TNT1 A 0
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDFriendSelect", 3, 0, 0)
+	TNT1 A 0 A_JumpIfInventory("BOSelectScope", 1, "Friend4")//down
+	TNT1 A 0 A_JumpIfInventory("BOSelectFire", 1, "Friend2")//up
+	PHON W 1 A_WeaponReady
+    goto Friend3S+5
+	
+  Friend4: //Ammo
+	TNT1 A 0 A_TakeInventory("Select_Friends", 0)//Reset
+	TNT1 A 0 A_TakeInventory("BOSelectScope", 1)
+	TNT1 A 0 A_TakeInventory("BOSelectFire", 1)
+	TNT1 A 0 A_GiveInventory("Select_Friends", 4)//4
+	TNT1 A 0 A_PlayWeaponSound("RADIOSET2")
+	TNT1 A 0
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDFriendSelect", 4, 0, 0)
+	TNT1 A 0 A_JumpIfInventory("BOSelectScope", 1, "Friend5")//down
+	TNT1 A 0 A_JumpIfInventory("BOSelectFire", 1, "Friend3")//up
+	PHON W 1 A_WeaponReady
+    goto Friend4+5
+  Friend4S: //Ammo
+	TNT1 A 0 A_TakeInventory("Select_Friends", 0)//Reset
+	TNT1 A 0 A_TakeInventory("BOSelectScope", 1)
+	TNT1 A 0 A_TakeInventory("BOSelectFire", 1)
+	TNT1 A 0 A_GiveInventory("Select_Friends", 4)//4
+	TNT1 A 0 //A_PlayWeaponSound("RADIOSET2")
+	TNT1 A 0
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDFriendSelect", 4, 0, 0)
+	TNT1 A 0 A_JumpIfInventory("BOSelectScope", 1, "Friend5")//down
+	TNT1 A 0 A_JumpIfInventory("BOSelectFire", 1, "Friend3")//up
+	PHON W 1 A_WeaponReady
+    goto Friend4S+5
+	
+  Friend5: //EX
+	TNT1 A 0 A_TakeInventory("Select_Friends", 0)//Reset
+	TNT1 A 0 A_TakeInventory("BOSelectScope", 1)
+	TNT1 A 0 A_TakeInventory("BOSelectFire", 1)
+	TNT1 A 0 A_GiveInventory("Select_Friends", 5)
+	TNT1 A 0 A_PlayWeaponSound("RADIOSET2")
+	TNT1 A 0
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDFriendSelect", 5, 0, 0)
+	TNT1 A 0 A_JumpIfInventory("BOSelectScope", 1, "Friend6")//down
+	TNT1 A 0 A_JumpIfInventory("BOSelectFire", 1, "Friend4")//up
+	PHON W 1 A_WeaponReady
+    goto Friend5+5
+  Friend5S: //EX
+	TNT1 A 0 A_TakeInventory("Select_Friends", 0)//Reset
+	TNT1 A 0 A_TakeInventory("BOSelectScope", 1)
+	TNT1 A 0 A_TakeInventory("BOSelectFire", 1)
+	TNT1 A 0 A_GiveInventory("Select_Friends", 5)
+	TNT1 A 0 //A_PlayWeaponSound("RADIOSET2")
+	TNT1 A 0
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDFriendSelect", 5, 0, 0)
+	TNT1 A 0 A_JumpIfInventory("BOSelectScope", 1, "Friend6")//down
+	TNT1 A 0 A_JumpIfInventory("BOSelectFire", 1, "Friend4")//up
+	PHON W 1 A_WeaponReady
+    goto Friend5S+5
+	
+  Friend6: //SWAT TEAM
+	TNT1 A 0 A_TakeInventory("Select_Friends", 0)//Reset
+	TNT1 A 0 A_TakeInventory("BOSelectScope", 1)
+	TNT1 A 0 A_TakeInventory("BOSelectFire", 1)
+	TNT1 A 0 A_GiveInventory("Select_Friends", 6)//6
+	TNT1 A 0 A_PlayWeaponSound("RADIOSET2")
+	TNT1 A 0
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDFriendSelect", 6, 0, 0)
+	TNT1 A 0 A_JumpIfInventory("BOSelectScope", 1, "Friend7")//down
+	TNT1 A 0 A_JumpIfInventory("BOSelectFire", 1, "Friend5")//up
+	PHON W 1 A_WeaponReady
+    goto Friend6+5
+  Friend6S: //SWAT TEAM
+	TNT1 A 0 A_TakeInventory("Select_Friends", 0)//Reset
+	TNT1 A 0 A_TakeInventory("BOSelectScope", 1)
+	TNT1 A 0 A_TakeInventory("BOSelectFire", 1)
+	TNT1 A 0 A_GiveInventory("Select_Friends", 6)//6
+	TNT1 A 0 //A_PlayWeaponSound("RADIOSET2")
+	TNT1 A 0
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDFriendSelect", 6, 0, 0)
+	TNT1 A 0 A_JumpIfInventory("BOSelectScope", 1, "Friend7")//down
+	TNT1 A 0 A_JumpIfInventory("BOSelectFire", 1, "Friend5")//up
+	PHON W 1 A_WeaponReady
+    goto Friend6S+5
+	
+  Friend7: //TF141
+	TNT1 A 0 A_TakeInventory("Select_Friends", 0)//Reset
+	TNT1 A 0 A_TakeInventory("BOSelectScope", 1)
+	TNT1 A 0 A_TakeInventory("BOSelectFire", 1)
+	TNT1 A 0 A_GiveInventory("Select_Friends", 7)//7
+	TNT1 A 0 A_PlayWeaponSound("RADIOSET2")
+	TNT1 A 0
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDFriendSelect", 7, 0, 0)
+	TNT1 A 0 A_JumpIfInventory("BOSelectScope", 1, "Friend8")//down
+	TNT1 A 0 A_JumpIfInventory("BOSelectFire", 1, "Friend6")//up
+	PHON W 1 A_WeaponReady
+    goto Friend7+5
+  Friend7S: //TF141
+	TNT1 A 0 A_TakeInventory("Select_Friends", 0)//Reset
+	TNT1 A 0 A_TakeInventory("BOSelectScope", 1)
+	TNT1 A 0 A_TakeInventory("BOSelectFire", 1)
+	TNT1 A 0 A_GiveInventory("Select_Friends", 7)//7
+	TNT1 A 0 //A_PlayWeaponSound("RADIOSET2")
+	TNT1 A 0
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDFriendSelect", 7, 0, 0)
+	TNT1 A 0 A_JumpIfInventory("BOSelectScope", 1, "Friend8")//down
+	TNT1 A 0 A_JumpIfInventory("BOSelectFire", 1, "Friend6")//up
+	PHON W 1 A_WeaponReady
+    goto Friend7S+5
+	
+  Friend8: //SOG
+	TNT1 A 0 A_TakeInventory("Select_Friends", 0)//Reset
+	TNT1 A 0 A_TakeInventory("BOSelectScope", 1)
+	TNT1 A 0 A_TakeInventory("BOSelectFire", 1)
+	TNT1 A 0 A_GiveInventory("Select_Friends", 8)//8
+	TNT1 A 0 A_PlayWeaponSound("RADIOSET2")
+	TNT1 A 0
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDFriendSelect", 8, 0, 0)
+	TNT1 A 0 A_JumpIfInventory("BOSelectScope", 1, "Friend9")//down
+	TNT1 A 0 A_JumpIfInventory("BOSelectFire", 1, "Friend7")//up
+	PHON W 1 A_WeaponReady
+    goto Friend8+5
+  Friend8S: //SOG
+	TNT1 A 0 A_TakeInventory("Select_Friends", 0)//Reset
+	TNT1 A 0 A_TakeInventory("BOSelectScope", 1)
+	TNT1 A 0 A_TakeInventory("BOSelectFire", 1)
+	TNT1 A 0 A_GiveInventory("Select_Friends", 8)//8
+	TNT1 A 0 //A_PlayWeaponSound("RADIOSET2")
+	TNT1 A 0
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDFriendSelect", 8, 0, 0)
+	TNT1 A 0 A_JumpIfInventory("BOSelectScope", 1, "Friend9")//down
+	TNT1 A 0 A_JumpIfInventory("BOSelectFire", 1, "Friend7")//up
+	PHON W 1 A_WeaponReady
+    goto Friend8S+5
+	
+  Friend9: //EY
+	TNT1 A 0 A_TakeInventory("Select_Friends", 0)//Reset
+	TNT1 A 0 A_TakeInventory("BOSelectScope", 1)
+	TNT1 A 0 A_TakeInventory("BOSelectFire", 1)
+	TNT1 A 0 A_GiveInventory("Select_Friends", 9)//9
+	TNT1 A 0 A_PlayWeaponSound("RADIOSET2")
+	TNT1 A 0
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDFriendSelect", 9, 0, 0)
+	TNT1 A 0 A_JumpIfInventory("BOSelectScope", 1, "Friend10")//down
+	TNT1 A 0 A_JumpIfInventory("BOSelectFire", 1, "Friend8")//up
+	PHON W 1 A_WeaponReady
+    goto Friend9+5
+  Friend9S: //EY
+	TNT1 A 0 A_TakeInventory("Select_Friends", 0)//Reset
+	TNT1 A 0 A_TakeInventory("BOSelectScope", 1)
+	TNT1 A 0 A_TakeInventory("BOSelectFire", 1)
+	TNT1 A 0 A_GiveInventory("Select_Friends", 9)//9
+	TNT1 A 0 //A_PlayWeaponSound("RADIOSET2")
+	TNT1 A 0
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDFriendSelect", 9, 0, 0)
+	TNT1 A 0 A_JumpIfInventory("BOSelectScope", 1, "Friend10")//down
+	TNT1 A 0 A_JumpIfInventory("BOSelectFire", 1, "Friend8")//up
+	PHON W 1 A_WeaponReady
+    goto Friend9S+5
+  
+   Friend10: //Iris
+	TNT1 A 0 A_TakeInventory("Select_Friends", 0)//Reset
+	TNT1 A 0 A_TakeInventory("BOSelectScope", 1)
+	TNT1 A 0 A_TakeInventory("BOSelectFire", 1)
+	TNT1 A 0 A_GiveInventory("Select_Friends", 10)//10
+	TNT1 A 0 A_PlayWeaponSound("RADIOSET2")
+	TNT1 A 0
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDFriendSelect", 10, 0, 0)
+	TNT1 A 0 A_JumpIfInventory("BOSelectScope", 1, "Friend11")//down
+	TNT1 A 0 A_JumpIfInventory("BOSelectFire", 1, "Friend9")//up
+	PHON W 1 A_WeaponReady
+    goto Friend10+5
+  Friend10S: //Iris
+	TNT1 A 0 A_TakeInventory("Select_Friends", 0)//Reset
+	TNT1 A 0 A_TakeInventory("BOSelectScope", 1)
+	TNT1 A 0 A_TakeInventory("BOSelectFire", 1)
+	TNT1 A 0 A_GiveInventory("Select_Friends", 10)//10
+	TNT1 A 0 //A_PlayWeaponSound("RADIOSET2")
+	TNT1 A 0
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDFriendSelect", 10, 0, 0)
+	TNT1 A 0 A_JumpIfInventory("BOSelectScope", 1, "Friend11")//down
+	TNT1 A 0 A_JumpIfInventory("BOSelectFire", 1, "Friend9")//up
+	PHON W 1 A_WeaponReady
+    goto Friend10S+5
+	
+  Friend11: //Sakuya
+	TNT1 A 0 A_TakeInventory("Select_Friends", 0)//Reset
+	TNT1 A 0 A_TakeInventory("BOSelectScope", 1)
+	TNT1 A 0 A_TakeInventory("BOSelectFire", 1)
+	TNT1 A 0 A_GiveInventory("Select_Friends", 11)
+	TNT1 A 0 A_PlayWeaponSound("RADIOSET2")
+	TNT1 A 0
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDFriendSelect", 11, 0, 0)
+	TNT1 A 0 A_JumpIfInventory("BOSelectScope", 1, "Friend12")//down
+	TNT1 A 0 A_JumpIfInventory("BOSelectFire", 1, "Friend10")//up
+	PHON W 1 A_WeaponReady
+    goto Friend11+5
+  Friend11S: //Sakuya
+	TNT1 A 0 A_TakeInventory("Select_Friends", 0)//Reset
+	TNT1 A 0 A_TakeInventory("BOSelectScope", 1)
+	TNT1 A 0 A_TakeInventory("BOSelectFire", 1)
+	TNT1 A 0 A_GiveInventory("Select_Friends", 11)
+	TNT1 A 0 //A_PlayWeaponSound("RADIOSET2")
+	TNT1 A 0
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDFriendSelect", 11, 0, 0)
+	TNT1 A 0 A_JumpIfInventory("BOSelectScope", 1, "Friend12")//down
+	TNT1 A 0 A_JumpIfInventory("BOSelectFire", 1, "Friend10")//up
+	PHON W 1 A_WeaponReady
+    goto Friend11S+5
+  
+  Friend12: //China
+	TNT1 A 0 A_TakeInventory("Select_Friends", 0)//Reset
+	TNT1 A 0 A_TakeInventory("BOSelectScope", 1)
+	TNT1 A 0 A_TakeInventory("BOSelectFire", 1)
+	TNT1 A 0 A_GiveInventory("Select_Friends", 12)
+	TNT1 A 0 A_PlayWeaponSound("RADIOSET2")
+	TNT1 A 0
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDFriendSelect", 12, 0, 0)
+	TNT1 A 0 A_JumpIfInventory("BOSelectScope", 1, "Friend13")//down
+	TNT1 A 0 A_JumpIfInventory("BOSelectFire", 1, "Friend11")//up
+	PHON W 1 A_WeaponReady
+    goto Friend12+5
+  Friend12S: //
+	TNT1 A 0 A_TakeInventory("Select_Friends", 0)//Reset
+	TNT1 A 0 A_TakeInventory("BOSelectScope", 1)
+	TNT1 A 0 A_TakeInventory("BOSelectFire", 1)
+	TNT1 A 0 A_GiveInventory("Select_Friends", 12)
+	TNT1 A 0 //A_PlayWeaponSound("RADIOSET2")
+	TNT1 A 0
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDFriendSelect", 12, 0, 0)
+	TNT1 A 0 A_JumpIfInventory("BOSelectScope", 1, "Friend13")//down
+	TNT1 A 0 A_JumpIfInventory("BOSelectFire", 1, "Friend11")//up
+	PHON W 1 A_WeaponReady
+    goto Friend12S+5
+	
+  Friend13: //Maiko
+	TNT1 A 0 A_TakeInventory("Select_Friends", 0)//Reset
+	TNT1 A 0 A_TakeInventory("BOSelectScope", 1)
+	TNT1 A 0 A_TakeInventory("BOSelectFire", 1)
+	TNT1 A 0 A_GiveInventory("Select_Friends", 13)
+	TNT1 A 0 A_PlayWeaponSound("RADIOSET2")
+	TNT1 A 0
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDFriendSelect", 13, 0, 0)
+	TNT1 A 0 A_JumpIfInventory("BOSelectScope", 1, "Friend14")//down
+	TNT1 A 0 A_JumpIfInventory("BOSelectFire", 1, "Friend12")//up
+	PHON W 1 A_WeaponReady
+    goto Friend13+5
+  Friend13S: //
+	TNT1 A 0 A_TakeInventory("Select_Friends", 0)//Reset
+	TNT1 A 0 A_TakeInventory("BOSelectScope", 1)
+	TNT1 A 0 A_TakeInventory("BOSelectFire", 1)
+	TNT1 A 0 A_GiveInventory("Select_Friends", 13)
+	TNT1 A 0 //A_PlayWeaponSound("RADIOSET2")
+	TNT1 A 0
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDFriendSelect", 13, 0, 0)
+	TNT1 A 0 A_JumpIfInventory("BOSelectScope", 1, "Friend14")//down
+	TNT1 A 0 A_JumpIfInventory("BOSelectFire", 1, "Friend12")//up
+	PHON W 1 A_WeaponReady
+    goto Friend13S+5
+	
+  Friend14: //Maiko
+	TNT1 A 0 A_TakeInventory("Select_Friends", 0)//Reset
+	TNT1 A 0 A_TakeInventory("BOSelectScope", 1)
+	TNT1 A 0 A_TakeInventory("BOSelectFire", 1)
+	TNT1 A 0 A_GiveInventory("Select_Friends", 14)
+	TNT1 A 0 A_PlayWeaponSound("RADIOSET2")
+	TNT1 A 0
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDFriendSelect", 14, 0, 0)
+	TNT1 A 0 A_JumpIfInventory("BOSelectScope", 1, "Friend1")//down
+	TNT1 A 0 A_JumpIfInventory("BOSelectFire", 1, "Friend13")//up
+	PHON W 1 A_WeaponReady
+    goto Friend14+5
+  Friend14S: //
+	TNT1 A 0 A_TakeInventory("Select_Friends", 0)//Reset
+	TNT1 A 0 A_TakeInventory("BOSelectScope", 1)
+	TNT1 A 0 A_TakeInventory("BOSelectFire", 1)
+	TNT1 A 0 A_GiveInventory("Select_Friends", 14)
+	TNT1 A 0 //A_PlayWeaponSound("RADIOSET2")
+	TNT1 A 0
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDFriendSelect", 14, 0, 0)
+	TNT1 A 0 A_JumpIfInventory("BOSelectScope", 1, "Friend1")//down
+	TNT1 A 0 A_JumpIfInventory("BOSelectFire", 1, "Friend13")//up
+	PHON W 1 A_WeaponReady
+    goto Friend14S+5
+
+  Deselect:
+    TNT1 A 0 A_TakeInventory("Weight", 0)	//Determines player speed - 1 means normal speed
+    TNT1 A 0 A_TakeInventory("Aiming", 1)
+	TNT1 A 0 A_TakeInventory("KnifeAttack", 1)
+	FRGA I 0 A_TakeInventory("ThrowingGrenade", 1)
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDTip", 9, 0, 0)
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDFriendSelect", 15, 0, 0)
+    TNT1 A 0 ACS_NamedExecuteAlways("CoDPlayerSpeed", 0, 0, 0, 0)
+    TNT1 A 0 A_TakeInventory("Reloading", 1)
+    TNT1 A 0 A_ZoomFactor(1.0)
+    TNT1 A 0 A_SetCrosshair(0)
+    PHON XYZ 2
+  DeselectFull: 				//Deselect
+    TNT1 AA 0 A_Lower
+    TNT1 A 0 A_Lower
+    loop
+
+  Fire:
+    TNT1 A 0
+    TNT1 A 0 A_JumpIfInventory("ECAmmo1", 1, "CALLfriend")
+    TNT1 A 0
+  RadioERROR:
+	TNT1 A 0
+	TNT1 A 0 A_PlaySoundEx("RADIOERR", "SoundSlot6")
+  RadioReset:
+    TNT1 A 0
+	TNT1 A 0 A_JumpIfInventory("Select_Friends", 14, "Friend14S")
+	TNT1 A 0 A_JumpIfInventory("Select_Friends", 13, "Friend13S")
+	TNT1 A 0 A_JumpIfInventory("Select_Friends", 12, "Friend12S")
+	TNT1 A 0 A_JumpIfInventory("Select_Friends", 11, "Friend11S")
+	TNT1 A 0 A_JumpIfInventory("Select_Friends", 10, "Friend10S")
+	TNT1 A 0 A_JumpIfInventory("Select_Friends", 9, "Friend9S")
+	TNT1 A 0 A_JumpIfInventory("Select_Friends", 8, "Friend8S")
+	TNT1 A 0 A_JumpIfInventory("Select_Friends", 7, "Friend7S")
+	TNT1 A 0 A_JumpIfInventory("Select_Friends", 6, "Friend6S")
+	TNT1 A 0 A_JumpIfInventory("Select_Friends", 5, "Friend5S")
+	TNT1 A 0 A_JumpIfInventory("Select_Friends", 4, "Friend4S")
+	TNT1 A 0 A_JumpIfInventory("Select_Friends", 3, "Friend3S")
+	TNT1 A 0 A_JumpIfInventory("Select_Friends", 2, "Friend2S")
+	TNT1 A 0 A_JumpIfInventory("Select_Friends", 1, "Friend1S")
+	TNT1 A 0
+	goto Friend1S
+	
+  CALLfriend:
+	TNT1 A 0
+	TNT1 A 0 A_JumpIfInventory("Select_Friends", 14, "CallFriend14")
+	TNT1 A 0 A_JumpIfInventory("Select_Friends", 13, "CallFriend13")
+	TNT1 A 0 A_JumpIfInventory("Select_Friends", 12, "CallFriend12")
+	TNT1 A 0 A_JumpIfInventory("Select_Friends", 11, "CallFriend11")
+	TNT1 A 0 A_JumpIfInventory("Select_Friends", 10, "CallFriend10")
+	TNT1 A 0 A_JumpIfInventory("Select_Friends", 9, "CallFriend9")
+	TNT1 A 0 A_JumpIfInventory("Select_Friends", 8, "CallFriend8")
+	TNT1 A 0 A_JumpIfInventory("Select_Friends", 7, "CallFriend7")
+	TNT1 A 0 A_JumpIfInventory("Select_Friends", 6, "CallFriend6")
+	TNT1 A 0 A_JumpIfInventory("Select_Friends", 5, "CallFriend5")
+	TNT1 A 0 A_JumpIfInventory("Select_Friends", 4, "CallFriend4")
+	TNT1 A 0 A_JumpIfInventory("Select_Friends", 3, "CallFriend3")
+	TNT1 A 0 A_JumpIfInventory("Select_Friends", 2, "CallFriend2")
+	TNT1 A 0 A_JumpIfInventory("Select_Friends", 1, "CallFriend1")
+	TNT1 A 0
+	goto CallFriend1
+	
+  CallFriend1:
+    TNT1 A 0
+    TNT1 A 0 //A_JumpIfInventory("Called_SWAT", 1, "RadioERROR")
+	TNT1 A 0 
+	TNT1 A 0 A_PlayWeaponSound("RADIOCALL")
+	TNT1 A 0 A_FireCustomMissile("FriendProjectile_MBOX", 1, 1, 0, 0)
+	TNT1 A 0 
+	TNT1 A 0 //A_GiveInventory("Called_SWAT", 1)
+	TNT1 A 0 
+	goto RadioReset
+	
+  CallFriend2:
+    TNT1 A 0
+    TNT1 A 0 //A_JumpIfInventory("Called_SWAT", 1, "RadioERROR")
+	TNT1 A 0 
+	TNT1 A 0 A_PlayWeaponSound("RADIOCALL")
+	TNT1 A 0 A_FireCustomMissile("FriendProjectile_Medikit", 20, 1, 0, 0)
+	TNT1 A 0 A_FireCustomMissile("FriendProjectile_Medikit", -20, 0, 0, 0)
+	TNT1 A 0 
+	TNT1 A 0 //A_GiveInventory("Called_SWAT", 1)
+	TNT1 A 0 
+	goto RadioReset
+	
+  CallFriend3:
+    TNT1 A 0
+    TNT1 A 0 //A_JumpIfInventory("Called_SWAT", 1, "RadioERROR")
+	TNT1 A 0 
+	TNT1 A 0 A_PlayWeaponSound("RADIOCALL")
+	TNT1 A 0 A_FireCustomMissile("FriendProjectile_Armor", 1, 1, 0, 0)
+	TNT1 A 0 
+	TNT1 A 0 //A_GiveInventory("Called_SWAT", 1)
+	TNT1 A 0 
+	goto RadioReset
+	
+  CallFriend4:
+    TNT1 A 0
+    TNT1 A 0 //A_JumpIfInventory("Called_SWAT", 1, "RadioERROR")
+	TNT1 A 0 
+	TNT1 A 0 A_PlayWeaponSound("RADIOCALL")
+	TNT1 A 0 A_FireCustomMissile("FriendProjectile_556", 1, 1, 0, 0)
+	TNT1 A 0 A_FireCustomMissile("FriendProjectile_9mm", 10, 0, 0, 0)
+	TNT1 A 0 A_FireCustomMissile("FriendProjectile_45ACP", -10, 0, 0, 0)
+	TNT1 A 0 A_FireCustomMissile("FriendProjectile_PDW", 20, 0, 0, 0)
+	TNT1 A 0 A_FireCustomMissile("FriendProjectile_12G", -20, 0, 0, 0)
+	TNT1 A 0 
+	TNT1 A 0 //A_GiveInventory("Called_SWAT", 1)
+	TNT1 A 0 
+	goto RadioReset
+	
+  CallFriend5:
+    TNT1 A 0
+    TNT1 A 0 //A_JumpIfInventory("Called_SWAT", 1, "RadioERROR")
+	TNT1 A 0 
+	TNT1 A 0 A_PlayWeaponSound("RADIOCALL")
+    TNT1 A 0 A_FireCustomMissile("FriendProjectile_Grenade", 20, 1, 0, 0)
+	TNT1 A 0 A_FireCustomMissile("FriendProjectile_M72LAW", -20, 0, 0, 0)
+	TNT1 A 0 
+	TNT1 A 0 //A_GiveInventory("Called_SWAT", 1)
+	TNT1 A 0 
+	goto RadioReset
+	
+  CallFriend6:
+    TNT1 A 0
+    TNT1 A 0 //A_JumpIfInventory("Called_SWAT", 1, "RadioERROR")
+	TNT1 A 0 
+	TNT1 A 0 A_PlayWeaponSound("RADIOCALL")
+	TNT1 A 0 A_FireCustomMissile("FriendProjectile_marine1", 1, 1, 0, 0)
+    TNT1 A 0 A_FireCustomMissile("FriendProjectile_marine2", 20, 0, 0, 0)
+	TNT1 A 0 A_FireCustomMissile("FriendProjectile_marine3", -20, 0, 0, 0)
+	TNT1 A 0 
+	TNT1 A 0 //A_GiveInventory("Called_SWAT", 1)
+	TNT1 A 0 
+	goto RadioReset
+	
+  CallFriend7:
+    TNT1 A 0
+    TNT1 A 0 A_JumpIfInventory("Called_Price", 1, "RadioERROR")
+	TNT1 A 0 
+	TNT1 A 0 A_PlayWeaponSound("RADIOCALL")
+	TNT1 A 0 A_FireCustomMissile("FriendProjectile_Price", 1, 1, 0, 0)
+	TNT1 A 0 A_FireCustomMissile("FriendProjectile_Soap", 20, 0, 0, 0)
+	TNT1 A 0 A_FireCustomMissile("FriendProjectile_Ghost", -20, 0, 0, 0)
+	TNT1 A 0 
+	TNT1 A 0 A_GiveInventory("Called_Price", 1)
+	TNT1 A 0 
+	goto RadioReset
+	
+  CallFriend8:
+    TNT1 A 0
+    TNT1 A 0 A_JumpIfInventory("Called_Woods", 1, "RadioERROR")
+	TNT1 A 0 
+	TNT1 A 0 A_PlayWeaponSound("RADIOCALL")
+	TNT1 A 0 A_FireCustomMissile("FriendProjectile_Woods", 1, 1, 0, 0)
+	TNT1 A 0 A_FireCustomMissile("FriendProjectile_Hudson", 20, 0, 0, 0)
+	TNT1 A 0 A_FireCustomMissile("FriendProjectile_Reznov", -20, 0, 0, 0)
+	TNT1 A 0 
+	TNT1 A 0 A_GiveInventory("Called_Woods", 1)
+	TNT1 A 0 
+	goto RadioReset
+	
+  CallFriend9:
+    TNT1 A 0
+    TNT1 A 0 A_JumpIfInventory("Called_Akid", 1, "RadioERROR")
+	TNT1 A 0 
+	TNT1 A 0 A_PlayWeaponSound("RADIOCALL")
+	TNT1 A 0 A_FireCustomMissile("FriendProjectile_Akid", 1, 1, 0, 0)
+	TNT1 A 0 
+	TNT1 A 0 A_GiveInventory("Called_Akid", 1)
+	TNT1 A 0 
+	goto RadioReset
+	
+  CallFriend10:
+    TNT1 A 0
+    TNT1 A 0 A_JumpIfInventory("Called_Iris", 1, "RadioERROR")
+	TNT1 A 0 
+	TNT1 A 0 A_PlayWeaponSound("RADIOCALL")
+	TNT1 A 0 A_FireCustomMissile("FriendProjectile_Iris", 1, 1, 0, 0)
+	TNT1 A 0 
+	TNT1 A 0 A_GiveInventory("Called_Iris", 1)
+	TNT1 A 0 
+	goto RadioReset
+	
+  CallFriend11:
+    TNT1 A 0
+    TNT1 A 0 A_JumpIfInventory("Called_Sakuya", 1, "RadioERROR")
+	TNT1 A 0 
+	TNT1 A 0 A_PlayWeaponSound("RADIOCALL")
+	TNT1 A 0 A_FireCustomMissile("FriendProjectile_Sakuya", 1, 1, 0, 0)
+	TNT1 A 0 
+	TNT1 A 0 A_GiveInventory("Called_Sakuya", 1)
+	TNT1 A 0 
+	goto RadioReset
+	
+  CallFriend12:
+    TNT1 A 0
+    TNT1 A 0 A_JumpIfInventory("Called_China", 1, "RadioERROR")
+	TNT1 A 0 
+	TNT1 A 0 A_PlayWeaponSound("RADIOCALL")
+	TNT1 A 0 A_FireCustomMissile("FriendProjectile_China", 1, 1, 0, 0)
+	TNT1 A 0 
+	TNT1 A 0 A_GiveInventory("Called_China", 1)
+	TNT1 A 0 
+	goto RadioReset
+	
+  CallFriend13:
+    TNT1 A 0
+    TNT1 A 0 A_JumpIfInventory("Called_Maiko", 1, "RadioERROR")
+	TNT1 A 0 
+	TNT1 A 0 A_PlayWeaponSound("RADIOCALL")
+	TNT1 A 0 A_FireCustomMissile("FriendProjectile_Maiko", 1, 1, 0, 0)
+	TNT1 A 0 
+	TNT1 A 0 A_GiveInventory("Called_Maiko", 1)
+	TNT1 A 0 
+	goto RadioReset
+	
+  CallFriend14:
+    TNT1 A 0
+    TNT1 A 0 A_JumpIfInventory("Called_Meryl", 1, "RadioERROR")
+	TNT1 A 0 
+	TNT1 A 0 A_PlayWeaponSound("RADIOCALL")
+	TNT1 A 0 A_FireCustomMissile("FriendProjectile_Meryl", 1, 1, 0, 0)
+	TNT1 A 0 
+	TNT1 A 0 A_GiveInventory("Called_Meryl", 1)
+	TNT1 A 0 
+	goto RadioReset
+	
+  KnifeAttack:
+    TNT1 A 0 A_ZoomFactor(1.0)
+    TNT1 A 0 A_SetCrosshair(0)
+	TNT1 A 0 A_GiveInventory("Followcall", 1)
+    TNT1 A 0 A_TakeInventory("Aiming", 1)
+    TNT1 A 0 A_TakeInventory("Reloading", 1)
+    TNT1 A 0 ACS_NamedExecuteAlways("CoDPlayerSpeed", 0, 0, 0, 0)
+    TNT1 A 0 A_JumpIfInventory("ThrowingGrenade", 1, "FragGrenade")
+    TNT1 A 0 ACS_NamedExecuteAlways("CoDRecoil", 0, 900, 900, 1)		//Recoil script
+	TNT1 A 0 A_PlaySound("NEEDCOME")
+    KNI9 A 1 A_AlertMonsters
+    KNI9 BC 1
+    KNI9 D 1 A_FireBullets(0.0, 0.0, 1, 40, "MachineGunBulletPuff", 0, 80)
+    KNI9 EFGHIJ 1
+    TNT1 A 10
+	TNT1 A 0 A_TakeInventory("Followcall", 1)
+    TNT1 A 0 A_TakeInventory("KnifeAttack", 1)
+    goto Ready2+2
+  FragGrenade:
+    FRGA I 0 A_TakeInventory("KnifeAttack", 1)
+	TNT1 A 0 A_TakeInventory("Followcall", 1)
+    TNT1 A 0 A_JumpIfInventory("ThrowingStunGrenade", 1, "StunGrenade")
+	TNT1 A 0 A_PlaySound("NEEDAMMO")
+	TNT1 A 0 A_GiveInventory("Ammocall", 1)
+	PHON C 40 
+	FRGB I 0 A_TakeInventory("KnifeAttack", 1)
+    FRGA I 0 A_TakeInventory("ThrowingGrenade", 1)
+	TNT1 A 0 A_TakeInventory("Ammocall", 1)
+    goto InHand
+  Flashbang:
+    FRGA ABCDE 3
+    FRGA F 3 A_PlaySoundEx("flash/pinpull", "SoundSlot5")
+    TNT1 A 15 
+    FRGB AB 3
+    FRGB H 0 A_PlaySoundEx("flash/throw", "SoundSlot5")
+    FRGB I 0 A_TakeInventory("ThrowingGrenade", 1)
+    FRGB I 0 A_TakeInventory("KnifeAttack", 1)
+    FRGB I 0 A_TakeInventory("ThrowingFlashbang", 1)
+    FRGB C 3 A_FireCustomMissile("FlashbangThrown", 0, 0, 0, 16)
+    FRGB DEFG 3 
+    goto Ready2+1		//Reselect weapon
+  StunGrenade:
+    TNT1 A 0 A_GiveInventory("StunGrenadeInventory", 1)
+	TNT1 A 0 A_PlaySound("NEEDSTIM")
+	TNT1 A 0 A_GiveInventory("Stimcall", 1)
+	PHON C 0
+    FRGB I 0 A_TakeInventory("ThrowingGrenade", 1)
+    FRGB I 0 A_TakeInventory("KnifeAttack", 1)
+    FRGB I 0 A_TakeInventory("ThrowingStunGrenade", 1)
+    goto InHand	
+  }
+}
+
+actor Followcall : Inventory
+{
+    inventory.amount 0
+    inventory.maxamount 1
+}
+
+actor Ammocall : Inventory
+{
+    inventory.amount 0
+    inventory.maxamount 1
+}
+
+actor Stimcall : Inventory
+{
+    inventory.amount 0
+    inventory.maxamount 1
+}
+
+actor GivingAmmo : Inventory
+{
+    inventory.amount 0
+    inventory.maxamount 5
+}
+
+actor Helicall : Inventory
+{
+    inventory.amount 0
+    inventory.maxamount 1
+}
+
+actor FriendProjectile_MBOX
+{
+	Radius 16
+	Height 40
+	Speed 4
+	Damage 0
+                   Scale 0.5
+        +NoBlockmap
+        +ActivatePCross
+        +ActivateImpact
+        -NoTeleport
+        +DropOff
+		  +CANBOUNCEWATER
+        +DontFall
+        +Missile
+         +DOOMBOUNCE
+          +BOUNCEONACTORS
+		  +DONTSPLASH
+          DeathSound "misc/teleport"
+	States
+	{
+	Spawn:
+		TNT1 A 1 Bright
+		Loop
+	Death:
+		TNT1 A 0 
+		TNT1 A 0 //A_SpawnItemEx ("MBOX_spawn", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+		TNT1 A 0 A_SpawnItemEx ("Backpack", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+		goto death2
+	Death2:
+		TNT1 A 0 A_SpawnItem("TeleportFog_COD")
+		Stop
+	}
+}
+
+actor FriendProjectile_Medikit
+{
+	Radius 16
+	Height 20
+	Speed 4
+	Damage 0
+                   Scale 0.5
+        +NoBlockmap
+        +ActivatePCross
+        +ActivateImpact
+        -NoTeleport
+        +DropOff
+		  +CANBOUNCEWATER
+        +DontFall
+        +Missile
+         +DOOMBOUNCE
+          +BOUNCEONACTORS
+		  +DONTSPLASH
+          DeathSound "misc/teleport"
+	States
+	{
+	Spawn:
+		TNT1 A 1 Bright
+		Loop
+	Death:
+		TNT1 A 0 
+		TNT1 A 0 A_SpawnItemEx ("Medicalkit_COD", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+		goto death2
+	Death2:
+		TNT1 A 0 A_SpawnItem("TeleportFog_COD")
+		Stop
+	}
+}
+
+actor FriendProjectile_Armor
+{
+	Radius 16
+	Height 20
+	Speed 4
+	Damage 0
+                   Scale 0.5
+        +NoBlockmap
+        +ActivatePCross
+        +ActivateImpact
+        -NoTeleport
+        +DropOff
+		  +CANBOUNCEWATER
+        +DontFall
+        +Missile
+         +DOOMBOUNCE
+          +BOUNCEONACTORS
+		  +DONTSPLASH
+          DeathSound "misc/teleport"
+	States
+	{
+	Spawn:
+		TNT1 A 1 Bright
+		Loop
+	Death:
+		TNT1 A 0 
+		TNT1 A 0 A_SpawnItemEx ("CoDArmor2", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+		goto death2
+	Death2:
+		TNT1 A 0 A_SpawnItem("TeleportFog_COD")
+		Stop
+	}
+}
+
+actor FriendProjectile_9mm
+{
+	Radius 16
+	Height 20
+	Speed 4
+	Damage 0
+                   Scale 0.5
+        +NoBlockmap
+        +ActivatePCross
+        +ActivateImpact
+        -NoTeleport
+        +DropOff
+		  +CANBOUNCEWATER
+        +DontFall
+        +Missile
+         +DOOMBOUNCE
+          +BOUNCEONACTORS
+		  +DONTSPLASH
+          DeathSound "misc/teleport"
+	States
+	{
+	Spawn:
+		TNT1 A 1 Bright
+		Loop
+	Death:
+		TNT1 A 0 
+		TNT1 A 0 A_SpawnItemEx ("SMGAmmo1BOX", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+		goto death2
+	Death2:
+		TNT1 A 0 A_SpawnItem("TeleportFog_COD")
+		Stop
+	}
+}
+
+actor FriendProjectile_45ACP
+{
+	Radius 16
+	Height 20
+	Speed 4
+	Damage 0
+                   Scale 0.5
+        +NoBlockmap
+        +ActivatePCross
+        +ActivateImpact
+        -NoTeleport
+        +DropOff
+		  +CANBOUNCEWATER
+        +DontFall
+        +Missile
+         +DOOMBOUNCE
+          +BOUNCEONACTORS
+		  +DONTSPLASH
+          DeathSound "misc/teleport"
+	States
+	{
+	Spawn:
+		TNT1 A 1 Bright
+		Loop
+	Death:
+		TNT1 A 0 
+		TNT1 A 0 A_SpawnItemEx ("SMGAmmo2BOX", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+		goto death2
+	Death2:
+		TNT1 A 0 A_SpawnItem("TeleportFog_COD")
+		Stop
+	}
+}
+
+actor FriendProjectile_PDW
+{
+	Radius 16
+	Height 20
+	Speed 4
+	Damage 0
+                   Scale 0.5
+        +NoBlockmap
+        +ActivatePCross
+        +ActivateImpact
+        -NoTeleport
+        +DropOff
+		  +CANBOUNCEWATER
+        +DontFall
+        +Missile
+         +DOOMBOUNCE
+          +BOUNCEONACTORS
+		  +DONTSPLASH
+          DeathSound "misc/teleport"
+	States
+	{
+	Spawn:
+		TNT1 A 1 Bright
+		Loop
+	Death:
+		TNT1 A 0 
+		TNT1 A 0 A_SpawnItemEx ("PDWAmmoBOX", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+		goto death2
+	Death2:
+		TNT1 A 0 A_SpawnItem("TeleportFog_COD")
+		Stop
+	}
+}
+
+actor FriendProjectile_556
+{
+	Radius 16
+	Height 20
+	Speed 4
+	Damage 0
+                   Scale 0.5
+        +NoBlockmap
+        +ActivatePCross
+        +ActivateImpact
+        -NoTeleport
+        +DropOff
+		  +CANBOUNCEWATER
+        +DontFall
+        +Missile
+         +DOOMBOUNCE
+          +BOUNCEONACTORS
+		  +DONTSPLASH
+          DeathSound "misc/teleport"
+	States
+	{
+	Spawn:
+		TNT1 A 1 Bright
+		Loop
+	Death:
+		TNT1 A 0 
+		TNT1 A 0 A_SpawnItemEx ("LMGAmmo_COD", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+		goto death2
+	Death2:
+		TNT1 A 0 A_SpawnItem("TeleportFog_COD")
+		Stop
+	}
+}
+
+actor FriendProjectile_12G
+{
+	Radius 16
+	Height 20
+	Speed 4
+	Damage 0
+                   Scale 0.5
+        +NoBlockmap
+        +ActivatePCross
+        +ActivateImpact
+        -NoTeleport
+        +DropOff
+		  +CANBOUNCEWATER
+        +DontFall
+        +Missile
+         +DOOMBOUNCE
+          +BOUNCEONACTORS
+		  +DONTSPLASH
+          DeathSound "misc/teleport"
+	States
+	{
+	Spawn:
+		TNT1 A 1 Bright
+		Loop
+	Death:
+		TNT1 A 0 
+		TNT1 A 0 A_SpawnItemEx ("SGHAmmoBOX", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+		goto death2
+	Death2:
+		TNT1 A 0 A_SpawnItem("TeleportFog_COD")
+		Stop
+	}
+}
+
+actor FriendProjectile_Grenade
+{
+	Radius 16
+	Height 20
+	Speed 4
+	Damage 0
+                   Scale 0.5
+        +NoBlockmap
+        +ActivatePCross
+        +ActivateImpact
+        -NoTeleport
+        +DropOff
+		  +CANBOUNCEWATER
+        +DontFall
+        +Missile
+         +DOOMBOUNCE
+          +BOUNCEONACTORS
+		  +DONTSPLASH
+          DeathSound "misc/teleport"
+	States
+	{
+	Spawn:
+		TNT1 A 1 Bright
+		Loop
+	Death:
+		TNT1 A 0 
+		TNT1 A 0 A_SpawnItemEx ("GrenadesAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+		goto death2
+	Death2:
+		TNT1 A 0 A_SpawnItem("TeleportFog_COD")
+		Stop
+	}
+}
+
+actor FriendProjectile_M72LAW
+{
+	Radius 16
+	Height 20
+	Speed 4
+	Damage 0
+                   Scale 0.5
+        +NoBlockmap
+        +ActivatePCross
+        +ActivateImpact
+        -NoTeleport
+        +DropOff
+		  +CANBOUNCEWATER
+        +DontFall
+        +Missile
+         +DOOMBOUNCE
+          +BOUNCEONACTORS
+		  +DONTSPLASH
+          DeathSound "misc/teleport"
+	States
+	{
+	Spawn:
+		TNT1 A 1 Bright
+		Loop
+	Death:
+		TNT1 A 0 
+		TNT1 A 0 A_SpawnItemEx ("M72LAWPickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+		goto death2
+	Death2:
+		TNT1 A 0 A_SpawnItem("TeleportFog_COD")
+		Stop
+	}
+}
+
+actor FriendProjectile_marine1
+{
+	Radius 16
+	Height 52
+	Speed 4
+	Damage 0
+                   Scale 0.5
+        +NoBlockmap
+        +ActivatePCross
+        +ActivateImpact
+        -NoTeleport
+        +DropOff
+		  +CANBOUNCEWATER
+        +DontFall
+        +Missile
+         +DOOMBOUNCE
+          +BOUNCEONACTORS
+		  +DONTSPLASH
+          DeathSound "misc/teleport"
+	States
+	{
+	Spawn:
+		TNT1 A 1 Bright
+		Loop
+	Death:
+		TNT1 A 0 
+		TNT1 A 0 A_SpawnItemEx ("Marine_Walker", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+		goto death2
+	Death2:
+		TNT1 A 0 A_SpawnItem("TeleportFog_COD")
+		Stop
+	}
+}
+
+actor FriendProjectile_marine2
+{
+	Radius 16
+	Height 52
+	Speed 4
+	Damage 0
+                   Scale 0.5
+        +NoBlockmap
+        +ActivatePCross
+        +ActivateImpact
+        -NoTeleport
+        +DropOff
+		  +CANBOUNCEWATER
+        +DontFall
+        +Missile
+         +DOOMBOUNCE
+          +BOUNCEONACTORS
+		  +DONTSPLASH
+          DeathSound "misc/teleport"
+	States
+	{
+	Spawn:
+		TNT1 A 1 Bright
+		Loop
+	Death:
+		TNT1 A 0 
+		TNT1 A 0 A_SpawnItemEx ("Marine_Leloy", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+		goto death2
+	Death2:
+		TNT1 A 0 A_SpawnItem("TeleportFog_COD")
+		Stop
+	}
+}
+
+actor FriendProjectile_marine3
+{
+	Radius 16
+	Height 52
+	Speed 4
+	Damage 0
+                   Scale 0.5
+        +NoBlockmap
+        +ActivatePCross
+        +ActivateImpact
+        -NoTeleport
+        +DropOff
+		  +CANBOUNCEWATER
+        +DontFall
+        +Missile
+         +DOOMBOUNCE
+          +BOUNCEONACTORS
+		  +DONTSPLASH
+          DeathSound "misc/teleport"
+	States
+	{
+	Spawn:
+		TNT1 A 1 Bright
+		Loop
+	Death:
+		TNT1 A 0 
+		TNT1 A 0 A_SpawnItemEx ("Marine_Jack", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+		goto death2
+	Death2:
+		TNT1 A 0 A_SpawnItem("TeleportFog_COD")
+		Stop
+	}
+}
+
+actor FriendProjectile_Andro
+{
+	Radius 16
+	Height 52
+	Speed 4
+	Damage 0
+                   Scale 0.5
+        +NoBlockmap
+        +ActivatePCross
+        +ActivateImpact
+        -NoTeleport
+        +DropOff
+		  +CANBOUNCEWATER
+        +DontFall
+        +Missile
+         +DOOMBOUNCE
+          +BOUNCEONACTORS
+		  +DONTSPLASH
+          DeathSound "misc/teleport"
+	States
+	{
+	Spawn:
+		TNT1 A 1 Bright
+		Loop
+	Death:
+		TNT1 A 0 
+		TNT1 A 0 A_SpawnItemEx ("Marine_Andro", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+		goto death2
+	Death2:
+		TNT1 A 0 A_SpawnItem("TeleportFog_COD")
+		Stop
+	}
+}
+
+actor FriendProjectile_Price
+{
+	Radius 16
+	Height 52
+	Speed 4
+	Damage 0
+                   Scale 0.5
+        +NoBlockmap
+        +ActivatePCross
+        +ActivateImpact
+        -NoTeleport
+        +DropOff
+		  +CANBOUNCEWATER
+        +DontFall
+        +Missile
+         +DOOMBOUNCE
+          +BOUNCEONACTORS
+		  +DONTSPLASH
+          DeathSound "misc/teleport"
+	States
+	{
+	Spawn:
+		TNT1 A 1 Bright
+		Loop
+	Death:
+		TNT1 A 0 
+		TNT1 A 0 A_SpawnItemEx ("Marine_Price", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+		goto death2
+	Death2:
+		TNT1 A 0 A_SpawnItem("TeleportFog_COD")
+		Stop
+	}
+}
+
+actor FriendProjectile_Soap
+{
+	Radius 16
+	Height 52
+	Speed 4
+	Damage 0
+                   Scale 0.5
+        +NoBlockmap
+        +ActivatePCross
+        +ActivateImpact
+        -NoTeleport
+        +DropOff
+		  +CANBOUNCEWATER
+        +DontFall
+        +Missile
+         +DOOMBOUNCE
+          +BOUNCEONACTORS
+		  +DONTSPLASH
+          DeathSound "misc/teleport"
+	States
+	{
+	Spawn:
+		TNT1 A 1 Bright
+		Loop
+	Death:
+		TNT1 A 0 
+		TNT1 A 0 A_SpawnItemEx ("Marine_Soap", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+		goto death2
+	Death2:
+		TNT1 A 0 A_SpawnItem("TeleportFog_COD")
+		Stop
+	}
+}
+
+actor FriendProjectile_Ghost
+{
+	Radius 16
+	Height 52
+	Speed 4
+	Damage 0
+                   Scale 0.5
+        +NoBlockmap
+        +ActivatePCross
+        +ActivateImpact
+        -NoTeleport
+        +DropOff
+		  +CANBOUNCEWATER
+        +DontFall
+        +Missile
+         +DOOMBOUNCE
+          +BOUNCEONACTORS
+		  +DONTSPLASH
+          DeathSound "misc/teleport"
+	States
+	{
+	Spawn:
+		TNT1 A 1 Bright
+		Loop
+	Death:
+		TNT1 A 0 
+		TNT1 A 0 A_SpawnItemEx ("Marine_Ghost", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+		goto death2
+	Death2:
+		TNT1 A 0 A_SpawnItem("TeleportFog_COD")
+		Stop
+	}
+}
+
+actor FriendProjectile_Woods
+{
+	Radius 16
+	Height 52
+	Speed 4
+	Damage 0
+                   Scale 0.5
+        +NoBlockmap
+        +ActivatePCross
+        +ActivateImpact
+        -NoTeleport
+        +DropOff
+		  +CANBOUNCEWATER
+        +DontFall
+        +Missile
+         +DOOMBOUNCE
+          +BOUNCEONACTORS
+		  +DONTSPLASH
+          DeathSound "misc/teleport"
+	States
+	{
+	Spawn:
+		TNT1 A 1 Bright
+		Loop
+	Death:
+		TNT1 A 0 
+		TNT1 A 0 A_SpawnItemEx ("Marine_Woods", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+		goto death2
+	Death2:
+		TNT1 A 0 A_SpawnItem("TeleportFog_COD")
+		Stop
+	}
+}
+
+actor FriendProjectile_Hudson
+{
+	Radius 16
+	Height 52
+	Speed 4
+	Damage 0
+                   Scale 0.5
+        +NoBlockmap
+        +ActivatePCross
+        +ActivateImpact
+        -NoTeleport
+        +DropOff
+		  +CANBOUNCEWATER
+        +DontFall
+        +Missile
+         +DOOMBOUNCE
+          +BOUNCEONACTORS
+		  +DONTSPLASH
+          DeathSound "misc/teleport"
+	States
+	{
+	Spawn:
+		TNT1 A 1 Bright
+		Loop
+	Death:
+		TNT1 A 0 
+		TNT1 A 0 A_SpawnItemEx ("Marine_Hudson", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+		goto death2
+	Death2:
+		TNT1 A 0 A_SpawnItem("TeleportFog_COD")
+		Stop
+	}
+}
+
+actor FriendProjectile_Reznov
+{
+	Radius 16
+	Height 52
+	Speed 4
+	Damage 0
+                   Scale 0.5
+        +NoBlockmap
+        +ActivatePCross
+        +ActivateImpact
+        -NoTeleport
+        +DropOff
+		  +CANBOUNCEWATER
+        +DontFall
+        +Missile
+         +DOOMBOUNCE
+          +BOUNCEONACTORS
+		  +DONTSPLASH
+          DeathSound "misc/teleport"
+	States
+	{
+	Spawn:
+		TNT1 A 1 Bright
+		Loop
+	Death:
+		TNT1 A 0 
+		TNT1 A 0 A_SpawnItemEx ("Marine_Reznov", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+		goto death2
+	Death2:
+		TNT1 A 0 A_SpawnItem("TeleportFog_COD")
+		Stop
+	}
+}
+
+actor FriendProjectile_China
+{
+	Radius 16
+	Height 52
+	Speed 4
+	Damage 0
+                   Scale 0.5
+        +NoBlockmap
+        +ActivatePCross
+        +ActivateImpact
+        -NoTeleport
+        +DropOff
+		  +CANBOUNCEWATER
+        +DontFall
+        +Missile
+         +DOOMBOUNCE
+          +BOUNCEONACTORS
+		  +DONTSPLASH
+          DeathSound "misc/teleport"
+	States
+	{
+	Spawn:
+		TNT1 A 1 Bright
+		Loop
+	Death:
+		TNT1 A 0 
+		TNT1 A 0 A_SpawnItemEx ("Marine_China", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+		goto death2
+	Death2:
+		TNT1 A 0 A_SpawnItem("TeleportFog_COD")
+		Stop
+	}
+}
+
+actor FriendProjectile_Maiko
+{
+	Radius 16
+	Height 52
+	Speed 4
+	Damage 0
+                   Scale 0.5
+        +NoBlockmap
+        +ActivatePCross
+        +ActivateImpact
+        -NoTeleport
+        +DropOff
+		  +CANBOUNCEWATER
+        +DontFall
+        +Missile
+         +DOOMBOUNCE
+          +BOUNCEONACTORS
+		  +DONTSPLASH
+          DeathSound "misc/teleport"
+	States
+	{
+	Spawn:
+		TNT1 A 1 Bright
+		Loop
+	Death:
+		TNT1 A 0 
+		TNT1 A 0 A_SpawnItemEx ("Marine_Maiko", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+		goto death2
+	Death2:
+		TNT1 A 0 A_SpawnItem("TeleportFog_COD")
+		Stop
+	}
+}
+
+actor FriendProjectile_Meryl
+{
+	Radius 16
+	Height 52
+	Speed 4
+	Damage 0
+                   Scale 0.5
+        +NoBlockmap
+        +ActivatePCross
+        +ActivateImpact
+        -NoTeleport
+        +DropOff
+		  +CANBOUNCEWATER
+        +DontFall
+        +Missile
+         +DOOMBOUNCE
+          +BOUNCEONACTORS
+		  +DONTSPLASH
+          DeathSound "misc/teleport"
+	States
+	{
+	Spawn:
+		TNT1 A 1 Bright
+		Loop
+	Death:
+		TNT1 A 0 
+		TNT1 A 0 A_SpawnItemEx ("Marine_Meryl", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+		goto death2
+	Death2:
+		TNT1 A 0 A_SpawnItem("TeleportFog_COD")
+		Stop
+	}
+}
+
+actor FriendProjectile_Gumshoe
+{
+	Radius 16
+	Height 52
+	Speed 4
+	Damage 0
+                   Scale 0.5
+        +NoBlockmap
+        +ActivatePCross
+        +ActivateImpact
+        -NoTeleport
+        +DropOff
+		  +CANBOUNCEWATER
+        +DontFall
+        +Missile
+         +DOOMBOUNCE
+          +BOUNCEONACTORS
+		  +DONTSPLASH
+          DeathSound "misc/teleport"
+	States
+	{
+	Spawn:
+		TNT1 A 1 Bright
+		Loop
+	Death:
+		TNT1 A 0 
+		TNT1 A 0 A_SpawnItemEx ("Marine_Gumshoe", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+		goto death2
+	Death2:
+		TNT1 A 0 A_SpawnItem("TeleportFog_COD")
+		Stop
+	}
+}
+
+actor FriendProjectile_Akid
+{
+	Radius 16
+	Height 52
+	Speed 4
+	Damage 0
+                   Scale 0.5
+        +NoBlockmap
+        +ActivatePCross
+        +ActivateImpact
+        -NoTeleport
+        +DropOff
+		  +CANBOUNCEWATER
+        +DontFall
+        +Missile
+         +DOOMBOUNCE
+          +BOUNCEONACTORS
+		  +DONTSPLASH
+          DeathSound "misc/teleport"
+	States
+	{
+	Spawn:
+		TNT1 A 1 Bright
+		Loop
+	Death:
+		TNT1 A 0 
+		TNT1 A 0 A_SpawnItemEx ("Marine_Akid", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+		goto death2
+	Death2:
+		TNT1 A 0 A_SpawnItem("TeleportFog_COD")
+		Stop
+	}
+}
+
+actor FriendProjectile_Iris
+{
+	Radius 16
+	Height 52
+	Speed 4
+	Damage 0
+                   Scale 0.5
+        +NoBlockmap
+        +ActivatePCross
+        +ActivateImpact
+        -NoTeleport
+        +DropOff
+		  +CANBOUNCEWATER
+        +DontFall
+        +Missile
+         +DOOMBOUNCE
+          +BOUNCEONACTORS
+		  +DONTSPLASH
+          DeathSound "misc/teleport"
+	States
+	{
+	Spawn:
+		TNT1 A 1 Bright
+		Loop
+	Death:
+		TNT1 A 0 
+		TNT1 A 0 A_SpawnItemEx ("Marine_Iris", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+		goto death2
+	Death2:
+		TNT1 A 0 A_SpawnItem("TeleportFog_COD")
+		Stop
+	}
+}
+
+actor FriendProjectile_Sakuya
+{
+	Radius 16
+	Height 52
+	Speed 4
+	Damage 0
+                   Scale 0.5
+        +NoBlockmap
+        +ActivatePCross
+        +ActivateImpact
+        -NoTeleport
+        +DropOff
+		  +CANBOUNCEWATER
+        +DontFall
+        +Missile
+         +DOOMBOUNCE
+          +BOUNCEONACTORS
+		  +DONTSPLASH
+          DeathSound "misc/teleport"
+	States
+	{
+	Spawn:
+		TNT1 A 1 Bright
+		Loop
+	Death:
+		TNT1 A 0 
+		TNT1 A 0 A_SpawnItemEx ("Marine_Sakuya", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+		goto death2
+	Death2:
+		TNT1 A 0 A_SpawnItem("TeleportFog_COD")
+		Stop
+	}
+}
+
+actor FriendProjectile_heli
+{
+	Radius 100
+	Height 40
+	Speed 12
+	Damage 0
+	
+	Projectile
+     +NOGRAVITY
+        +NoBlockmap
+        +Missile
+		  +DONTSPLASH
+          DeathSound "misc/teleport"
+	States
+	{
+	Spawn:
+		TNT1 A 5 Bright
+		loop
+		
+	helispawn:
+		TNT1 A 0 A_SpawnItem("TeleportFog_COD")
+		TNT1 A 0 A_SpawnItem("RGA_HELI", 0, 0)
+		goto helispawn2
+	helispawn2:
+		TNT1 A 0 A_SpawnItem("TeleportFog_COD")
+		Stop
+		
+	Death:
+		goto helispawn
+	}
+}
+
+actor FriendProjectile_RGAHELI
+{
+	Radius 4
+	Height 4
+	Speed 6
+	Damage 0
+                   Scale 0.5
+        +NoBlockmap
+        +ActivatePCross
+        +ActivateImpact
+        -NoTeleport
+        +DropOff
+        +DontFall
+		  +CANBOUNCEWATER
+        +Missile
+         +DOOMBOUNCE
+          +BOUNCEONACTORS
+		  +DONTSPLASH
+          DeathSound "misc/teleport"
+	States
+	{
+	Spawn:
+		TNT1 A 1 Bright
+		Loop
+	Death:
+		TNT1 A 0 A_SpawnItem("RGA_HELI", 0, 0)
+		goto death2
+	Death2:
+		TNT1 A 0 A_SpawnItem("TeleportFog")
+		Stop
+	}
+}
+
+actor friendbullet : BulletPuff
+{
+ DamageType	"Friendry"
+}
+
+actor rgafriends
+{
+
+Obituary	"%o has been gunned down by a Marine."
+DamageType	"Friendry"
+damagefactor "Friendry", 	0.0
+DamageFactor "CauseObjectsToSplash", 0.0
+damagefactor "TeleportRemover", 0.0
+damagefactor "GibRemoving", 0.0
+ +FRIENDLY
+}
+
+ACTOR bia_gunflash : rgafriends
+{
+	Radius 16
+	Height 16
+	Speed 15
+	Damage 0
+	scale 1
+	Projectile 
+	+RANDOMIZE
+	+NOCLIP
+	RenderStyle Add
+	Alpha 0.6
+	States
+	{
+	Spawn:
+		TNT1 A 2
+		MUZB A 0 A_Jump(256, "p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8")
+		stop
+	p1:
+      MUZC A 1 bright 
+	  stop
+	p2:
+      MUZC B 1 bright 
+	  stop
+	p3:
+      MUZC C 1 bright 
+	  stop
+	p4:
+      MUZC D 1 bright 
+	  stop
+	p5:
+      MUZC E 1 bright 
+	  stop
+	p6:
+      MUZC F 1 bright 
+	  stop
+	p7:
+      MUZC G 1 bright 
+	  stop
+	p8:
+      MUZC H 1 bright 
+	  stop
+	}
+}
+
+ACTOR bia_gunflashI : rgafriends
+{
+	Radius 16
+	Height 16
+	Speed 20
+	Damage 0
+	scale 1
+	Projectile 
+	+RANDOMIZE
+	+NOCLIP
+	RenderStyle Add
+	Alpha 0.6
+	States
+	{
+	Spawn:
+		TNT1 A 4
+		MUZB A 0 A_Jump(256, "p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8")
+		stop
+	p1:
+      MUZC A 1 bright 
+	  stop
+	p2:
+      MUZC B 1 bright 
+	  stop
+	p3:
+      MUZC C 1 bright 
+	  stop
+	p4:
+      MUZC D 1 bright 
+	  stop
+	p5:
+      MUZC E 1 bright 
+	  stop
+	p6:
+      MUZC F 1 bright 
+	  stop
+	p7:
+      MUZC G 1 bright 
+	  stop
+	p8:
+      MUZC H 1 bright 
+	  stop
+	}
+}
+
+ACTOR bia_gunflash2 : rgafriends
+{
+	Radius 16
+	Height 16
+	Speed 15
+	Damage 0
+	scale 0.3
+	Projectile 
+	+RANDOMIZE
+	+NOCLIP
+	RenderStyle Add
+	Alpha 0.6
+	States
+	{
+	Spawn:
+		TNT1 A 2
+		MUZB A 0 A_Jump(256, "p1", "p2", "p3", "p4", "p5", "p6")
+		stop
+	p1:
+      MUZB A 1 bright 
+	  stop
+	p2:
+      MUZB B 1 bright 
+	  stop
+	p3:
+      MUZB C 1 bright 
+	  stop
+	p4:
+      MUZB D 1 bright 
+	  stop
+	p5:
+      MUZB E 1 bright 
+	  stop
+	p6:
+      MUZB F 1 bright 
+	  stop
+	}
+}

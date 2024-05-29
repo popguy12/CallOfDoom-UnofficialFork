@@ -1,0 +1,268 @@
+ACTOR Handing : RGUWeapon
+{
+  Obituary "%k klled %o with a knife." 
+  Weapon.SelectionOrder 400
+  +NOAUTOFIRE
+  +INVENTORY.UNDROPPABLE
+  Tag " "
+  States
+  {
+  Select:
+	TNT1 A 1 A_Raise
+    TNT1 AA 0 A_Raise
+    Loop
+  Ready:
+	TNT1 A 0 A_TakeInventory("Weight", 0)
+    TNT1 A 0 A_GiveInventory("Weight", 1)	//Determines player speed - 1 means normal speed
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDFireSelect", 12, 0, 0)
+    TNT1 A 0 ACS_NamedExecuteAlways("CoDPlayerSpeed", 0, 0, 0, 0)
+    TNT1 A 0 ACS_NamedExecuteWithResult("CoDWeaponLook", 56, 0, 0)
+    TNT1 A 0 ACS_NamedExecuteWithResult("CoDFireSelectIcon", 99, 0, 0)
+    TNT1 A 0 ACS_NamedExecuteWithResult("CoDScopeSelectIcon", 99, 0, 0)
+	TNT1 A 0 A_TakeInventory("BOSelectScope", 1)
+	TNT1 A 0 A_TakeInventory("BOSelectFire", 1)
+	TNT1 A 0 A_TakeInventory("BOWeaponlook", 1)
+	TNT1 A 0 A_TakeInventory("BOWeaponlooking", 1)
+	TNT1 A 0 A_TakeInventory("Reloading", 1)
+	TNT1 A 0 A_TakeInventory("Aiming", 1)
+	TNT1 A 0 A_TakeInventory("Fist", 0)
+    TNT1 A 0 A_TakeInventory("ThrowingGrenade", 1)
+    TNT1 A 0 A_TakeInventory("KnifeAttack", 1)
+	TNT1 A 0 //ACS_NamedExecuteWithResult("CoDWeaponIcon", 56, 0, 0)
+	TNT1 A 0 A_ZoomFactor(1.0, ZOOM_INSTANT)
+    TNT1 A 0 A_SetCrosshair(0)
+    TNT1 A 0 A_JumpIfInventory("Perk1_SOH_Pro", 1, "GiveSOHSelect")
+    // Goto InHand 				-- intentional drop to next state
+  InHand: 					//Ready state
+    TNT1 A 0 A_JumpIfInventory("Aiming", 1, "Aiming")
+    TNT1 A 0 A_JumpIfInventory("ThrowingGrenade", 1, "KnifeAttack")
+    TNT1 A 0 A_JumpIfInventory("KnifeAttack", 1, "KnifeAttack")
+    TNT1 A 0 A_JumpIfInventory("BONVstart", 1, "NightVisionON")
+    TNT1 A 1 A_WeaponReady
+    loop 
+  Ready2:
+    TNT1 A 0 // A_GiveInventory("Weight", 1)	//Determines player speed - 1 means normal speed
+    TNT1 A 0 ACS_NamedExecuteAlways("CoDPlayerSpeed", 0, 0, 0, 0)
+    TNT1 A 0 A_JumpIfInventory("Perk1_SOH_Pro", 1, "GiveSOHSelect")
+    // TNT1 A 0 A_PlayWeaponSound("weapon/select")
+    TNT1 A 0 A_Raise
+    TNT1 A 0 A_WeaponReady
+    Goto InHand
+   Aiming:   
+    DEAC D 0 A_JumpIfInventory("ThrowingGrenade", 1, "KnifeAttack")
+    DEAC D 0 A_JumpIfInventory("KnifeAttack", 1, "KnifeAttack")
+    TNT1 A 1 A_WeaponReady
+    loop
+  Deselect:
+    TNT1 A 0 A_TakeInventory("Weight", 0)	//Determines player speed - 1 means normal speed
+    TNT1 A 0 A_TakeInventory("Aiming", 1)
+    TNT1 A 0 ACS_NamedExecuteAlways("CoDPlayerSpeed", 0, 0, 0, 0)
+    TNT1 A 0 A_TakeInventory("Reloading", 1)
+    TNT1 A 0 A_ZoomFactor(1.0)
+    TNT1 A 0 A_SetCrosshair(0)
+    TNT1 A 0 A_JumpIfInventory("Perk1_SOH_Pro", 1, "GiveSOHDeselect")
+    TNT1 A 0 A_Lower
+  DeselectFull: 				//Deselect
+    TNT1 AA 0 A_Lower
+    TNT1 A 0 A_Lower
+    loop
+
+  NightVisionON:
+    TNT1 A 0 
+	TNT1 A 0 A_TakeInventory("Aiming", 1)
+	TNT1 A 0 A_ZoomFactor(1.0, ZOOM_INSTANT)
+    TNT1 A 0 A_SetCrosshair(0)
+	TNT1 A 0 A_JumpIfInventory("NightVisionActive", 1, "NightVisionOFF")   
+	TNT1 A 0 A_TakeInventory("BONVstart", 1)
+    TNT1 A 0 A_PlaySoundEx("g36c/reload1", "SoundSlot5")
+	BONV ABCDEFGHIJKLM 2
+	BONV N 6
+	TNT1 A 0 A_PlaySoundEx("BONVactive", "SoundSlot6")
+	TNT1 A 0 A_GiveInventory("Infrared_COD", 1)
+	TNT1 A 0 A_GiveInventory("NightVisionActive", 1)
+	TNT1 A 0 A_TakeInventory("BONVstart", 1)
+    Goto ready2
+  NightVisionOFF:
+    TNT1 A 0 
+	TNT1 A 0 A_TakeInventory("Infrared_COD", 0)
+	TNT1 A 0 A_TakeInventory("PowerLightAmp", 0)
+	TNT1 A 0 A_TakeInventory("NightVisionActive", 0)
+	TNT1 A 0 A_TakeInventory("BONVstart", 1)
+    TNT1 A 0 A_PlaySoundEx("weapon/select", "SoundSlot5")
+	BONV NMLKJIHGFEDCBA 2
+	TNT1 A 0 A_TakeInventory("BONVstart", 1)
+    Goto ready2
+
+  Fire:
+    TNT1 A 0 
+	TNT1 A 1
+    Goto KnifeAttack
+  Hold:
+	TNT1 A 0 
+	TNT1 A 1
+    Goto InHand
+  HoldAim:
+    TNT1 A 0
+	TNT1 A 1
+    Goto Aiming
+
+  AltFire:	//Aim
+    TNT1 A 0 A_JumpIfInventory("Perk2_QuickDraw", 1, "AltFire_QD")
+    DEAC A 0 A_JumpIfInventory("Aiming", 1, "AltFire2")
+    DEAC A 0 A_ZoomFactor(1.3)		//No FOV change for handguns
+    TNT1 A 0 A_SetCrosshair(0)
+    TNT1 A 1
+    DEAC D 0 A_GiveInventory("Aiming", 1)
+    DEAC D 0 ACS_NamedExecuteAlways("CoDPlayerSpeed", 0, 0, 0, 0)
+    DEAC D 0 A_ReFire
+    Goto Aiming
+  AltFire2:
+    DEAC D 0 A_ZoomFactor(1.0)
+    TNT1 A 0 A_SetCrosshair(0)
+    TNT1 A 1
+    DEAC A 0 A_TakeInventory("Aiming", 1)
+    DEAC A 0 ACS_NamedExecuteAlways("CoDPlayerSpeed", 0, 0, 0, 0)
+    DEAC D 0 A_ReFire
+    Goto InHand
+  AltFire_QD:	//Aim with QuickDraw
+    DEAC A 0 A_JumpIfInventory("Aiming", 1, "AltFire2_QD")
+    DEAC A 0 A_ZoomFactor(1.3)		//No FOV change for handguns
+    TNT1 A 0 A_SetCrosshair(0)
+    TNT1 A 1
+    DEAC D 0 A_GiveInventory("Aiming", 1)
+    DEAC D 0 ACS_NamedExecuteAlways("CoDPlayerSpeed", 0, 0, 0, 0)
+    DEAC D 0 A_ReFire
+    Goto Aiming
+  AltFire2_QD:
+    DEAC D 0 A_ZoomFactor(1.0)
+    TNT1 A 0 A_SetCrosshair(0)
+    TNT1 A 1
+    DEAC A 0 A_TakeInventory("Aiming", 1)
+    DEAC A 0 ACS_NamedExecuteAlways("CoDPlayerSpeed", 0, 0, 0, 0)
+    DEAC D 0 A_ReFire
+    Goto InHand
+  AltHold:
+    TNT1 A 1 A_JumpIfInventory("Aiming", 1, "AltHoldAim")
+    TNT1 A 1 A_ReFire
+    Goto InHand
+  AltHoldAim:
+    TNT1 A 1
+    TNT1 A 1 A_ReFire
+    Goto Aiming
+
+  KnifeAttack:
+    TNT1 A 0 A_ZoomFactor(1.0)
+    TNT1 A 0 A_SetCrosshair(0)
+    TNT1 A 0 A_TakeInventory("Aiming", 1)
+    TNT1 A 0 A_TakeInventory("Reloading", 1)
+    TNT1 A 0 ACS_NamedExecuteAlways("CoDPlayerSpeed", 0, 0, 0, 0)
+    TNT1 A 0 A_JumpIfInventory("ThrowingGrenade", 1, "FragGrenade")
+    TNT1 A 0 ACS_NamedExecuteAlways("CoDRecoil", 0, 900, 900, 1)		//Recoil script
+	// TNT1 A 0 A_JumpIfInventory("Katana", 1, "KatanaAttack")
+	TNT1 A 0 A_JumpIfInventory("Katana_Samurai", 1, "KatanaAttack")
+    KNI9 A 1 A_PlaySoundEx("melee/hit", "SoundSlot5")
+    KNI9 BCL 1
+    KNI9 D 1 A_FireBullets(10.0, 0.0, 6, 7, "MachineGunBulletPuff", 0, 80)
+    KNI9 EFGHIJ 1
+    TNT1 A 5
+    TNT1 A 0 A_TakeInventory("KnifeAttack", 1)
+    Goto Ready2+2
+  KatanaAttack:
+	KTNB FG 1
+	KTNB H 1 A_Saw("weapons/knifeswing3", "weapons/knifehits", 40, "katanaPuff", SF_NOUSEAMMO, 80, 32)
+    KTNB IJ 1 
+    TNT1 A 5
+	TNT1 A 0 A_TakeInventory("KnifeAttack", 1)
+    Goto Ready2+2
+  Friendcallup:
+    TNT1 A 0 A_ZoomFactor(1.0)
+    TNT1 A 0 A_SetCrosshair(0)
+    TNT1 A 0 A_GiveInventory("Followcall", 1)
+    TNT1 A 0 A_TakeInventory("Aiming", 1)
+    TNT1 A 0 A_TakeInventory("Reloading", 1)
+    TNT1 A 0 ACS_NamedExecuteAlways("CoDPlayerSpeed", 0, 0, 0, 0)
+    TNT1 A 0 A_PlaySound("NEEDCOME")
+    FRGE IHGFGHI 2
+    TNT1 A 10
+    TNT1 A 0 A_TakeInventory("KnifeAttack", 1)
+    TNT1 A 0 A_TakeInventory("Followcall", 1)
+    TNT1 A 0 A_TakeInventory("BOFriendcall", 1)
+    Goto Ready2+2
+  FragGrenade:
+    TNT1 A 0 A_JumpIfInventory("ThrowingStunGrenade", 1, "StunGrenade")
+    TNT1 A 0 A_JumpIfInventory("ThrowingKnife", 1, "ThrowingKnife")
+    FRGA ABCDEFGHI 1
+    FRGA J 0 A_PlaySoundEx("grenade/pinpull", "SoundSlot5")
+	FRGA JKLMOPQ 2
+    FRGA ST 2
+    FRGA H 0 A_PlaySoundEx("grenade/throw", "SoundSlot5")
+    FRGA I 0 A_TakeInventory("FragGrenadeAmmo", 1)
+    FRGA I 0 A_TakeInventory("ThrowingGrenade", 1)
+    FRGA I 0 A_TakeInventory("KnifeAttack", 1)
+    FRGA I 0 A_FireCustomMissile("FragGrenade", 0, 0, 0, 16)
+	FRGA U 2
+	FRGA VWX 2
+    Goto Ready2+1		//Reselect weapon
+  StunGrenade:
+    FRGA ABCDEFGHI 1
+    FRGA F 0 A_PlaySoundEx("flash/pinpull", "SoundSlot5")
+    FRGA JKLMOPQ 1
+    FRGA ST 1
+    FRGB H 0 A_PlaySoundEx("flash/throw", "SoundSlot5")
+    FRGB I 0 A_TakeInventory("ThrowingGrenade", 1)
+    FRGB I 0 A_TakeInventory("KnifeAttack", 1)
+    FRGB I 0 A_TakeInventory("ThrowingStunGrenade", 1)
+    FRGB C 0 A_FireCustomMissile("StunGrenadeThrown", 0, 0, 0, 16)
+    FRGA U 2
+    FRGA VWX 2
+    Goto Ready2+1		//Reselect weapon
+  SemtexGrenade:
+    FRGA ABCDE 3
+    FRGA F 3 A_PlaySoundEx("grenade/pinpull", "SoundSlot5")
+    TNT1 A 15 
+    FRGA GH 3
+    FRGA H 0 A_PlaySoundEx("grenade/throw", "SoundSlot5")
+    FRGA I 0 A_TakeInventory("ThrowingGrenade", 1)
+    FRGA I 0 A_TakeInventory("KnifeAttack", 1)
+    FRGB I 0 A_TakeInventory("ThrowingSemtex", 1)
+    FRGA I 3 A_FireCustomMissile("SemtexThrown", 0, 0, 0, 16)
+    Goto Ready2+1		//Reselect weapon
+  ThrowingKnife:
+    FRGC AB 3
+    FRGC C 3 A_PlaySoundEx("melee/swing", "SoundSlot5") 
+    FRGC D 3 A_FireCustomMissile("ThrowingKnifeThrown", 0, 0, 0, 8)
+    FRGC EFG 3
+    TNT1 A 15 
+    FRGC I 0 A_TakeInventory("ThrowingGrenade", 1)
+    FRGC I 0 A_TakeInventory("KnifeAttack", 1)
+    FRGC I 0 A_TakeInventory("ThrowingKnife", 1)
+    Goto Ready2+1		//Reselect weapon
+  Claymore:
+    FRGD A 2 A_PlaySoundEx("claymore/click", "SoundSlot5") 
+    FRGD BCDEFGHIJKLM 2
+    TNT1 A 3 A_GiveInventory("ClaymoreUse", 1)
+    TNT1 A 15 
+    FRGC I 0 A_TakeInventory("ThrowingGrenade", 1)
+    FRGC I 0 A_TakeInventory("KnifeAttack", 1)
+    FRGC I 0 A_TakeInventory("ThrowingClaymore", 1)
+    Goto Ready2+1		//Reselect weapon
+  Betty:
+    FRGE G 3 A_PlaySoundEx("grenade/throw", "SoundSlot5") 
+    FRGE B 3 A_GiveInventory("BettyUse", 1)
+    FRGE CDEF 3
+    TNT1 A 15 
+    FRGC I 0 A_TakeInventory("ThrowingGrenade", 1)
+    FRGC I 0 A_TakeInventory("KnifeAttack", 1)
+    FRGC I 0 A_TakeInventory("ThrowingBetty", 1)
+    Goto Ready2+1		//Reselect weapon
+ 
+  GiveSOHSelect:
+    Goto Ready2+3
+  GiveSOHDeselect:
+    Goto Deselect+6
+  GiveSOHReload:
+    Goto Inhand
+  GiveQDKnife:
+    Goto KnifeAttack+5
+  }
+}

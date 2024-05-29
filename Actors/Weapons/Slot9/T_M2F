@@ -1,0 +1,477 @@
+ACTOR M2Flame_Pickup : CustomInventory
+{
+  inventory.pickupmessage "[9] M2 Flamethrower!!! I'm cleaning up the waste!!!"
+  inventory.pickupsound "nothing"
+  +INVENTORY.AUTOACTIVATE
+  +DONTGIB
+  inventory.respawntics 35
+  scale 0.16
+  States
+  {
+  Spawn:
+    B004 F -1
+    Stop
+  Pickup:
+    GNEX A 0
+	GUNP A 0 A_JumpIfInventory("M2Flame", 1, "AmmoPickup")  //Do you have this?
+	GUNP A 0 A_JumpIfInventory("Mulekick", 1, 2)         //Are you using unlimited mode?
+	GUNP A 0 A_JumpIfInventory("gun3SV", 0, "notPickup") //Do you have space in your inventory?
+	GUNP A 0 A_GiveInventory("gun3SV", 1) 
+	TNT1 A 0 A_PlaySound("misc/w_pkup")      //Pick up!
+	GUNP A 0 A_GiveInventory("M2Flame", 1)      //weapon
+	GUNP A 0 A_GiveInventory("M2FlameAmmo", 150) //clip
+	GNEX A 0 ACS_NamedExecuteWithResult("CoDNewWeapon", 79, 0, 0)
+	GUNP A 0 //A_SelectWeapon("M2Flame")
+    Stop
+  AmmoPickup:
+    GUNP A 0 A_JumpIfInventory("M2FlameAmmo", 0, "failPickup")
+    GUNP A 0 A_GiveInventory("M2FlameAmmo", 150) //clip
+	TNT1 A 0 A_PlaySound("misc/w_pkup")
+	GUNP A 0 //A_SelectWeapon("M2Flame")
+    Stop
+  FailPickup:
+    B004 F -1
+    fail
+  notPickup:
+    TNT1 A 0 ACS_NamedExecuteWithResult("CoDNotPickup", 79, 0, 0)
+    B004 F -1
+    fail
+  }
+}
+
+ACTOR M2Flame_PickupE : CustomInventory
+{
+  inventory.pickupmessage "[9] M2 Flamethrower!!! I'm cleaning up the waste!!!"
+  inventory.pickupsound "nothing"
+  +INVENTORY.AUTOACTIVATE
+  +DONTGIB
+  inventory.respawntics 35
+  scale 0.16
+  States
+  {
+  Spawn:
+    B004 F -1
+    Stop
+  Pickup:
+    GNEX A 0
+	GUNP A 0 A_JumpIfInventory("M2Flame", 1, "failPickup")  //Do you have this?
+	GUNP A 0 A_JumpIfInventory("Mulekick", 1, 2)         //Are you using unlimited mode?
+	GUNP A 0 A_JumpIfInventory("gun3SV", 0, "notPickup") //Do you have space in your inventory?
+	GUNP A 0 A_GiveInventory("gun3SV", 1) 
+	TNT1 A 0 A_PlaySound("misc/w_pkup")      //Pick up!
+	GUNP A 0 A_GiveInventory("M2Flame", 1)      //weapon
+	//GUNP A 0 A_GiveInventory("M2FlameAmmo", 5) //clip
+    //TNT1 A 0 A_TakeInventory("M2FlameEmpty", 1) //no reload
+	GNEX A 0 ACS_NamedExecuteWithResult("CoDNewWeapon", 79, 0, 0)
+	GUNP A 0 //A_SelectWeapon("M2Flame")
+    Stop
+  FailPickup:
+    B004 F -1
+    fail
+  notPickup:
+    TNT1 A 0 ACS_NamedExecuteWithResult("CoDNotPickup", 79, 0, 0)
+    B004 F -1
+    fail
+  }
+}
+
+ACTOR DropWeapon_M2Flame
+{
+	Radius 8
+	Height 8
+	Speed 20
+	mass 2
+	Damage 2
+	 +DONTHURTSPECIES
+  +THRUSPECIES
+  +MTHRUSPECIES
+  Species "Marines"
+  damagetype "Kick"
+        +NoBlockmap
+		+DropOff
+        +ActivatePCross
+        +ActivateImpact
+        -NoTeleport
+        +DontFall
+        +Missile
+          DeathSound "none"
+	 scale 0.16
+  States
+  {
+  Spawn:
+    B004 F 1
+		loop
+	Death:
+		TNT1 A 0 A_SpawnItemEx ("M2Flame_PickupE", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+		Stop
+	}
+}
+
+actor M2FlameAmmo : Ammo
+{
+    inventory.amount 100
+    inventory.maxamount 400
+    ammo.backpackamount 50
+    ammo.backpackmaxamount 400
+	Inventory.Icon "ISM2F"
+    +IGNORESKILL
+}
+
+ACTOR TinyBurningPiece_RGA: BarrelExplosionSmokeColumn
+{
+Damagetype "Fire"
+    -CLIENTSIDEONLY
+	Species "Marines"
+	+DONTHURTSPECIES 
+	DONTHURTSHOOTER
+	+FRIENDLY
+	
+	Alpha 0.9
+	RenderStyle Add
+	Scale 1.1
+	States
+	{
+	Spawn:
+	
+	CFCF ABC 1 BRIGHT// A_SpawnItem("RedFlareSmall", 0, 5)
+	CFCF D 1
+	TNT1 A 0 A_Explode(2, 60)
+	CFCF EFG 1 BRIGHT// A_SpawnItem("RedFlareSmall", 0, 5)
+	CFCF H 1
+	CFCF IJK 1 BRIGHT// A_SpawnItem("RedFlareSmall", 0, 5)
+	CFCF L 1
+	TNT1 A 0 A_Jump(24, "StopBurning")
+	Loop
+	
+	StopBurning:
+	CFCF NOP 1 BRIGHT A_SpawnItem("RedFlareSmall", 0, 5)
+	Stop
+    }
+}
+
+ACTOR FlamethrowerMissile_RGA
+{
+	Game Doom
+	Radius 2
+	Height 2
+	Speed 50
+	Damage 1 
+    +NOBLOCKMAP
+    +NOTELEPORT
+    +DONTSPLASH
+	+MISSILE
+	+FORCEXYBILLBOARD
+	Damage 1
+	-RIPPER
+	+NOBLOOD
+	+NOBLOODDECALS
+	+BLOODLESSIMPACT
+	-BLOODSPLATTER
+	+DONTHURTSPECIES 
+	DONTHURTSHOOTER
+	+FRIENDLY
+	Species "Marines"
+	RenderStyle Add
+    DamageType Fire
+    Scale 0.5
+	Alpha 1.0
+	Gravity 0
+	States
+	{
+    Spawn:
+	    TNT1 A 0 
+        FIR3 A 1 BRIGHT A_SpawnItem("RedFlareSmall", 0, 0)
+		EXPL A 0 A_CustomMissile ("SmallFireTrail", 6, 0, 0, 2, random (0, 10))
+		FIR3 B 1 BRIGHT A_SpawnItem("RedFlareSmall", 0, 0)
+		EXPL A 0 A_CustomMissile ("SmallFireTrail", 6, 0, 0, 2, random (0, 20))
+		TNT1 A 0 A_Explode(3, 100, 0)
+		EXPL A 0 A_CustomMissile ("SmallFireTrail", 6, 0, 0, 2, random (0, 30))
+		FIR3 D 1 BRIGHT A_SpawnItem("RedFlareSmall", 0, 0)
+		EXPL A 0 A_CustomMissile ("SmallFireTrail", 6, 0, 0, 2, random (0, 40))
+		FIR3 E 1 BRIGHT A_SpawnItem("RedFlareSmall", 0, 0)
+		EXPL A 0 A_CustomMissile ("SmallFireTrail", 6, 0, 0, 2, random (0, 50))
+		FIR3 F 1 BRIGHT A_SpawnItem("RedFlareSmall", 0, 0)
+		TNT1 A 0 A_Explode(3, 100, 0)
+		EXPL A 0 A_CustomMissile ("SmallFireTrail", 6, 0, 0, 2, random (-10, 60))
+		FIR3 G 1 BRIGHT A_SpawnItem("RedFlareSmall", 0, 0)
+		EXPL A 0 A_CustomMissile ("SmallFireTrail", 6, 0, 0, 2, random (-50, 70))
+		FIR3 H 1 BRIGHT A_SpawnItem("RedFlareSmall", 0, 0)
+		EXPL A 0 A_CustomMissile ("SmallFireTrail", 6, 0, 0, 2, random (-60, 80))
+		FIR3 I 1 BRIGHT A_SpawnItem("RedFlareSmall", 0, 0)
+		TNT1 A 0 A_Explode(3, 100, 0)
+		EXPL A 0 A_CustomMissile ("FlamethrowerFireParticles", 6, 0, 0, 2, random (10, 20))
+		FIR3 JKL 1 BRIGHT A_SpawnItem("RedFlare", 0, 0)
+		TNT1 A 0 A_Explode(3, 150, 0)
+		EXPL A 0 A_CustomMissile ("FlamethrowerFireParticles", 6, 0, random (0, 360), 2, random (10, 90))
+		Stop
+	Death:
+	TNT1 A 0 A_Explode(35, 150, 0)
+	TNT1 A 0 A_Explode(3, 50)
+	TNT1 A 0 A_SpawnItemEx("TinyBurningPiece2", random (-25, 25), random (-15, 15))
+	//TNT1 A 0 A_SpawnItemEx("TinyBurningPiece_RGA", random (-15, 15), random (-15, 15))
+	EXPL AA 0 A_CustomMissile ("FlamethrowerFireParticles", 6, 0, random (0, 360), 2, random (10, 90))
+	Stop
+	}
+}
+
+actor M2Flame : RGUWeapon
+{
+  Obituary "%o was burned by %k's M2 Flamethrower."
+  inventory.pickupmessage "[9] M2 Flamethrower!!! I'm cleaning up the waste!!!"
+  inventory.pickupsound "misc/w_pkup" 
+  weapon.selectionorder 70
+  tag "M2 Flamethrower"
+  weapon.ammotype "M2FlameAmmo"
+  weapon.ammouse 1
+  -WEAPON.AMMO_CHECKBOTH
+  States
+  {
+  Spawn:
+  B004 F 0
+	TNT1 A 0 A_PlaySound("WeaponDropped") 
+    TNT1 A 2
+	TNT1 A 0 A_SpawnItemEx ("RemoveSlot9", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+	TNT1 A 0 A_SpawnItemEx ("DropWeapon_M2Flame", 20, 0, 20, 10, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+    stop
+  Select:
+    M2FA A 0 A_Raise
+    TNT1 AA 0 A_Raise
+    loop
+  Ready:
+   TNT1 A 0 A_TakeInventory("Weight", 0)
+	TNT1 A 0 A_GiveInventory("Weight", 4)	//Determines player speed - 3 means slower speed
+    TNT1 A 0 ACS_NamedExecuteAlways("CoDPlayerSpeed", 0, 0, 0, 0)
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDWeaponLook", 56, 0, 0)
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDFireSelectIcon", 99, 0, 0)
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDScopeSelectIcon", 99, 0, 0)
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDFireSelect", 12, 0, 0)
+	TNT1 A 0 A_TakeInventory("BOSelectScope", 1)
+	TNT1 A 0 A_TakeInventory("BOSelectFire", 1)
+	TNT1 A 0 A_TakeInventory("BOWeaponlook", 1)
+	TNT1 A 0 A_TakeInventory("BOWeaponlooking", 1)
+	TNT1 A 0 A_TakeInventory("Reloading", 1)
+	TNT1 A 0 A_TakeInventory("Aiming", 1)
+	GUNP A 0 //ACS_NamedExecuteWithResult("CoDWeaponIcon", 79, 0, 0)
+	TNT1 A 0 A_ZoomFactor(1.0, ZOOM_INSTANT)
+    TNT1 A 0 A_SetCrosshair(0)
+	TNT1 A 0 A_PlayWeaponSound("weapon/select")
+    M2FA A 2 
+	M2FA BCDEGHIJKL 2
+    //goto InHand 				-- intentional drop to next state
+  InHand: 					//Ready state
+    M2FA F 0 //A_JumpIfNoAmmo("Reload")
+    M2FA F 0 //JumpIfInventory("Aiming", 1, "Aiming")
+    M2FA F 0 //JumpIfInventory("Reloading", 1, "Reload")
+    M2FA F 0 A_JumpIfInventory("ThrowingGrenade", 1, "KnifeAttack")
+    M2FA F 0 A_JumpIfInventory("KnifeAttack", 1, "KnifeAttack")
+	TNT1 A 0 //JumpIfInventory("BOSelectFire", 1, "FireSet")
+	TNT1 A 0 //A_JumpIfInventory("BOSelectScope", 1, "ScopeSet")//M203
+	TNT1 A 0 A_JumpIfInventory("BOWeaponlook", 1, "Weaponlook")
+	TNT1 A 0 A_JumpIfInventory("BONVstart", 1, "NightVisionON") //
+	GUNP A 0 //ACS_NamedExecuteWithResult("CoDWeaponIcon", 79, 0, 0)
+    M2FA F 1 A_WeaponReady
+	Goto inhand
+  Friendcallup:
+    TNT1 A 0 A_ZoomFactor(1.0)
+    TNT1 A 0 A_SetCrosshair(0)
+    TNT1 A 0 A_GiveInventory("Followcall", 1)
+    TNT1 A 0 A_TakeInventory("Aiming", 1)
+    TNT1 A 0 A_TakeInventory("Reloading", 1)
+    TNT1 A 0 ACS_NamedExecuteAlways("CoDPlayerSpeed", 0, 0, 0, 0)
+    TNT1 A 0 A_PlaySound("NEEDCOME")
+    FRGE IHGFGHI 2
+    TNT1 A 10
+    TNT1 A 0 A_TakeInventory("KnifeAttack", 1)
+    TNT1 A 0 A_TakeInventory("Followcall", 1)
+    TNT1 A 0 A_TakeInventory("BOFriendcall", 1)
+    Goto Ready2+2
+  Ready2:
+    TNT1 A 0 //A_GiveInventory("Weight", 3)	
+    TNT1 A 0 ACS_NamedExecuteAlways("CoDPlayerSpeed", 0, 0, 0, 0)
+    TNT1 A 0 A_PlayWeaponSound("weapon/select")
+    M2FA ABCDEGHIJKL 2 A_JumpIfInventory("KnifeAttack", 1, "KnifeAttack")
+    goto InHand
+
+  NightVisionON:
+    TNT1 A 0 
+	TNT1 A 0 A_TakeInventory("Aiming", 1)
+	TNT1 A 0 A_ZoomFactor(1.0, ZOOM_INSTANT)
+    TNT1 A 0 A_SetCrosshair(0)
+	TNT1 A 0 A_JumpIfInventory("NightVisionActive", 1, "NightVisionOFF")   
+	TNT1 A 0 A_TakeInventory("BONVstart", 1)
+    TNT1 A 0 A_PlaySoundEx("g36c/reload1", "SoundSlot5")
+	BONV ABCDEFGHIJKLM 2
+	BONV N 6
+	TNT1 A 0 A_PlaySoundEx("BONVactive", "SoundSlot6")
+	TNT1 A 0 A_GiveInventory("Infrared_COD", 1)
+	TNT1 A 0 A_GiveInventory("NightVisionActive", 1)
+	TNT1 A 0 A_TakeInventory("BONVstart", 1)
+    goto ready2
+  NightVisionOFF:
+    TNT1 A 0 
+	TNT1 A 0 A_TakeInventory("Infrared_COD", 0)
+	TNT1 A 0 A_TakeInventory("PowerLightAmp", 0)
+	TNT1 A 0 A_TakeInventory("NightVisionActive", 0)
+	TNT1 A 0 A_TakeInventory("BONVstart", 1)
+    TNT1 A 0 A_PlaySoundEx("weapon/select", "SoundSlot5")
+	BONV NMLKJIHGFEDCBA 2
+	TNT1 A 0 A_TakeInventory("BONVstart", 1)
+    goto ready2
+	
+  Weaponlook:
+    TNT1 A 0 A_TakeInventory("BOWeaponlook", 1)
+	TNT1 A 0 
+  Weaponlooking: 	
+    TNT1 A 0 A_GiveInventory("BOWeaponlooking", 1)
+    ACRA F 0 A_JumpIfInventory("ThrowingGrenade", 1, "WeaponlookEND")
+    ACRA F 0 A_JumpIfInventory("KnifeAttack", 1, "WeaponlookEND")
+	ACRA F 0 A_JumpIfInventory("BOWeaponlook", 1, "WeaponlookEND")
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDWeaponLook", 79, 0, 0)
+    M2FA F 1 A_WeaponReady
+    loop
+  WeaponlookEND:
+    TNT1 A 0 ACS_NamedExecuteWithResult("CoDWeaponLook", 56, 0, 0)
+    TNT1 A 0 A_TakeInventory("BOWeaponlook", 1)
+    TNT1 A 0 A_TakeInventory("BOWeaponlooking", 1)
+    Goto InHand
+
+  Deselect:
+    TNT1 A 0 A_TakeInventory("Weight", 0)	//Determines player speed - 1 means normal speed
+    TNT1 A 0 A_TakeInventory("Aiming", 1)
+    TNT1 A 0 ACS_NamedExecuteAlways("CoDPlayerSpeed", 0, 0, 0, 0)
+    TNT1 A 0 A_TakeInventory("Reloading", 1)
+    TNT1 A 0 ACS_NamedExecuteWithResult("CoDWeaponLook", 56, 0, 0)
+    TNT1 A 0 A_TakeInventory("BOWeaponlook", 1)
+    TNT1 A 0 A_TakeInventory("BOWeaponlooking", 1)
+    TNT1 A 0 A_ZoomFactor(1.0)
+    TNT1 A 0 A_SetCrosshair(0)
+    M2FA LKJIHGEDCBA 1
+    TNT1 A 0 A_StopSound(1)
+  DeselectFull: 				//Deselect
+    TNT1 A 0
+    TNT1 AA 0 A_Lower
+    TNT1 A 1 A_Lower
+    Loop
+
+  Fire:
+    ACRA F 0 A_JumpIfInventory("BOWeaponlooking", 1, "WeaponlookEND")
+    M2FB A 1 A_AlertMonsters
+	//TNT1 A 0 BRIGHT A_FireCustomMissile("FlamethrowerMissile_RGA", 0, 1, 0, 0)
+	TNT1 A 0 BRIGHT A_FireCustomMissile("FlamethrowerMissileProper", 0, 1, 0, 0)
+	TNT1 A 0 A_PlaySound("FLAMER", 1, 1, 1)
+	TNT1 A 0 //A_TakeInventory("M2FlameAmmo", 2)
+	M2FB B 1 BRIGHT A_SetAngle(random(1, -1) + angle)
+	M2FB C 1 BRIGHT A_SetPitch(random(1, -1) + pitch)
+	M2FB D 1 BRIGHT A_SetAngle(random(1, -1) + angle)
+	TNT1 A 0 A_ReFire
+	TNT1 A 0 A_PlaySound("FLAMSTOP", 1)
+    Goto inhand
+
+  FireEmpty:
+    M2FA F 1 
+    M2FA F 1 A_PlayWeaponSound("weapon/dryfire")
+    RPDB A 0 A_JumpIfNoAmmo(2)
+    RPDB A 0 A_ReFire
+    goto InHand
+	GLMB A 0 
+    goto InHand
+	
+  AltFire:	//Aim
+    ACRA F 0 A_JumpIfInventory("BOWeaponlooking", 1, "WeaponlookEND")
+    RPDC D 0 A_TakeInventory("Aiming", 1)
+    RPDA F 0
+    goto inhand
+  
+  KnifeAttack:
+    TNT1 A 0 A_ZoomFactor(1.0)
+    TNT1 A 0 A_SetCrosshair(0)
+    TNT1 A 0 A_TakeInventory("Aiming", 1)
+    TNT1 A 0 A_TakeInventory("Reloading", 1)
+    TNT1 A 0 ACS_NamedExecuteAlways("CoDPlayerSpeed", 0, 0, 0, 0)
+    TNT1 A 0 A_JumpIfInventory("ThrowingGrenade", 1, "FragGrenade")
+    TNT1 A 0 ACS_NamedExecuteAlways("CoDRecoil", 0, 900, 900, 1)		//Recoil script
+	TNT1 A 0 A_JumpIfInventory("Katana", 1, "KatanaAttack")
+	TNT1 A 0 A_JumpIfInventory("Katana_Samurai", 1, "KatanaAttack")
+    KNI9 A 1 A_PlaySoundEx("melee/hit", "SoundSlot5")
+    KNI9 BCL 1
+    KNI9 D 1 A_FireBullets(10.0, 0.0, 6, 7, "MachineGunBulletPuff", 0, 80)
+    KNI9 EFGHIJ 1
+    TNT1 A 5
+    TNT1 A 0 A_TakeInventory("KnifeAttack", 1)
+    goto Ready2+2
+  KatanaAttack:
+	KTNB FG 1
+	KTNB H 1 A_Saw("weapons/knifeswing3", "weapons/knifehits", 40, "katanaPuff", SF_NOUSEAMMO, 80, 32)
+    KTNB IJ 1 
+    TNT1 A 5
+	TNT1 A 0 A_TakeInventory("KnifeAttack", 1)
+    goto Ready2+2
+  FragGrenade:
+    TNT1 A 0 A_JumpIfInventory("ThrowingStunGrenade", 1, "StunGrenade")
+    TNT1 A 0 A_JumpIfInventory("ThrowingKnife", 1, "ThrowingKnife")
+    FRGA ABCDEFGHI 1
+    FRGA J 0 A_PlaySoundEx("grenade/pinpull", "SoundSlot5")
+	FRGA JKLMOPQ 2
+    FRGA ST 2
+    FRGA H 0 A_PlaySoundEx("grenade/throw", "SoundSlot5")
+    FRGA I 0 A_TakeInventory("FragGrenadeAmmo", 1)
+    FRGA I 0 A_TakeInventory("ThrowingGrenade", 1)
+    FRGA I 0 A_TakeInventory("KnifeAttack", 1)
+    FRGA I 0 A_FireCustomMissile("FragGrenade", 0, 0, 0, 16)
+	FRGA U 2
+	FRGA VWX 2
+    goto Ready2+1		//Reselect weapon
+  StunGrenade:
+    FRGA ABCDEFGHI 1
+    FRGA F 0 A_PlaySoundEx("flash/pinpull", "SoundSlot5")
+    FRGA JKLMOPQ 1
+    FRGA ST 1
+    FRGB H 0 A_PlaySoundEx("flash/throw", "SoundSlot5")
+    FRGB I 0 A_TakeInventory("ThrowingGrenade", 1)
+    FRGB I 0 A_TakeInventory("KnifeAttack", 1)
+    FRGB I 0 A_TakeInventory("ThrowingStunGrenade", 1)
+    FRGB C 0 A_FireCustomMissile("StunGrenadeThrown", 0, 0, 0, 16)
+    FRGA U 2
+	FRGA VWX 2
+    goto Ready2+1		//Reselect weapon
+  SemtexGrenade:
+    FRGA ABCDE 3
+    FRGA F 3 A_PlaySoundEx("grenade/pinpull", "SoundSlot5")
+    TNT1 A 15 
+    FRGA GH 3
+    FRGA H 0 A_PlaySoundEx("grenade/throw", "SoundSlot5")
+    FRGA I 0 A_TakeInventory("ThrowingGrenade", 1)
+    FRGA I 0 A_TakeInventory("KnifeAttack", 1)
+    FRGB I 0 A_TakeInventory("ThrowingSemtex", 1)
+    FRGA I 3 A_FireCustomMissile("SemtexThrown", 0, 0, 0, 16)
+    goto Ready+1		//Reselect weapon
+  ThrowingKnife:
+    FRGC AB 3
+    FRGC C 3 A_PlaySoundEx("melee/swing", "SoundSlot5") 
+    FRGC D 3 A_FireCustomMissile("ThrowingKnifeThrown", 0, 0, 0, 8)
+    FRGC EFG 3
+    TNT1 A 15 
+    FRGC I 0 A_TakeInventory("ThrowingGrenade", 1)
+    FRGC I 0 A_TakeInventory("KnifeAttack", 1)
+    FRGC I 0 A_TakeInventory("ThrowingKnife", 1)
+    goto Ready+1		//Reselect weapon
+  Claymore:
+    FRGD A 2 A_PlaySoundEx("claymore/click", "SoundSlot5") 
+    FRGD BCDEFGHIJKLM 2
+    TNT1 A 3 A_GiveInventory("ClaymoreUse", 1)
+    TNT1 A 15 
+    FRGC I 0 A_TakeInventory("ThrowingGrenade", 1)
+    FRGC I 0 A_TakeInventory("KnifeAttack", 1)
+    FRGC I 0 A_TakeInventory("ThrowingClaymore", 1)
+    goto Ready+1		//Reselect weapon
+  Betty:
+    FRGE G 3 A_PlaySoundEx("grenade/throw", "SoundSlot5") 
+    FRGE B 3 A_GiveInventory("BettyUse", 1)
+    FRGE CDEF 3
+    TNT1 A 15 
+    FRGC I 0 A_TakeInventory("ThrowingGrenade", 1)
+    FRGC I 0 A_TakeInventory("KnifeAttack", 1)
+    FRGC I 0 A_TakeInventory("ThrowingBetty", 1)
+    goto Ready+1		//Reselect weapon
+  }
+}

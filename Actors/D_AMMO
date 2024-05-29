@@ -1,0 +1,2693 @@
+ACTOR M320Ammo : Ammo // 40mm Grenade
+{
+    inventory.amount 1
+    inventory.maxamount 15
+    ammo.backpackamount 3
+    ammo.backpackmaxamount 30
+    +IGNORESKILL
+}
+
+ACTOR RPGAmmo : Ammo
+{
+    inventory.amount 0
+    inventory.maxamount 10
+    ammo.backpackamount 1
+    ammo.backpackmaxamount 20
+    +IGNORESKILL
+}
+
+ACTOR Ammo44Mag : Ammo 
+{
+    inventory.amount 0
+    inventory.maxamount 180
+    ammo.backpackamount 6
+    ammo.backpackmaxamount 300
+    +IGNORESKILL
+}
+
+ACTOR AmmoRSH12 : Ammo 
+{
+    inventory.amount 0
+    inventory.maxamount 100
+    ammo.backpackamount 5
+    ammo.backpackmaxamount 200
+    +IGNORESKILL
+}
+
+ACTOR Ammo9mm : Ammo
+{
+    inventory.amount 0
+    inventory.maxamount 180
+    ammo.backpackamount 10
+    ammo.backpackmaxamount 400
+    +IGNORESKILL
+}
+
+ACTOR AmmoPM : Ammo  
+{
+    inventory.amount 0
+    inventory.maxamount 180
+    ammo.backpackamount 10
+    ammo.backpackmaxamount 400
+    +IGNORESKILL
+}
+
+ACTOR P2WAmmo : Ammo  
+{
+    inventory.amount 0
+    inventory.maxamount 250
+    ammo.backpackamount 0
+    ammo.backpackmaxamount 250
+    +IGNORESKILL
+}
+
+ACTOR AmmoTT33 : Ammo 
+{
+    inventory.amount 0
+    inventory.maxamount 180
+    ammo.backpackamount 10
+    ammo.backpackmaxamount 400
+    +IGNORESKILL
+}
+
+ACTOR AmmoSR2 : Ammo
+{
+    inventory.amount 0
+    inventory.maxamount 180
+    ammo.backpackamount 10
+    ammo.backpackmaxamount 400
+    +IGNORESKILL
+}
+
+
+ACTOR AmmoMP7 : Ammo
+{
+    inventory.amount 0
+    inventory.maxamount 180
+    ammo.backpackamount 10
+    ammo.backpackmaxamount 400
+    +IGNORESKILL
+}
+
+ACTOR AmmoPDW : Ammo //P90
+{
+    inventory.amount 0
+    inventory.maxamount 180
+    ammo.backpackamount 10
+    ammo.backpackmaxamount 400
+    +IGNORESKILL
+}
+
+ACTOR Ammo45ACP : Ammo
+{
+    inventory.amount 0
+    inventory.maxamount 180
+    ammo.backpackamount 10
+    ammo.backpackmaxamount 400
+    +IGNORESKILL
+}
+
+ACTOR Ammo12G : Ammo
+{
+    inventory.amount 0
+    inventory.maxamount 50
+    ammo.backpackamount 5
+    ammo.backpackmaxamount 100
+    +IGNORESKILL
+}
+
+ACTOR Ammo12GF : Ammo //25mm
+{
+    inventory.amount 0
+    inventory.maxamount 24
+    ammo.backpackamount 5
+    ammo.backpackmaxamount 100
+    +IGNORESKILL
+}
+
+ACTOR Ammo20G : Ammo
+{
+    inventory.amount 0
+    inventory.maxamount 100
+    ammo.backpackamount 5
+    ammo.backpackmaxamount 200
+    +IGNORESKILL
+}
+
+ACTOR AmmoKS23 : Ammo 
+{
+    inventory.amount 0
+    inventory.maxamount 50
+    ammo.backpackamount 4
+    ammo.backpackmaxamount 100
+    +IGNORESKILL
+}
+
+
+ACTOR Ammo556 : Ammo
+{
+    inventory.amount 0
+    inventory.maxamount 180
+    ammo.backpackamount 10
+    ammo.backpackmaxamount 300
+    +IGNORESKILL
+}
+
+ACTOR Ammo300 : Ammo
+{
+    inventory.amount 0
+    inventory.maxamount 180
+    ammo.backpackamount 10
+    ammo.backpackmaxamount 300
+    +IGNORESKILL
+}
+
+ACTOR Ammo762K : Ammo //5.45
+{
+    inventory.amount 0
+    inventory.maxamount 180
+    ammo.backpackamount 10
+    ammo.backpackmaxamount 300
+    +IGNORESKILL
+}
+
+ACTOR Ammo762R : Ammo //7.62AK
+{
+    inventory.amount 0
+    inventory.maxamount 180
+    ammo.backpackamount 10
+    ammo.backpackmaxamount 300
+    +IGNORESKILL
+}
+
+ACTOR AmmoSVD : Ammo //7.62SVD
+{
+    inventory.amount 0
+    inventory.maxamount 180
+    ammo.backpackamount 10
+    ammo.backpackmaxamount 300
+    +IGNORESKILL
+}
+
+ACTOR Ammo762 : Ammo //7.62NATO
+{
+    inventory.amount 0
+    inventory.maxamount 180
+    ammo.backpackamount 10
+    ammo.backpackmaxamount 300
+    +IGNORESKILL
+}
+
+ACTOR Ammo338 : Ammo
+{
+    inventory.amount 0
+    inventory.maxamount 100
+    ammo.backpackamount 10
+    ammo.backpackmaxamount 200
+    +IGNORESKILL
+}
+
+ACTOR Ammo50BMG : Ammo
+{
+    inventory.amount 0
+    inventory.maxamount 30
+    ammo.backpackamount 10
+    ammo.backpackmaxamount 100
+    +IGNORESKILL
+}
+
+
+ACTOR Ammo410G : Ammo
+{
+    inventory.amount 0
+    inventory.maxamount 120
+    ammo.backpackamount 10
+    ammo.backpackmaxamount 300
+    +IGNORESKILL
+}
+
+ACTOR CoDAmmoPickup : CustomInventory
+{
+  Inventory.PickupSound "ammopiup"
+  +INVENTORY.AUTOACTIVATE
+  +DONTGIB
+}
+
+//-------------------------- .44mag
+ACTOR MagnumAmmo1 : CoDAmmoPickup 
+{
+  Inventory.PickupMessage ".44 JSP Magnuforce Ammo +6"
+  Scale 0.14
+  States
+  {
+  Spawn:
+    AMMR J -1
+    Stop
+  Pickup:
+	BKPK A 0 A_GiveInventory("Ammo44Mag", 6)
+    Stop
+  }
+}
+
+ACTOR MagnumAmmo2 : CoDAmmoPickup
+{
+  Inventory.PickupMessage ".44 JSP Magnuforce Ammo +12"
+  Scale 0.14
+  States
+  {
+  Spawn:
+    AMMQ G -1
+    Stop
+  Pickup:
+	BKPK A 0 A_GiveInventory("Ammo44Mag", 12)
+    Stop
+  }
+}
+
+ACTOR MagnumAmmo1_P : CoDAmmoPickup //MATEBA,DE
+{
+  Inventory.PickupMessage ".44 JSP Magnuforce Ammo +30"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ W -1
+    Stop
+  Pickup:
+	BKPK A 0 A_GiveInventory("Ammo44Mag", 30)
+    Stop
+  }
+}
+
+ACTOR MagnumAmmo1_P2 : CoDAmmoPickup //Win94
+{
+  Inventory.PickupMessage ".44 JSP Magnuforce Ammo +20"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ W -1
+    Stop
+  Pickup:
+	BKPK A 0 A_GiveInventory("Ammo44Mag", 20)
+    Stop
+  }
+}
+
+
+ACTOR MagnumAmmo1_E : CoDAmmoPickup //Drop Win94
+{
+  Inventory.PickupMessage ".44 JSP Magnuforce Ammo +3"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ U -1
+    Stop
+  Pickup:
+	BKPK A 0 A_GiveInventory("Ammo44Mag", 3)
+    Stop
+  }
+}
+
+//--------------------------12.7x55mm
+
+ACTOR RSH_Ammo1 : CoDAmmoPickup 
+{
+  Inventory.PickupMessage "12.7x55mm PS12B Ammo +5"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ S -1
+    Stop
+  Pickup:
+	BKPK A 0 A_GiveInventory("AmmoRSH12", 5)
+    Stop
+  }
+}
+
+ACTOR RSH_Ammo2 : CoDAmmoPickup
+{
+  Inventory.PickupMessage "12.7x55mm PS12B Ammo +15"
+  Scale 0.17
+  States
+  {
+  Spawn:
+    AMMQ T -1
+    Stop
+  Pickup:
+	BKPK A 0 A_GiveInventory("AmmoRSH12", 15)
+    Stop
+  }
+}
+
+ACTOR RSH_Ammo1_P : CoDAmmoPickup //pick RSH12
+{
+  Inventory.PickupMessage "12.7x55mm PS12B Ammo +15"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ U -1
+    Stop
+  Pickup:
+	BKPK A 0 A_GiveInventory("AmmoRSH12", 15)
+    Stop
+  }
+}
+
+
+ACTOR RSH_Ammo1_P2 : CoDAmmoPickup //pick ASH12
+{
+  Inventory.PickupMessage "12.7x55mm PS12B Ammo +40"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ V -1
+    Stop
+  Pickup:
+	BKPK A 0 A_GiveInventory("AmmoRSH12", 40)
+    Stop
+  }
+}
+
+ACTOR RSH_Ammo1_P3 : CoDAmmoPickup //pick ASH12
+{
+  Inventory.PickupMessage "12.7x55mm PS12B Ammo +60"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ V -1
+    Stop
+  Pickup:
+	BKPK A 0 A_GiveInventory("AmmoRSH12", 40)
+    Stop
+  }
+}
+
+ACTOR RSH_Ammo1_P4 : CoDAmmoPickup //pick ASH12
+{
+  Inventory.PickupMessage "12.7x55mm PS12B Ammo +60"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ V -1
+    Stop
+  Pickup:
+	BKPK A 0 A_GiveInventory("AmmoRSH12", 40)
+    Stop
+  }
+}
+
+
+
+//--------------------------9mmx19
+
+
+ACTOR SMGAmmo1 : CoDAmmoPickup 
+{
+  Inventory.PickupMessage "9x19mm FMJ M882 Ammo +10"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMR D -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo9mm", 10)
+    Stop
+  }
+}
+
+ACTOR SMGAmmo1Box : CoDAmmoPickup
+{
+  Inventory.PickupMessage "9x19mm FMJ M882 Ammo +50"
+  Scale 0.16
+  States
+  {
+  Spawn:
+    AMMR Q -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo9mm", 50)
+    Stop
+  }
+}
+
+ACTOR SMGAmmo1_P : CoDAmmoPickup //pick Pistol
+{
+  Inventory.PickupMessage "9x19mm FMJ M882 Ammo +15"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ W -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo9mm", 15)
+    Stop
+  }
+}
+
+ACTOR SMGAmmo1_P2 : CoDAmmoPickup //pick SMG
+{
+  Inventory.PickupMessage "9x19mm FMJ M882 Ammo +30"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ W -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo9mm", 30)
+    Stop
+  }
+}
+
+ACTOR SMGAmmo1_P3 : CoDAmmoPickup //pick SMG
+{
+  Inventory.PickupMessage "9x19mm FMJ M882 Ammo +30"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ U -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo9mm", 30)
+    Stop
+  }
+}
+
+ACTOR SMGAmmo1_P4 : CoDAmmoPickup //pick G18C
+{
+  Inventory.PickupMessage "9x19mm FMJ M882 Ammo +50"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ X -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo9mm", 50)
+    Stop
+  }
+}
+
+
+ACTOR SMGAmmo1_E : CoDAmmoPickup //Drop Pistol
+{
+  Inventory.PickupMessage "9x19mm FMJ M882 Ammo +5"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ U -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo9mm", 5)
+    Stop
+  }
+}
+
+ACTOR SMGAmmo1_E2 : CoDAmmoPickup //Drop SMG
+{
+  Inventory.PickupMessage "9x19mm FMJ M882 Ammo +10"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ U -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo9mm", 10)
+    Stop
+  }
+}
+
+//--------------------------9x18mmPM
+
+ACTOR PM_Ammo1 : CoDAmmoPickup 
+{
+  Inventory.PickupMessage "9x18mm PM P gzh Ammo +10"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ J -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("AmmoPM", 10)
+    Stop
+  }
+}
+
+ACTOR PM_Ammo1Box : CoDAmmoPickup
+{
+  Inventory.PickupMessage "9x18mm PM P gzh Ammo +50"
+  Scale 0.16
+  States
+  {
+  Spawn:
+    AMMQ K -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("AmmoPM", 50)
+    Stop
+  }
+}
+
+ACTOR PM_Ammo1_P : CoDAmmoPickup //Pick Pistol
+{
+  Inventory.PickupMessage "9x18mm PM P gzh Ammo +16"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ U -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("AmmoPM", 16)
+    Stop
+  }
+}
+
+ACTOR PM_Ammo1_P2 : CoDAmmoPickup //Pick SMG
+{
+  Inventory.PickupMessage "9x18mm PM P gzh Ammo +64"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ U -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("AmmoPM", 64)
+    Stop
+  }
+}
+
+ACTOR PM_Ammo1_P3 : CoDAmmoPickup //Pick APSDrum
+{
+  Inventory.PickupMessage "9x18mm PM P gzh Ammo +84"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ V -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("AmmoPM", 84)
+    Stop
+  }
+}
+
+ACTOR PM_Ammo1_E : CoDAmmoPickup //Drop Pistol
+{
+  Inventory.PickupMessage "9x18mm PM P gzh Ammo +8"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ U -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("AmmoPM", 8)
+    Stop
+  }
+}
+
+ACTOR PM_Ammo1_E2 : CoDAmmoPickup //Drop SMG(BIZON)
+{
+  Inventory.PickupMessage "9x18mm PM P gzh Ammo +15"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ U -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("AmmoPM", 15)
+    Stop
+  }
+}
+
+//--------------------------7.62x25mm TT
+
+ACTOR TT33_Ammo1 : CoDAmmoPickup 
+{
+  Inventory.PickupMessage "7.62x25mm TT AKBS Ammo +10"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ O -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("AmmoTT33", 10)
+    Stop
+  }
+}
+
+ACTOR TT33_Ammo1Box : CoDAmmoPickup
+{
+  Inventory.PickupMessage "7.62x25mm TT AKBS Ammo +71"
+  Scale 0.16
+  States
+  {
+  Spawn:
+    AMMQ Y -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("AmmoTT33", 71)
+    Stop
+  }
+}
+
+ACTOR TT33_Ammo1_P : CoDAmmoPickup //Pick Pistol
+{
+  Inventory.PickupMessage "7.62x25mm TT AKBS Ammo +20"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ U -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("AmmoTT33", 20)
+    Stop
+  }
+}
+
+ACTOR TT33_Ammo1_P2 : CoDAmmoPickup //Pick SMG
+{
+  Inventory.PickupMessage "7.62x25mm TT AKBS Ammo +30"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ U -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("AmmoTT33", 30)
+    Stop
+  }
+}
+
+ACTOR TT33_Ammo1_P3 : CoDAmmoPickup //Pick PPSH
+{
+  Inventory.PickupMessage "7.62x25mm TT AKBS Ammo +71"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ V -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("AmmoTT33", 71)
+    Stop
+  }
+}
+
+ACTOR TT33_Ammo1_E : CoDAmmoPickup //Drop Pistol
+{
+  Inventory.PickupMessage "7.62x25mm TT AKBS Ammo +8"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ U -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("AmmoTT33", 8)
+    Stop
+  }
+}
+
+ACTOR TT33_Ammo1_E2 : CoDAmmoPickup //Drop SMG
+{
+  Inventory.PickupMessage "7.62x25mm TT AKBS Ammo +12"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ U -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("AmmoTT33", 12)
+    Stop
+  }
+}
+
+
+//--------------------------45ACP
+
+ACTOR SMGAmmo2 : CoDAmmoPickup
+{
+  Inventory.PickupMessage ".45 ACP RIP Ammo +10"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMR O -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo45ACP", 10)
+    Stop
+  }
+}
+
+ACTOR SMGAmmo2_HG : CoDAmmoPickup
+{
+  Inventory.PickupMessage ".45 ACP RIP Ammo +10"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMR O -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo45ACP", 10)
+    Stop
+  }
+}
+
+ACTOR SMGAmmo2Box : CoDAmmoPickup
+{
+  Inventory.PickupMessage ".45 ACP RIP Ammo +50"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMR R -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo45ACP", 50)
+    Stop
+  }
+}
+
+ACTOR SMGAmmo2_S : CoDAmmoPickup
+{
+  Inventory.PickupMessage ".45 ACP RIP Ammo +15"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    TNT1 A -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo45ACP", 15)
+    Stop
+  }
+}
+
+
+ACTOR SMGAmmo2_P : CoDAmmoPickup //Pick pistol
+{
+  Inventory.PickupMessage ".45 ACP RIP Ammo +15"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ W -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo45ACP", 15)
+    Stop
+  }
+}
+
+ACTOR SMGAmmo2_P2 : CoDAmmoPickup //Pick SMG
+{
+  Inventory.PickupMessage ".45 ACP RIP Ammo +25"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ W -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo45ACP", 25)
+    Stop
+  }
+}
+
+ACTOR SMGAmmo2_P3 : CoDAmmoPickup //Pick SMG
+{
+  Inventory.PickupMessage ".45 ACP RIP Ammo +50"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ X -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo45ACP", 50)
+    Stop
+  }
+}
+
+ACTOR SMGAmmo2_P4 : CoDAmmoPickup //Pick SMG
+{
+  Inventory.PickupMessage ".45 ACP RIP Ammo +100"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ X -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo45ACP", 100)
+    Stop
+  }
+}
+
+
+
+ACTOR SMGAmmo2_E : CoDAmmoPickup //Drop pistol
+{
+  Inventory.PickupMessage ".45 ACP RIP Ammo +6"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ U -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo45ACP", 6)
+    Stop
+  }
+}
+
+ACTOR SMGAmmo2_E2 : CoDAmmoPickup //Drop SMG
+{
+  Inventory.PickupMessage ".45 ACP RIP Ammo +25"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ U -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo45ACP", 25)
+    Stop
+  }
+}
+
+ACTOR SMGAmmo2_F : CoDAmmoPickup
+{
+  Inventory.PickupMessage ".45 ACP RIP Ammo +60"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMR O -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo45ACP", 60)
+    Stop
+  }
+}
+
+//--------------------------5.7mm FN 57
+
+ACTOR PDWAmmo : CoDAmmoPickup
+{
+  Inventory.PickupMessage "5.7x28mm SS190 Ammo +15"
+  Scale 0.18
+  States
+  {
+  Spawn:
+    AMMR N -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("AmmoPDW", 15)
+    Stop
+  }
+}
+
+ACTOR PDWAmmoBox : CoDAmmoPickup
+{
+  Inventory.PickupMessage "5.7x28mm SS190 Ammo +50"
+  Scale 0.16
+  States
+  {
+  Spawn:
+    AMMR V -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("AmmoPDW", 50)
+    Stop
+  }
+}
+
+ACTOR PDWAmmo_P : CoDAmmoPickup //Pick FN57
+{
+  Inventory.PickupMessage "5.7x28mm SS190 Ammo +20"
+  Scale 0.16
+  States
+  {
+  Spawn:
+    AMMQ W -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("AmmoPDW", 20)
+    Stop
+  }
+}
+
+ACTOR PDWAmmo_P2 : CoDAmmoPickup //pick P90
+{
+  Inventory.PickupMessage "5.7x28mm SS190 Ammo +100"
+  Scale 0.16
+  States
+  {
+  Spawn:
+    AMMR V -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("AmmoPDW", 100)
+    Stop
+  }
+}
+
+ACTOR PDWAmmo_P3 : CoDAmmoPickup //pick P90
+{
+  Inventory.PickupMessage "5.7x28mm SS190 Ammo +100"
+  Scale 0.16
+  States
+  {
+  Spawn:
+    AMMR V -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("AmmoPDW", 100)
+    Stop
+  }
+}
+
+
+ACTOR PDWAmmo_F : CoDAmmoPickup
+{
+  Inventory.PickupMessage "5.7x28mm SS190 Ammo +60"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMR N -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("AmmoPDW", 60)
+    Stop
+  }
+}
+
+//--------------------------4.6mm MP7
+
+ACTOR MP7_AmmoBOX : CoDAmmoPickup
+{
+  Inventory.PickupMessage "4.6x30mm Subsonic SX Ammo +80"
+  Scale 0.17
+  States
+  {
+  Spawn:
+    AMMQ N -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("AmmoMP7", 80)
+    Stop
+  }
+}
+
+ACTOR MP7_AmmoBOX_P2 : CoDAmmoPickup
+{
+  Inventory.PickupMessage "4.6x30mm Subsonic SX Ammo +80"
+  Scale 0.17
+  States
+  {
+  Spawn:
+    AMMQ N -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("AmmoMP7", 80)
+    Stop
+  }
+}
+
+//--------------------------9x21 SR2
+
+ACTOR SR2_Ammo : CoDAmmoPickup
+{
+  Inventory.PickupMessage "9x21mm PE gzh Ammo +10"
+  Scale 0.18
+  States
+  {
+  Spawn:
+    AMMQ L -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("AmmoSR2", 10)
+    Stop
+  }
+}
+
+ACTOR SR2_AmmoBox : CoDAmmoPickup
+{
+  Inventory.PickupMessage "9x21mm PE gzh Ammo +60"
+  Scale 0.16
+  States
+  {
+  Spawn:
+    AMMQ M -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("AmmoSR2", 60)
+    Stop
+  }
+}
+
+ACTOR SR2_Ammo_P : CoDAmmoPickup
+{
+  Inventory.PickupMessage "9x21mm PE gzh Ammo +60"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ U -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("AmmoSR2", 60)
+    Stop
+  }
+}
+
+ACTOR SR2_Ammo_E : CoDAmmoPickup //drop pistol
+{
+  Inventory.PickupMessage "9x21mm PE gzh Ammo +18"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ U -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("AmmoSR2", 18)
+    Stop
+  }
+}
+
+ACTOR SR2_Ammo_E2 : CoDAmmoPickup //drop SMG
+{
+  Inventory.PickupMessage "9x21mm PE gzh Ammo +30"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ U -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("AmmoSR2", 30)
+    Stop
+  }
+}
+
+//--------------------------5.56mmNATO
+
+ACTOR ARAmmo : CoDAmmoPickup
+{
+  Inventory.PickupMessage "5.56x45mm M855A1 Ammo +15"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMR G -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo556", 15)
+    Stop
+  }
+}
+
+ACTOR LMGAmmo_COD : CoDAmmoPickup 
+{
+  Inventory.PickupMessage "5.56x45mm M855A1 Ammo +60"
+  Scale 0.18
+  States
+  {
+  Spawn:
+    AMMR H -1
+    Stop
+  Pickup:
+	BKPK A 0 A_GiveInventory("Ammo556", 60)
+    Stop
+  }
+}
+
+ACTOR ARAmmo_P : CoDAmmoPickup //Pick AR
+{
+  Inventory.PickupMessage "5.56x45mm M855A1 Ammo +30"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ W -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo556", 30)
+    Stop
+  }
+}
+
+ACTOR ARAmmo_P2 : CoDAmmoPickup //Pick LMG
+{
+  Inventory.PickupMessage "5.56x45mm M855A1 Ammo +60"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ X -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo556", 60)
+    Stop
+  }
+}
+
+
+ACTOR ARAmmo_E : CoDAmmoPickup //Drop AR
+{
+  Inventory.PickupMessage "5.56x45mm M855A1 Ammo +10"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ U -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo556", 10)
+    Stop
+  }
+}
+
+
+//--------------------------5.45x39mm
+
+ACTOR ARHAmmo : CoDAmmoPickup
+{
+  Inventory.PickupMessage "5.45x39mm FMJ Ammo +15"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMR B -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo762k", 15)
+    Stop
+  }
+}
+
+ACTOR LMGBigAmmo : CoDAmmoPickup 
+{
+  Inventory.PickupMessage "5.45x39mm FMJ Ammo +60"
+  Scale 0.18
+  States
+  {
+  Spawn:
+    AMMR F -1
+    Stop
+  Pickup:
+	BKPK A 0 A_GiveInventory("Ammo762k", 60)
+    Stop
+  }
+}
+
+ACTOR ARHAmmo_P : CoDAmmoPickup
+{
+  Inventory.PickupMessage "5.45x39mm FMJ Ammo +30" //Pick AK
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ U -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo762k", 30)
+    Stop
+  }
+}
+
+ACTOR ARHAmmo_P2 : CoDAmmoPickup
+{
+  Inventory.PickupMessage "5.45x39mm FMJ Ammo +96" //pick RPK
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ V -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo762k", 96)
+    Stop
+  }
+}
+
+ACTOR ARHAmmo_E : CoDAmmoPickup
+{
+  Inventory.PickupMessage "5.45x39mm FMJ Ammo +10" //Drop AK74
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ U -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo762k", 10)
+    Stop
+  }
+}
+
+ACTOR ARHAmmo_E2 : CoDAmmoPickup
+{
+  Inventory.PickupMessage "5.45x39mm FMJ Ammo +5" //Drop AK74_Low
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ U -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo762k", 5)
+    Stop
+  }
+}
+
+ACTOR LMGBigAmmo_P : CoDAmmoPickup 
+{
+  Inventory.PickupMessage "5.45x39mm FMJ Ammo +100"
+  Scale 0.18
+  States
+  {
+  Spawn:
+    TNT1 A -1
+    Stop
+  Pickup:
+	BKPK A 0 A_GiveInventory("Ammo762K", 100)
+    Stop
+  }
+}
+
+
+//--------------------------7.62x39mm
+
+ACTOR ARRAmmo : CoDAmmoPickup
+{
+  Inventory.PickupMessage "7.62x39mm FMJ Ammo +10"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMR M -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo762r", 10)
+    Stop
+  }
+}
+
+ACTOR AKBigAmmo : CoDAmmoPickup 
+{
+  Inventory.PickupMessage "7.62x39mm FMJ Ammo +60"
+  Scale 0.18
+  States
+  {
+  Spawn:
+    AMMR Y -1
+    Stop
+  Pickup:
+	BKPK A 0 A_GiveInventory("Ammo762r", 60)
+    Stop
+  }
+}
+
+ACTOR RPDBigAmmo : CoDAmmoPickup 
+{
+  Inventory.PickupMessage "7.62x39mm FMJ Ammo +100"
+  Scale 0.18
+  States
+  {
+  Spawn:
+    AMMQ B -1
+    Stop
+  Pickup:
+	BKPK A 0 A_GiveInventory("Ammo762r", 100)
+    Stop
+  }
+}
+
+ACTOR ARRAmmo_P : CoDAmmoPickup //pick AK
+{
+  Inventory.PickupMessage "7.62x39mm FMJ Ammo +30"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ U -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo762r", 30)
+    Stop
+  }
+}
+
+ACTOR ARRAmmo_P2 : CoDAmmoPickup //Pick RPD
+{
+  Inventory.PickupMessage "7.62x39mm FMJ Ammo +100"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ V -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo762r", 100)
+    Stop
+  }
+}
+
+ACTOR ARRAmmo_E : CoDAmmoPickup //drop AK
+{
+  Inventory.PickupMessage "7.62x39mm FMJ Ammo +10"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ U -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo762r", 10)
+    Stop
+  }
+}
+
+ACTOR ARRAmmo_E2 : CoDAmmoPickup //drop RPD
+{
+  Inventory.PickupMessage "7.62x39mm FMJ Ammo +30"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ U -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo762r", 30)
+    Stop
+  }
+}
+
+ACTOR ARRAmmo_E3 : CoDAmmoPickup //drop SKS
+{
+  Inventory.PickupMessage "7.62x39mm FMJ Ammo +5"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ U -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo762r", 5)
+    Stop
+  }
+}
+
+//--------------------------7.62x54mm R
+
+ACTOR SVD_Ammo : CoDAmmoPickup
+{
+  Inventory.PickupMessage "7.62x54mmR LPS Gzh Ammo +5"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ P -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("AmmoSVD", 5)
+    Stop
+  }
+}
+
+ACTOR SVD_AmmoBOX : CoDAmmoPickup 
+{
+  Inventory.PickupMessage "7.62x54mmR LPS Gzh Ammo +40"
+  Scale 0.21
+  States
+  {
+  Spawn:
+    AMMQ Q -1
+    Stop
+  Pickup:
+	BKPK A 0 A_GiveInventory("AmmoSVD", 40)
+    Stop
+  }
+}
+
+ACTOR SVD_Ammo_P : CoDAmmoPickup //pick SVT
+{
+  Inventory.PickupMessage "7.62x54mmR LPS Gzh Ammo +10"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ U -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("AmmoSVD", 10)
+    Stop
+  }
+}
+
+ACTOR SVD_Ammo_P2 : CoDAmmoPickup //pick SVD
+{
+  Inventory.PickupMessage "7.62x54mmR LPS Gzh Ammo +20"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ U -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("AmmoSVD", 20)
+    Stop
+  }
+}
+
+ACTOR SVD_Ammo_P3 : CoDAmmoPickup //pick AVS36
+{
+  Inventory.PickupMessage "7.62x54mmR LPS Gzh Ammo +60"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ V -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("AmmoSVD", 60)
+    Stop
+  }
+}
+
+ACTOR SVD_Ammo_P4 : CoDAmmoPickup //pick PKM
+{
+  Inventory.PickupMessage "7.62x54mmR LPS Gzh Ammo +60"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ V -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("AmmoSVD", 60)
+    Stop
+  }
+}
+
+ACTOR SVD_Ammo_P5 : CoDAmmoPickup //pick PKM
+{
+  Inventory.PickupMessage "7.62x54mmR LPS Gzh Ammo +60"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ V -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("AmmoSVD", 60)
+    Stop
+  }
+}
+
+
+ACTOR SVD_Ammo_E : CoDAmmoPickup //drop Mosin
+{
+  Inventory.PickupMessage "7.62x54mmR LPS Gzh Ammo +3"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ U -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("AmmoSVD", 3)
+    Stop
+  }
+}
+
+ACTOR SVD_Ammo_E2 : CoDAmmoPickup //drop SVT
+{
+  Inventory.PickupMessage "7.62x54mmR LPS Gzh Ammo +5"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ U -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("AmmoSVD", 5)
+    Stop
+  }
+}
+
+
+//--------------------------.338 Lapua
+
+ACTOR SRAmmo : CoDAmmoPickup
+{
+  Inventory.PickupMessage ".338 Lapua Magnum AP Ammo +2"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMR E -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo338", 2)
+    Stop
+  }
+}
+
+ACTOR SRAmmoBox : CoDAmmoPickup
+{
+  Inventory.PickupMessage ".338 Lapua Magnum AP Ammo +20"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ E -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo338", 20)
+    Stop
+  }
+}
+
+ACTOR SRAmmo_P : CoDAmmoPickup
+{
+  Inventory.PickupMessage ".338 Lapua Magnum AP Ammo +20"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ W -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo338", 20)
+    Stop
+  }
+}
+
+ACTOR SRAmmo_P2 : CoDAmmoPickup
+{
+  Inventory.PickupMessage ".338 Lapua Magnum AP Ammo +50"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ X -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo338", 50)
+    Stop
+  }
+}
+
+ACTOR SRAmmo_P3 : CoDAmmoPickup
+{
+  Inventory.PickupMessage ".338 Lapua Magnum AP Ammo +50"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ X -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo338", 50)
+    Stop
+  }
+}
+
+
+ACTOR SRAmmo_E : CoDAmmoPickup //drop MP18MN
+{
+  Inventory.PickupMessage ".338 Lapua Magnum AP Ammo +1"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ U -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo338", 1)
+    Stop
+  }
+}
+
+//--------------------------7.62mmNATO
+
+ACTOR BRAmmo : CoDAmmoPickup 
+{
+  Inventory.PickupMessage "7.62x51mm NATO M61 Ammo +5"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMR C -1
+    Stop
+  Pickup:
+	BKPK A 0 A_GiveInventory("Ammo762", 5)
+    Stop
+  }
+}
+
+ACTOR BRBigAmmo : CoDAmmoPickup 
+{
+  Inventory.PickupMessage "7.62x51mm NATO M61 Ammo +60"
+  Scale 0.19
+  States
+  {
+  Spawn:
+    AMMR Z -1
+    Stop
+  Pickup:
+	BKPK A 0 A_GiveInventory("Ammo762", 60)
+    Stop
+  }
+}
+
+ACTOR BRAmmo_P : CoDAmmoPickup //pick M14
+{
+  Inventory.PickupMessage "7.62x51mm NATO M61 Ammo +20"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ W -1
+    Stop
+  Pickup:
+	BKPK A 0 A_GiveInventory("Ammo762", 20)
+    Stop
+  }
+}
+
+ACTOR BRAmmo_P2 : CoDAmmoPickup //pick FAL
+{
+  Inventory.PickupMessage "7.62x51mm NATO M61 Ammo +30"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ W -1
+    Stop
+  Pickup:
+	BKPK A 0 A_GiveInventory("Ammo762", 30)
+    Stop
+  }
+}
+
+ACTOR BRAmmo_P3 : CoDAmmoPickup //pick SA58
+{
+  Inventory.PickupMessage "7.62x51mm NATO M61 Ammo +60"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ X -1
+    Stop
+  Pickup:
+	BKPK A 0 A_GiveInventory("Ammo762", 60)
+    Stop
+  }
+}
+
+ACTOR BRAmmo_P4 : CoDAmmoPickup //pick SA58
+{
+  Inventory.PickupMessage "7.62x51mm NATO M61 Ammo +60"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ X -1
+    Stop
+  Pickup:
+	BKPK A 0 A_GiveInventory("Ammo762", 60)
+    Stop
+  }
+}
+
+ACTOR BRAmmo_P5 : CoDAmmoPickup //pick SA58
+{
+  Inventory.PickupMessage "7.62x51mm NATO M61 Ammo +60"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ X -1
+    Stop
+  Pickup:
+	BKPK A 0 A_GiveInventory("Ammo762", 60)
+    Stop
+  }
+}
+
+
+ACTOR BRAmmo_E : CoDAmmoPickup //drop Auto88
+{
+  Inventory.PickupMessage "7.62x51mm NATO M61 Ammo +5"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ U -1
+    Stop
+  Pickup:
+	BKPK A 0 A_GiveInventory("Ammo762", 5)
+    Stop
+  }
+}
+
+
+
+//--------------------------12GA
+
+ACTOR SGHAmmo : CoDAmmoPickup
+{
+  Inventory.PickupMessage "12GA 8.5mm Magnum Ammo +2"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMR I -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo12G", 2)
+    Stop
+  }
+}
+
+ACTOR SGHAmmoBox : CoDAmmoPickup
+{
+  Inventory.PickupMessage "12GA 8.5mm Magnum Ammo +16"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMR T -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo12G", 16)
+    Stop
+  }
+}
+
+ACTOR SGHAmmo_P : CoDAmmoPickup //pick PumpSG
+{
+  Inventory.PickupMessage "12GA 8.5mm Magnum Ammo +8"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ W -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo12G", 8)
+    Stop
+  }
+}
+
+
+ACTOR SGHAmmo_P2 : CoDAmmoPickup //pick PumpSG RU
+{
+  Inventory.PickupMessage "12GA 8.5mm Magnum Ammo +8"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ U -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo12G", 8)
+    Stop
+  }
+}
+
+ACTOR SGHAmmo_P3 : CoDAmmoPickup //pick AutoSG
+{
+  Inventory.PickupMessage "12GA 8.5mm Magnum Ammo +20"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ X -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo12G", 20)
+    Stop
+  }
+}
+
+ACTOR SGHAmmo_P4 : CoDAmmoPickup //pick F12
+{
+  Inventory.PickupMessage "12GA 8.5mm Magnum Ammo +30"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ X -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo12G", 30)
+    Stop
+  }
+}
+
+ACTOR SGHAmmo_P5 : CoDAmmoPickup //pick F12
+{
+  Inventory.PickupMessage "12GA 8.5mm Magnum Ammo +30"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ X -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo12G", 30)
+    Stop
+  }
+}
+
+ACTOR SGHAmmo_P6 : CoDAmmoPickup //pick F12
+{
+  Inventory.PickupMessage "12GA 8.5mm Magnum Ammo +30"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ X -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo12G", 30)
+    Stop
+  }
+}
+
+
+
+ACTOR SGHAmmo_E : CoDAmmoPickup //drop SG
+{
+  Inventory.PickupMessage "12GA 8.5mm Magnum Ammo +2"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ U -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo12G", 2)
+    Stop
+  }
+}
+
+
+ACTOR SGHAmmo_M30 : CoDAmmoPickup //drop M30
+{
+  Inventory.PickupMessage "12GA 8.5mm Magnum Ammo +2 / 7.62x54mmR LPS Gzh Ammo +1"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ U -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo12G", 2)
+	BKPK A 0 A_GiveInventory("AmmoSVD", 1)
+    Stop
+  }
+}
+
+
+
+
+//--------------------------20GA
+
+ACTOR 20GA_Ammo : CoDAmmoPickup
+{
+  Inventory.PickupMessage "20GA 6.2mm Buckshot Ammo +5"
+  Scale 0.13
+  States
+  {
+  Spawn:
+    AMMQ R -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo20G", 5)
+    Stop
+  }
+}
+
+ACTOR 20GA_AmmoBox : CoDAmmoPickup
+{
+  Inventory.PickupMessage "20GA 6.2mm Buckshot Ammo +25"
+  Scale 0.11
+  States
+  {
+  Spawn:
+    AMMQ Z -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo20G", 25)
+    Stop
+  }
+}
+
+ACTOR 20GA_Ammo_P : CoDAmmoPickup //pick Wa1921
+{
+  Inventory.PickupMessage "20GA 6.2mm Buckshot Ammo +40"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ V -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo20G", 40)
+    Stop
+  }
+}
+
+ACTOR 20GA_Ammo_P2 : CoDAmmoPickup //pick Saiga20B
+{
+  Inventory.PickupMessage "20GA 6.2mm Buckshot Ammo +20"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ V -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo20G", 20)
+    Stop
+  }
+}
+
+
+ACTOR 20GA_Ammo_E : CoDAmmoPickup //drop SG
+{
+  Inventory.PickupMessage "20GA 6.2mm Buckshot Ammo +5"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ U -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo20G", 5)
+    Stop
+  }
+}
+
+ACTOR 20GA_Ammo_E2 : CoDAmmoPickup //drop AutoSG
+{
+  Inventory.PickupMessage "20GA 6.2mm Buckshot Ammo +8"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ U -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo20G", 8)
+    Stop
+  }
+}
+
+
+
+//--------------------------23mm KS23
+
+ACTOR SGAmmo : CoDAmmoPickup // KS23 Ammo
+{
+  Inventory.PickupMessage "23x75mm Siren-7 Ammo +6"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ C -1
+    Stop
+  Pickup:
+	//BKPK A 0 A_GiveInventory("Ammo20G", 4)
+	BKPK A 0 A_GiveInventory("AmmoKS23", 6)
+    Stop
+  }
+}
+
+ACTOR SGAmmo_KS23 : CoDAmmoPickup // KS23 Ammo
+{
+  Inventory.PickupMessage "23x75mm Siren-7 Ammo +24"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ V -1
+    Stop
+  Pickup:
+	BKPK A 0 A_GiveInventory("AmmoKS23", 24)
+    Stop
+  }
+}
+
+ACTOR SGAmmo_KS23_P2 : CoDAmmoPickup // KS23 Ammo
+{
+  Inventory.PickupMessage "23x75mm Siren-7 Ammo +40"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ V -1
+    Stop
+  Pickup:
+	//BKPK A 0 A_GiveInventory("Ammo20G", 8)
+	BKPK A 0 A_GiveInventory("AmmoKS23", 40) 
+    Stop
+  }
+}
+
+
+
+
+
+ACTOR M2FuelAmmo : CoDAmmoPickup 
+{
+  Inventory.PickupMessage "Flamethrower Fuel +25"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ D -1
+    Stop
+  Pickup:
+	BKPK A 0 A_GiveInventory("M2FlameAmmo", 25)
+    Stop
+  }
+}
+
+ACTOR AugerAmmo : CoDAmmoPickup 
+{
+  Inventory.PickupMessage ".404 Raufoss HEIAP ammo +50"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ H -1
+    Stop
+  Pickup:
+	BKPK A 0 //A_GiveInventory("BrownAmmo", 50)
+	BKPK A 0 A_GiveInventory("AmmoSVD", 60) //TEST
+    Stop
+  }
+}
+
+
+ACTOR EXAmmo : CoDAmmoPickup
+{
+  Inventory.PickupMessage "40mm Grenade Ammo +1"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMR L -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("M320Ammo", 1)
+    Stop
+  }
+}
+
+ACTOR M202Ammo : CoDAmmoPickup
+{
+  Inventory.PickupMessage "85mm PG-7 BFG Rocket Ammo +2"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ F -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("RPGAmmo", 2)
+    Stop
+  }
+}
+
+ACTOR M202Ammo_P2 : CoDAmmoPickup
+{
+  Inventory.PickupMessage "85mm PG-7 BFG Rocket Ammo +4"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ F -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("RPGAmmo", 4)
+    Stop
+  }
+}
+
+
+ACTOR EXAmmoBox : CoDAmmoPickup
+{
+  Inventory.PickupMessage "40mm Grenade Ammo +3"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMR P -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("M320Ammo", 3)
+    Stop
+  }
+}
+
+ACTOR EXAmmoBox_P : CoDAmmoPickup  //AK74M
+{
+  Inventory.PickupMessage "40mm Grenade Ammo +3"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ V -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("M320Ammo", 3)
+    Stop
+  }
+}
+
+ACTOR EXAmmoBox_P2 : CoDAmmoPickup  //M4
+{
+  Inventory.PickupMessage "40mm Grenade Ammo +6"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ X -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("M320Ammo", 6)
+    Stop
+  }
+}
+
+
+ACTOR EXAmmoBox_P3 : CoDAmmoPickup  //AK103
+{
+  Inventory.PickupMessage "40mm Grenade Ammo +6"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ V -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("M320Ammo", 6)
+    Stop
+  }
+}
+
+
+
+ACTOR FRAG12Ammo : CoDAmmoPickup
+{
+  Inventory.PickupMessage "25mm Smart Grenade Ammo +3"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMR X -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo12GF", 3)
+	BKPK A 0 A_GiveInventory("AmmoKS23", 4) //TEST
+    Stop
+  }
+}
+
+ACTOR FRAG12AmmoBox : CoDAmmoPickup
+{
+  Inventory.PickupMessage "25mm Smart Grenade Ammo +10"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMQ A -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo12GF", 10)
+	BKPK A 0 A_GiveInventory("AmmoKS23", 8) //TEST
+    Stop
+  }
+}
+
+ACTOR GrenadesAmmo : CoDAmmoPickup
+{
+  Inventory.PickupMessage "Hand Grenades +1"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMR K -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("FRAGGrenadeAmmo", 1)
+	BKPK A 0 A_GiveInventory("StunGrenadeInventory", 1)
+    Stop
+  }
+}
+
+ACTOR GrenadesAmmoBox : CoDAmmoPickup
+{
+  Inventory.PickupMessage "Hand Grenades +3"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMR S -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("FRAGGrenadeAmmo", 3)
+	BKPK A 0 A_GiveInventory("StunGrenadeInventory", 3)
+    Stop
+  }
+}
+
+
+
+///////OLD///////
+
+
+ACTOR ARAmmo_F : CoDAmmoPickup
+{
+  Inventory.PickupMessage "5.56mm NATO Ammo +60"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMR G -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo556", 60)
+    Stop
+  }
+}
+
+ACTOR SGHAmmo_F : CoDAmmoPickup
+{
+  Inventory.PickupMessage "12-Gauge Ammo +20"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMR I -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo12G", 20)
+    Stop
+  }
+}
+
+ACTOR SRAmmo_F : CoDAmmoPickup
+{
+  Inventory.PickupMessage ".338 Lapua Magnum Ammo +20"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMR E -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo338", 20)
+    Stop
+  }
+}
+
+ACTOR LMGAmmo_P : CoDAmmoPickup 
+{
+  Inventory.PickupMessage "5.56mm NATO Ammo +100"
+  Scale 0.18
+  States
+  {
+  Spawn:
+    TNT1 A -1
+    Stop
+  Pickup:
+	BKPK A 0 A_GiveInventory("Ammo556", 100)
+    Stop
+  }
+}
+
+
+ACTOR ARHAmmo_F : CoDAmmoPickup
+{
+  Inventory.PickupMessage "5.45x39mm JHP Ammo +60"
+  Scale 0.15
+  States
+  {
+  Spawn:
+    AMMR B -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo762K", 60)
+    Stop
+  }
+}
+
+ACTOR SGAmmo_P : CoDAmmoPickup
+{
+  Inventory.PickupMessage "20-Gauge Ammo +20"
+  Scale 0.5
+  States
+  {
+  Spawn:
+    AMMR I -1
+    Stop
+  Pickup:
+	BKPK A 0 A_GiveInventory("Ammo20G", 20)
+    Stop
+  }
+}
+
+ACTOR MagnumAmmo2_MP709 : CoDAmmoPickup
+{
+  Inventory.PickupMessage "410-Gauge Ammo +25"
+  Scale 0.5
+  States
+  {
+  Spawn:
+    AMMR P -1
+    Stop
+  Pickup:
+	BKPK A 0 A_GiveInventory("Ammo410G", 25)
+    Stop
+  }
+}
+
+ACTOR FRAG12Ammo_F : CoDAmmoPickup
+{
+  Inventory.PickupMessage "FRAG-12 Ammo +30"
+  Scale 0.5
+  States
+  {
+  Spawn:
+    AMMR Q -1
+    Stop
+  Pickup:
+    BKPK A 0 A_GiveInventory("Ammo12GF", 30)
+    Stop
+  }
+}
+
+///////OLD///////
+ACTOR FriendGiveAmmo_762k
+{
+	Radius 8
+	Height 8
+	Speed 17
+	mass 6
+	Damage 0
+                 Scale 0.15
+        +NoBlockmap
+        +ActivatePCross
+        +ActivateImpact
+        -NoTeleport
+        +DropOff
+        +DontFall
+        +Missile
+          DeathSound "none"
+	States
+	{
+	Spawn:
+		AMMR B 1 
+		loop
+	Death:
+		TNT1 A 0 A_SpawnItem("ARHAmmo_F", 1, 8)
+		Stop
+	}
+}
+
+ACTOR FriendGiveAmmo_556
+{
+	Radius 8
+	Height 8
+	Speed 17
+	mass 6
+	Damage 0
+                 Scale 0.15
+        +NoBlockmap
+        +ActivatePCross
+        +ActivateImpact
+        -NoTeleport
+        +DropOff
+        +DontFall
+        +Missile
+          DeathSound "none"
+	States
+	{
+	Spawn:
+		AMMR G 1 
+		loop
+	Death:
+		TNT1 A 0 A_SpawnItem("ARAmmo_F", 1, 8)
+		Stop
+	}
+}
+
+ACTOR FriendGiveAmmo_F12
+{
+	Radius 8
+	Height 8
+	Speed 17
+	mass 6
+	Damage 0
+                 Scale 0.5
+        +NoBlockmap
+        +ActivatePCross
+        +ActivateImpact
+        -NoTeleport
+        +DropOff
+        +DontFall
+        +Missile
+          DeathSound "none"
+	States
+	{
+	Spawn:
+		AMMR Q 1 
+		loop
+	Death:
+		TNT1 A 0 A_SpawnItem("FRAG12Ammo_F", 1, 8)
+		Stop
+	}
+}
+
+ACTOR FriendGiveAmmo_12G
+{
+	Radius 8
+	Height 8
+	Speed 17
+	mass 6
+	Damage 0
+                 Scale 0.15
+        +NoBlockmap
+        +ActivatePCross
+        +ActivateImpact
+        -NoTeleport
+        +DropOff
+        +DontFall
+        +Missile
+          DeathSound "none"
+	States
+	{
+	Spawn:
+		SBOX A 1 
+		loop
+	Death:
+		TNT1 A 0 A_SpawnItem("SGHAmmo_F", 1, 8)
+		Stop
+	}
+}
+
+ACTOR FriendGiveAmmo_40mm
+{
+	Radius 8
+	Height 8
+	Speed 17
+	mass 6
+	Damage 0
+                 Scale 0.15
+        +NoBlockmap
+        +ActivatePCross
+        +ActivateImpact
+        -NoTeleport
+        +DropOff
+        +DontFall
+        +Missile
+          DeathSound "none"
+	States
+	{
+	Spawn:
+		AMMR L 1 
+		loop
+	Death:
+		TNT1 A 0 A_SpawnItem("EXAmmo", 1, 8)
+		Stop
+	}
+}
+
+ACTOR FriendGiveAmmo_338
+{
+	Radius 8
+	Height 8
+	Speed 17
+	mass 6
+	Damage 0
+                 Scale 0.15
+        +NoBlockmap
+        +ActivatePCross
+        +ActivateImpact
+        -NoTeleport
+        +DropOff
+        +DontFall
+        +Missile
+          DeathSound "none"
+	States
+	{
+	Spawn:
+		AMMR E 1 
+		loop
+	Death:
+		TNT1 A 0 A_SpawnItem("SRAmmo_F", 1, 8)
+		Stop
+	}
+}
+
+ACTOR FriendGiveStimpack
+{
+	Radius 8
+	Height 8
+	Speed 17
+	mass 6
+	Damage 0
+	Scale 0.14
+        +NoBlockmap
+        +ActivatePCross
+        +ActivateImpact
+        -NoTeleport
+        +DropOff
+        +DontFall
+        +Missile
+          DeathSound "none"
+	States
+	{
+	Spawn:
+		STIM A 1 
+		loop
+	Death:
+		TNT1 A 0 A_SpawnItem("Marine_Stimpack", 1, 8)
+		Stop
+	}
+}
+
+ACTOR FriendGiveMedikit
+{
+	Radius 8
+	Height 8
+	Speed 17
+	mass 6
+	Damage 0
+	Scale 0.14
+        +NoBlockmap
+        +ActivatePCross
+        +ActivateImpact
+        -NoTeleport
+        +DropOff
+        +DontFall
+        +Missile
+          DeathSound "none"
+	States
+	{
+	Spawn:
+		MDBG A 1 
+		loop
+	Death:
+		TNT1 A 0 A_SpawnItem("Medicalkit_COD", 1, 8)
+		Stop
+	}
+}
+
+ACTOR FriendGiveAmmo_45ACP
+{
+	Radius 8
+	Height 8
+	Speed 17
+	mass 6
+	Damage 0
+                 Scale 0.15
+        +NoBlockmap
+        +ActivatePCross
+        +ActivateImpact
+        -NoTeleport
+        +DropOff
+        +DontFall
+        +Missile
+          DeathSound "none"
+	States
+	{
+	Spawn:
+		AMMR O 1 
+		loop
+	Death:
+		TNT1 A 0 A_SpawnItem("SMGAmmo2_F", 1, 8)
+		Stop
+	}
+}
+
+ACTOR FriendGiveAmmo_PDW
+{
+	Radius 8
+	Height 8
+	Speed 17
+	mass 6
+	Damage 0
+                 Scale 0.15
+        +NoBlockmap
+        +ActivatePCross
+        +ActivateImpact
+        -NoTeleport
+        +DropOff
+        +DontFall
+        +Missile
+          DeathSound "none"
+	States
+	{
+	Spawn:
+		AMMR N 1 
+		loop
+	Death:
+		TNT1 A 0 A_SpawnItem("PDWAmmo_F", 1, 8)
+		Stop
+	}
+}

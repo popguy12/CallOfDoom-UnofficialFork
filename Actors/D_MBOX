@@ -1,0 +1,230 @@
+ACTOR MBox_Spawn : SwitchableDecoration
+{
+	Radius 20
+	Height 40
+	Mass 100
+	+USESPECIAL
+	+PUSHABLE
+	+SLIDESONWALLS
+	+SOLID
+	Speed 0
+	Activation THINGSPEC_Activate
+	Scale 0.12
+	States
+	{
+	Spawn:
+		B003 P -1 BRIGHT
+		Loop
+	Active:
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_Scream
+		TNT1 A 0 A_PlaySound("fal/set")
+		TNT1 A 0 A_SpawnItemEx("MBox_COD")
+		Stop
+	}
+}
+
+ACTOR MBox_COD
+{
+	Radius 0
+	Height 0
+	Health 2000
+	Mass 100
+	Scale 0.12
+	+NOBLOCKMAP
+	+NOBLOOD
+	//+SHOOTABLE
+	//+PUSHABLE
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		B003 P 100 BRIGHT A_PlaySound("mysterybox")
+		TNT1 AAAAAAAAAAAAA 0 A_CustomMissile("HeavyExplosionSmoke", 2, 0, random (0, 360), 2, random (0, 360))
+		B003 P 20 BRIGHT
+		TNT1 A 0 A_Jump(128, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50)
+		TNT1 A 0 A_Jump(128, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70)
+		TNT1 A 0 A_Jump(256, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90)
+		TNT1 A 0 A_SpawnItemEx("CoDArmor1", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION) 
+		Stop
+		TNT1 A 0 A_SpawnItemEx("CoDArmor2", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION) 
+		Stop
+		TNT1 A 0 A_SpawnItemEx("Medicalkit_COD", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION) 
+		Stop
+		TNT1 A 0 A_SpawnItemEx("EXAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("ClaymoreHandPickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("SMGAmmo1Box", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("C4HandPickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("FRAG12Ammo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("MagnumAmmo2", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("GrenadesAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("SMGAmmo2Box", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("PDWAmmoBox", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("LMGAmmo_COD", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("LMGBigAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("SGAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("M2FuelAmmo", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("SRAmmoBox", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("M72LAWPickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("M9A1Pickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION) // Pistol
+		Stop
+		TNT1 A 0 A_SpawnItemEx("FNX45Pickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION) // 20
+		Stop
+		TNT1 A 0 A_SpawnItemEx("M1911A1Pickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("KatanaPickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("PythonPickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("DesertEaglePickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("MP5Pickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION) // SMG
+		Stop
+		TNT1 A 0 A_SpawnItemEx("ScorpionPickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("K7SMGPickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("FMG9Pickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("UZI9mmPickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("BizonPickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("MPX45Pickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("JS45Pickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("VectorPickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("ThompsonPickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("M870MCSPickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION) // SG
+		Stop
+		TNT1 A 0 A_SpawnItemEx("MTS255Pickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("FP6Pickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("M1300Pickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("SKBMJ7Pickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("M212Pickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("Protecta12Pickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("M1887MCDualPickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION) // 43
+		Stop
+		TNT1 A 0 A_SpawnItemEx("PDW57Pickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION) // PDW
+		Stop
+		TNT1 A 0 A_SpawnItemEx("CBJMSPickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("MP717Pickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("JVPCPickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("MP7Pickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("RoniPickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("HK416Pickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION) // 5.56 
+		Stop
+		TNT1 A 0 A_SpawnItemEx("SIG556Pickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("R5RGPPickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("SC2009Pickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("TYPE89Pickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("AUGA2Pickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("HoneyBadgerPickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("FAMASPickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("M16Pickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("M27IARPickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("AKS74UPickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION) // AK
+		Stop
+		TNT1 A 0 A_SpawnItemEx("AN94Pickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("VEPRPickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("MAUL12Pickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("M1216Pickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("KSK12Pickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("HS10Pickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("RSASSPickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION) // SR
+		Stop
+		TNT1 A 0 A_SpawnItemEx("M24SWSPickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("M1GarandPickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("SKSPickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("FRAG12Kit", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("AKMPickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("RPK74Pickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("RPDPickup_MBox", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("HK417Pickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION) // BR
+		Stop
+		TNT1 A 0 A_SpawnItemEx("SCARHPickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("FALPickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("SA58Pickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("BrenPickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("M25A2Pickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION) // EX
+		Stop
+		TNT1 A 0 A_SpawnItemEx("KS23Pickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("M2FlamePickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("MGL140Pickup_MBox", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("M202Pickup_MBox", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("XM550Pickup_MBox", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("Marine_Andro_A", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION) // ???
+		Stop
+		TNT1 A 0 A_SpawnItemEx("Marine_Gumshoe_A", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("Backpack_New", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("CoDArmor3", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("DOOMSenpai", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+		TNT1 A 0 A_SpawnItemEx("Soulsphere", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION) // 90
+		TNT1 A 0 A_SpawnItemEx("MSPickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION)
+		Stop
+	}
+}

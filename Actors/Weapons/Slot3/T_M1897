@@ -1,0 +1,733 @@
+ACTOR M1897_Pickup : CustomInventory
+{
+  inventory.pickupmessage "[3] Winchester Model 1897 Trench 12ga pump-action shotgun"
+  inventory.pickupsound "nothing"
+  +INVENTORY.AUTOACTIVATE
+  +DONTGIB
+  inventory.respawntics 35
+  scale 0.16
+  States
+  {
+  Spawn:
+    B002 I -1
+    Stop
+  Pickup:
+    GNEX A 0
+	GUNP A 0 A_JumpIfInventory("M1897", 1, "failPickup")  //Do you have this?
+	GUNP A 0 A_JumpIfInventory("Mulekick", 1, 2)         //Are you using unlimited mode?
+	GUNP A 0 A_JumpIfInventory("gun3SV", 0, "notPickup") //Do you have space in your inventory?
+	GUNP A 0 A_GiveInventory("gun3SV", 1) 
+	TNT1 A 0 A_PlaySound("misc/w_pkup")      //Pick up!
+	GUNP A 0 A_GiveInventory("M1897", 1)      //weapon
+	GUNP A 0 A_GiveInventory("M1897Clip", 5) //clip
+    TNT1 A 0 A_TakeInventory("M1897Empty", 1) //no reload
+	GNEX A 0 ACS_NamedExecuteWithResult("CoDNewWeapon", 59, 0, 0)
+	GUNP A 0 //A_SelectWeapon("M1897")
+    Stop
+  FailPickup:
+    B002 I -1
+    fail
+  notPickup:
+    TNT1 A 0 ACS_NamedExecuteWithResult("CoDNotPickup", 59, 0, 0)
+    B002 I -1
+    fail
+  }
+}
+
+ACTOR M1897_Pickup_drop : CustomInventory
+{
+  inventory.pickupmessage "[3] Winchester Model 1897 Trench 12ga pump-action shotgun"
+  inventory.pickupsound "nothing"
+  +INVENTORY.AUTOACTIVATE
+  +DONTGIB
+  inventory.respawntics 35
+  scale 0.16
+  States
+  {
+  Spawn:
+    B002 I -1
+    Stop
+  Pickup:
+    GNEX A 0
+	GUNP A 0 A_JumpIfInventory("M1897", 1, "failPickup")  //Do you have this?
+	GUNP A 0 A_JumpIfInventory("Mulekick", 1, 2)         //Are you using unlimited mode?
+	GUNP A 0 A_JumpIfInventory("gun3SV", 0, "notPickup") //Do you have space in your inventory?
+	GUNP A 0 A_GiveInventory("gun3SV", 1) 
+	TNT1 A 0 A_PlaySound("misc/w_pkup")      //Pick up!
+	GUNP A 0 A_GiveInventory("M1897", 1)      //weapon
+	GUNP A 0 A_GiveInventory("M1897Clip", 2) //clip
+    TNT1 A 0 A_TakeInventory("M1897Empty", 1) //no reload
+	GNEX A 0 ACS_NamedExecuteWithResult("CoDNewWeapon", 59, 0, 0)
+	GUNP A 0 //A_SelectWeapon("M1897")
+    Stop
+  FailPickup:
+    B002 I -1
+    fail
+  notPickup:
+    TNT1 A 0 ACS_NamedExecuteWithResult("CoDNotPickup", 59, 0, 0)
+    B002 I -1
+    fail
+  }
+}
+
+ACTOR M1897_PickupE : CustomInventory
+{
+  inventory.pickupmessage "[3] Winchester Model 1897 Trench 12ga pump-action shotgun"
+  inventory.pickupsound "nothing"
+  +INVENTORY.AUTOACTIVATE
+  +DONTGIB
+  inventory.respawntics 35
+  scale 0.16
+  States
+  {
+  Spawn:
+    B002 I -1
+    Stop
+  Pickup:
+    GNEX A 0
+	GUNP A 0 A_JumpIfInventory("M1897", 1, "failPickup")  //Do you have this?
+	GUNP A 0 A_JumpIfInventory("Mulekick", 1, 2)         //Are you using unlimited mode?
+	GUNP A 0 A_JumpIfInventory("gun3SV", 0, "notPickup") //Do you have space in your inventory?
+	GUNP A 0 A_GiveInventory("gun3SV", 1) 
+	TNT1 A 0 A_PlaySound("misc/w_pkup")      //Pick up!
+	GUNP A 0 A_GiveInventory("M1897", 1)      //weapon
+	//GUNP A 0 A_GiveInventory("M1897Clip", 5) //clip
+    //TNT1 A 0 A_TakeInventory("M1897Empty", 1) //no reload
+	GNEX A 0 ACS_NamedExecuteWithResult("CoDNewWeapon", 59, 0, 0)
+	GUNP A 0 //A_SelectWeapon("M1897")
+    Stop
+  FailPickup:
+    B002 I -1
+    fail
+  notPickup:
+    TNT1 A 0 ACS_NamedExecuteWithResult("CoDNotPickup", 59, 0, 0)
+    B002 I -1
+    fail
+  }
+}
+
+ACTOR RemoveM1897: Marine1Pathfinder //unload
+{
+-FRIENDLY
+-SHOOTABLE
+Scale 1.0
+Speed 1
+MaxTargetRange 90000
+	States
+	{
+	Spawn:
+	Pain:
+    See:
+		TNT1 A 0 A_ChangeFlag("FRIENDLY", 0)
+		TNT1 A 0 Thing_ChangeTID(0, 98)
+		TNT1 AAAAAAAAAAAAAAAAA 1 A_Chase
+		//TNT1 A 0 Thing_Hate(98, 264, 0)
+		TNT1 A 0 A_Recoil(-5)
+		TNT1 A 1 A_FaceTarget
+		Loop
+	Missile:
+		TNT1 A 1
+		TNT1 A 0 A_JumpIfInTargetInventory("Ammo12g", 0, "UnloadFull") //AmmoFull
+		TNT1 A 0 A_JumpIfInTargetInventory("M1897Clip", 1, "UnloadAmmo")
+		TNT1 A 0 A_Scream
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 1
+		Stop
+		
+    UnloadAmmo:
+        TNT1 A 0 A_TakeFromTarget("M1897Clip", 1)
+        TNT1 A 0 A_GiveToTarget("Ammo12g", 1)
+        TNT1 A 0 A_JumpIfInTargetInventory("Ammo12g", 0, "UnloadFull") //AmmoFull
+        TNT1 A 0 A_JumpIfInTargetInventory("M1897Clip", 1, "UnloadAmmo")
+        Goto UnloadEnd
+	
+	UnloadEnd:
+		TNT1 A 0
+		TNT1 A 0 A_GiveToTarget("M1897Empty", 1)
+		TNT1 A 0 A_Scream
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 1
+		Stop
+		
+	UnloadFull:
+		TNT1 A 0
+		TNT1 A 0 A_JumpIfInTargetInventory("M1897Clip", 1, 2)
+		TNT1 A 0 A_GiveToTarget("M1897Empty", 1)
+		TNT1 A 0 A_Scream
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 1
+		Stop
+		
+	Stoped:
+	    TNT1 A 0
+		TNT1 A 1
+		stop
+	}
+}
+
+
+ACTOR DropWeapon_M1897
+{
+	Radius 8
+	Height 8
+	Speed 20
+	mass 2
+	Damage 2
+	 +DONTHURTSPECIES
+  +THRUSPECIES
+  +MTHRUSPECIES
+  Species "Marines"
+  damagetype "Kick"
+        +NoBlockmap
+		+DropOff
+        +ActivatePCross
+        +ActivateImpact
+        -NoTeleport
+        +DontFall
+        +Missile
+          DeathSound "none"
+	 scale 0.16
+  States
+  {
+  Spawn:
+    B002 I 1
+		loop
+	Death:
+		TNT1 A 0 A_SpawnItemEx ("M1897_PickupE", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+		Stop
+	}
+}
+
+
+actor M1897Ammo : Ammo
+{
+    inventory.amount 6
+    inventory.maxamount 42
+    ammo.backpackamount 6
+    ammo.backpackmaxamount 72
+    +IGNORESKILL
+}
+
+actor M1897Clip : Ammo
+{
+    inventory.amount 0
+    inventory.maxamount 6
+    ammo.backpackamount 0
+    ammo.backpackmaxamount 6
+	Inventory.Icon "ISM1897"
+     +IGNORESKILL
+}
+
+actor M1897Puff
+{
+  RenderStyle None
+  -RANDOMIZE
+  +NOCLIP
+  PROJECTILE
+  Speed 28
+  Damage 0
+  states
+  {
+  Spawn:
+    TNT1 A 0
+    TNT1 A 0 A_AlertMonsters
+    TNT1 A 0 A_SpawnItemEx("WeaponSmokePuff_Spawned", 1, 0, 0, 0, 0, 0, 0, 128, 0)
+    TNT1 A 1 A_SpawnItemEx("MuzzleFlash2", 0, 0, 0, 0, 0, 0, 0, 0, 0)
+    TNT1 A 0 A_Jump(128, "Spawn2")
+    TNT1 A 0 //A_PlaySoundEx("toz/double", "SoundSlot5")
+    TNT1 A 5 //A_PlaySoundEx("anaconda/dfire1", "SoundSlot6")
+    stop
+  Spawn2:
+    TNT1 A 0 //A_PlaySoundEx("toz/double", "SoundSlot5")
+    TNT1 A 5 //A_PlaySoundEx("anaconda/dfire2", "SoundSlot6")
+    stop
+  }
+}
+
+actor M1897Empty : Inventory
+{
+    inventory.amount 0
+    inventory.maxamount 1
+}
+
+actor M1897Pumped : Inventory
+{
+    inventory.amount 0
+    inventory.maxamount 1
+}
+
+actor M1897 : RGUWeapon
+{
+  Obituary "%o was shot down by %k's M1897."
+  inventory.pickupmessage "[3] Winchester Model 1897 Trench 12ga pump-action shotgun"
+  inventory.pickupsound "misc/w_pkup"
+  weapon.selectionorder 22
+  tag "M1897"
+  weapon.ammotype "M1897Clip"
+  weapon.ammouse 1
+  weapon.ammotype2 "Ammo12g"
+  States
+  {
+  Spawn:
+  B002 I 0
+	TNT1 A 0 A_PlaySound("WeaponDropped") 
+    TNT1 A 2
+	TNT1 A 0 A_SpawnItemEx ("RemoveSlot3", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+	TNT1 A 0 A_SpawnItemEx ("RemoveM1897", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+	TNT1 A 0 A_SpawnItemEx ("DropWeapon_M1897", 20, 0, 20, 10, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+    stop
+  Select:
+    TNT1 A 1 A_Raise
+    TNT1 AA 0 A_Raise
+    loop
+  Ready:
+    TNT1 A 0 A_TakeInventory("Weight", 0)
+    TNT1 A 0 A_GiveInventory("Weight", 2)	//Determines player speed - 3 means slower speed
+    TNT1 A 0 ACS_NamedExecuteAlways("CoDPlayerSpeed", 0, 0, 0, 0)
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDWeaponLook", 56, 0, 0)
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDFireSelectIcon", 99, 0, 0)
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDScopeSelectIcon", 99, 0, 0)
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDFireSelect", 12, 0, 0)
+	TNT1 A 0 A_ZoomFactor(1.0, ZOOM_INSTANT)
+    TNT1 A 0 A_SetCrosshair(0)
+	TNT1 A 0 A_TakeInventory("BOSelectScope", 1)
+	TNT1 A 0 A_TakeInventory("BOSelectFire", 1)
+	TNT1 A 0 A_TakeInventory("BOWeaponlook", 1)
+	TNT1 A 0 A_TakeInventory("BOWeaponlooking", 1)
+	TNT1 A 0 A_TakeInventory("Reloading", 1)
+	TNT1 A 0 A_TakeInventory("Aiming", 1)
+    TNT1 A 0 A_JumpIfInventory("Perk1_SOH_Pro", 1, "GiveSOHSelect")
+    TRNA A 0 A_PlayWeaponSound("weapon/select")
+    TRNA ABCDEGHIJ 2 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE)
+    //goto InHand 				-- intentional drop to next state
+  InHand: 					//Ready state
+    TRNA F 0 A_JumpIfNoAmmo("Reload")
+    TRNA F 0 A_JumpIfInventory("Aiming", 1, "Aiming")
+    TRNA F 0 A_JumpIfInventory("Reloading", 1, "Reload")
+    TRNA F 0 A_JumpIfInventory("ThrowingGrenade", 1, "KnifeAttack")
+    TRNA F 0 A_JumpIfInventory("KnifeAttack", 1, "KnifeAttack")
+	TNT1 A 0 //A_JumpIfInventory("BOSelectFire", 1, "FireSet")
+	TNT1 A 0 A_JumpIfInventory("BOWeaponlook", 1, "Weaponlook")
+	TNT1 A 0 A_JumpIfInventory("BONVstart", 1, "NightVisionON") //
+	TNT1 A 0 //ACS_NamedExecuteWithResult("CoDWeaponIcon", 59, 0, 0)
+    TRNA F 1 A_WeaponReady(WRF_ALLOWRELOAD)
+	TNT1 F 0 
+    Goto CheckFiremode 
+  Friendcallup:
+    TNT1 A 0 A_ZoomFactor(1.0)
+    TNT1 A 0 A_SetCrosshair(0)
+    TNT1 A 0 A_GiveInventory("Followcall", 1)
+    TNT1 A 0 A_TakeInventory("Aiming", 1)
+    TNT1 A 0 A_TakeInventory("Reloading", 1)
+    TNT1 A 0 ACS_NamedExecuteAlways("CoDPlayerSpeed", 0, 0, 0, 0)
+    TNT1 A 0 A_PlaySound("NEEDCOME")
+    FRGE IHGFGHI 2
+    TNT1 A 10
+    TNT1 A 0 A_TakeInventory("KnifeAttack", 1)
+    TNT1 A 0 A_TakeInventory("Followcall", 1)
+    TNT1 A 0 A_TakeInventory("BOFriendcall", 1)
+    Goto Ready2+2
+  Ready2:
+    TNT1 A 0 //A_GiveInventory("Weight", 1)	//Determines player speed - 3 means slower speed
+    TNT1 A 0 ACS_NamedExecuteAlways("CoDPlayerSpeed", 0, 0, 0, 0)
+    TNT1 A 0 A_JumpIfInventory("Perk1_SOH_Pro", 1, "GiveSOHSelect")
+    TNT1 A 0 A_PlayWeaponSound("weapon/select")
+    TRNA ABCDEGHIJ 2 A_JumpIfInventory("KnifeAttack", 1, "KnifeAttack")
+    goto InHand
+
+  CheckFiremode:
+   ACRA F 0
+   ACRA F 0 // A_JumpIfInventory("M1300_FireSet", 1, 2)
+   ACRA F 0 //ACS_NamedExecuteWithResult("CoDFireSelectIcon", 7, 0, 0)//Buck
+   Goto CheckScopemode
+   ACRA F 0 //ACS_NamedExecuteWithResult("CoDFireSelectIcon", 8, 0, 0)//Frag
+   Goto CheckScopemode
+
+  CheckScopemode:
+   ACRA F 0
+   ACRA F 0 //A_JumpIfInventory("AN94_Scope", 1, 2)
+   ACRA F 0 //ACS_ExecuteWithResult(995, 1, 0, 0)//x3
+   Goto Inhand
+   ACRA F 0 //ACS_ExecuteWithResult(995, 2, 0, 0)//Dot
+   Goto Inhand
+
+  NightVisionON:
+    TNT1 A 0 
+	TNT1 A 0 A_TakeInventory("Aiming", 1)
+	TNT1 A 0 A_ZoomFactor(1.0, ZOOM_INSTANT)
+    TNT1 A 0 A_SetCrosshair(0)
+	TNT1 A 0 A_JumpIfInventory("NightVisionActive", 1, "NightVisionOFF")   
+	TNT1 A 0 A_TakeInventory("BONVstart", 1)
+    TNT1 A 0 A_PlaySoundEx("g36c/reload1", "SoundSlot5")
+	BONV ABCDEFGHIJKLM 2
+	BONV N 6
+	TNT1 A 0 A_PlaySoundEx("BONVactive", "SoundSlot6")
+	TNT1 A 0 A_GiveInventory("Infrared_COD", 1)
+	TNT1 A 0 A_GiveInventory("NightVisionActive", 1)
+	TNT1 A 0 A_TakeInventory("BONVstart", 1)
+    goto ready2
+  NightVisionOFF:
+    TNT1 A 0 
+	TNT1 A 0 A_TakeInventory("Infrared_COD", 0)
+	TNT1 A 0 A_TakeInventory("PowerLightAmp", 0)
+	TNT1 A 0 A_TakeInventory("NightVisionActive", 0)
+	TNT1 A 0 A_TakeInventory("BONVstart", 1)
+    TNT1 A 0 A_PlaySoundEx("weapon/select", "SoundSlot5")
+	BONV NMLKJIHGFEDCBA 2
+	TNT1 A 0 A_TakeInventory("BONVstart", 1)
+    goto ready2
+
+  Weaponlook:
+    TNT1 A 0 A_TakeInventory("BOWeaponlook", 1)
+	TNT1 A 0 A_TakeInventory("Aiming", 1)
+  Weaponlooking: 	
+    TNT1 A 0 A_GiveInventory("BOWeaponlooking", 1)
+    ACRA F 0 A_JumpIfInventory("Aiming", 1, "WeaponlookEND")
+    ACRA F 0 A_JumpIfInventory("Reloading", 1, "WeaponlookEND")
+    ACRA F 0 A_JumpIfInventory("ThrowingGrenade", 1, "WeaponlookEND")
+    ACRA F 0 A_JumpIfInventory("KnifeAttack", 1, "WeaponlookEND")
+	ACRA F 0 A_JumpIfInventory("BOWeaponlook", 1, "WeaponlookEND")
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDWeaponLook", 59, 0, 0)
+    TRNA F 1 A_WeaponReady(WRF_ALLOWRELOAD)
+    loop 
+  WeaponlookEND:
+    TNT1 A 0 ACS_NamedExecuteWithResult("CoDWeaponLook", 56, 0, 0)
+    TNT1 A 0 A_TakeInventory("BOWeaponlook", 1)
+    TNT1 A 0 A_TakeInventory("BOWeaponlooking", 1)
+    goto InHand
+
+  Aiming:
+    TRNC D 0 A_JumpIfInventory("Reloading", 1, "Reload")    
+    TRNC D 0 A_JumpIfInventory("ThrowingGrenade", 1, "KnifeAttack")
+    TRNC D 0 A_JumpIfInventory("KnifeAttack", 1, "KnifeAttack")
+	TRNC D 1 A_WeaponReady(WRF_NOBOB|WRF_ALLOWRELOAD)
+	TNT1 F 0 
+    loop
+  Deselect:
+    TNT1 A 0 A_TakeInventory("Weight", 0)	//Determines player speed - 1 means normal speed
+    TNT1 A 0 A_TakeInventory("Aiming", 1)
+    TNT1 A 0 ACS_NamedExecuteAlways("CoDPlayerSpeed", 0, 0, 0, 0)
+	TNT1 A 0 ACS_NamedExecuteWithResult("CoDWeaponLook", 56, 0, 0)
+	TNT1 A 0 A_TakeInventory("BOWeaponlook", 1)
+    TNT1 A 0 A_TakeInventory("BOWeaponlooking", 1)
+    TNT1 A 0 A_TakeInventory("Reloading", 1)
+    TNT1 A 0 A_ZoomFactor(1.0)
+    TNT1 A 0 A_SetCrosshair(0)
+    TNT1 A 0 A_JumpIfInventory("Perk1_SOH_Pro", 1, "GiveSOHDeselect")
+    TRNA IHGEDCBA 1
+  DeselectFull: 				//Deselect
+    TNT1 AA 0 A_Lower
+    TNT1 A 1 A_Lower
+    loop  
+  Fire:
+    ACRA F 0 A_JumpIfInventory("BOWeaponlooking", 1, "WeaponlookEND")
+    TRNA F 0 A_JumpIfInventory("Reloading", 1, "ReloadEnd")
+	TRNA F 0 A_JumpIfNoAmmo("ReloadStart")
+    TRNA F 0 A_JumpIfInventory("Aiming", 1, "FireAim")
+    TRNB A 0 A_FireCustomMissile("M1897Puff", 0, 0, 8, 1)   //Fire effect and sound
+	TNT1 A 0 A_PlaySoundEx("KS23/fire", "SoundSlot5")
+    TNT1 A 0 A_PlaySoundEx("anaconda/dfire1", "SoundSlot6")
+	TRNB A 1 BRIGHT A_FireBullets(6.0, 4.0, 2, 30, "Bullet762NATO", 1, 900)
+	TNT1 F 0 A_FireBullets(6.4, 4.5, 7, 17, "ShotgunPuff", 0, 1800)
+    TRNB B 0 ACS_NamedExecuteAlways("CoDRecoil", 0, 1500, 150*Random (6, 7), 0)		//Recoil script
+    TRNB A 1 BRIGHT
+	TRNB BCDE 1
+	TNT1 A 0 A_JumpIfNoAmmo("FireEmpty")
+	TRNB FG 2
+	TNT1 F 0 A_PlayWeaponSound("TRN/PUMP1")
+	TNT1 A 0 A_FireCustomMissile("BigShotCaseSpawn", 5, 0, 8, -6)
+    TRNB HIJK 1
+	TRNB LMN 2
+	TRNB PQR 1
+	TNT1 F 0 A_PlayWeaponSound("TRN/PUMP2")
+	TRNB STUVWXY 2
+	TNT1 A 0 A_TakeInventory("Reloading", 1)
+    TRNA A 0 A_JumpIfInventory("Ammo12g", 1, 2)
+    TRNA A 0 A_ReFire
+    goto InHand
+    TRNB A 0 A_JumpIfNoAmmo(2)
+    TRNB A 0 A_ReFire
+    goto InHand
+    TRNB A 0 A_GiveInventory("M1897Empty", 1)		//Go to reload
+    goto Reload
+	
+   FireEmpty:
+    MSNA F 0 
+    TRNG A 1 //A_PlayWeaponSound("weapon/dryfire")
+    G43B A 0 A_JumpIfNoAmmo(2)
+    G43B A 0 A_ReFire
+    goto InHand
+    G43B A 0 A_GiveInventory("M1897Empty", 1)		//Go to reload
+    goto Reload
+
+  FireAim:
+    S11A F 0 A_JumpIfInventory("Reloading", 1, "ReloadEnd")
+    TRNC D 0 A_JumpIfNoAmmo("ReloadStart")
+    TRND A 0 A_FireCustomMissile("M1897Puff", 0, 0, 0, 4)   //Fire effect and sound
+    TNT1 A 0 A_PlaySoundEx("KS23/fire", "SoundSlot5")
+    TNT1 A 0 A_PlaySoundEx("anaconda/dfire1", "SoundSlot6")
+    TRND A 1 BRIGHT A_FireBullets(6.0, 4.0, 2, 30, "Bullet762NATO", 1, 900)
+	TNT1 F 0 A_FireBullets(6.0, 3.5, 7, 17, "ShotgunPuff", 0, 1800)
+    TRND B 0 ACS_NamedExecuteAlways("CoDRecoil", 0, 1500, 150*Random (6, 7), 0)		//Recoil script
+    TRND A 1 BRIGHT
+	TRND BCDE 1 
+	TNT1 A 0 A_JumpIfNoAmmo("FireEmptyAim")
+	TRND B 0 A_PlayWeaponSound("TRN/PUMP1")
+	TNT1 J 0 A_FireCustomMissile("BigShotCaseSpawn", -2, 0, 0, -2)
+	TRND FGHI 2 
+	TNT1 F 0 A_PlayWeaponSound("TRN/PUMP2")
+	TRND JKLMN 2 
+	TNT1 A 0 A_TakeInventory("Reloading", 1)
+    TRNC A 0 A_JumpIfInventory("Ammo12g", 1, 2)
+    TRNC A 0 A_ReFire
+    goto InHand
+    TRND A 0 A_JumpIfNoAmmo(2)
+    TRND A 0 A_ReFire
+    goto InHand
+    TRND A 0 A_GiveInventory("M1897Empty", 1)		//Go to reload
+    goto Reload
+	
+  FireEmptyAim:
+    G43C D 0 //A_PlayWeaponSound("weapon/dryfire")
+    G43D A 0 A_JumpIfNoAmmo(2)
+    G43D A 0 A_ReFire
+    goto InHand
+    G43D A 0 A_GiveInventory("M1897Empty", 1)		//Go to reload
+    goto Reload
+	
+  Hold:
+    TNT1 F 0 A_JumpIfInventory("Reloading", 1, "ReloadEnd")
+	M40A F 0 A_JumpIfInventory("Aiming", 1, "HoldAim")
+    M40A F 0 A_JumpIfInventory("ThrowingGrenade", 1, "KnifeAttack")
+    M40A F 0 A_JumpIfInventory("KnifeAttack", 1, "KnifeAttack")
+	TNT1 F 0 
+    goto Fire
+	
+  HoldAim:
+    U46C D 0
+	TNT1 F 0 
+    goto FireAim
+
+  AltFire:	//Aim
+    ACRA F 0 A_JumpIfInventory("BOWeaponlooking", 1, "WeaponlookEND")
+    TRNA F 0 A_JumpIfInventory("Reloading", 1, "ReloadEnd")
+    TRNC A 0 A_JumpIfInventory("Aiming", 1, "AltFire2")
+    TRNC A 0 A_ZoomFactor(1.2)
+    TRNC ABC 1
+	TRNC EFG 1 
+    TRNC D 0 A_GiveInventory("Aiming", 1)
+    TRNC D 0 ACS_NamedExecuteAlways("CoDPlayerSpeed", 0, 0, 0, 0)
+    TRND A 0 A_ReFire
+    goto Aiming
+  AltFire2:
+    TRNC D 0 A_ZoomFactor(1.0)
+    TRNC GFECBA 1
+    TRNC A 0 A_TakeInventory("Aiming", 1)
+	TNT1 A 0 A_TakeInventory("BONVstart", 1)
+	TNT1 A 0 A_TakeInventory("BOWeaponlook", 1)
+    TRNC A 0 ACS_NamedExecuteAlways("CoDPlayerSpeed", 0, 0, 0, 0)
+    TRND A 0 A_ReFire
+    goto InHand
+  AltFire_QD:	//Aim with QuickDraw
+    TRNC A 0 A_JumpIfInventory("Aiming", 1, "AltFire2_QD")
+    TRNC A 0 A_ZoomFactor(1.2)
+    TNT1 A 0 A_SetCrosshair(41)
+    TRNC AB 1
+	TRNC CEF 1 A_GunFlash
+    TRNC D 0 A_GiveInventory("Aiming", 1)
+    TRNC D 0 ACS_NamedExecuteAlways("CoDPlayerSpeed", 0, 0, 0, 0)
+    TRND A 0 A_ReFire
+    goto Aiming
+  AltFire2_QD:
+    TRNC D 0 A_ZoomFactor(1.0)
+    TNT1 A 0 A_SetCrosshair(0)
+    TRNC DCBA 1
+    TRNC A 0 A_TakeInventory("Aiming", 1)
+    TRNC A 0 ACS_NamedExecuteAlways("CoDPlayerSpeed", 0, 0, 0, 0)
+    TRND A 0 A_ReFire
+    goto InHand
+  AltHold:
+    TNT1 F 0 A_JumpIfInventory("Reloading", 1, "ReloadEnd")
+    TRNA F 1 A_JumpIfInventory("Aiming", 1, "AltHoldAim")
+    TRNA F 1 A_ReFire
+    goto InHand
+  AltHoldAim:
+    TRNC D 1 
+    TRNC D 1 A_ReFire
+    goto Aiming
+  ReloadStartAim:
+	TRNC D 0 A_ZoomFactor(1.0)
+    TNT1 A 0 A_SetCrosshair(0)
+    TRNC FE 1 
+    TRNC CBA 1
+    TRNC A 0 A_TakeInventory("Aiming", 1)
+    TRNC A 0 ACS_NamedExecuteAlways("CoDPlayerSpeed", 0, 0, 0, 0)
+    goto ReloadStart+1
+  Reload:
+    TNT1 A 0 A_TakeInventory("Reloading", 1)
+    TNT1 A 0 A_JumpIfInventory("M1897Clip", 0, "InHand")
+    TNT1 A 0 ACS_NamedExecuteWithResult("CoDWeaponLook", 56, 0, 0)
+    TNT1 A 0 A_JumpIfInventory("Ammo12g", 1, "ReloadStart")
+	TNT1 A 0 A_JumpIfInventory("Aiming", 1, "AltFire2")
+    goto InHand+3
+	
+  ReloadStart:
+    TRNE A 0 A_JumpIfInventory("Aiming", 1, "ReloadStartAim")
+    TNT1 A 0 A_GiveInventory("Reloading", 1)
+    TRNE A 0 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE)
+    VECE A 0 A_JumpIfInventory("M1897Empty", 1, "ReloadStartEmpty")
+    TRNE ABCDEFGHIJK 2 A_JumpIfInventory("KnifeAttack", 1, "KnifeAttack")
+    goto ReloadAmmo
+  ReloadAmmo:
+    TNT1 A 0 A_WeaponReady(WRF_NOBOB)
+	TRNE LMN 2 A_JumpIfInventory("KnifeAttack", 1, "KnifeAttack")
+	TNT1 A 0 A_GiveInventory("M1897Clip", 1)
+    TNT1 A 0 A_TakeInventory("Ammo12g", 1)
+	//TRNE J 0 A_WeaponReady(WRF_NOBOB)
+	TRNE D 0 A_PlaySoundEx("KS23/reload1", "SoundSlot6")
+	//TRNE J 0 A_WeaponReady(WRF_NOBOB)
+    TRNE OPQ 2 A_JumpIfInventory("KnifeAttack", 1, "KnifeAttack")
+	TRNE J 0 A_WeaponReady(WRF_NOBOB)
+	TRNE RSTUVWX 2 A_JumpIfInventory("KnifeAttack", 1, "KnifeAttack")
+    TNT1 A 0 A_JumpIfInventory("M1897Clip", 0, "ReloadEnd")
+    TNT1 A 0 A_JumpIfInventory("Ammo12g", 1, "ReloadAmmo")
+    goto ReloadEnd
+  ReloadEnd:
+    TNT1 A 0 A_TakeInventory("Reloading", 1)
+    //TRNE S 0 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE)
+	TRNE KJIHGFEDCBA 2 A_JumpIfInventory("KnifeAttack", 1, "KnifeAttack")
+	TNT1 A 0 A_TakeInventory("Reloading", 1)
+    TNT1 A 0 A_ReFire
+    goto InHand
+  
+  ReloadStartEmpty:
+    TRNE A 0 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE)
+    TRNG A 2 A_JumpIfInventory("KnifeAttack", 1, "KnifeAttack")
+	TRNE I 0 A_PlayWeaponSound("TRN/PUMP1")	
+	TRNG BCDEFGHIJKL 2 A_JumpIfInventory("KnifeAttack", 1, "KnifeAttack")
+	TRNE A 0 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE)
+	TRNE D 0 A_PlaySoundEx("KS23/reload2", "SoundSlot6")
+	TNT1 A 0 A_GiveInventory("M1897Clip", 1)
+    TNT1 A 0 A_TakeInventory("Ammo12g", 1)
+	TNT1 A 0 A_TakeInventory("M1897Empty", 1)
+	TRNE A 0 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE)
+	TRNG MNOPQRSTU 2 A_JumpIfInventory("KnifeAttack", 1, "KnifeAttack")
+	TRNE E 0 A_PlayWeaponSound("TRN/PUMP2")	
+	TRNE A 0 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE)
+	TRNG VWXYZ 2 A_JumpIfInventory("KnifeAttack", 1, "KnifeAttack")
+	TRNE A 0 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE)
+	TRNH ABCDE 2 A_JumpIfInventory("KnifeAttack", 1, "KnifeAttack")
+	TRNE A 0 A_WeaponReady(WRF_NOBOB|WRF_NOFIRE)
+	TNT1 A 0 A_WeaponReady(WRF_NOBOB)
+	TNT1 A 0 A_ReFire
+	TNT1 A 0 A_JumpIfInventory("Ammo12g", 1, "ReloadAmmo")
+    goto ReloadEnd
+	
+	
+  KnifeAttack:
+    TNT1 A 0 A_ZoomFactor(1.0)
+    TNT1 A 0 A_SetCrosshair(0)
+    TNT1 A 0 A_TakeInventory("Aiming", 1)
+    TNT1 A 0 A_TakeInventory("Reloading", 1)
+    TNT1 A 0 ACS_NamedExecuteAlways("CoDPlayerSpeed", 0, 0, 0, 0)
+    TNT1 A 0 A_JumpIfInventory("ThrowingGrenade", 1, "FragGrenade")
+    TNT1 A 0 ACS_NamedExecuteAlways("CoDRecoil", 0, 900, 900, 1)		//Recoil script
+	TNT1 A 0 //A_JumpIfInventory("Katana", 1, "KatanaAttack")
+	TNT1 A 0 //A_JumpIfInventory("Katana_Samurai", 1, "KatanaAttack")
+    KNI9 A 1 A_PlaySoundEx("melee/hit", "SoundSlot5")
+    KNI9 BCL 1
+    KNI9 D 1 A_FireBullets(10.0, 0.0, 6, 7, "MachineGunBulletPuff", 0, 80)
+    KNI9 EFGHIJ 1
+    TNT1 A 5
+    TNT1 A 0 A_TakeInventory("KnifeAttack", 1)
+    goto Ready2+2
+  KatanaAttack:
+	KTNB FG 1
+	KTNB H 1 A_Saw("weapons/knifeswing3", "weapons/knifehits", 40, "katanaPuff", SF_NOUSEAMMO, 80, 32)
+    KTNB IJ 1 
+    TNT1 A 5
+	TNT1 A 0 A_TakeInventory("KnifeAttack", 1)
+    goto Ready2+2
+  FragGrenade:
+    TNT1 A 0 A_JumpIfInventory("ThrowingStunGrenade", 1, "StunGrenade")
+    TNT1 A 0 A_JumpIfInventory("ThrowingKnife", 1, "ThrowingKnife")
+    FRGA ABCDEFGHI 1
+    FRGA J 0 A_PlaySoundEx("grenade/pinpull", "SoundSlot5")
+	FRGA JKLMOPQ 2
+    FRGA ST 2
+    FRGA H 0 A_PlaySoundEx("grenade/throw", "SoundSlot5")
+    FRGA I 0 A_TakeInventory("FragGrenadeAmmo", 1)
+    FRGA I 0 A_TakeInventory("ThrowingGrenade", 1)
+    FRGA I 0 A_TakeInventory("KnifeAttack", 1)
+    FRGA I 0 A_FireCustomMissile("FragGrenade", 0, 0, 0, 16)
+	FRGA U 2
+	FRGA VWX 2
+    goto Ready2+1		//Reselect weapon
+  StunGrenade:
+    FRGA ABCDEFGHI 1
+    FRGA F 0 A_PlaySoundEx("flash/pinpull", "SoundSlot5")
+    FRGA JKLMOPQ 1
+    FRGA ST 1
+    FRGB H 0 A_PlaySoundEx("flash/throw", "SoundSlot5")
+    FRGB I 0 A_TakeInventory("ThrowingGrenade", 1)
+    FRGB I 0 A_TakeInventory("KnifeAttack", 1)
+    FRGB I 0 A_TakeInventory("ThrowingStunGrenade", 1)
+    FRGB C 0 A_FireCustomMissile("StunGrenadeThrown", 0, 0, 0, 16)
+    FRGA U 2
+	FRGA VWX 2
+    goto Ready2+1		//Reselect weapon
+  SemtexGrenade:
+    FRGA ABCDE 3
+    FRGA F 3 A_PlaySoundEx("grenade/pinpull", "SoundSlot5")
+    TNT1 A 15 
+    FRGA GH 3
+    FRGA H 0 A_PlaySoundEx("grenade/throw", "SoundSlot5")
+    FRGA I 0 A_TakeInventory("ThrowingGrenade", 1)
+    FRGA I 0 A_TakeInventory("KnifeAttack", 1)
+    FRGB I 0 A_TakeInventory("ThrowingSemtex", 1)
+    FRGA I 3 A_FireCustomMissile("SemtexThrown", 0, 0, 0, 16)
+    goto Ready+1		//Reselect weapon
+  ThrowingKnife:
+    FRGC AB 3
+    FRGC C 3 A_PlaySoundEx("melee/swing", "SoundSlot5") 
+    FRGC D 3 A_FireCustomMissile("ThrowingKnifeThrown", 0, 0, 0, 8)
+    FRGC EFG 3
+    TNT1 A 15 
+    FRGC I 0 A_TakeInventory("ThrowingGrenade", 1)
+    FRGC I 0 A_TakeInventory("KnifeAttack", 1)
+    FRGC I 0 A_TakeInventory("ThrowingKnife", 1)
+    goto Ready+1		//Reselect weapon
+  Claymore:
+    FRGD A 2 A_PlaySoundEx("claymore/click", "SoundSlot5") 
+    FRGD BCDEFGHIJKLM 2
+    TNT1 A 3 A_GiveInventory("ClaymoreUse", 1)
+    TNT1 A 15 
+    FRGC I 0 A_TakeInventory("ThrowingGrenade", 1)
+    FRGC I 0 A_TakeInventory("KnifeAttack", 1)
+    FRGC I 0 A_TakeInventory("ThrowingClaymore", 1)
+    goto Ready+1		//Reselect weapon
+  Betty:
+    FRGE G 3 A_PlaySoundEx("grenade/throw", "SoundSlot5") 
+    FRGE B 3 A_GiveInventory("BettyUse", 1)
+    FRGE CDEF 3
+    TNT1 A 15 
+    FRGC I 0 A_TakeInventory("ThrowingGrenade", 1)
+    FRGC I 0 A_TakeInventory("KnifeAttack", 1)
+    FRGC I 0 A_TakeInventory("ThrowingBetty", 1)
+    goto Ready+1		//Reselect weapon
+  Flash:
+    TNT1 A 0 
+    //MP5C X 3 BRIGHT //A_Light2
+    stop
+  GiveSOHSelect:
+    goto Ready+3
+  GiveSOHDeselect:
+    goto Deselect+6
+  GiveSOHReload:
+    goto ReloadStart+1
+  GiveQDKnife:
+    goto KnifeAttack+5
+  GiveSOHFire:
+    goto Fire+1
+  }
+}

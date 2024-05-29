@@ -1,0 +1,158 @@
+ACTOR RGUWeapon : Weapon
+{
+  Obituary "%o was killed."
+  HitObituary "%k killed %o with a melee weapon."
+  Inventory.PickupMessage "Snagged an item!"
+  Inventory.PickupSound "misc/w_pkup"
+  Weapon.BobStyle InverseSmooth
+  Weapon.BobSpeed 1.4
+  Weapon.BobRangeX 0.3
+  Weapon.BobRangeY 0.5
+  Weapon.KickBack 50
+  Decal BulletChip
+  +NOALERT
+  +IGNORESKILL
+  +DONTGIB
+  +WEAPON.NOAUTOAIM
+  States
+  {
+  Flash:
+    TNT1 A 35 A_GiveInventory("Firing")
+    TNT1 A 0 A_TakeInventory("Firing")
+    Stop
+  }
+}
+
+// Spawner
+ACTOR CoDSpawner : CustomInventory
+{
+  +DONTGIB
+  +INVENTORY.QUIET // This flag will not display "You got the pickup" message.
+  +INVENTORY.ALWAYSPICKUP // This flag will always picked up that "-1" to trigger something (such as ambushes and scripts), not items or weapons.
+// Make sure put this "-1" definition above "Stop". otherwise it will stop at halfway.
+// TNT1 A -1 A_SpawnItemEx("M9A1Pickup", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION, 0)
+// Stop
+}
+
+ACTOR ExplosionMain
+{
+  RenderStyle Add
+  alpha 0.9
+  +RANDOMIZE
+  +NOCLIP
+  +NOGRAVITY
+  Scale 1.0
+  states
+  {
+  Spawn:
+    EXP6 AA 0 A_SpawnItemEx("ExplosionSmall", random(-48, 48), random(-48, 48), random(1, 48), 0.25*random(1, 4), 0, 0.25*random(1, 4), random(-180, 180), 128, 0)
+    EXP6 A 0 A_SpawnItemEx("ExplosionLarge", 0, 0, 0, 0, 0, 0, 0, 128, 0)
+    //EXP6 AAAAA 0 A_SpawnItemEx("ExplosionSmokePuff", random(-32, 32), random(-32, 32), random(1, 24), 0, 0, 0.25*random(1, 4), 0, 128, 0)
+    EXP6 AB 1 bright 
+    EXP6 BB 0 A_SpawnItemEx("ExplosionSmall", random(-48, 48), random(-48, 48), random(1, 48), 0.25*random(1, 4), 0, 0.25*random(1, 4), random(-180, 180), 128, 0)
+    EXP6 CDEF 1 bright
+    EXP6 FF 0 A_SpawnItemEx("ExplosionSmall", random(-48, 48), random(-48, 48), random(1, 48), 0.25*random(1, 4), 0, 0.25*random(1, 4), random(-180, 180), 128, 0)
+    EXP6 GHIJ 1 bright   
+    EXP6 A 0 A_SpawnItemEx("ExplosionLarge", 0, 0, 0, 0, 0, 0, 0, 128, 0)
+    EXP3 AB 1 bright
+    EXP3 BB 0 A_SpawnItemEx("ExplosionSmall", random(-48, 48), random(-48, 48), random(1, 48), 0.25*random(1, 4), 0, 0.25*random(1, 4), random(-180, 180), 128, 0)
+    EXP3 CDEF 1 bright
+    EXP3 FF 0 A_SpawnItemEx("ExplosionSmall", random(-48, 48), random(-48, 48), random(1, 48), 0.25*random(1, 4), 0, 0.25*random(1, 4), random(-180, 180), 128, 0)
+    EXP3 GHI 1 bright
+    Stop
+  }
+}
+
+ACTOR ExplosionSmall
+{
+  RenderStyle Add
+  alpha 0.9
+  +RANDOMIZE
+  +NOCLIP
+  PROJECTILE
+  Speed 1
+  Damage 0
+  Scale 0.7
+  states
+  {
+  Spawn:
+    TNT1 A 1
+    TNT1 A 0 A_Jump(128, 11)
+    EXP6 ABCDEFGHIJ 1 bright
+    Stop
+    TNT1 A 0 A_Jump(128, 10)
+    EXP7 ABCDEFGHI 1 bright
+    Stop
+    TNT1 A 0 A_Jump(128, 10)
+    EXP3 ABCDEFGHI 1 bright
+    Stop
+    TNT1 A 0 A_Jump(128, 9)
+    EXP4 ABCDEFGH 1 bright
+    Stop
+    EXP5 ABCDEFGHIJK 1 bright
+    Stop
+  }  
+}
+
+ACTOR ExplosionLarge
+{
+  RenderStyle Add
+  alpha 0.9
+  +RANDOMIZE
+  +NOCLIP
+  PROJECTILE
+  Speed 1
+  Damage 0
+  Scale 0.75
+  states
+  {
+  Spawn:
+    TNT1 A 1
+    TNT1 A 0 A_Jump(128, 11)
+    EXP6 ABCDEFGHIJ 2 bright
+    Stop
+    TNT1 A 0 A_Jump(128, 10)
+    EXP7 ABCDEFGHI 2 bright
+    Stop
+    TNT1 A 0 A_Jump(128, 10)
+    EXP3 ABCDEFGHI 2 bright
+    Stop
+    TNT1 A 0 A_Jump(128, 9)
+    EXP4 ABCDEFGH 2 bright
+    Stop
+    EXP5 ABCDEFGHIJK 2 bright
+    Stop
+  }  
+}
+
+ACTOR ExplosionSmokePuff
+{
+  RenderStyle Add
+  alpha 0.95
+  -RANDOMIZE
+  +NOCLIP
+  PROJECTILE
+  Speed 2
+  Damage 0
+  Scale 4.0
+  +CLIENTSIDEONLY
+  states
+  {
+  Spawn:
+    TNT1 A 1
+    TNT1 A 0 //A_Jump(156, "Spawn2", "Spawn3", "Spawn4")
+    SMK2 ABCDEFGHIJKLMNOP 2 bright A_FadeOut(0.0625)
+    //SMK1 A 0 A_SpawnItemEx("ExplosionSmokePuff", random(-8, 8), random(-8, 8), random(-8, 8), 0, 0, 0.25*random(1, 4), 0, 128, 192)
+    Stop
+  Spawn2:
+    SMK2 ABCDEFGHIJKLMNOP 2 bright A_FadeOut(0.0625)
+    //SMK1 A 0 A_SpawnItemEx("ExplosionSmokePuff", random(-8, 8), random(-8, 8), random(-8, 8), 0, 0, 0.25*random(1, 4), 0, 128, 192)
+    Stop
+  Spawn3:
+    SMK3 ABCDEFGHIJKLMNOP 2 bright A_FadeOut(0.0625)
+    Stop
+  Spawn4:
+    SMK4 ABCDEFGHIJKLMNOP 2 bright A_FadeOut(0.0625)
+    Stop
+  }
+}
