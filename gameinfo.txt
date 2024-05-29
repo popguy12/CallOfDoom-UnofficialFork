@@ -1,0 +1,3 @@
+STARTUPTITLE = "Project Brutality: Reborn"
+STARTUPCOLORS = "FF2400", "000000"
+NoRandomPlayerClass = True
