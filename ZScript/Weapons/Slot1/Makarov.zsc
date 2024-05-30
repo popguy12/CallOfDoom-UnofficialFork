@@ -5,6 +5,9 @@ class COD_Makarov : CODWeapon
 		Weapon.AmmoType "Clip";
 		Weapon.AmmoUse 0;
 		Weapon.AmmoGive 20;
+		Weapon.AmmoType2 "COD_Makarov_Mag";
+		Weapon.AmmoUse2 0;
+		Weapon.AmmoGive2 0;
 		
 		Weapon.SlotNumber 1;
 		
@@ -15,6 +18,17 @@ class COD_Makarov : CODWeapon
 		Inventory.PickupSound "weapons/pistol/pickup";
 		+WEAPON.NOALERT;
 		+WEAPON.AMMO_OPTIONAL;
+	}
+	
+	action void FireWeapon()
+	{
+		COD_QuakeCamera(2, 3);
+		A_AlertMonsters();
+		A_Overlay(-3, "MuzzleSmall");
+		//gunsmoke
+		A_TakeInventory("COD_Makarov_Mag", 1);
+		
+		COD_FireBullets("COD_9x18mm", 1, frandom(-0.1, 0.1), 0, 0, frandom(-0.1, 0.1));
 	}
 	
 	States
@@ -40,10 +54,15 @@ class COD_Makarov : CODWeapon
 		Loop;
 	Fire:
 		TNT1 A 0 A_JumpIfInventory("AimingToken", 1, "Fire2");
+		TNT1 A 0 A_JumpIf(CountInv("COD_Makarov_Mag") == 0, "DryFire");
 		P9PA F 1;
+		TNT1 A 0 FireWeapon();
 		P9PB ABCDEF 1;
 		Goto WeaponReady;
 	Fire2:
+		TNT1 A 0 A_JumpIf(CountInv("COD_Makarov_Mag") == 0, "DryFire2");
+		P9PC D 1;
+		TNT1 A 0 FireWeapon();
 		P9PD ABCDEF 1;
 		Goto WeaponReady2;
 	AltFire:
@@ -55,16 +74,43 @@ class COD_Makarov : CODWeapon
 		TNT1 A 0 A_TakeInventory("AimingToken");
 		P9PC FECBA 1;
 		Goto WeaponReady;
-		
+	
+	DryFire:
+		P9PA F 1;
+		Goto WeaponReady;
+	DryFire2:
+		P9PA D 1;
+		Goto WeaponReady2;
+	
 	Reload:
-		TNT1 A 0; //empty check
+		TNT1 A 0 A_JumpIf(CountInv("COD_Makarov_Mag") == 0, "Reload2");
 		TNT1 A 0 A_TakeInventory("AimingToken");
 		P9PE ABCDEFGHIJKLMNOPQRSTUVWXYZ 1;
-		P9PF ABCDEFGHIJKLMNOPQRSTU 1;
+		P9PF ABCDEFGHIJKL 1;
+		TNT1 A 0 COD_AmmoIntoMag("COD_Makarov_Mag", "Clip", 9, 1);
+		P9PF MNOPQRSTU 1;
+		Goto WeaponReady;
+	Reload2:
+		TNT1 A 0 A_TakeInventory("AimingToken");
+		P9PG ABCDEFGHIJKLMNOPQRSTUVWXYZ 1;
+		P9PH ABCDEF 1;
+		TNT1 A 0 COD_AmmoIntoMag("COD_Makarov_Mag", "Clip", 8 , 1);
+		P9PH GHIJKLMNOPQRSTU 1;
 		Goto WeaponReady;
  	Spawn:
 		B003 S -1;
 		Stop;
 	
+	}
+}
+
+Class COD_Makarov_Mag : Ammo
+{
+	Default
+	{
+		Inventory.Amount 0;
+		Inventory.MaxAmount 9;
+		Ammo.BackpackAmount 0;
+		Ammo.BackpackMaxAmount 9;
 	}
 }

@@ -57,6 +57,54 @@ class CODWeapon : Weapon
 			FRGA U 2;
 			FRGA VWX 2;
 			Goto Ready;
+			
+		MuzzleSmall:
+			TNT1 A 0 A_Jump(256, "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8");
+		S1:
+			MUZC A 2;
+			Stop;
+		S2:
+			MUZC B 2;
+			Stop;
+		S3:
+			MUZC C 2;
+			Stop;
+		S4:
+			MUZC D 2;
+			Stop;
+		S5:
+			MUZC E 2;
+			Stop;
+		S6:
+			MUZC F 2;
+			Stop;
+		S7:
+			MUZC G 2;
+			Stop;
+		S8:
+			MUZC H 2;
+			Stop;
+		MuzzleBig:
+			TNT1 A 0 A_Jump(256, "B1", "B2", "B3", "B4", "B5", "B6");
+		B1:
+			MUZB A 2;
+			Stop;
+		B2:
+			MUZB A 2;
+			Stop;
+		B3:
+			MUZB A 2;
+			Stop;
+		B4:
+			MUZB A 2;
+			Stop;
+		B5:
+			MUZB A 2;
+			Stop;
+		B6:
+			MUZB A 2;
+			Stop;
+			
 	}
 }
 

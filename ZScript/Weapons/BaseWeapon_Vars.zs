@@ -4,4 +4,6 @@ extend class CODWeapon
 	
 	protected int BraceTicker;
 	bool GunBraced;
+	
+	
 }

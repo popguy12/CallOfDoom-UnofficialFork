@@ -8,5 +8,7 @@ version "4.5.0"
 #include "ZScript/Weapons/BaseWeapon_Functions.zs"
 #include "ZScript/Weapons/BaseWeapon_Vars.zs"
 
-#include "ZScript/Weapons/Slot1/Makarov.zsc"
+#include "ZScript/Weapons/Projectiles/BulletProjectile.zsc"
+#include "ZScript/Weapons/Projectiles/BulletDef.SmallCal.zsc"
 
+#include "ZScript/Weapons/Slot1/Makarov.zsc"

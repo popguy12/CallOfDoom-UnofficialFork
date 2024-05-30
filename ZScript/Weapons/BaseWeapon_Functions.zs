@@ -36,25 +36,8 @@ extend class CODWeapon
 			if(currentammocount == 0)
 				console.printf("COD_LowAmmoSoundWarning: Ammo count is 0 instead of 1, was the function called after the ammo item was taken?");
 		}
-	}*/
-	/*
-	action void COD_FireOffset(bool interp = true) 
-	{
-		if( !cvar.GetCVar("COD_ExaggeratedRecoil", invoker.owner.player).GetBool() )
-			return;
-
-		invoker.exaggerationMultiplier = cvar.GetCVar("COD_ExaggeratedRecoilMul", invoker.owner.player).GetFloat();
-		
-		if(invoker.exaggerationMultiplier == 0) 
-		{
-			invoker.exaggerationMultiplier = 0.1;
-		}
-		
-		A_WeaponOffset(frandom(-invoker.horizontalOffsetRecoil, invoker.horizontalOffsetRecoil) * invoker.exaggerationMultiplier, frandom(1, invoker.verticalOffsetRecoil) * invoker.exaggerationMultiplier + 32, WOF_INTERPOLATE);
-		A_SetRoll(roll + frandom(-invoker.horizontalOffsetRecoil, invoker.horizontalOffsetRecoil) * invoker.exaggerationMultiplier, SPF_INTERPOLATE);
-		PB_QuakeCamera(2,3);
-	}*/
-	/*
+	}
+	
 	//- L, 0 C, + R
 	// [gng] credits to jaih1r0 for the position calculation, modified by me to fix the pitch bug
 	Action void COD_GunSmoke(double d1 = 0, double d2 = 0 , double d3 = 0, string SActor = "COD_GunFireSmoke")

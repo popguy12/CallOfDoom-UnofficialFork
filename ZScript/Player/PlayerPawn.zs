@@ -25,7 +25,7 @@ class CODPlayerBase : DoomPlayer
 
 	Default
 	{
-		Player.StartItem "Makarov", 1;
+		Player.StartItem "COD_Makarov", 1;
 		Player.StartItem "Clip", 16;
 	}
 }

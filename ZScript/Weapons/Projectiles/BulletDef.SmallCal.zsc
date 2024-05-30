@@ -1,0 +1,9 @@
+class COD_9x18mm : COD_Projectile
+{
+	Default
+	{
+		COD_Projectile.BaseDamage 12;
+		COD_Projectile.RipperCount 2;
+		Obituary "";
+	}
+}
