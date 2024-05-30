@@ -25,6 +25,15 @@ class COD_Makarov : CODWeapon
 		COD_QuakeCamera(2, 3);
 		A_AlertMonsters();
 		A_Overlay(-3, "MuzzleSmall");
+		//this handles placing the flash correctly
+		if(CountInv("AimingToken"))
+		{
+			A_OverlayOffset(-3, 0 - 18, 32 - 54);
+		}
+		else
+		{
+			A_OverlayOffset(-3, 0 + 24, 32 - 42);
+		}
 		//gunsmoke
 		A_TakeInventory("COD_Makarov_Mag", 1);
 		
@@ -37,6 +46,9 @@ class COD_Makarov : CODWeapon
 		P9PA EDCBA 1;
 		PSTG A 0 A_Lower(25);
 		Wait;
+	User4:
+		P9PA EDCBA 1;
+		Goto NVToggle;
 	Select:
 		TNT1 A 0
 		{
@@ -47,10 +59,10 @@ class COD_Makarov : CODWeapon
 	Ready:
 		P9PA ABCDE 1;
 	WeaponReady:
-		P9PA F 1 COD_WeaponReady(WRF_ALLOWRELOAD);
+		P9PA F 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
 		Loop;
 	WeaponReady2:
-		P9PC D 1 COD_WeaponReady(WRF_ALLOWRELOAD);
+		P9PC D 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
 		Loop;
 	Fire:
 		TNT1 A 0 A_JumpIfInventory("AimingToken", 1, "Fire2");

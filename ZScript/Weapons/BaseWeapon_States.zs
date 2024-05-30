@@ -26,19 +26,30 @@ class CODWeapon : Weapon
 			Goto WeaponReady;
 			
 		//Special Handling States
+		User4: //Fake Deselect and GoTo NVToggle
+			TNT1 A 0;
+			Goto NVToggle;
+		NVToggle:
+			TNT1 A 0 A_JumpIfInventory("NVToggleToken", 1, "NightVisionOff");
 		NightVisionON:
 			TNT1 A 0;
+			TNT1 A 0 A_GiveInventory("NVToggleToken", 1);
 			TNT1 A 0 A_SetCrosshair(0);
 			BONV ABCDEFGHIJKLMNOPQRSTUVWXYZ 1;
+			TNT1 A 0 A_Jump(256, "Ready");
 			Goto Ready;
 		NightVisionOFF:
 			TNT1 A 0;
+			TNT1 A 0 A_TakeInventory("NVToggleToken", 1);
 			TNT1 A 0 A_SetCrosshair(0);
 			BONV ZYXWVUTSRQPONMLKJIHGFEDCBA 1;
+			TNT1 A 0 A_Jump(256, "Ready");
 			Goto Ready;
-			
+		
+		User3:
 		KnifeAttack:
 			KNI9 ABCLDEFGHIJ 1;
+			TNT1 A 0 A_Jump(256, "Ready");
 			Goto Ready;
 			
 		FragGrenade:
@@ -109,6 +120,14 @@ class CODWeapon : Weapon
 }
 
 class AimingToken : Inventory
+{
+	Default
+	{
+		Inventory.MaxAmount 1;
+	}
+}
+
+class NVToggleToken : Inventory
 {
 	Default
 	{
