@@ -45,7 +45,7 @@ class CODWeapon : Weapon
 			FRGA ABCDEFGHI 1;
 			FRGA JKLMOPQ 2;
 			FRGA ST 2;
-			TNT1 A 0 A_FireCustomMissile("FragGrenade", 0, 0, 0, 16);
+			TNT1 A 0; //A_FireCustomMissile("FragGrenade", 0, 0, 0, 16);
 			FRGA U 2;
 			FRGA VWX 2;
 			Goto Ready;
@@ -53,9 +53,17 @@ class CODWeapon : Weapon
 			FRGA ABCDEFGHI 1;
 			FRGA JKLMOPQ 1;
 			FRGA ST 1;
-			FRGB C 0 A_FireCustomMissile("StunGrenadeThrown", 0, 0, 0, 16);
+			FRGB C 0; //A_FireCustomMissile("StunGrenadeThrown", 0, 0, 0, 16);
 			FRGA U 2;
 			FRGA VWX 2;
 			Goto Ready;
+	}
+}
+
+class AimingToken : Inventory
+{
+	Default
+	{
+		Inventory.MaxAmount 1;
 	}
 }

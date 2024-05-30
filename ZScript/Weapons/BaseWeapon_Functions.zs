@@ -4,7 +4,7 @@ extend class CODWeapon
 		A_WeaponReady(weapflags);
 		return null;
 	}
-	
+	/*
 	action void COD_LowAmmoSoundWarning(string type = "default", string ammoItem = "SuperMario64ForTheXboxOne")
 	{
 		Ammo count;
@@ -26,7 +26,7 @@ extend class CODWeapon
 		
 		if(currentammocount <= lowammocount)
 		{
-			double clickvolume = PB_Math.LinearMap(currentammocount, 1.0, lowammocount, 1.0, 0.5);
+			double clickvolume = COD_Math.LinearMap(currentammocount, 1.0, lowammocount, 1.0, 0.5);
 			A_StartSound(sndName, CHAN_AUTO, CHANF_OVERLAP, clickvolume, ATTN_STATIC, frandompick(0.98, 1.0));
 			
 			if(currentammocount == 1)
@@ -36,8 +36,8 @@ extend class CODWeapon
 			if(currentammocount == 0)
 				console.printf("COD_LowAmmoSoundWarning: Ammo count is 0 instead of 1, was the function called after the ammo item was taken?");
 		}
-	}
-	
+	}*/
+	/*
 	action void COD_FireOffset(bool interp = true) 
 	{
 		if( !cvar.GetCVar("COD_ExaggeratedRecoil", invoker.owner.player).GetBool() )
@@ -53,14 +53,14 @@ extend class CODWeapon
 		A_WeaponOffset(frandom(-invoker.horizontalOffsetRecoil, invoker.horizontalOffsetRecoil) * invoker.exaggerationMultiplier, frandom(1, invoker.verticalOffsetRecoil) * invoker.exaggerationMultiplier + 32, WOF_INTERPOLATE);
 		A_SetRoll(roll + frandom(-invoker.horizontalOffsetRecoil, invoker.horizontalOffsetRecoil) * invoker.exaggerationMultiplier, SPF_INTERPOLATE);
 		PB_QuakeCamera(2,3);
-	}
-	
+	}*/
+	/*
 	//- L, 0 C, + R
 	// [gng] credits to jaih1r0 for the position calculation, modified by me to fix the pitch bug
 	Action void COD_GunSmoke(double d1 = 0, double d2 = 0 , double d3 = 0, string SActor = "COD_GunFireSmoke")
 	{
 		double PVZ;
-		PB_PlayerPawn plr = PB_PlayerPawn(invoker.owner);
+		CODPlayerBase plr = CODPlayerBase(invoker.owner);
 		PlayerInfo Playa = Player;
 		if(Playa)
 		{
@@ -97,13 +97,11 @@ extend class CODWeapon
 		//Vector3 CPos = (d2, -d1, d3 - 6);
 		
 		COD_GunFireSmoke Smoke = COD_GunFireSmoke(Spawn(SActor, spos));
-
-		//PB_GunFireSmoke pSmoke = PB_GunFireSmoke(Smoke);
 		
 		If(Smoke)
 		{
 			Smoke.master = invoker.owner;
-			//Smoke.Vel = PB_Math.AngleToVector3D(self.Angle, -self.Pitch);
+			//Smoke.Vel = COD_Math.AngleToVector3D(self.Angle, -self.Pitch);
 			vector3 momentum = plr.vel;
 			Smoke.A_ChangeVelocity(momentum.X, momentum.Y, 0, CVF_RELATIVE);
 			Smoke.A_FaceMovementDirection();
@@ -112,7 +110,7 @@ extend class CODWeapon
 			Smoke.A_SetRoll(random(0, 359));
 		}
 	}
-	
+	*/
 	// Custom raise weapon function, useful for resetting information
 	action void COD_RaiseWeapon() {
 		A_Raise(25);
@@ -121,7 +119,7 @@ extend class CODWeapon
 	action void COD_LowerWeapon() {
 		A_Lower(25);
 	}
-	
+	/*
 	//Checks if the owner has a berserk
 	bool OwnerHasBerserk()
 	{
@@ -143,7 +141,7 @@ extend class CODWeapon
         A_SetPitch(self.pitch+(pitchDelta * pb_weapon_recoil_mod_vertical), SPF_INTERPOLATE);
         A_SetAngle(self.angle+(angleDelta * pb_weapon_recoil_mod_horizontal), SPF_INTERPOLATE);
 	}
-	
+	*/
 	//This will allow for direct spawning of shell casings and empty magazines without using an intermediary actor.
 	//I highly recommend making cvars for each of the perameters for location and velocity to edit and test live, and with those numbers transpose into the final code.
 	//upon request I also have code for the tactical lean mod out there.
@@ -244,22 +242,13 @@ extend class CODWeapon
 		{
 			player.WeaponState |= WF_WEAPONBOBBING;
 		}
-		
-		if(pb_ScaleXWeapons)
-		{
-			WeaponScaleX = 1.2;
-		}
-		else
-		{
-			WeaponScaleX = 1;
-		}
 	}
 	
 	override void Tick()
 	{
 		Super.Tick();
 		
-		let plr = PlayerPawnBase(Owner);
+		let plr = CODPlayerBase(Owner);
 		if (!plr)
 		{
 			GunBraced = false;
@@ -271,11 +260,11 @@ extend class CODWeapon
 			GunBraced = false;
 			return;
 		}
-		
+		/*
 		if (CountInv("ResetZoom") >= 1) {
 			A_TakeInventory("ResetZoom", 1);
 			A_ZoomFactor(1.0, ZOOM_INSTANT);
-		}
+		}*/
 		
 		FLineTraceData dt1, dt2, dt3, dt4, dt5, dt6;
 		plr.LineTrace(plr.Angle, plr.Radius * 3, plr.Pitch, TRF_NOSKY | TRF_THRUACTORS, plr.Height * 0.95, offsetside: -plr.Radius / 2, data: dt1);
@@ -318,8 +307,10 @@ extend class CODWeapon
 	{
 		Weapon.BobRangeX 0.3;
 		Weapon.BobRangeY 0.5;
-		Weapon.BobSpeed 1.4;
+		Weapon.BobSpeed 2.4;
 		Weapon.BobStyle "InverseSmooth";
+		Weapon.WeaponScaleX 1.2;
 		+DONTGIB;
+		+WEAPON.NOAUTOFIRE;
 	}
 }
