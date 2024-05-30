@@ -1,0 +1,3 @@
+STARTUPTITLE = "Call of DooM: Tarkov Edition"
+STARTUPCOLORS = "#8E8E8E", "#000000"
+NoRandomPlayerClasses = true 

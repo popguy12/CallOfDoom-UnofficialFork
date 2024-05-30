@@ -1,0 +1,11 @@
+version "4.5.0"
+
+#include "ZScript/Player/PlayerPawn.zs"
+
+#include "ZScript/MathNMixins.zs"
+
+#include "ZScript/Weapons/BaseWeapon_States.zs"
+#include "ZScript/Weapons/BaseWeapon_Functions.zs"
+
+#include "ZScript/Weapons/Slot1/Makarov.zsc"
+

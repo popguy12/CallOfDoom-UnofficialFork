@@ -1,12 +1,5 @@
-class COD_Weapon : DoomWeapon
-{	
-	// Shoutout to Matt on ZDoom forums for the helpful weapon functions
-    action bool PressingFire(){return player.cmd.buttons & BT_ATTACK;}
-    action bool PressingAltfire(){return player.cmd.buttons & BT_ALTATTACK;}
-	action bool PressingReload(){return player.cmd.buttons & BT_RELOAD;}
-	action bool PressingUser1(){return player.cmd.buttons & BT_USER1;}
-	action bool PressingUser4(){return player.cmd.buttons & BT_USER4;}
-
+extend class CODWeapon
+{
 	action state COD_WeaponReady(int weapflags = 0, int pbFlags = 0) {
 		A_WeaponReady(weapflags);
 		return null;
@@ -22,7 +15,7 @@ class COD_Weapon : DoomWeapon
 			
 		if(!count)
 		{
-			console.printf("PB_LowAmmoSoundWarning: Invalid ammo class");
+			console.printf("COD_LowAmmoSoundWarning: Invalid ammo class");
 			return;
 		}
 		
@@ -47,10 +40,10 @@ class COD_Weapon : DoomWeapon
 	
 	action void COD_FireOffset(bool interp = true) 
 	{
-		if( !cvar.GetCVar("PB_ExaggeratedRecoil", invoker.owner.player).GetBool() )
+		if( !cvar.GetCVar("COD_ExaggeratedRecoil", invoker.owner.player).GetBool() )
 			return;
 
-		invoker.exaggerationMultiplier = cvar.GetCVar("PB_ExaggeratedRecoilMul", invoker.owner.player).GetFloat();
+		invoker.exaggerationMultiplier = cvar.GetCVar("COD_ExaggeratedRecoilMul", invoker.owner.player).GetFloat();
 		
 		if(invoker.exaggerationMultiplier == 0) 
 		{
@@ -64,7 +57,7 @@ class COD_Weapon : DoomWeapon
 	
 	//- L, 0 C, + R
 	// [gng] credits to jaih1r0 for the position calculation, modified by me to fix the pitch bug
-	Action void COD_GunSmoke(double d1 = 0, double d2 = 0 , double d3 = 0, string SActor = "PB_GunFireSmoke")
+	Action void COD_GunSmoke(double d1 = 0, double d2 = 0 , double d3 = 0, string SActor = "COD_GunFireSmoke")
 	{
 		double PVZ;
 		PB_PlayerPawn plr = PB_PlayerPawn(invoker.owner);
@@ -103,7 +96,7 @@ class COD_Weapon : DoomWeapon
 
 		//Vector3 CPos = (d2, -d1, d3 - 6);
 		
-		PB_GunFireSmoke Smoke = PB_GunFireSmoke(Spawn(SActor, spos));
+		COD_GunFireSmoke Smoke = COD_GunFireSmoke(Spawn(SActor, spos));
 
 		//PB_GunFireSmoke pSmoke = PB_GunFireSmoke(Smoke);
 		
@@ -132,7 +125,7 @@ class COD_Weapon : DoomWeapon
 	//Checks if the owner has a berserk
 	bool OwnerHasBerserk()
 	{
-        return (owner.CountInv("PB_PowerStrength") >= 1);
+        return (owner.CountInv("COD_PowerStrength") >= 1);
 	}
 	
 	//Adds weapon recoil, modifying it if the owner has a berserk powerup
@@ -213,7 +206,7 @@ class COD_Weapon : DoomWeapon
 	
 	action void COD_HandleCrosshair(int num)
 	{
-        CVar crosshair_settings = CVar.FindCVar('pb_weapon_crosshairs');
+        CVar crosshair_settings = CVar.FindCVar('cod_weapon_crosshairs');
 		
 		if(crosshair_settings.GetBool()){
 			A_SetCrosshair(num); // Set crosshair to specific weapon
@@ -222,6 +215,25 @@ class COD_Weapon : DoomWeapon
 			A_SetCrosshair(0); // Set crosshair to universal user setting
 		}
 	}
+	
+	 //Credits: Matt
+    action bool JustPressed(int which) // "which" being any BT_* value, mentioned above or not
+    {
+        return player.cmd.buttons & which && !(player.oldbuttons & which);
+    }
+    action bool JustReleased(int which)
+    {
+        return !(player.cmd.buttons & which) && player.oldbuttons & which;
+    }
+
+    //Based on IsPressingInput from Project Brutality
+    action bool PressingWhichInput(int which)
+    {
+        return player.cmd.buttons & which;
+    }
+	
+	action bool PressingFire(){return player.cmd.buttons & BT_ATTACK;}
+    action bool PressingAltfire(){return player.cmd.buttons & BT_ALTATTACK;}
 	
 	//[Pop]weapons should ALWAYS bob, fucking fight me
 	override void DoEffect()
