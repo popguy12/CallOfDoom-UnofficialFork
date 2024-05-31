@@ -1,0 +1,17 @@
+HardwareShader PostProcess scene
+{
+	Name "NiteVis"
+	Shader "shaders/glsl/nitevis.fp" 330
+	Uniform float exposure
+	Uniform float timer
+	Uniform int u_resfactor
+	Uniform int u_hscan
+	Uniform int u_vscan
+	Uniform int u_scanfactor
+	Uniform float u_scanstrength
+	Uniform int u_posterize
+	Uniform vec3 u_posfilter
+	Uniform vec3 u_negfilter
+	Uniform float u_whiteclip
+	Uniform float u_desat
+}
