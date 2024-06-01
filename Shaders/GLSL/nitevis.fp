@@ -10,58 +10,73 @@
 // zlib License: https://opensource.org/licenses/Zlib
 // Original source: https://gist.github.com/caligari87/daa5b127a3bc522794eb050067b5a95e
 
-// ------------------------ //
-// USER CONFIGURABLE VALUES //
-// ------------------------ //
-
-// Resolution reduction
-// 4 = 1/4th screen resolution
-int resfactor = 4;
-
-// Enable horizontal and/or vertical scanlines
-bool hscan = true;
-bool vscan = false;
-float scanstrength = resfactor / 2.0;
-
-// Posterization / palette filter
-// This sets number of color levels
-int posterize = 16;
-
-// Color filter
-// Values are the relative strengths of the RGB channels
-// Filter colors are normalized so don't worry about unbalanced values
-// All zeros means greyscale / monochrome filter
-// Whiteclip is how white the brightest areas are. This can be negative.
-vec3 posfilter = normalize(vec3(0.00, 1.0, 0.75)); // primary NVG color (positive exposure)
-vec3 negfilter = normalize(vec3(1.0, 0.0, 0.0)); // secondary NVG color (negative exposure)
-float whiteclip = 1.0;
-
-// ----------------------------------- //
-// USER CONFIGURABLE VALUES STOP HERE  //
-// ----------------------------------- //
-
 // Custom nitevision shader for HD by Caligari87
 void main(){
-	// Uniforms from script
-	float exp = abs(exposure);
-	float expcurve = 2.0 * ((150.0 - abs(exposure)) / 100.0);
-	exp = exp / expcurve;
+	// ------------------------ //
+	// USER CONFIGURABLE VALUES //
+	// u_name = script uniforms //
+	// ------------------------ //
 
-	// Limit resfactor
+	// Resolution reduction
+	// 4 = 1/4th screen resolution
+	int resfactor = u_resfactor;
+
+	// Enable horizontal and/or vertical scanlines
+	// scanstrength is thickness of lines (0 = none, 1.0 = stupid thicc)
+	bool hscan = bool(u_hscan);
+	bool vscan = bool(u_vscan);
+	int scanfactor = u_scanfactor;
+	float scanstrength = float(u_scanstrength) * (float(u_scanfactor) * 4.0);
+
+	// Posterization / palette filter
+	// This sets number of color levels
+	int posterize = u_posterize;
+
+	// Color filter
+	// Values are the relative strengths of the RGB channels
+	// Filter colors are normalized so don't worry about unbalanced values
+	// All zeros means greyscale / monochrome filter
+	// Whiteclip is how white the brightest areas are. This can be negative.
+	// Desat is the pre-filter monochromacity of the colors (usually this should be zero)
+	vec3 posfilter = normalize(u_posfilter); // primary NVG color (positive exposure)
+	vec3 negfilter = normalize(u_negfilter); // secondary NVG color (negative exposure)
+	float whiteclip = u_whiteclip;
+	float desat = u_desat;
+	
+	// Enable horizontal and/or vertical scanlines
+	// scanstrength is thickness of lines (0 = none, 1.0 = stupid thicc)
+
+	// ----------------------------------- //
+	// USER CONFIGURABLE VALUES STOP HERE  //
+	// ----------------------------------- //
+	
+	// copy exposure uniform
+	float exp = max(abs(exposure), 1.0);
+
+	// Limit resfactor and scanfactor
 	resfactor = max(resfactor, 1);
+	scanfactor = max(scanfactor, 1);
 
 	// Downsample coordinate system
-	vec2 res = TexCoord;
-	res *= textureSize(InputTexture,0).xy / resfactor;
+	vec2 res = vec2(TexCoord);
+	res *= vec2(textureSize(InputTexture,0).xy / resfactor);
 	res = vec2(int(res.x),int(res.y));
-	res /= textureSize(InputTexture,0).xy / resfactor;
+	res /= vec2(textureSize(InputTexture,0).xy / resfactor);
 
 	// Get pixels
 	vec3 color  = texture(InputTexture, res).rgb;
 
 	// Desaturate and multiply
-	color = mix(vec3(dot(color.rgb, vec3(0.56, 0.3, 0.14))), color.rgb, 0.0);
-	color *= max(exp, 1.0);
+	color = mix(vec3(dot(color.rgb, vec3(0.56, 0.3, 0.14))), color.rgb, desat);
+	color = atan(atan(color * exp)); // amplify by HD's original formula
+
+	// Posterize
+	color *= float(posterize);
+	color.rgb = vec3(
+		int(color.r),
+		int(color.g),
+		int(color.b));
+	color /= float(posterize);
 
 	// Clamp
 	color = vec3(
@@ -69,23 +84,14 @@ void main(){
 		clamp(color.g, 0.0, 1.0),
 		clamp(color.b, 0.0, 1.0));
 
-	// Posterize
-	color *= posterize;
-	color.rgb = vec3(
-		int(color.r),
-		int(color.g),
-		int(color.b));
-	color /= posterize;
-
 	// Filter channels for preferred color
-	if (exposure > 0) { color *= clamp(posfilter + (color * whiteclip), 0.0, 1.0); }
-	if (exposure < 0) { color *= clamp(negfilter + (color * whiteclip), 0.0, 1.0); }
+	if (exposure > 0.0) { color *= clamp(posfilter + (color * whiteclip), 0.0, 1.0); }
+	if (exposure < 0.0) { color *= clamp(negfilter + (color * whiteclip), 0.0, 1.0); }
 
 	// Scanlines
-	// No scanlines at native resolution
-	if (resfactor > 1) {
-		color *= 1 - int(hscan) * pow((1.0/float(resfactor)) * mod(TexCoord.y * textureSize(InputTexture,0).y, resfactor), resfactor / scanstrength);
-		color *= 1 - int(vscan) * pow((1.0/float(resfactor)) * mod(TexCoord.x * textureSize(InputTexture,0).x, resfactor), resfactor / scanstrength);
+	if (scanfactor > 1) {
+		color *= float(1.0 - float(hscan) * float(pow((1.0/float(scanfactor)) * mod(float(TexCoord.y) * float(textureSize(InputTexture,0).y), float(scanfactor)), float(scanfactor) / float(scanstrength))));
+		color *= float(1.0 - float(vscan) * float(pow((1.0/float(scanfactor)) * mod(float(TexCoord.x) * float(textureSize(InputTexture,0).x), float(scanfactor)), float(scanfactor) / float(scanstrength))));
 	}
 
 	// Output

@@ -3,13 +3,13 @@ class CODPlayerBase : DoomPlayer
 	override Void Tick()
 	{
 		Super.Tick();
-		/*//Destroy the night vision shader if a new level is started or if player dies.
-		If(!FindInventory("MO_NightVision"))
+		//Destroy the night vision shader if a new level is started or if player dies.
+		If(!FindInventory("CODNightVision"))
 		{
 			Shader.SetEnabled(Player,"NiteVis",false);
-		}*/
+		}
 	}
-
+		
 	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
 	{
 		PlayerInfo plyr = Self.Player;

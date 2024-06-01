@@ -151,7 +151,7 @@ Class CODGoggles : Infrared
 	  +INVENTORY.ALWAYSPICKUP;
 	  Inventory.MaxAmount 0;
 	  Powerup.Type "CODNightVision";
-	  Powerup.Duration 35;
+	  Powerup.Duration 0x7FFFFFFD;
 	  Inventory.PickupMessage "Tactical Night Vision Goggles";
 	  inventory.pickupsound "misc/goggles";
 	  Inventory.AltHudIcon "PVISA0";
@@ -171,15 +171,14 @@ Class CODNightVision : PowerLightAmp
     {
 		if(!owner) return;
         Super.DoEffect();
-		SetNVGStyle();
-		SetNVGScanlines();
 		Shader.SetEnabled(Owner.Player,"NiteVis",true);
 		Shader.SetUniform1f(Owner.Player, "NiteVis","exposure",2);
-		Shader.SetUniform1i(Owner.Player, "NiteVis","u_resfactor",resfactor);
-		Shader.SetUniform1i(Owner.Player,"NiteVis","u_posterize",posterize);
-		Shader.SetUniform3f(Owner.Player,"NiteVis","u_posfilter",posfilter);
-		Shader.SetUniform1f(Owner.Player,"NiteVis","u_whiteclip",whiteclip);
-		Shader.SetUniform1f(Owner.Player,"NiteVis","u_desat",desat);
+		Shader.SetUniform1i(Owner.Player, "NiteVis","u_resfactor",4);
+		Shader.SetUniform1i(Owner.Player,"NiteVis","u_posterize",24);
+		Shader.SetUniform3f(Owner.Player,"NiteVis","u_posfilter",(0,1,0));
+		Shader.SetUniform1f(Owner.Player,"NiteVis","u_whiteclip",0.25);
+		Shader.SetUniform1f(Owner.Player,"NiteVis","u_desat",0.0);
+		Shader.SetUniform1f(Owner.Player, "NiteVis","u_scanstrength",2);
 	}
 	
 	override void EndEffect()
@@ -193,44 +192,6 @@ Class CODNightVision : PowerLightAmp
 	{
 		Inventory.AltHudIcon "PVISA0";
 		+INVENTORY.NOSCREENBLINK;
-	}
-}
-
-//Modified from Hideous Destructor
-extend class CODNightVision
-{
-	transient CVar NVGStyle;
-	int style;
-	bool hasScan;
-	transient CVar NVGScanlines;
-	int resfactor,scanfactor,hscan,vscan,posterize;
-	double scanstrength,whiteclip,desat;
-	vector3 posfilter,negfilter;
-
-	void SetNVGStyle() {
-		if (!NVGStyle) NVGStyle = CVar.GetCVar("COD_nvstyle",owner.player);
-		int style = NVGStyle.GetInt();
-		switch (style) {
-			default:
-			case 0: // Green Phosphor
-				resfactor=1;hscan=1;vscan=0;scanfactor=8;scanstrength=0.1;posterize=24;posfilter=(0,1,0);whiteclip=0.25;desat=0.0;break;
-			case 1: // White Phosphor
-				resfactor=2;hscan=1;vscan=0;scanfactor=2;scanstrength=0.1;posterize=256;posfilter=(0.0,1.0,0.75);whiteclip=0.8;desat=0.0;break;
-		}
-	}
-	void SetNVGScanlines() {
-		if(!NVGScanlines) NVGScanlines = Cvar.GetCVar("COD_nvscanlines",owner.player);
-		hasScan = NVGScanlines.GetBool();
-		if(hasScan == true)
-		{
-			Shader.SetUniform1i(Owner.Player, "NiteVis","u_hscan",resfactor);
-			Shader.SetUniform1f(Owner.Player, "NiteVis","u_scanstrength",scanstrength);
-		}
-		else
-		{
-			Shader.SetUniform1i(Owner.Player, "NiteVis","u_hscan",0);
-			Shader.SetUniform1f(Owner.Player, "NiteVis","u_scanstrength",0);
-		}
 	}
 }
 
