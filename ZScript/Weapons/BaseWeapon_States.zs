@@ -45,6 +45,9 @@ class CODWeapon : Weapon
 			TNT1 A 0
 			{
 				A_GiveInventory("CODGoggles");
+				A_Overlay(100, "NVView", false);
+				A_OverlayFlags(100, PSPF_ADDWEAPON, false);
+				A_OverlayFlags(100, PSPF_ADDBOB, false);
 			}
 			TNT1 A 0 A_SetBlend("39 74 18", 1.0, 35, "39 74 18", 0.0);
 			TNT1 A 0 A_Jump(256, "Ready");
@@ -60,6 +63,7 @@ class CODWeapon : Weapon
 			{
 				A_TakeInventory("CODGoggles");
 				A_TakeInventory("CODNightVision");
+				A_ClearOverlays(100,100);
 			}
 			TNT1 A 0 A_SetBlend("00 00 00", 1.0, 6, "00 00 00", 0.0);
 			BONV XVT 2;
@@ -142,7 +146,7 @@ class CODWeapon : Weapon
 	}
 }
 
-Class CODGoggles : Infrared
+Class CODGoggles : PowerupGiver
 {
    Default
    {
@@ -167,18 +171,28 @@ Class CODGoggles : Infrared
 
 Class CODNightVision : PowerLightAmp
 {
-	override void DoEffect ()
+	transient CVar NVRes;
+	
+	override void DoEffect()
     {
 		if(!owner) return;
         Super.DoEffect();
+		
+		if (!NVRes) NVRes = CVar.GetCVar("COD_NVRes",owner.player);
+		int resmod = NVRes.GetInt();
+		
+		double fac = (1 / 50.0) ** 2.0;
+		
 		Shader.SetEnabled(Owner.Player,"NiteVis",true);
-		Shader.SetUniform1f(Owner.Player, "NiteVis","exposure",2);
-		Shader.SetUniform1i(Owner.Player, "NiteVis","u_resfactor",4);
-		Shader.SetUniform1i(Owner.Player,"NiteVis","u_posterize",24);
-		Shader.SetUniform3f(Owner.Player,"NiteVis","u_posfilter",(0,1,0));
-		Shader.SetUniform1f(Owner.Player,"NiteVis","u_whiteclip",0.25);
-		Shader.SetUniform1f(Owner.Player,"NiteVis","u_desat",0.0);
-		Shader.SetUniform1f(Owner.Player, "NiteVis","u_scanstrength",2);
+		Shader.SetUniform1f(Owner.Player, "NiteVis", "timer", Level.time / 6.0);
+		Shader.SetUniform1f(Owner.Player, "NiteVis", "exposure", 1 + fac * 50);
+		Shader.SetUniform1f(Owner.Player, "NiteVis", "darken", 1 + fac);
+		Shader.SetUniform3f(Owner.Player, "NiteVis", "hsl", (clamp(120 / 360.0, 0.0, 1.0), clamp(1.0, 0.0, 1.0), 0.5));
+		
+		Shader.SetEnabled(Owner.Player,"Pixelize_Scene",true);
+		Shader.SetUniform1i(Owner.Player,"Pixelize_Scene","lowdetail",0);
+		Shader.SetUniform1i(Owner.Player,"Pixelize_Scene","targetwt",480);
+		Shader.SetUniform1i(Owner.Player,"Pixelize_Scene","targetht",300);
 	}
 	
 	override void EndEffect()

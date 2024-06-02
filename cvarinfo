@@ -1,2 +1,3 @@
 user int COD_nvstyle = 0;
 user bool COD_nvscanlines = true;
+user int COD_NVRes = 1;

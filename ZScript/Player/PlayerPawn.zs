@@ -7,6 +7,11 @@ class CODPlayerBase : DoomPlayer
 		If(!FindInventory("CODNightVision"))
 		{
 			Shader.SetEnabled(Player,"NiteVis",false);
+			Shader.SetEnabled(Player,"Pixelize_Scene",false);
+		}
+		if(CountInv("CODNightVision"))
+		{
+			A_Overlay(100, "NVView", false);
 		}
 	}
 		
@@ -29,5 +34,19 @@ class CODPlayerBase : DoomPlayer
 		Player.StartItem "Clip", 16;
 		
 		Player.AttackZOffset 16;
+	}
+	
+	States
+	{
+		NVView:
+			TNT1 A 0
+			{
+				A_OverlayScale(100, 1.2, 1.0);
+				A_OverlayOffset(100, -36, 0);
+				A_OverlayFlags(100, PSPF_ADDWEAPON, false);
+				A_OverlayFlags(100, PSPF_ADDBOB, false);
+			}
+			NVOV A 35;
+			Loop;
 	}
 }
