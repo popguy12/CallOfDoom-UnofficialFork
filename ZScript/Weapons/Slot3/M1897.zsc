@@ -90,7 +90,7 @@ class COD_M1897 : CODWeapon
 		TRNB JKLMNOPQ 1;
 		TNT1 A 0 A_StartSound("uni/clothfoleys", 0, CHANF_OVERLAP, 1);
 		TNT1 A 0 A_StartSound("trn/pumpforward", 0, CHANF_OVERLAP, 1);
-		TRNB RSTUIVWXY 1;
+		TRNB RSTUVWXY 1;
 		Goto WeaponReady;
 	Fire2:
 		TNT1 A 0 A_JumpIf(CountInv("COD_M1897_Tube") == 0, "DryFire2");

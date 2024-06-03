@@ -1,85 +1,22 @@
-class CODPlayerBase : DoomPlayer
+version "3.2"
+
+//===========================================================================
+//
+// nashmove.pk3
+//
+// Less slippery player movement. Works for any player class.
+//
+// Written by Nash Muhandes
+//
+// Feel free to use this in your mods. You don't have to ask my permission!
+//
+//===========================================================================
+
+class NashMoveHandler : EventHandler
 {
-	override Void Tick()
+	override void PlayerEntered(PlayerEvent e)
 	{
-		Super.Tick();
-		//Destroy the night vision shader if a new level is started or if player dies.
-		If(!FindInventory("CODNightVision"))
-		{
-			Shader.SetEnabled(Player,"NiteVis",false);
-			Shader.SetEnabled(Player,"Pixelize_Scene",false);
-		}
-		if(CountInv("CODNightVision"))
-		{
-			A_Overlay(100, "NVView", false);
-		}
-		
-	}
-		
-	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
-	{
-		PlayerInfo plyr = Self.Player;
-		if(!plyr || plyr.mo != Self) return 0;
-		/*if(plyr.mo.CountInv("MO_PowerInvul") == 1)
-		{
-			A_StartSound("powerup/invul_damage",3);
-		}*/
-		return super.DamageMobj(inflictor, source, damage, mod, flags, angle);
-	}
-
-	int grenadecooktimer;
-
-	Default
-	{
-		Player.StartItem "COD_Makarov", 1;
-		Player.StartItem "Clip", 16;
-		
-		Player.AttackZOffset 16;
-		
-		Scale 0.55;
-	}
-	
-	States
-	{
-		Spawn:
-			TNT1 A 0 A_JumpIfInventory("AimingToken", 1, "Spawn2");
-			RANG A 10;
-			Loop;
-		Spawn2:
-			TNT1 A 0 A_JumpIf(CountInv("AimingToken") == 0, "Spawn");
-			RANG E 10;
-			Loop;
-		See:
-			RANG ABCD 4;
-			Loop;
-		Missile:
-			RANG E 6;
-			Goto Spawn;
-		Melee:
-			RANG F 4 BRIGHT;
-			Goto Missile;
-		Pain:
-			RANG G 2 A_Pain;
-			Goto Spawn;
-		Death:
-		XDeath:
-			RANG H 2;
-			RANG I 2 A_PlayerScream;
-			RANG J 2 A_NoBlocking;
-			RANG KL 2;
-			RANG L -1;
-			Stop;
-		
-		NVView:
-			TNT1 A 0
-			{
-				A_OverlayScale(100, 1.2, 1.0);
-				A_OverlayOffset(100, -36, 0);
-				A_OverlayFlags(100, PSPF_ADDWEAPON, false);
-				A_OverlayFlags(100, PSPF_ADDBOB, false);
-			}
-			NVOV A 35;
-			Loop;
+		players[e.PlayerNumber].mo.A_GiveInventory("Z_NashMove", 1);
 	}
 }
 

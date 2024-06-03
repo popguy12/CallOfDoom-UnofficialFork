@@ -3,7 +3,7 @@ Gameinfo
 
 	NoRandomPlayerClass = True
 	PlayerClasses = "CODPlayerBase"
-	//AddEventHandlers = ""
+	AddEventHandlers = "COD_PlayerHandler"
 	DimColor = "Black"
 	DimAmount = 0.70
 }
@@ -73,7 +73,7 @@ Skill Hard
 	20% More Damage\
 	25% More Aggressive Monsters\
 	---\
-	The true Project Brutality experience for skilled players."
+	For skilled players."
 }
 
 Skill HELL
