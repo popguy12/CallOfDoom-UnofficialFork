@@ -181,18 +181,18 @@ Class CODNightVision : PowerLightAmp
 		if (!NVRes) NVRes = CVar.GetCVar("COD_NVRes",owner.player);
 		int resmod = NVRes.GetInt();
 		
-		double fac = (1 / 50.0) ** 2.0;
+		float sectorlightlevel = owner.player.mo.cursector.lightlevel / 16;
 		
 		Shader.SetEnabled(Owner.Player,"NiteVis",true);
 		Shader.SetUniform1f(Owner.Player, "NiteVis", "timer", Level.time / 6.0);
-		Shader.SetUniform1f(Owner.Player, "NiteVis", "exposure", 1 + fac * 50);
-		Shader.SetUniform1f(Owner.Player, "NiteVis", "darken", 1 + fac);
+		Shader.SetUniform1f(Owner.Player, "NiteVis", "exposure", 1 + sectorlightlevel / 8);
+		Shader.SetUniform1f(Owner.Player, "NiteVis", "darken", 1);
 		Shader.SetUniform3f(Owner.Player, "NiteVis", "hsl", (clamp(120 / 360.0, 0.0, 1.0), clamp(1.0, 0.0, 1.0), 0.5));
 		
 		Shader.SetEnabled(Owner.Player,"Pixelize_Scene",true);
 		Shader.SetUniform1i(Owner.Player,"Pixelize_Scene","lowdetail",0);
-		Shader.SetUniform1i(Owner.Player,"Pixelize_Scene","targetwt",480);
-		Shader.SetUniform1i(Owner.Player,"Pixelize_Scene","targetht",300);
+		Shader.SetUniform1i(Owner.Player,"Pixelize_Scene","targetwt",680);
+		Shader.SetUniform1i(Owner.Player,"Pixelize_Scene","targetht",400);
 	}
 	
 	override void EndEffect()

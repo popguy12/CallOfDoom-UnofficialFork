@@ -13,6 +13,7 @@ class CODPlayerBase : DoomPlayer
 		{
 			A_Overlay(100, "NVView", false);
 		}
+		
 	}
 		
 	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
