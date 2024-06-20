@@ -35,11 +35,13 @@ class CODWeapon : Weapon
 			TNT1 A 0;
 			TNT1 A 0 A_GiveInventory("NVToggleToken", 1);
 			TNT1 A 0 A_SetCrosshair(0);
-			BONV ABCDEFGI 1;
-			BONV K 4;
+			TNT1 A 0 A_StartSound("items/NV/PutOn", 0, CHANF_OVERLAP, 1);
+			BONV ABCDEF 1;
+			BONV GIK 4;
 			BONV LNPR 1;
 			TNT1 A 0 A_SetBlend("00 00 00", 0.0, 7, "00 00 00", 1.0);
 			BONV TVX 2;
+			TNT1 A 0 A_StartSound("items/NV/TurnOn", 0, CHANF_OVERLAP, 1);
 			TNT1 A 0 A_SetBlend("00 00 00", 1.0, 8, "39 74 18", 1.0);
 			TNT1 A 7;
 			TNT1 A 0
@@ -56,7 +58,9 @@ class CODWeapon : Weapon
 			TNT1 A 0;
 			TNT1 A 0 A_TakeInventory("NVToggleToken", 1);
 			TNT1 A 0 A_SetCrosshair(0);
+			TNT1 A 0 A_StartSound("items/NV/TurnOff", 0, CHANF_OVERLAP, 1);
 			TNT1 A 0 A_SetBlend("39 74 18", 0.0, 10, "00 00 00", 1.0);
+			TNT1 A 0 A_StartSound("items/NV/TakeOff", 0, CHANF_OVERLAP, 1);
 			TNT1 A 6;
 			BONV ACE 1;
 			TNT1 A 0

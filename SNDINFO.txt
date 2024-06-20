@@ -1,4 +1,11 @@
+//NV
+
 items/NV/Sizzle	"Sounds/NV/sizzle.mp3"
+items/NV/PutOn	"Sounds/NV/NVPutOn.wav"
+items/NV/TurnOn	"Sounds/NV/NVOn.wav"
+items/NV/Warning	"Sounds/NV/NVWarning.wav"
+items/NV/TurnOff	"Sounds/NV/NVOff.wav"
+items/NV/TakeOff	"Sounds/NV/NVTakeOff.wav"
 
 //Foley
 
@@ -14,6 +21,41 @@ $random uni/CartFoley
 uni/CartFoley1
 uni/CartFoley2
 }
+
+$RANDOM uni/gear/small
+{
+uni/gear/small1
+uni/gear/small2
+uni/gear/small3
+}
+uni/gear/small1	"Sounds/Foley/GearRattle/RattleSmall1.wav"
+uni/gear/small2	"Sounds/Foley/GearRattle/RattleSmall2.wav"
+uni/gear/small3	"Sounds/Foley/GearRattle/RattleSmall3.wav"
+$RANDOM uni/gear/medium
+{
+uni/gear/medium1
+uni/gear/medium2
+uni/gear/medium3
+uni/gear/medium4
+uni/gear/medium5
+}
+uni/gear/medium1	"Sounds/Foley/GearRattle/RattleMedium1.wav"
+uni/gear/medium2	"Sounds/Foley/GearRattle/RattleMedium2.wav"
+uni/gear/medium3	"Sounds/Foley/GearRattle/RattleMedium3.wav"
+uni/gear/medium4	"Sounds/Foley/GearRattle/RattleMedium4.wav"
+uni/gear/medium5	"Sounds/Foley/GearRattle/RattleMedium5.wav"
+$RANDOM uni/gear/big
+{
+uni/gear/big1
+uni/gear/big2
+uni/gear/big3
+uni/gear/big4
+}
+uni/gear/big1	"Sounds/Foley/GearRattle/RattleLarge1.wav"
+uni/gear/big2	"Sounds/Foley/GearRattle/RattleLarge2.wav"
+uni/gear/big3	"Sounds/Foley/GearRattle/RattleLarge3.wav"
+uni/gear/big4	"Sounds/Foley/GearRattle/RattleLarge4.wav"
+
 
 //Makarov PM
 pm/fire1	"Sounds/Weapons/Slot1/Makarov/MPMFIRE.wav"
