@@ -221,6 +221,14 @@ class AimingToken : Inventory
 	}
 }
 
+class ChamberMeToken : Inventory
+{
+	Default
+	{
+		Inventory.MaxAmount 1;
+	}
+}
+
 class NVToggleToken : Inventory
 {
 	Default

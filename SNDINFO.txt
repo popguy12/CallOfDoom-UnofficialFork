@@ -67,7 +67,11 @@ pm/raise	"Sounds/Weapons/Slot1/Makarov/MPMRAISE.wav"
 pm/lower	"Sounds/Weapons/Slot1/Makarov/MPMLOWER.wav"
 
 
-
+//S1-100 CB
+s1100/fire	"Sounds/Weapons/Slot2/S1100/MP34FIRE"
+s1100/out	"Sounds/Weapons/Slot2/S1100/MP34REL1"
+s1100/in	"Sounds/Weapons/Slot2/S1100/MP34REL2"
+s1100/rack	"Sounds/Weapons/Slot2/S1100/MP34REL3"
 
 
 

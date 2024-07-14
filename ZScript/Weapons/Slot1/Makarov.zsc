@@ -18,6 +18,7 @@ class COD_Makarov : CODWeapon
 		Inventory.PickupSound "weapons/pistol/pickup";
 		+WEAPON.NOALERT;
 		+WEAPON.AMMO_OPTIONAL;
+		+WEAPON.NOAUTOFIRE;
 	}
 	
 	action void FireWeapon()
