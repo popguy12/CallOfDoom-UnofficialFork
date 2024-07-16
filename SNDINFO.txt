@@ -56,6 +56,14 @@ uni/gear/big2	"Sounds/Foley/GearRattle/RattleLarge2.wav"
 uni/gear/big3	"Sounds/Foley/GearRattle/RattleLarge3.wav"
 uni/gear/big4	"Sounds/Foley/GearRattle/RattleLarge4.wav"
 
+throwable/empty	"Sounds/Weapons/Items/metal_click.wav"
+//Grenade
+grenade/pinpull	"Sounds/Weapons/Items/FRAGPIN"
+grenade/throw	"Sounds/Weapons/Items/FRAGTHRO"
+
+//Stun
+flash/pinpull	"Sounds/Weapons/Items/FLSHPPUL"
+flash/throw	"Sounds/Weapons/Items/FLSHTHRO"
 
 //Makarov PM
 pm/fire1	"Sounds/Weapons/Slot1/Makarov/MPMFIRE.wav"
@@ -72,6 +80,8 @@ s1100/fire	"Sounds/Weapons/Slot2/S1100/MP34FIRE"
 s1100/out	"Sounds/Weapons/Slot2/S1100/MP34REL1"
 s1100/in	"Sounds/Weapons/Slot2/S1100/MP34REL2"
 s1100/rack	"Sounds/Weapons/Slot2/S1100/MP34REL3"
+s1100/up	"Sounds/Weapons/Slot2/S1100/MP34Up.wav"
+s1100/down	"Sounds/Weapons/Slot2/S1100/MP34Down.wav"
 
 
 

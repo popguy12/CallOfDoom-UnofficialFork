@@ -1,4 +1,4 @@
-class COD_Makarov : CODWeapon
+class COD_Makarov : CODWeapon replaces pistol
 {
  	Default
 	{
@@ -10,6 +10,13 @@ class COD_Makarov : CODWeapon
 		Weapon.AmmoGive2 0;
 		
 		Weapon.SlotNumber 1;
+		
+		/*
+		zoom 1.0
+		zoomaim 1.2
+		zoomdelta 0.01
+		zoom tics 1
+		*/
 		
 		Obituary "$OB_MPPISTOL";
 		Inventory.Pickupmessage "[1] Makarov";
@@ -23,7 +30,6 @@ class COD_Makarov : CODWeapon
 	
 	action void FireWeapon()
 	{
-		COD_QuakeCamera(2, 3);
 		A_AlertMonsters();
 		A_Overlay(-3, "MuzzleSmall");
 		A_OverlayFlags(-3, PSPF_RENDERSTYLE, true);
@@ -33,10 +39,14 @@ class COD_Makarov : CODWeapon
 		if(CountInv("AimingToken"))
 		{
 			A_OverlayOffset(-3, 0 - 18, 32 - 54);
+			COD_HandleWeaponFeedback(2, 3, -0.20, frandom(+0.15, -0.15));
+			A_ZoomFactor(1.2-0.01);
 		}
 		else
 		{
 			A_OverlayOffset(-3, 0 + 24, 32 - 42);
+			COD_HandleWeaponFeedback(2, 3, -0.40, frandom(+0.30, -0.30));
+			A_ZoomFactor(1-0.01);
 		}
 		//gunsmoke
 		A_TakeInventory("COD_Makarov_Mag", 1);
@@ -48,13 +58,21 @@ class COD_Makarov : CODWeapon
 	{
 	
 	Deselect:
+		TNT1 A 0 A_ZoomFactor(1);
 		TNT1 A 0 A_StartSound("pm/lower", 0, CHANF_OVERLAP, 1);
 		P9PA EDCBA 1;
 		PSTG A 0 A_Lower(25);
 		Wait;
 	User4:
-		P9PA EDCBA 1;
+		P9PA ED 1;
+		TNT1 A 0 A_ZoomFactor(1);
+		TNT1 A 0 A_TakeInventory("AimingToken");
+		P9PA CBA 1;
 		Goto NVToggle;
+	User3:
+		TNT1 A 0 A_ZoomFactor(1);
+		TNT1 A 0 A_TakeInventory("AimingToken");
+		Goto KnifeAttack;
 	Select:
 		TNT1 A 0
 		{
@@ -68,23 +86,33 @@ class COD_Makarov : CODWeapon
 	WeaponReady:
 		P9PA F 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
 		TNT1 A 0 A_JumpIf(CountInv("COD_Makarov_Mag") == 0, "WeaponReadyEmpty");
+		TNT1 A 0 A_JumpIfInventory("ThrowGrenade", 1, "FragGrenade");
+		TNT1 A 0 A_JumpIfInventory("ThrowBang", 1, "StunGrenade");
 		Loop;
 	WeaponReady2:
 		P9PC D 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
 		TNT1 A 0 A_JumpIf(CountInv("COD_Makarov_Mag") == 0, "WeaponReady2Empty");
+		TNT1 A 0 A_JumpIfInventory("ThrowGrenade", 1, "FragGrenade");
+		TNT1 A 0 A_JumpIfInventory("ThrowBang", 1, "StunGrenade");
 		Loop;
 	WeaponReadyEmpty:
 		P9PB B 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
+		TNT1 A 0 A_JumpIfInventory("ThrowGrenade", 1, "FragGrenade");
+		TNT1 A 0 A_JumpIfInventory("ThrowBang", 1, "StunGrenade");
 		Loop;
 	WeaponReady2Empty:
 		P9PD B 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
+		TNT1 A 0 A_JumpIfInventory("ThrowGrenade", 1, "FragGrenade");
+		TNT1 A 0 A_JumpIfInventory("ThrowBang", 1, "StunGrenade");
 		Loop;
 	Fire:
 		TNT1 A 0 A_JumpIfInventory("AimingToken", 1, "Fire2");
 		TNT1 A 0 A_JumpIf(CountInv("COD_Makarov_Mag") == 0, "DryFire");
 		P9PA F 1;
 		TNT1 A 0 FireWeapon();
-		P9PB AB 1;
+		P9PB A 1;
+		TNT1 A 0 A_ZoomFactor(1);
+		P9PB B 1;
 		TNT1 A 0 A_JumpIf(CountInv("COD_Makarov_Mag") == 0, "WeaponReadyEmpty");
 		P9PB C 1;
 		P9PB DEF 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
@@ -93,7 +121,9 @@ class COD_Makarov : CODWeapon
 		TNT1 A 0 A_JumpIf(CountInv("COD_Makarov_Mag") == 0, "DryFire2");
 		P9PC D 1;
 		TNT1 A 0 FireWeapon();
-		P9PD AB 1;
+		P9PD A 1;
+		TNT1 A 0 A_ZoomFactor(1.2);
+		P9PD B 1;
 		TNT1 A 0 A_JumpIf(CountInv("COD_Makarov_Mag") == 0, "WeaponReady2Empty");
 		P9PD C 1;
 		P9PD DEF 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
@@ -102,13 +132,17 @@ class COD_Makarov : CODWeapon
 		TNT1 A 0 A_JumpIfInventory("AimingToken", 1, "AltFire2");
 		TNT1 A 0 A_GiveInventory("AimingToken");
 		TNT1 A 0 A_StartSound("uni/clothfoleys", 0, CHANF_OVERLAP);
-		P9PC ABCEF 1;
+		P9PC AB 1;
+		TNT1 A 0 A_ZoomFactor(1.2);
+		P9PC CEF 1;
 		TNT1 A 0 A_JumpIf(CountInv("COD_Makarov_Mag") == 0, "WeaponReady2Empty");
 		Goto WeaponReady2;
 	AltFire2:
 		TNT1 A 0 A_TakeInventory("AimingToken");
 		TNT1 A 0 A_StartSound("uni/clothfoleys", 0, CHANF_OVERLAP);
-		P9PC FECBA 1;
+		P9PC FE 1;
+		TNT1 A 0 A_ZoomFactor(1);
+		P9PC CBA 1;
 		TNT1 A 0 A_JumpIf(CountInv("COD_Makarov_Mag") == 0, "WeaponReadyEmpty");
 		Goto WeaponReady;
 	
@@ -121,7 +155,9 @@ class COD_Makarov : CODWeapon
 	
 	UnAimReload:
 		TNT1 A 0 A_TakeInventory("AimingToken");
-		P9PC FECBA 1;
+		P9PC FE 1;
+		TNT1 A 0 A_ZoomFactor(1);
+		P9PC CBA 1;
 	Reload:
 		TNT1 A 0 A_JumpIf(CountInv("AimingToken") == 1, "UnAimReload");
 		TNT1 A 0 A_JumpIf(CountInv("COD_Makarov_Mag") == 0 && CountInv("Clip") == 0, "WeaponReadyEmpty");

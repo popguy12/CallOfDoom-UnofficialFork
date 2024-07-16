@@ -1,9 +1,11 @@
 extend class CODWeapon
 {
-	action state COD_WeaponReady(int weapflags = 0, int pbFlags = 0) {
+	action void COD_WeaponReady(int weapflags = 0)
+	{
 		A_WeaponReady(weapflags);
-		return null;
+		return;
 	}
+	
 	/*
 	action void COD_LowAmmoSoundWarning(string type = "default", string ammoItem = "SuperMario64ForTheXboxOne")
 	{
@@ -117,14 +119,20 @@ extend class CODWeapon
         else
             COD_WeaponRecoilBasic(pitchDelta, angleDelta);
 	}
-	
+	*/
 	//Normally you want to use PB_WeaponRecoil instead, because it accounts for the berserk powerup
 	action void COD_WeaponRecoilBasic(float pitchDelta, float angleDelta = 0)
 	{
-        A_SetPitch(self.pitch+(pitchDelta * pb_weapon_recoil_mod_vertical), SPF_INTERPOLATE);
-        A_SetAngle(self.angle+(angleDelta * pb_weapon_recoil_mod_horizontal), SPF_INTERPOLATE);
+		double fac = 1.0;
+		if (invoker.GunBraced)
+		{
+			fac *= 0.33;
+		}
+		
+        A_SetPitch(self.pitch+(pitchDelta * fac), SPF_INTERPOLATE);
+        A_SetAngle(self.angle+(angleDelta * fac), SPF_INTERPOLATE);
 	}
-	*/
+	
 	//This will allow for direct spawning of shell casings and empty magazines without using an intermediary actor.
 	//I highly recommend making cvars for each of the perameters for location and velocity to edit and test live, and with those numbers transpose into the final code.
 	//upon request I also have code for the tactical lean mod out there.
@@ -183,6 +191,12 @@ extend class CODWeapon
 		A_QuakeEx(0, 0, 0, qDur, 0, 100, "", 0, 1, 0, 0, 0, 0, (camRoll / 2), 1, 0, 0, 0);
 		//also, camroll / 2, 2 should be made a scaling CVar at some point, or attach it to some other cvar
 		//DONT FORGET DIPSHIT
+	}
+	
+	action void COD_HandleWeaponFeedback(int qDur, float camRoll, float pitchDelta, float angleDelta)
+	{
+		COD_QuakeCamera(qDur, camRoll);
+		COD_WeaponRecoilBasic(pitchDelta, angleDelta);
 	}
 	
 	action void COD_HandleCrosshair(int num)

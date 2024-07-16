@@ -1,0 +1,9 @@
+addkeysection "Call of DooM" outlawskeys    
+
+addmenukey "Throw Grenade" ThrowGrenade
+alias ThrowGrenade "use ThrowableGrenade"
+defaultbind G +ThrowGrenade
+
+addmenukey "Throw 9-Bang" ThrowBang
+alias ThrowBang "use ThrowableBang"
+defaultbind H +ThrowBang

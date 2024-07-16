@@ -34,6 +34,11 @@ class CODPlayerBase : DoomPlayer
 		Player.StartItem "COD_Makarov", 1;
 		Player.StartItem "Clip", 16;
 		
+		Player.StartItem "ThrowableGrenade", 1;
+		Player.StartItem "GrenadeAmmo", 2;
+		Player.StartItem "ThrowableBang", 1;
+		Player.StartItem "BangAmmo", 2;
+		
 		Player.AttackZOffset 16;
 		
 		Scale 0.55;

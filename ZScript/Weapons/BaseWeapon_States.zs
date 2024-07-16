@@ -82,22 +82,47 @@ class CODWeapon : Weapon
 			KNI9 ABCLDEFGHIJ 1;
 			TNT1 A 0 A_Jump(256, "Ready");
 			Goto Ready;
-			
+		
 		FragGrenade:
+			TNT1 A 0 A_ZoomFactor(1);
+			TNT1 A 0 A_TakeInventory("AimingToken");
 			FRGA ABCDEFGHI 1;
-			FRGA JKLMOPQ 2;
-			FRGA ST 2;
-			TNT1 A 0; //A_FireCustomMissile("FragGrenade", 0, 0, 0, 16);
-			FRGA U 2;
-			FRGA VWX 2;
+			FRGA JK 2;
+			TNT1 A 0 A_StartSound("grenade/pinpull", 0, CHANF_OVERLAP, 1);
+			FRGA LMN 2;
+			FRGA O 4;
+			TNT1 A 0 A_StartSound("grenade/throw", 0, CHANF_OVERLAP, 1);
+			FRGA PQR 2;
+			TNT1 A 0
+			{
+				//A_FireCustomMissile("FragGrenade", 0, 0, 0, 16);
+				A_TakeInventory("ThrowGrenade", 1);
+				A_TakeInventory("GrenadeAmmo", 1);
+			}
+			FRGA STUV 1;
+			FRGA WX 2;
+			TNT1 A 0 A_Jump(256, "Ready");
 			Goto Ready;
+		
 		StunGrenade:
+			TNT1 A 0 A_ZoomFactor(1);
+			TNT1 A 0 A_TakeInventory("AimingToken");
 			FRGA ABCDEFGHI 1;
-			FRGA JKLMOPQ 1;
-			FRGA ST 1;
-			FRGB C 0; //A_FireCustomMissile("StunGrenadeThrown", 0, 0, 0, 16);
-			FRGA U 2;
-			FRGA VWX 2;
+			FRGA JK 2;
+			TNT1 A 0 A_StartSound("flash/pinpull", 0, CHANF_OVERLAP, 1);
+			FRGA LMN 2;
+			FRGA O 4;
+			TNT1 A 0 A_StartSound("flash/throw", 0, CHANF_OVERLAP, 1);
+			FRGA PQR 2;
+			TNT1 A 0
+			{
+				//A_FireCustomMissile("FragGrenade", 0, 0, 0, 16);
+				A_TakeInventory("ThrowBang", 1);
+				A_TakeInventory("BangAmmo", 1);
+			}
+			FRGA STUV 1;
+			FRGA WX 2;
+			TNT1 A 0 A_Jump(256, "Ready");
 			Goto Ready;
 			
 		MuzzleSmall:
@@ -230,6 +255,22 @@ class ChamberMeToken : Inventory
 }
 
 class NVToggleToken : Inventory
+{
+	Default
+	{
+		Inventory.MaxAmount 1;
+	}
+}
+
+class ThrowGrenade : Inventory
+{
+	Default
+	{
+		Inventory.MaxAmount 1;
+	}
+}
+
+class ThrowBang : Inventory
 {
 	Default
 	{
