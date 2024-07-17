@@ -34,8 +34,11 @@ class COD_Makarov : CODWeapon replaces pistol
 		A_Overlay(-3, "MuzzleSmall");
 		A_OverlayFlags(-3, PSPF_RENDERSTYLE, true);
 		A_OverlayRenderstyle(-3, STYLE_ADD);
-		//this handles placing the flash correctly
+		
 		A_StartSound("pm/fire1", 0, CHANF_OVERLAP, 1);
+		COD_FireBullets("COD_9x18mm", 1, frandom(-0.1, 0.1), 0, 0, frandom(-0.1, 0.1));
+		
+		//this handles placing the flash correctly
 		if(CountInv("AimingToken"))
 		{
 			A_OverlayOffset(-3, 0 - 18, 32 - 54);
@@ -50,8 +53,6 @@ class COD_Makarov : CODWeapon replaces pistol
 		}
 		//gunsmoke
 		A_TakeInventory("COD_Makarov_Mag", 1);
-		
-		COD_FireBullets("COD_9x18mm", 1, frandom(-0.1, 0.1), 0, 0, frandom(-0.1, 0.1));
 	}
 	
 	States
