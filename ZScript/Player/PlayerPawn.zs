@@ -40,8 +40,9 @@ class CODPlayerBase : DoomPlayer
 		Player.StartItem "BangAmmo", 2;
 		
 		Player.AttackZOffset 16;
-		
+		Player.ViewBobSpeed 15;
 		Scale 0.55;
+		
 	}
 	
 	States
@@ -157,7 +158,7 @@ class Z_NashMove : CustomInventory
 					Owner.vel.y *= DECEL_MULT;
 				}
 				// make the view bobbing match the player's movement
-				PlayerPawn(Owner).ViewBob = DECEL_MULT;
+				PlayerPawn(Owner).ViewBob = DECEL_MULT / 2;
 			}
 		}
 

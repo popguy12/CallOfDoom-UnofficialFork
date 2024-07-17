@@ -11,6 +11,8 @@ version "4.5.0"
 #include "ZScript/Weapons/BaseWeapon_Vars.zs"
 #include "ZScript/Weapons/QuickGrenade.zs"
 
+#include "ZScript/Effects/Smoke.zs"
+
 #include "ZScript/Weapons/Projectiles/BulletProjectile.zsc"
 #include "ZScript/Weapons/Projectiles/BulletDef.SmallCal.zsc"
 #include "ZScript/Weapons/Projectiles/BulletDef.Shells.zsc"

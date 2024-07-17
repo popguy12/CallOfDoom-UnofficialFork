@@ -151,25 +151,28 @@ class CODWeapon : Weapon
 		S8:
 			MUZC H 2;
 			Stop;
+			
+		
+			
 		MuzzleBig:
 			TNT1 A 0 A_Jump(256, "B1", "B2", "B3", "B4", "B5", "B6");
 		B1:
 			MUZB A 2;
 			Stop;
 		B2:
-			MUZB A 2;
+			MUZB B 2;
 			Stop;
 		B3:
-			MUZB A 2;
+			MUZB C 2;
 			Stop;
 		B4:
-			MUZB A 2;
+			MUZB D 2;
 			Stop;
 		B5:
-			MUZB A 2;
+			MUZB E 2;
 			Stop;
 		B6:
-			MUZB A 2;
+			MUZB F 2;
 			Stop;
 			
 	}

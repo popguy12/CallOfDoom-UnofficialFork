@@ -39,7 +39,7 @@ extend class CODWeapon
 				console.printf("COD_LowAmmoSoundWarning: Ammo count is 0 instead of 1, was the function called after the ammo item was taken?");
 		}
 	}
-	
+	*/
 	//- L, 0 C, + R
 	// [gng] credits to jaih1r0 for the position calculation, modified by me to fix the pitch bug
 	Action void COD_GunSmoke(double d1 = 0, double d2 = 0 , double d3 = 0, string SActor = "COD_GunFireSmoke")
@@ -95,7 +95,7 @@ extend class CODWeapon
 			Smoke.A_SetRoll(random(0, 359));
 		}
 	}
-	*/
+	
 	// Custom raise weapon function, useful for resetting information
 	action void COD_RaiseWeapon() {
 		A_Raise(25);
@@ -193,10 +193,11 @@ extend class CODWeapon
 		//DONT FORGET DIPSHIT
 	}
 	
-	action void COD_HandleWeaponFeedback(int qDur, float camRoll, float pitchDelta, float angleDelta)
+	action void COD_HandleWeaponFeedback(int qDur, float camRoll, float pitchDelta, float angleDelta, double d1 = 0, double d2 = 0 , double d3 = 0)
 	{
 		COD_QuakeCamera(qDur, camRoll);
 		COD_WeaponRecoilBasic(pitchDelta, angleDelta);
+		COD_GunSmoke(d1, d2, d3);
 	}
 	
 	action void COD_HandleCrosshair(int num)
