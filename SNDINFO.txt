@@ -1,5 +1,39 @@
-//NV
+//Bullet Ricochet
+$random effect/ricochet
+{
+	effect/ricochet1
+	effect/ricochet2
+	effect/ricochet3
+	effect/ricochet4
+	effect/ricochet5
+	effect/ricochet6
+	effect/ricochet7
+	effect/ricochet8
+	effect/ricochet9
+	effect/ricochet10
+	effect/ricochet11
+	effect/ricochet12
+	effect/ricochet13
+	effect/ricochet14
+	effect/ricochet15
+}
+effect/ricochet1	"Sounds/Effects/Ricochet/BULRIC1.wav"
+effect/ricochet2	"Sounds/Effects/Ricochet/BULRIC2.wav"
+effect/ricochet3	"Sounds/Effects/Ricochet/BULRIC3.wav"
+effect/ricochet4	"Sounds/Effects/Ricochet/BULRIC4.wav"
+effect/ricochet5	"Sounds/Effects/Ricochet/BULRIC5.wav"
+effect/ricochet6	"Sounds/Effects/Ricochet/BULRIC6.wav"
+effect/ricochet7	"Sounds/Effects/Ricochet/BULRIC7.wav"
+effect/ricochet8	"Sounds/Effects/Ricochet/BULRIC8.wav"
+effect/ricochet9	"Sounds/Effects/Ricochet/BULRIC9.wav"
+effect/ricochet10	"Sounds/Effects/Ricochet/BULRIC10.wav"
+effect/ricochet11	"Sounds/Effects/Ricochet/BULRIC11.wav"
+effect/ricochet12	"Sounds/Effects/Ricochet/BULRIC12.wav"
+effect/ricochet13	"Sounds/Effects/Ricochet/BULRIC13.wav"
+effect/ricochet14	"Sounds/Effects/Ricochet/BULRIC14.wav"
+effect/ricochet15	"Sounds/Effects/Ricochet/BULRIC15.wav"
 
+//NV
 items/NV/Sizzle	"Sounds/NV/sizzle.mp3"
 items/NV/PutOn	"Sounds/NV/NVPutOn.wav"
 items/NV/TurnOn	"Sounds/NV/NVOn.wav"
@@ -8,7 +42,6 @@ items/NV/TurnOff	"Sounds/NV/NVOff.wav"
 items/NV/TakeOff	"Sounds/NV/NVTakeOff.wav"
 
 //Foley
-
 uni/magfol	"Sounds/Foley/MagFoley.ogg"
 uni/magfolbig	"Sounds/Foley/MagFoleyDrum.wav"
 uni/ClothFoleyS	"Sounds/Foley/ClothFoleyQuick.wav"
@@ -57,6 +90,7 @@ uni/gear/big3	"Sounds/Foley/GearRattle/RattleLarge3.wav"
 uni/gear/big4	"Sounds/Foley/GearRattle/RattleLarge4.wav"
 
 throwable/empty	"Sounds/Weapons/Items/metal_click.wav"
+
 //Grenade
 grenade/pinpull	"Sounds/Weapons/Items/FRAGPIN"
 grenade/throw	"Sounds/Weapons/Items/FRAGTHRO"
