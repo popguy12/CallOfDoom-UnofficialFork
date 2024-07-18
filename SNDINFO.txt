@@ -140,3 +140,21 @@ trn/shell1
 trn/shell2
 trn/shell3
 }
+
+
+
+
+
+//Mosin
+mosin/raise	"Sounds/Weapons/Slot5/Mosin/MosRaise.wav"
+mosin/lower	"Sounds/Weapons/Slot5/Mosin/MosDrop.wav"
+mosin/pumpback	"Sounds/Weapons/Slot5/Mosin/MOSNPUM2"
+mosin/pumpforward	"Sounds/Weapons/Slot5/Mosin/MOSNPUM3"
+mosin/fire1	"Sounds/Weapons/Slot5/Mosin/MOSNFIR1"
+mosin/fire2	"Sounds/Weapons/Slot5/Mosin/MOSNFIR2"
+$random mosin/fire
+{
+mosin/fire1
+mosin/fire2
+}
+mosin/shell	"Sounds/Weapons/Slot5/Mosin/MOSNREL1"

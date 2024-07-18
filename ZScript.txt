@@ -15,6 +15,7 @@ version "4.5.0"
 
 #include "ZScript/Weapons/Projectiles/BulletProjectile.zsc"
 #include "ZScript/Weapons/Projectiles/BulletDef.SmallCal.zsc"
+#include "ZScript/Weapons/Projectiles/BulletDef.LargeCal.zsc"
 #include "ZScript/Weapons/Projectiles/BulletDef.Shells.zsc"
 
 #include "ZScript/Weapons/Slot1/Makarov.zsc"
@@ -22,3 +23,7 @@ version "4.5.0"
 #include "ZScript/Weapons/Slot2/S1100.zsc"
 
 #include "ZScript/Weapons/Slot3/M1897.zsc"
+
+
+
+#include "ZScript/Weapons/Slot5/MosinNagant.zsc"

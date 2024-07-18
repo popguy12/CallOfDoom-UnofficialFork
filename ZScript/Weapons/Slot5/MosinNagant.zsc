@@ -1,0 +1,211 @@
+class COD_MosinNagant : CODWeapon replaces shotgun
+{
+ 	Default
+	{
+		Weapon.AmmoType "Clip";
+		Weapon.AmmoUse 0;
+		Weapon.AmmoGive 5;
+		Weapon.AmmoType2 "COD_Mosin_Mag";
+		Weapon.AmmoUse2 0;
+		Weapon.AmmoGive2 0;
+		
+		Weapon.SlotNumber 5;
+		
+		/*
+		zoom 1.0
+		zoomaim 1.2
+		zoomdelta 0.1
+		zoom tics 2
+		*/
+		
+		Obituary "$OB_MPPISTOL";
+		Inventory.Pickupmessage "[5] Mosin Nagant";
+		Tag "Mosin Nagant";
+		Scale 0.16;
+		Inventory.PickupSound "weapons/pistol/pickup";
+		+WEAPON.NOALERT;
+		+WEAPON.AMMO_OPTIONAL;
+	}
+	
+	action void FireWeapon()
+	{
+		A_AlertMonsters();
+		A_Overlay(-3, "MuzzleMedium");
+		A_OverlayFlags(-3, PSPF_RENDERSTYLE, true);
+		A_OverlayRenderstyle(-3, STYLE_ADD);
+		
+		A_StartSound("mosin/fire", 0, CHANF_OVERLAP, 1);
+		COD_FireBullets("COD_762x54R", 1, frandom(-0.1, 0.1), 0, 0, frandom(-0.1, 0.1));
+		
+		//this handles placing the flash correctly
+		if(CountInv("AimingToken"))
+		{
+			A_OverlayOffset(-3, 0 - 18, 32 + 10);
+			COD_HandleWeaponFeedback(4, 6, -1.3, frandom(+1.0, -1.0), 0, 0, 0);
+			A_ZoomFactor(1.2-0.1);
+		}
+		else
+		{
+			A_OverlayOffset(-3, 0 + 12, 32 - 50);
+			COD_HandleWeaponFeedback(4, 6, -2.60, frandom(+2.0, -2.0), -3, 0, 0);
+			A_ZoomFactor(1-0.1);
+		}
+		//gunsmoke
+		A_TakeInventory("COD_Mosin_Mag", 1);
+	}
+	
+	States
+	{
+	Deselect:
+		TNT1 A 0 A_StartSound("mosin/lower", 0, CHANF_OVERLAP, 1);
+		TNT1 A 0 A_ZoomFactor(1);
+		MSNA FKJIHGEDCBA 1;
+		TNT1 A 3;
+		PSTG A 0 A_Lower(25);
+		Wait;
+	User4:
+		MSNA FKJIHGED 1;
+		TNT1 A 0 A_ZoomFactor(1);
+		TNT1 A 0 A_TakeInventory("AimingToken");
+		MSNA CBA 1;
+		Goto NVToggle;
+	User3:
+		TNT1 A 0 A_ZoomFactor(1);
+		TNT1 A 0 A_TakeInventory("AimingToken");
+		Goto KnifeAttack;
+	Select:
+		TNT1 A 0
+		{
+			A_TakeInventory("AimingToken");
+		}
+		TNT1 A 0 A_Raise(25);
+		Wait;
+	Ready:
+		TNT1 A 0 A_StartSound("mosin/raise", 0, CHANF_OVERLAP, 1);
+		MSNA ABCDEGHIJKF 1;
+	WeaponReady:
+		MSNA F 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
+		TNT1 A 0 A_JumpIfInventory("ThrowGrenade", 1, "FragGrenade");
+		TNT1 A 0 A_JumpIfInventory("ThrowBang", 1, "StunGrenade");
+		Loop;
+	WeaponReady2:
+		MSNC D 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
+		TNT1 A 0 A_JumpIfInventory("ThrowGrenade", 1, "FragGrenade");
+		TNT1 A 0 A_JumpIfInventory("ThrowBang", 1, "StunGrenade");
+		Loop;
+	Fire:
+		TNT1 A 0 A_JumpIfInventory("AimingToken", 1, "Fire2");
+		TNT1 A 0 A_JumpIf(CountInv("COD_Mosin_Mag") == 0, "DryFire");
+		MSNA F 1;
+		TNT1 A 0 FireWeapon();
+		MSNB AB 1;
+		TNT1 A 0 A_ZoomFactor(1);
+		MSNB CST 2;
+		TNT1 A 0 A_JumpIf(CountInv("COD_Mosin_Mag") == 0, "WeaponReady");
+		TNT1 A 0 A_StartSound("uni/clothfoleys", 0, CHANF_OVERLAP, 1);
+		MSNB TSCDE 1;
+		TNT1 A 0 A_StartSound("mosin/pumpback", 0, CHANF_OVERLAP, 1);
+		MSNB FGHIJJJJJK 1;
+		TNT1 A 0 A_StartSound("mosin/pumpforward", 0, CHANF_OVERLAP, 1);
+		MSNB LMN 1;
+		TNT1 A 0 A_StartSound("uni/clothfoleys", 0, CHANF_OVERLAP, 1);
+		MSNB OPQRST 1;
+		Goto WeaponReady;
+	Fire2:
+		TNT1 A 0 A_JumpIf(CountInv("COD_Mosin_Mag") == 0, "DryFire2");
+		MSNC D 1;
+		TNT1 A 0 FireWeapon();
+		MSNC DD 1;
+		TNT1 A 0 A_ZoomFactor(3.5);
+		MSNC D 6;
+		TNT1 A 0 A_JumpIf(CountInv("COD_Mosin_Mag") == 0, "WeaponReady2");
+		TNT1 A 0 A_StartSound("uni/clothfoleys", 0, CHANF_OVERLAP, 1);
+		MSNC DDDDD 1 A_SetRoll(roll+1, SPF_INTERPOLATE);
+		TNT1 A 0 A_StartSound("mosin/pumpback", 0, CHANF_OVERLAP, 1);
+		MSNC DD 1 A_SetRoll(roll-10, SPF_INTERPOLATE);
+		MSNC DDD 1 A_SetRoll(roll+3, SPF_INTERPOLATE);
+		MSNC DDDD 1 A_SetRoll(-3, SPF_INTERPOLATE);
+		TNT1 A 0 A_StartSound("mosin/pumpforward", 0, CHANF_OVERLAP, 1);
+		MSNC DDD 1 A_SetRoll(roll-3, SPF_INTERPOLATE);
+		MSNC DDD 1 A_SetRoll(roll+5, SPF_INTERPOLATE);
+		TNT1 A 0 A_StartSound("uni/clothfoleys", 0, CHANF_OVERLAP, 1);
+		MSNC DDDDD 1 A_SetRoll(roll-1, SPF_INTERPOLATE);
+		TNT1 A 0 A_SetRoll(0, SPF_INTERPOLATE);
+		Goto WeaponReady2;
+	AltFire:
+		TNT1 A 0 A_JumpIfInventory("AimingToken", 1, "AltFire2");
+		TNT1 A 0 A_GiveInventory("AimingToken");
+		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP, 1);
+		MSNC ABC 1;
+		TNT1 A 0 A_ZoomFactor(1.2);
+		MSNC EFGH 1;
+		MSNC D 1 A_ZoomFactor(3.5, ZOOM_INSTANT);
+		Goto WeaponReady2;
+	AltFire2:
+		TNT1 A 0 A_TakeInventory("AimingToken");
+		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP, 1);
+		MSNC D 1;
+		TNT1 A 0 A_ZoomFactor(1.2, ZOOM_INSTANT);
+		MSNC HGFE 1;
+		TNT1 A 0 A_ZoomFactor(1);
+		MSNC CBA 1;
+		Goto WeaponReady;
+	
+	DryFire:
+		MSNB B 1;
+		Goto WeaponReady;
+	DryFire2:
+		MSNC D 1;
+		Goto WeaponReady2;
+	
+	UnAimReload:
+		TNT1 A 0 A_TakeInventory("AimingToken");
+		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP, 1);
+		TNT1 A 0 A_ZoomFactor(1.2, ZOOM_INSTANT);
+		MSNC HGFE 1;
+		TNT1 A 0 A_ZoomFactor(1);
+		MSNC CBA 1;
+	Reload:
+		TNT1 A 0 A_JumpIf(CountInv("AimingToken") == 1, "UnAimReload");
+		TNT1 A 0 A_JumpIf(CountInv("COD_Mosin_Mag") == 0 && CountInv("Clip") == 0, "WeaponReadyEmpty");
+		TNT1 A 0 A_JumpIf(CountInv("COD_Mosin_Mag") == 5 || CountInv("Clip") == 0, "WeaponReady");
+		TNT1 A 0 A_TakeInventory("AimingToken");
+		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP, 1);
+		MSNE ABCD 1;
+		TNT1 A 0 A_StartSound("mosin/pumpback", 0, CHANF_OVERLAP, 1);
+		MSNE EFGHIJKLMNOPQ 1;
+	ReloadLoop:
+		TNT1 A 0 A_StartSound("uni/cartfoley", 0, CHANF_OVERLAP, 1);
+		MSNE RSTUV 1;
+		TNT1 A 0 A_StartSound("mosin/shell", 0, CHANF_OVERLAP, 1);
+		MSNE WXYZ 1;
+		TNT1 A 0 COD_AmmoIntoMag("COD_Mosin_Mag", "Clip", (CountInv("COD_Mosin_Mag") + 1), 1);
+		TNT1 A 0 A_StartSound("uni/clothfoleys", 0, CHANF_OVERLAP, 1);
+		MSNF ABCDE 1;
+		TNT1 A 0 A_JumpIf(CountInv("COD_Mosin_Mag") ==	5 || CountInv("Clip") == 0, "ReloadEnd");
+		Loop;
+	ReloadEnd:
+		TNT1 A 0 A_StartSound("uni/clothfoleys", 0, CHANF_OVERLAP, 1);
+		MSNF FGHI 1;
+		TNT1 A 0 A_StartSound("mosin/pumpforward", 0, CHANF_OVERLAP, 1);
+		MSNF IJK 1;
+		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP, 1);
+		MSNF LMNOPQRS 1;
+		Goto WeaponReady;
+ 	Spawn:
+		B002 I -1;
+		Stop;
+	
+	}
+}
+
+Class COD_Mosin_Mag : Ammo
+{
+	Default
+	{
+		Inventory.Amount 0;
+		Inventory.MaxAmount 5;
+		Ammo.BackpackAmount 0;
+		Ammo.BackpackMaxAmount 5;
+	}
+}

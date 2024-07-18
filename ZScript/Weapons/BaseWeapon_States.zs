@@ -152,7 +152,26 @@ class CODWeapon : Weapon
 			MUZC H 2;
 			Stop;
 			
-		
+		MuzzleMedium:
+			TNT1 A 0 A_Jump(256, "M1", "M2", "M3", "M4", "M5", "M6");
+		M1:
+			MUZA A 2;
+			Stop;
+		M2:
+			MUZA B 2;
+			Stop;
+		M3:
+			MUZA C 2;
+			Stop;
+		M4:
+			MUZA D 2;
+			Stop;
+		M5:
+			MUZA E 2;
+			Stop;
+		M6:
+			MUZA F 2;
+			Stop;
 			
 		MuzzleBig:
 			TNT1 A 0 A_Jump(256, "B1", "B2", "B3", "B4", "B5", "B6");
