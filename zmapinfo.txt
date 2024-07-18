@@ -2,7 +2,7 @@ Gameinfo
 {
 
 	NoRandomPlayerClass = True
-	PlayerClasses = "CODPlayerBase"
+	PlayerClasses = "CODPlayer"
 	AddEventHandlers = "COD_PlayerHandler"
 	DimColor = "Black"
 	DimAmount = 0.70

@@ -1,4 +1,4 @@
-class CODPlayerBase : DoomPlayer
+class CODPlayer : DoomPlayer
 {
 	override Void Tick()
 	{
@@ -42,7 +42,7 @@ class CODPlayerBase : DoomPlayer
 		Player.AttackZOffset 16;
 		Player.ViewBobSpeed 15;
 		Scale 0.55;
-		
+		Player.SoundClass "CODPlayer";
 	}
 	
 	States

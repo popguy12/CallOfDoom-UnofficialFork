@@ -45,7 +45,7 @@ extend class CODWeapon
 	Action void COD_GunSmoke(double d1 = 0, double d2 = 0 , double d3 = 0, string SActor = "COD_GunFireSmoke")
 	{
 		double PVZ;
-		CODPlayerBase plr = CODPlayerBase(invoker.owner);
+		CODPlayer plr = CODPlayer(invoker.owner);
 		PlayerInfo Playa = Player;
 		if(Playa)
 		{
@@ -246,7 +246,7 @@ extend class CODWeapon
 	{
 		Super.Tick();
 		
-		let plr = CODPlayerBase(Owner);
+		let plr = CODPlayer(Owner);
 		if (!plr)
 		{
 			GunBraced = false;
