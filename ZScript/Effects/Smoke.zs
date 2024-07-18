@@ -4,7 +4,7 @@ class COD_GunFireSmoke: Actor
 {
     Default
 	{
-        Alpha 0.5;
+        Alpha 0.75;
         //Scale 0.2;
         Renderstyle "Add";
         Speed 1;

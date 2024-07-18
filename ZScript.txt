@@ -24,6 +24,6 @@ version "4.5.0"
 
 #include "ZScript/Weapons/Slot3/M1897.zsc"
 
-
+#include "ZScript/Weapons/Slot4/SKS.zsc"
 
 #include "ZScript/Weapons/Slot5/MosinNagant.zsc"

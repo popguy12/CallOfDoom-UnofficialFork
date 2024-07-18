@@ -117,8 +117,6 @@ s1100/rack	"Sounds/Weapons/Slot2/S1100/MP34REL3"
 s1100/up	"Sounds/Weapons/Slot2/S1100/MP34Up.wav"
 s1100/down	"Sounds/Weapons/Slot2/S1100/MP34Down.wav"
 
-
-
 //M1897
 trn/raise	"Sounds/Weapons/Slot3/M1897/TRNRAISE.wav"
 trn/lower	"Sounds/Weapons/Slot3/M1897/TRNLOWER.wav"
@@ -141,9 +139,17 @@ trn/shell2
 trn/shell3
 }
 
-
-
-
+//SKS
+SKS/raise	"Sounds/Weapons/Slot5/Mosin/MosRaise.wav"
+SKS/lower	"Sounds/Weapons/Slot5/Mosin/MosDrop.wav"
+SKS/magopen	"Sounds/Weapons/Slot4/SKS/SKSRELD1"
+SKS/magclose	"Sounds/Weapons/Slot4/SKS/SKSRELD2"
+SKS/rackback	"Sounds/Weapons/Slot4/SKS/SKSRELD3"
+SKS/clipset	"Sounds/Weapons/Slot4/SKS/SKSRELD4"
+SKS/clipin	"Sounds/Weapons/Slot4/SKS/SKSRELD5"
+SKS/cliprem	"Sounds/Weapons/Slot4/SKS/SKSCLIP1"
+SKS/rackforward	"Sounds/Weapons/Slot4/SKS/SKSRELD6"
+SKS/fire	"Sounds/Weapons/Slot4/SKS/SKSFIRE1"
 
 //Mosin
 mosin/raise	"Sounds/Weapons/Slot5/Mosin/MosRaise.wav"
