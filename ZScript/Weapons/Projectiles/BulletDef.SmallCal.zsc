@@ -8,11 +8,51 @@ class COD_9x18mm : COD_Projectile
 	}
 }
 
+class COD_9x19mm : COD_Projectile
+{
+	Default
+	{
+		COD_Projectile.BaseDamage 27;
+		COD_Projectile.RipperCount 2;
+		Obituary "";
+	}
+}
+
+class COD_45ACP : COD_Projectile
+{
+	Default
+	{
+		COD_Projectile.BaseDamage 36;
+		COD_Projectile.RipperCount 2;
+		Obituary "";
+	}
+}
+
+class COD_44Magnum : COD_Projectile
+{
+	Default
+	{
+		COD_Projectile.BaseDamage 40;
+		COD_Projectile.RipperCount 3;
+		Obituary "";
+	}
+}
+
 class COD_762x25mm : COD_Projectile
 {
 	Default
 	{
 		COD_Projectile.BaseDamage 30;
+		COD_Projectile.RipperCount 3;
+		Obituary "";
+	}
+}
+
+class COD_57x28mm : COD_Projectile
+{
+	Default
+	{
+		COD_Projectile.BaseDamage 25;
 		COD_Projectile.RipperCount 3;
 		Obituary "";
 	}
