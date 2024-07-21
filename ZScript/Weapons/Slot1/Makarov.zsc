@@ -1,4 +1,4 @@
-class COD_Makarov : CODWeapon replaces pistol
+class COD_Makarov : CODWeapon
 {
  	Default
 	{
@@ -32,11 +32,13 @@ class COD_Makarov : CODWeapon replaces pistol
 	{
 		A_AlertMonsters();
 		A_Overlay(-3, "MuzzleSmall");
+		A_OverlayFlags(-3, PSPF_ALPHA, true);
 		A_OverlayFlags(-3, PSPF_RENDERSTYLE, true);
 		A_OverlayRenderstyle(-3, STYLE_ADD);
 		
 		A_StartSound("pm/fire1", 0, CHANF_OVERLAP, 1);
 		COD_FireBullets("COD_9x18mm", 1, frandom(-0.1, 0.1), 0, 0, frandom(-0.1, 0.1));
+		A_SpawnItemEx("PlayerMuzzleFlash",30,0,45);
 		
 		//this handles placing the flash correctly
 		if(CountInv("AimingToken"))

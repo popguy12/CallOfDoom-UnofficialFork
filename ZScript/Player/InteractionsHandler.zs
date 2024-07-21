@@ -36,22 +36,6 @@ class COD_PlayerHandler : EventHandler
 				//pl.player.A_GiveInventory("DoKick");
 			}
 		}
-		
-		if (e.Name ~== "StunEm")
-		{	
-			if(kicktimer == 0)
-			{
-				//pl.player.A_GiveInventory("DoKick");
-			}
-		}
-		
-		if (e.Name ~== "FragEm")
-		{	
-			if(kicktimer == 0)
-			{
-				//pl.player.A_GiveInventory("DoKick");
-			}
-		}
 	}
 }
 

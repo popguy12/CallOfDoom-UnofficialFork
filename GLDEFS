@@ -16,3 +16,14 @@ HardwareShader postprocess scene
 	Uniform int targetwt
 	Uniform int targetht
 }
+
+pointlight GunMuzzleFlash
+{
+    color 1 0.28 0
+    size 64
+}
+
+object PlayerMuzzleFlash
+{
+    frame TNT1 { light GunMuzzleFlash }
+}

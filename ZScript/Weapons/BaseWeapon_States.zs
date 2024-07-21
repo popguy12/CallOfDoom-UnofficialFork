@@ -13,6 +13,13 @@ class CODWeapon : Weapon
 		Ready:
 			TNT1 A 1;
 			Goto WeaponReady;
+		/*[Pop] Note on extra timings per weapon type
+		Pistols have no delay
+		SMG and Shotgun class weapons have 6 tic delay
+		Rifle, DMR, and Sniper weapons have 12 tic delay
+		Assault Rifle and Battle Rifle class weapons have 10 tic delay
+		LMGs and above have 18 tic delay.
+		*/
 		
 		//Dummy state for loading alternative sprites into virtual memory
 		LoadAlternativeSprites:
@@ -79,7 +86,10 @@ class CODWeapon : Weapon
 		
 		User3:
 		KnifeAttack:
-			KNI9 ABCLDEFGHIJ 1;
+			TNT1 A 0 A_StartSound("melee/knife/slash", 0, CHANF_OVERLAP, 1);
+			KNI9 AB 1;
+			KNI9 CDEF 1 A_CustomPunch(12, 1, CPF_PULLIN | CPF_NOTURN, "BulletPuff", 64, 0, 0, "BasicArmorBonus", "melee/knife/hit");
+			KNI9 GHI 1;
 			TNT1 A 0 A_Jump(256, "Ready");
 			Goto Ready;
 		
@@ -128,70 +138,70 @@ class CODWeapon : Weapon
 		MuzzleSmall:
 			TNT1 A 0 A_Jump(256, "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8");
 		S1:
-			MUZC A 2;
+			MUZC AA 1 A_OverlayAlpha(-3, alpha-0.5);
 			Stop;
 		S2:
-			MUZC B 2;
+			MUZC BB 1 A_OverlayAlpha(-3, alpha-0.5);
 			Stop;
 		S3:
-			MUZC C 2;
+			MUZC CC 1 A_OverlayAlpha(-3, alpha-0.5);
 			Stop;
 		S4:
-			MUZC D 2;
+			MUZC DD 1 A_OverlayAlpha(-3, alpha-0.5);
 			Stop;
 		S5:
-			MUZC E 2;
+			MUZC EE 1 A_OverlayAlpha(-3, alpha-0.5);
 			Stop;
 		S6:
-			MUZC F 2;
+			MUZC FF 1 A_OverlayAlpha(-3, alpha-0.5);
 			Stop;
 		S7:
-			MUZC G 2;
+			MUZC GG 1 A_OverlayAlpha(-3, alpha-0.5);
 			Stop;
 		S8:
-			MUZC H 2;
+			MUZC HH 1 A_OverlayAlpha(-3, alpha-0.5);
 			Stop;
 			
 		MuzzleMedium:
 			TNT1 A 0 A_Jump(256, "M1", "M2", "M3", "M4", "M5", "M6");
 		M1:
-			MUZA A 2;
+			MUZA AA 1 A_OverlayAlpha(-3, alpha-0.5);
 			Stop;
 		M2:
-			MUZA B 2;
+			MUZA BB 1 A_OverlayAlpha(-3, alpha-0.5);
 			Stop;
 		M3:
-			MUZA C 2;
+			MUZA CC 1 A_OverlayAlpha(-3, alpha-0.5);
 			Stop;
 		M4:
-			MUZA D 2;
+			MUZA DD 1 A_OverlayAlpha(-3, alpha-0.5);
 			Stop;
 		M5:
-			MUZA E 2;
+			MUZA EE 1 A_OverlayAlpha(-3, alpha-0.5);
 			Stop;
 		M6:
-			MUZA F 2;
+			MUZA FF 1 A_OverlayAlpha(-3, alpha-0.5);
 			Stop;
 			
 		MuzzleBig:
 			TNT1 A 0 A_Jump(256, "B1", "B2", "B3", "B4", "B5", "B6");
 		B1:
-			MUZB A 2;
+			MUZB AA 1 A_OverlayAlpha(-3, alpha-0.5);
 			Stop;
 		B2:
-			MUZB B 2;
+			MUZB BB 1 A_OverlayAlpha(-3, alpha-0.5);
 			Stop;
 		B3:
-			MUZB C 2;
+			MUZB CC 1 A_OverlayAlpha(-3, alpha-0.5);
 			Stop;
 		B4:
-			MUZB D 2;
+			MUZB DD 1 A_OverlayAlpha(-3, alpha-0.5);
 			Stop;
 		B5:
-			MUZB E 2;
+			MUZB EE 1 A_OverlayAlpha(-3, alpha-0.5);
 			Stop;
 		B6:
-			MUZB F 2;
+			MUZB FF 1 A_OverlayAlpha(-3, alpha-0.5);
 			Stop;
 			
 	}
@@ -257,6 +267,25 @@ Class CODNightVision : PowerLightAmp
 	{
 		Inventory.AltHudIcon "PVISA0";
 		+INVENTORY.NOSCREENBLINK;
+	}
+}
+
+Class PlayerMuzzleFlash : Actor
+{
+	Default
+	{
+		Speed 0;
+		PROJECTILE;
+		+NOCLIP;
+		+NOGRAVITY;
+		+NOINTERACTION;
+	}
+	
+	States
+	{
+		Spawn:
+			TNT1 A 2 BRIGHT;
+			Stop;
 	}
 }
 

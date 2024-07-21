@@ -89,6 +89,44 @@ uni/gear/big2	"Sounds/Foley/GearRattle/RattleLarge2.wav"
 uni/gear/big3	"Sounds/Foley/GearRattle/RattleLarge3.wav"
 uni/gear/big4	"Sounds/Foley/GearRattle/RattleLarge4.wav"
 
+//Knife
+$random melee/knife/slash
+{
+	melee/knife/slash1
+	melee/knife/slash2
+}
+melee/knife/slash1	"Sounds/Weapons/Knife/knife_slash1.wav"
+melee/knife/slash2	"Sounds/Weapons/Knife/knife_slash2.wav"
+
+$random melee/knife/hit
+{
+	melee/knife/hit1
+	melee/knife/hit2
+	melee/knife/hit3
+	melee/knife/hit4
+}
+melee/knife/hit1	"Sounds/Weapons/Knife/knife_hit1.wav"
+melee/knife/hit2	"Sounds/Weapons/Knife/knife_hit2.wav"
+melee/knife/hit3	"Sounds/Weapons/Knife/knife_hit3.wav"
+melee/knife/hit4	"Sounds/Weapons/Knife/knife_hit4.wav"
+
+melee/bayonet/stab	"Sounds/Weapons/Knife/TARKBAY1"
+
+medkit/zip	"Sounds/Weapons/Items/Medkit/MKITUnzip.wav"
+medkit/open	"Sounds/Weapons/Items/Medkit/MKITOpen.wav"
+medkit/GrabPack	"Sounds/Weapons/Items/Medkit/MKITGrabPack.wav"
+medkit/PackOpen	"Sounds/Weapons/Items/Medkit/MKITPackOpen.wav"
+medkit/ReOpen	"Sounds/Weapons/Items/Medkit/MKITReopen.wav"
+
+$RANDOM medkit/use
+{
+	medkit/use1
+	medkit/use2
+}
+medkit/use1	"Sounds/Weapons/Items/Medkit/MKITUse1.wav"
+medkit/use2	"Sounds/Weapons/Items/Medkit/MKITUse2.wav"
+
+
 throwable/empty	"Sounds/Weapons/Items/metal_click.wav"
 
 //Grenade
@@ -140,8 +178,8 @@ trn/shell3
 }
 
 //SKS
-SKS/raise	"Sounds/Weapons/Slot5/Mosin/MosRaise.wav"
-SKS/lower	"Sounds/Weapons/Slot5/Mosin/MosDrop.wav"
+SKS/raise	"Sounds/Weapons/Slot4/SKS/SKSUp.wav"
+SKS/lower	"Sounds/Weapons/Slot4/SKS/SKSDown.wav"
 SKS/magopen	"Sounds/Weapons/Slot4/SKS/SKSRELD1"
 SKS/magclose	"Sounds/Weapons/Slot4/SKS/SKSRELD2"
 SKS/rackback	"Sounds/Weapons/Slot4/SKS/SKSRELD3"

@@ -13,6 +13,9 @@ version "4.5.0"
 
 #include "ZScript/Effects/Smoke.zs"
 
+#include "ZScript/Spawners/Weapons.zs"
+#include "ZScript/Spawners/Items.zs"
+
 #include "ZScript/Weapons/Projectiles/BulletProjectile.zsc"
 #include "ZScript/Weapons/Projectiles/BulletDef.SmallCal.zsc"
 #include "ZScript/Weapons/Projectiles/BulletDef.LargeCal.zsc"
@@ -27,3 +30,7 @@ version "4.5.0"
 #include "ZScript/Weapons/Slot4/SKS.zsc"
 
 #include "ZScript/Weapons/Slot5/MosinNagant.zsc"
+
+
+
+#include "ZScript/Weapons/Slot10/Medkit.zsc"

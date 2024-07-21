@@ -34,6 +34,9 @@ class CODPlayer : DoomPlayer
 		Player.StartItem "COD_Makarov", 1;
 		Player.StartItem "Clip", 16;
 		
+		Player.StartItem "COD_Medkit", 1;
+		Player.StartItem "COD_Medkit_Ammo", 50;
+		
 		Player.StartItem "ThrowableGrenade", 1;
 		Player.StartItem "GrenadeAmmo", 2;
 		Player.StartItem "ThrowableBang", 1;
@@ -56,7 +59,7 @@ class CODPlayer : DoomPlayer
 			RANG E 10;
 			Loop;
 		See:
-			RANG ABCD 4;
+			RANG ABCD 3;
 			Loop;
 		Missile:
 			RANG E 6;

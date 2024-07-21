@@ -1,4 +1,4 @@
-class COD_S1100CB : CODWeapon replaces chaingun
+class COD_S1100CB : CODWeapon
 {
  	Default
 	{
@@ -32,11 +32,13 @@ class COD_S1100CB : CODWeapon replaces chaingun
 	{
 		A_AlertMonsters();
 		A_Overlay(-3, "MuzzleSmall");
+		A_OverlayFlags(-3, PSPF_ALPHA, true);
 		A_OverlayFlags(-3, PSPF_RENDERSTYLE, true);
 		A_OverlayRenderstyle(-3, STYLE_ADD);
 		
 		A_StartSound("s1100/fire", 0, CHANF_OVERLAP, 1);
 		COD_FireBullets("COD_762x25mm", 1, frandom(-0.1, 0.1), 0, 0, frandom(-0.1, 0.1));
+		A_SpawnItemEx("PlayerMuzzleFlash",30,0,45);
 		
 		//this handles placing the flash correctly
 		if(CountInv("AimingToken"))
@@ -83,6 +85,7 @@ class COD_S1100CB : CODWeapon replaces chaingun
 		Wait;
 	Ready:
 		TNT1 A 0 A_StartSound("s1100/up", 0, CHANF_OVERLAP, 1);
+		TNT1 A 6;
 		M3GA ABCDEGF 1;
 	WeaponReady:
 		M3GA F 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
