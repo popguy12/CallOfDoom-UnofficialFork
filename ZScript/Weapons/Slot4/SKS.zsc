@@ -220,7 +220,7 @@ class COD_SKS : CODWeapon
 		SVTF FGHIJKLM 1;
 		Goto ReloadInsert;
  	Spawn:
-		B002 I -1;
+		B003 A -1;
 		Stop;
 	
 	}

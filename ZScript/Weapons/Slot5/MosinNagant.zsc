@@ -195,7 +195,7 @@ class COD_MosinNagant : CODWeapon
 		MSNF LMNOPQRS 1;
 		Goto WeaponReady;
  	Spawn:
-		B002 I -1;
+		B004 A -1;
 		Stop;
 	
 	}
