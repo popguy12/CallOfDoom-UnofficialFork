@@ -1,0 +1,55 @@
+// [Ace] Damaging sold separately.
+class COD_Explosion : Actor
+{
+	virtual void SpawnEffects()
+	{
+		for (int i = 0; i < Stamina; ++i)
+		{
+			double pitch = frandom(-Accuracy, Accuracy);
+			double spd = frandom(5, 25) * (Scale.X ** 1.75);
+			A_SpawnItemEx(SmokeClass, frandom(0, Radius), 0, 0, spd * cos(pitch), 0, frandom(-2, 2) + spd * sin(pitch), random(0, 359), SXF_NOCHECKPOSITION);
+		}
+	}
+	/*
+	protected void SpawnLight()
+	{
+		let light = DSFadingLight(Spawn('DSFadingLight', Pos));
+		light.BaseIntensity = int(64 * (1 + Scale.Length()));
+		light.BaseColor = fillcolor;
+		light.Lifetime = ReactionTime;
+		light.Master = self;
+	}*/
+
+	class<COD_GunFireSmoke> SmokeClass;
+	property SmokeClass: SmokeClass;
+
+	Default
+	{
+		Accuracy 90;
+		Stamina 60;
+		Radius 128;
+		COD_Explosion.SmokeClass 'COD_GunFireSmoke';
+		+NOINTERACTION
+		+NOBLOCKMAP
+		+NOTIMEFREEZE
+		ReactionTime 4; // [Ace] Light duration.
+		RenderStyle "Add";
+		DeathSound "Environment/Explosion";
+		StencilColor "AAAA11";
+	}
+
+	States
+	{
+		Spawn:
+			HEXP A 0 NoDelay
+			{
+				A_StartSound(DeathSound);
+				//SpawnLight();
+			}
+			HEXP AB 1 Bright;
+			HEXP C 1 Bright; //SpawnEffects();
+			HEXP D 1 Bright;
+			HEXP EFG 1 Bright;
+			Stop;
+	}
+}

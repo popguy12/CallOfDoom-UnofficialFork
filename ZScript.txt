@@ -1,5 +1,7 @@
 version "4.5.0"
 
+#include "ZScript/CoDCore.zsc"
+
 #include "ZScript/Player/PlayerPawn.zs"
 #include "ZScript/Player/InteractionsHandler.zs"
 #include "ZScript/HUD.zs"
@@ -11,7 +13,10 @@ version "4.5.0"
 #include "ZScript/Weapons/BaseWeapon_Vars.zs"
 #include "ZScript/Weapons/QuickGrenade.zs"
 
+#include "ZScript/Items/C4.zsc"
+
 #include "ZScript/Effects/Smoke.zs"
+#include "ZScript/Effects/Explosion.zsc"
 
 #include "ZScript/Spawners/Weapons.zs"
 #include "ZScript/Spawners/Items.zs"
@@ -34,3 +39,4 @@ version "4.5.0"
 
 
 #include "ZScript/Weapons/Slot10/Medkit.zsc"
+#include "ZScript/Weapons/Slot10/C4.zsc"

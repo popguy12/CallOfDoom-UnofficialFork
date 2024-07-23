@@ -1,0 +1,264 @@
+class COD_C4Charge : Actor
+{
+	enum BreakSectorFlags
+	{
+		BSF_ONLYTEST = 1,
+		BSF_IGNOREPITCH = 2,
+		BSF_NODAMAGE = 4
+	}
+
+	// [Ace] Kinda crusty cause the initial implementation wasn't too bright.
+	static void SpawnBreakEffect(Vector3 pos, Vector2 size, class<COD_Explosion> expCls = 'COD_Explosion', class<COD_GunFireSmoke> smokeCls = 'COD_GunFireSmoke', int smokeCount = 50, class<SectorBreakDebris> debrisCls = 'SectorBreakDebris', int debrisCount = 200)
+	{
+		if (expCls)
+		{
+			Spawn(expCls, pos);
+		}
+
+		if (smokeCls)
+		{
+			for (int i = 0; i < smokeCount; ++i)
+			{
+				Vector3 spawnPos = Level.Vec3Offset(pos, (frandom(-size.X, size.X), frandom(-size.X, size.X), frandom(-size.Y, size.Y)));
+				Spawn(smokeCls, spawnPos);
+			}
+		}
+		
+		if (debrisCls)
+		{
+			for (int i = 0; i < debrisCount; ++i)
+			{
+				Vector3 spawnPos = Level.Vec3Offset(pos, (frandom(-size.X, size.X), frandom(-size.X, size.X), frandom(-size.Y, size.Y)));
+				
+				double p = frandom(-70, 70);
+				double a = random(0, 359);
+				double spd = frandom(30, 100);
+				Actor dbr = Spawn(debrisCls, spawnPos);
+				dbr.Angle = a;
+				dbr.Pitch = p;
+				dbr.A_ChangeVelocity(spd * cos(p), 0, spd * sin(p), CVF_RELATIVE);
+				dbr.ReactionTime = random(35, 35 * 5);
+				dbr.Scale *= frandom(0.4, 1.0);
+				dbr.BounceCount = random(5, 8);
+			}
+		}
+	}
+
+	// [Ace] I do understand judging the size of the sector from the surface area is neither here nor there, but it works so I won't change it until proven to be bad.
+	static bool BreakSector(Actor caller, double maxSize = 512.0, double dist = -1, int flags = 0)
+	{
+		// [Ace] Offset the actor itself because puffs spawned from rail attacks will spawn inside the line.
+		// As of 09.12.2022, puffs no longer do an angle flip because that was only a problem with A_RailAttack rails.
+		// DS uses a custom method for that now, so do NOT use A_RailAttack or this won't work. A_RailAttack is completely trash and, for the purposes of Deathstrider, deprecated.
+		// You have been warned.
+
+		if (dist == -1)
+		{
+			dist = caller.Radius * 1.5;
+		}
+		FLineTraceData data;
+		Vector3 oldPos = caller.Pos;
+		caller.SetOrigin(caller.Vec3Angle(-0.05, caller.Angle), false);
+		caller.LineTrace(caller.Angle, dist, (flags & BSF_IGNOREPITCH ? 0 : caller.Pitch), TRF_NOSKY | TRF_THRUACTORS, caller.Height / 2, data: data);
+		caller.SetOrigin(oldPos, false);
+
+		if (data.HitType != TRACE_HitWall || data.HitLine && data.HitLine.Flags & Side.WALLF_POLYOBJ)
+		{
+			return false;
+		}
+
+		//Console.Printf("%i, %i, %i", data.HitSector.centerspot.X, data.HitSector.centerspot.Y, data.HitSector.CenterFloor());
+		Sector back = COD_Core.GetOppositeSector(data.HitSector, data.HitLine);
+		if (!back || data.LinePart == Side.Mid)
+		{
+			return false;
+		}
+
+		double size, height; int lineCount;
+		[size, height, lineCount] = COD_Core.GetSectorArea(back, data.LinePart);
+
+		double breakSize = max(height * 2, size);
+		//Console.Printf("%.3f, %.3f, %.3f, %.3f", size, height, breakSize, maxSize);
+		if (breakSize > maxSize || height <= 0)
+		{
+			return false;
+		}
+
+		if (flags & BSF_ONLYTEST)
+		{
+			return true;
+		}
+
+		TextureID wallTex = TexMan.CheckForTexture("DSRUBBL2", TexMan.Type_Any);
+		TextureID flatTex = TexMan.CheckForTexture("DSRUBBLE", TexMan.Type_Any);
+
+		back.special = 0;
+		back.damageamount = 0;
+		if (back.lightingdata)
+		{
+			back.lightingdata.destroy();
+		}
+		for (int i = 0; i < back.lines.Size(); ++i)
+		{
+			int sp = back.lines[i].special;
+			if (sp != Exit_Normal && sp != Exit_Secret && sp != Teleport_NewMap && sp != Teleport_EndGame)
+			{
+				back.lines[i].special = 0;
+			}
+		}
+
+		double movAmt = 0;
+		back.Flags |= Sector.SECF_SILENTMOVE;
+		switch (data.LinePart)
+		{
+			case Side.Top:
+			{
+				if (back.ceilingdata)
+				{
+					back.ceilingdata.Destroy();
+				}
+
+				double lowestH = back.FindHighestCeilingSurrounding();
+				double thisH = back.CenterCeiling();
+				double z = max(thisH, min(data.HitLocation.Z + random(24, 40), lowestH + frandom(2, 6)));
+				movAmt = ThisH - z;
+
+				level.CreateCeiling(back, Ceiling.CeilRaiseByValue, null, 65536.0, 0, -(movAmt));
+				back.ceilingdata.Tick();
+				break;
+			}
+			case Side.Bottom:
+			{
+				if (back.floordata)
+				{
+					back.floordata.Destroy();
+				}
+
+				double lowestH = back.FindLowestFloorSurrounding();
+				double thisH = back.CenterFloor();
+				double z = min(thisH, max(data.HitLocation.Z - random(24, 40), lowestH - frandom(2, 6)));
+				movAmt = ThisH - z;
+
+				level.CreateFloor(back, Floor.FloorLowerByValue, null, 65536.0, movAmt);
+				back.floordata.Tick();
+				break;
+			}
+			
+		}
+		/*
+		Actor a = Spawn('DSDummyActor', (back.centerspot, (back.CenterFloor() + back.CenterCeiling()) / 2));
+		int count = min(int(breakSize), 400);
+		if (!(flags & BSF_NODAMAGE))
+		{
+			a.A_Explode(200, int(DSCONST_ONEMETER * 3));
+		}
+		DSQuaker.Create(a.Pos, 0, 0, 6, 40, DSCONST_ONEMETER * 30, DSCONST_ONEMETER * 20);
+		SpawnBreakEffect(a.Pos, (breakSize / (lineCount ** 0.5), movAmt), smokeCount: count / 4, debrisCount: count);
+		*/
+		bool bottom = data.LinePart == Side.Bottom;
+		back.SetTexture(bottom ? Sector.Floor : Sector.Ceiling, flatTex, true);
+		for (int i = 0; i < back.lines.Size(); ++i)
+		{
+			int sp = back.lines[i].special;
+			if (sp != Exit_Normal && sp != Exit_Secret && sp != Teleport_NewMap && sp != Teleport_EndGame)
+			{
+				back.lines[i].special = 0;
+			}
+
+			for (int j = 0; j < 2; ++j)
+			{
+				Side sd = back.lines[i].sidedef[j];
+				if (sd)
+				{
+					int lpart = bottom ? Side.Bottom : Side.Top;
+					if (!sd.GetTexture(lpart))
+					{
+						sd.SetTexture(lpart, wallTex);
+					}
+
+					if (bottom)
+					{
+						sd.SetTextureYOffset(Side.Bottom, sd.GetTextureYOffset(Side.Bottom) + movAmt);
+					}
+					else
+					{
+						sd.SetTextureYOffset(Side.Mid, sd.GetTextureYOffset(Side.Mid) + movAmt);
+						sd.SetTextureYOffset(Side.Top, sd.GetTextureYOffset(Side.Top) + movAmt);
+					}
+				}
+			}
+		}
+
+		return true;
+	}
+
+	action void Detach()
+	{
+		A_StartSound("BreachingCharge/Fall");
+	}
+
+	protected void Detonate()
+	{
+		BreakSector(self, 1200);
+		A_Explode(1000, int(12 * 6), XF_HURTSOURCE, true);
+		Spawn('COD_Explosion', pos);
+		A_AlertMonsters();
+		Destroy();
+	}
+
+	Default
+	{
+		Speed 40;
+		DamageType "Assblast";
+		+PIERCEARMOR
+		-NOGRAVITY;
+		Gravity 2.0;
+	}
+
+	States
+	{
+		Spawn:
+			C4XA A 35
+			{
+				if(self.vel.length() < 0.2)
+				{
+					A_Stop();
+					bNOGRAVITY = true;
+				}
+			}
+			TNT1 A 0 A_JumpIfInventory("BlowUpToken", 1, "BlowUp", AAPTR_TARGET);
+			Loop;
+		BlowUp:
+			TNT1 A 1
+			{
+				Detonate();
+			}
+			Stop;
+	}
+}
+
+class SectorBreakDebris : Actor
+{
+	action void OnBounceFloor()
+	{
+		Roll += 45;
+	}
+
+	Default
+	{
+		BounceFactor 0.35;
+		Scale 0.85;
+	}
+
+	States
+	{
+		Spawn:
+			SBDB A 0 NoDelay
+			{
+				frame = random(0, 9);
+				Roll += random(-40, 40);
+			}
+			SBDB # 1 A_SetRoll(Roll + 20, SPF_INTERPOLATE);
+			Wait;
+	}
+}

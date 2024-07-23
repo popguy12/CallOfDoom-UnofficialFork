@@ -1,0 +1,50 @@
+class COD_Core play
+{	
+	// [Ace] A_Face fucking SUCKS!
+	static Vector2 TurnToFace(Actor turning, Vector2 targetAngles, Vector2 speed)
+	{
+		turning.Angle = Actor.Normalize180(turning.Angle);
+
+		double aDelta = Actor.DeltaAngle(turning.Angle, targetAngles.X);
+		double pDelta = Actor.DeltaAngle(turning.Pitch, targetAngles.Y);
+
+		double maxAngleChange = min(speed.X, abs(aDelta));
+		double maxPitchChange = min(speed.Y, abs(pDelta));
+
+		if (aDelta >= maxAngleChange) { turning.Angle += maxAngleChange; }
+		if (aDelta <= -maxAngleChange) { turning.Angle -= maxAngleChange; }
+		if (pDelta >= maxPitchChange) { turning.Pitch += maxPitchChange; }
+		if (pDelta <= -maxPitchChange) { turning.Pitch -= maxPitchChange; }
+
+		return (Actor.AbsAngle(turning.Angle, targetAngles.X), Actor.AbsAngle(turning.Pitch, targetAngles.Y));
+	}
+	
+	static clearscope Sector GetOppositeSector(Sector curSec, Line targetLine)
+	{
+		if (!curSec || !targetLine || targetLine.frontsector && !targetLine.backsector)
+		{
+			return null;
+		}
+
+		return targetLine.frontsector == curSec ? targetLine.backsector : targetLine.frontsector;
+	}
+	
+	static double, double, int GetSectorArea(Sector s, int which = 0)
+	{
+		double secSize = 0;
+		double height = 0;
+		for (int i = 0; i < s.lines.Size(); ++i)
+		{
+			Line ln = s.lines[i];
+			secSize += ln.delta.Length();
+		}
+
+		switch (which)
+		{
+			case Side.Top: height += abs(s.CenterCeiling() - s.FindHighestCeilingSurrounding()); break;
+			case Side.Bottom: height += s.CenterFloor() - s.FindLowestFloorSurrounding(); break;
+		}
+
+		return secSize, height, s.lines.Size();
+	}
+}
