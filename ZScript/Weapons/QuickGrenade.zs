@@ -133,3 +133,139 @@ Class BangAmmo : Ammo
 			Stop;
 	}
 }
+
+Class ThrownGrenade : Actor
+{
+	Default
+	{
+		Radius 2;
+		Height 4;
+		Speed 30;
+		Gravity 1.0;
+		Scale 0.2;
+		BounceType "Hexen";
+		BounceCount 5;
+		Projectile
+		+BOUNCEONACTORS;
+		+BOUNCEONWALLS;
+		-NOGRAVITY;
+		-EXTREMEDEATH;
+		-EXPLODEONWATER;
+		-FLOORCLIP;
+		+DOOMBOUNCE;
+		+ROLLSPRITE;
+		+ROLLCENTER;
+		BounceFactor 0.6;
+		WallBounceFactor 0.8;
+		SeeSound "grenade/tumble";
+		BounceSound "grenade/tumble";
+		WallBounceSound "grenade/tumble";
+		DeathSound "none";
+		Obituary "%o ate %k grenade.";
+	}
+	
+	int Timer;
+	
+	override void PostBeginPlay()
+	{
+		Timer = 0;
+		Super.PostBeginPlay();
+	}
+	
+	override void Tick()
+	{
+		Timer++;
+		Super.Tick();
+	}
+	
+	States
+	{
+		Death:
+		XDeath:
+		Spawn:
+			TNT1 A 0;
+			FRGX ABCDEFGH 2
+			{
+				A_SetRoll(roll-10, SPF_INTERPOLATE);
+				if(Timer >= 175)
+				{
+					setstatelabel("Explode");
+				}
+			}
+			Loop;
+		Explode:
+			TNT1 A 0
+			{
+				A_Explode(1000, 1024, XF_HURTSOURCE, false);
+				Spawn('COD_Explosion', pos);
+				A_AlertMonsters(4096);
+				A_StartSound("effect/explosion", 0, CHANF_OVERLAP);
+				for(int i=4;i>0;i--)
+				{
+					Spawn("COD_ExplosionSmoke", Level.Vec3Offset(pos, (frandom(10,-10),frandom(10,-10),frandom(10,-10))));
+				}
+			}
+			Stop;
+	}
+}
+
+Class ThrownBang : ThrownGrenade
+{
+	States
+	{
+		Death:
+		XDeath:
+		Spawn:
+			TNT1 A 0;
+			GRNX ABCDEFGHIJKLMN 2
+			{
+				if(Timer >= 105)
+				{
+					setstatelabel("Explode");
+				}
+			}
+			Loop;
+		Explode:
+			TNT1 A 0
+			{
+				A_RadiusGive("Stunner", 1024, RGF_MONSTERS);
+				//A_Explode(1000, int(24 * 6), XF_HURTSOURCE, true);
+				Spawn('COD_Explosion', pos);
+				A_AlertMonsters(512);
+				A_StartSound("effect/explosion", 0, CHANF_OVERLAP);
+				for(int i=4;i>0;i--)
+				{
+					Spawn("COD_ExplosionSmoke", Level.Vec3Offset(pos, (frandom(10,-10),frandom(10,-10),frandom(10,-10))));
+				}
+			}
+			Stop;
+	}
+}
+
+Class Stunner : Powerup
+{
+	Default
+	{
+		Powerup.Duration 350;
+	}
+	
+	int Ticker;
+	
+	Override Void InitEffect()
+	{
+		Owner.SetStateLabel("Pain");
+		Ticker = 0;
+	}
+	Override Void DoEffect()
+	{
+		If(Owner.Health>0)
+		{
+			Ticker++;
+			if(Ticker >= 4)
+			{
+				Owner.SetStateLabel("Pain");
+				Ticker = 0;
+			}
+		}
+	}
+}

@@ -105,7 +105,7 @@ class CODWeapon : Weapon
 			FRGA PQR 2;
 			TNT1 A 0
 			{
-				//A_FireCustomMissile("FragGrenade", 0, 0, 0, 16);
+				A_FireCustomMissile("ThrownGrenade");
 				A_TakeInventory("ThrowGrenade", 1);
 				A_TakeInventory("GrenadeAmmo", 1);
 			}
@@ -126,7 +126,7 @@ class CODWeapon : Weapon
 			FRGA PQR 2;
 			TNT1 A 0
 			{
-				//A_FireCustomMissile("FragGrenade", 0, 0, 0, 16);
+				A_FireCustomMissile("ThrownBang");
 				A_TakeInventory("ThrowBang", 1);
 				A_TakeInventory("BangAmmo", 1);
 			}

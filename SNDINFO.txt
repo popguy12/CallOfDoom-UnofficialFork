@@ -153,6 +153,18 @@ grenade/throw	"Sounds/Weapons/Items/FRAGTHRO"
 flash/pinpull	"Sounds/Weapons/Items/FLSHPPUL"
 flash/throw	"Sounds/Weapons/Items/FLSHTHRO"
 
+$RANDOM grenade/tumble
+{
+	grenade/tumble1
+	grenade/tumble2
+	grenade/tumble3
+	grenade/tumble4
+}
+grenade/tumble1	"Sounds/Weapons/Items/GRENLOB1"
+grenade/tumble2	"Sounds/Weapons/Items/GRENLOB2"
+grenade/tumble3	"Sounds/Weapons/Items/GRENLOB3"
+grenade/tumble4	"Sounds/Weapons/Items/GRENLOB4"
+
 //Makarov PM
 pm/fire1	"Sounds/Weapons/Slot1/Makarov/MPMFIRE.wav"
 pm/clipout	"Sounds/Weapons/Slot1/Makarov/MPMREL1.wav"

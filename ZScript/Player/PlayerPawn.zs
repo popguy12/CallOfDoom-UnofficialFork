@@ -36,6 +36,7 @@ class CODPlayer : DoomPlayer
 		
 		Player.StartItem "COD_Medkit", 1;
 		Player.StartItem "COD_Medkit_Ammo", 50;
+		Player.StartItem "COD_C4Thrower", 1;
 		
 		Player.StartItem "ThrowableGrenade", 1;
 		Player.StartItem "GrenadeAmmo", 2;
