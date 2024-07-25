@@ -8,7 +8,7 @@ class COD_C4Charge : Actor
 	}
 
 	// [Ace] Kinda crusty cause the initial implementation wasn't too bright.
-	static void SpawnBreakEffect(Vector3 pos, Vector2 size, class<COD_Explosion> expCls = 'COD_Explosion', class<COD_GunFireSmoke> smokeCls = 'COD_GunFireSmoke', int smokeCount = 50, class<SectorBreakDebris> debrisCls = 'SectorBreakDebris', int debrisCount = 200)
+	static void SpawnBreakEffect(Vector3 pos, Vector2 size, class<COD_Explosion> expCls = 'COD_Explosion', class<COD_Smoke> smokeCls = 'COD_ExplosionSmoke', int smokeCount = 50, class<SectorBreakDebris> debrisCls = 'SectorBreakDebris', int debrisCount = 200)
 	{
 		if (expCls)
 		{
@@ -145,16 +145,16 @@ class COD_C4Charge : Actor
 			}
 			
 		}
-		/*
-		Actor a = Spawn('DSDummyActor', (back.centerspot, (back.CenterFloor() + back.CenterCeiling()) / 2));
-		int count = min(int(breakSize), 400);
-		if (!(flags & BSF_NODAMAGE))
-		{
-			a.A_Explode(200, int(DSCONST_ONEMETER * 3));
-		}
-		DSQuaker.Create(a.Pos, 0, 0, 6, 40, DSCONST_ONEMETER * 30, DSCONST_ONEMETER * 20);
-		SpawnBreakEffect(a.Pos, (breakSize / (lineCount ** 0.5), movAmt), smokeCount: count / 4, debrisCount: count);
-		*/
+		
+		Actor a = Spawn('COD_DummyActor', (back.centerspot, (back.CenterFloor() + back.CenterCeiling()) / 2));
+		//int count = min(int(breakSize), 400);
+		//if (!(flags & BSF_NODAMAGE))
+		//{
+		//	a.A_Explode(200, int(DSCONST_ONEMETER * 3));
+		//}
+		//DSQuaker.Create(a.Pos, 0, 0, 6, 40, DSCONST_ONEMETER * 30, DSCONST_ONEMETER * 20);
+		SpawnBreakEffect(a.Pos, (breakSize / (lineCount ** 0.5), movAmt), smokeCount: 128, debrisCount: 64);
+		
 		bool bottom = data.LinePart == Side.Bottom;
 		back.SetTexture(bottom ? Sector.Floor : Sector.Ceiling, flatTex, true);
 		for (int i = 0; i < back.lines.Size(); ++i)
@@ -199,6 +199,10 @@ class COD_C4Charge : Actor
 		Spawn('COD_Explosion', pos);
 		A_AlertMonsters();
 		Destroy();
+		for(int i=32;i>0;i--)
+		{
+			Spawn("COD_ExplosionSmoke", (frandom(5,-5),frandom(5,-5),frandom(5,-5)));
+		}
 	}
 	
 	
@@ -285,6 +289,7 @@ class COD_C4Charge : Actor
 		BlowUp:
 			TNT1 A 1
 			{
+				A_StartSound("effect/explosion", 0, CHANF_OVERLAP);
 				Detonate();
 			}
 			Stop;

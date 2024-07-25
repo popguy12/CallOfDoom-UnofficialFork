@@ -1,5 +1,7 @@
 version "4.5.0"
 
+class COD_DummyActor : Actor{}
+
 #include "ZScript/CoDCore.zsc"
 
 #include "ZScript/Player/PlayerPawn.zs"

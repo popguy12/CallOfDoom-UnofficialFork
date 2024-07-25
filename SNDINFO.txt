@@ -33,6 +33,18 @@ effect/ricochet13	"Sounds/Effects/Ricochet/BULRIC13.wav"
 effect/ricochet14	"Sounds/Effects/Ricochet/BULRIC14.wav"
 effect/ricochet15	"Sounds/Effects/Ricochet/BULRIC15.wav"
 
+$RANDOM effect/explosion
+{
+	effect/explosion1
+	effect/explosion2
+	effect/explosion3
+	effect/explosion4
+}
+effect/explosion1	"Sounds/Effects/EXPLO01"
+effect/explosion2	"Sounds/Effects/EXPLO02"
+effect/explosion3	"Sounds/Effects/EXPLO03"
+effect/explosion4	"Sounds/Effects/EXPLO04"
+
 //NV
 items/NV/Sizzle	"Sounds/NV/sizzle.mp3"
 items/NV/PutOn	"Sounds/NV/NVPutOn.wav"
