@@ -33,6 +33,7 @@ class COD_C4Thrower : CODWeapon
 	{
 	
 	Deselect:
+		TNT1 A 0 A_StartSound("uni/ClothFoleyM", 0);
 		FRGF GFEDCBA 1;
 		PSTG A 0 A_Lower(25);
 		Wait;
@@ -52,6 +53,7 @@ class COD_C4Thrower : CODWeapon
 		Wait;
 	Ready:
 		TNT1 A 0;
+		TNT1 A 0 A_StartSound("C4/wep/up", 0);
 		FRGF ABCDEFG 1;
 	WeaponReady:
 		FRGF F 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
@@ -64,6 +66,7 @@ class COD_C4Thrower : CODWeapon
 	Fire:
 		FRGF GHIJ 1;
 		TNT1 A 0 A_GiveInventory("BlowUpToken", 1);
+		TNT1 A 0 A_StartSound("C4/wep/click", 0);
 		FRGF JIHG 1;
 		TNT1 A 0 A_TakeInventory("BlowUpToken", 1);
 		Goto WeaponReady;
@@ -71,7 +74,8 @@ class COD_C4Thrower : CODWeapon
 		TNT1 A 0;
 		TNT1 A 0 A_JumpIf(CountInv("COD_C4Ammo") < 1, "DryFire");
 		FRGE ABC 1;
-		TNT1 A 0 A_SpawnProjectile("COD_C4Charge", 32, 0, 0, CMF_OFFSETPITCH, -6);
+		TNT1 A 0 A_StartSound("C4/wep/throw", 0);
+		TNT1 A 0 A_FireCustomMissile("COD_C4Charge");
 		FRGE DEFGHI 1;
 		Goto WeaponReady;
 	

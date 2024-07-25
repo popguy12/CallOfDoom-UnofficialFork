@@ -47,4 +47,9 @@ class COD_Core play
 
 		return secSize, height, s.lines.Size();
 	}
+	
+	static clearscope double GetPerpendicularWallAngle(Line ln, int side)
+	{
+		return VectorAngle(ln.delta.X, ln.delta.Y) - (side == Line.Front ? 90 : -90); // [Ace] Always get the angle facing away from the wall.
+	}
 }

@@ -126,6 +126,10 @@ $RANDOM medkit/use
 medkit/use1	"Sounds/Weapons/Items/Medkit/MKITUse1.wav"
 medkit/use2	"Sounds/Weapons/Items/Medkit/MKITUse2.wav"
 
+c4/wep/up	"Sounds/Weapons/Items/C4/C4PICUP"
+c4/wep/throw	"Sounds/Weapons/Items/C4/C4THROW"
+c4/charge/land	"Sounds/Weapons/Items/C4/C4Land"
+c4/wep/click	"Sounds/Weapons/Items/C4/C4CLICK"
 
 throwable/empty	"Sounds/Weapons/Items/metal_click.wav"
 
