@@ -153,7 +153,7 @@ class COD_C4Charge : Actor
 		//	a.A_Explode(200, int(DSCONST_ONEMETER * 3));
 		//}
 		//DSQuaker.Create(a.Pos, 0, 0, 6, 40, DSCONST_ONEMETER * 30, DSCONST_ONEMETER * 20);
-		SpawnBreakEffect(a.Pos, (breakSize / (lineCount ** 0.5), movAmt), smokeCount: 128, debrisCount: 64);
+		SpawnBreakEffect(a.Pos, (breakSize / (lineCount ** 0.5), movAmt), smokeCount: 64, debrisCount: 16);
 		
 		bool bottom = data.LinePart == Side.Bottom;
 		back.SetTexture(bottom ? Sector.Floor : Sector.Ceiling, flatTex, true);
@@ -199,9 +199,9 @@ class COD_C4Charge : Actor
 		Spawn('COD_Explosion', pos);
 		A_AlertMonsters();
 		Destroy();
-		for(int i=32;i>0;i--)
+		for(int i=4;i>0;i--)
 		{
-			Spawn("COD_ExplosionSmoke", (frandom(5,-5),frandom(5,-5),frandom(5,-5)));
+			Spawn("COD_ExplosionSmoke", Level.Vec3Offset(pos, (frandom(10,-10),frandom(10,-10),frandom(10,-10))));
 		}
 	}
 	
@@ -253,7 +253,7 @@ class COD_C4Charge : Actor
 			TNT1 A 0 A_CheckCeiling("SpawnGround");
 			TNT1 A 0
 			{
-				if(velx < 1 && vely < 1)
+				if(velx < 1 && vely < 1 && velx > -1 && vely > -1)
 				{
 					setstatelabel("SpawnWall");
 				}
