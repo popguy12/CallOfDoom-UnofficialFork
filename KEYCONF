@@ -7,3 +7,7 @@ defaultbind G +ThrowGrenade
 addmenukey "Throw 9-Bang" ThrowBang
 alias ThrowBang "use ThrowableBang"
 defaultbind H +ThrowBang
+
+addmenukey "Holster Gun" Holster
+alias Holster "use HolsterYourShitPrivate"
+defaultbind H +Holster

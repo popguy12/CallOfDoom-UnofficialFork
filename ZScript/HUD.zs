@@ -1,4 +1,4 @@
-Class StatusBarMod : BaseStatusBar
+Class COD_HUD : BaseStatusBar
 {
 	/*
 	HUDFont hfntS;

@@ -25,6 +25,8 @@ class COD_M1897 : CODWeapon
 		Inventory.PickupSound "weapons/pistol/pickup";
 		+WEAPON.NOALERT;
 		+WEAPON.AMMO_OPTIONAL;
+		
+		CODWeapon.InfoGraphics "ISM1897", "ICM1897N", "ICM1897U", "WLM1897";
 	}
 	
 	action void FireWeapon()

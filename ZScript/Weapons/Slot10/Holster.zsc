@@ -1,0 +1,78 @@
+class COD_Holster : CODWeapon
+{
+ 	Default
+	{		
+		Weapon.SlotNumber 0;
+		
+		Obituary "$OB_MPPISTOL";
+		Inventory.Pickupmessage "Holstered Gun";
+		Tag "Hands";
+		Scale 0.16;
+		Inventory.PickupSound "weapons/pistol/pickup";
+		+WEAPON.NOALERT;
+		+WEAPON.AMMO_OPTIONAL;
+		+WEAPON.NOAUTOFIRE;
+		+INVENTORY.UNDROPPABLE;
+		
+		CODWeapon.InfoGraphics "ISMEDI", "ICUSSWN", "ICUSSWU", "WLMEDI";
+	}
+	
+	action void FireWeapon()
+	{
+	}
+	
+	States
+	{
+	
+	Deselect:
+		TNT1 A 0 A_TakeInventory("HolsterToken", 1);
+		FRGA PQR 1;
+		PSTG A 0 A_Lower(25);
+		Wait;
+	User4:
+		TNT1 A 0 A_StartSound("uni/ClothFoleyS", 0, CHANF_OVERLAP, 1);
+		FRGA PQR 1;
+		Goto NVToggle;
+	User3:
+		TNT1 A 0;
+		Goto KnifeAttack;
+	Select:
+		TNT1 A 0;
+		TNT1 A 0 A_GiveInventory("HolsterToken", 1);
+		TNT1 A 0 A_Raise(25);
+		Wait;
+	Ready:
+		TNT1 A 0;
+		TNT1 A 0 A_StartSound("uni/ClothFoleyS", 0, CHANF_OVERLAP, 1);
+		FRGA RQP 1;
+	WeaponReady:
+		FRGA P 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
+		TNT1 A 0 A_JumpIfInventory("ThrowGrenade", 1, "FragGrenade");
+		TNT1 A 0 A_JumpIfInventory("ThrowBang", 1, "StunGrenade");
+		Loop;
+	Fire:
+		TNT1 A 0;
+		Goto User3;
+	AltFire:
+		TNT1 A 0;
+		Goto DryFire;
+	
+	Reload:
+	DryFire:
+		FRGA P 1;
+		Goto WeaponReady;
+	
+ 	Spawn:
+		MDBG B -1;
+		Stop;
+	
+	}
+}
+
+Class HolsterToken : Inventory
+{
+	Default
+	{
+		Inventory.MaxAmount 1;
+	}
+}

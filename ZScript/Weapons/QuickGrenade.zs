@@ -196,7 +196,7 @@ Class ThrownGrenade : Actor
 		Explode:
 			TNT1 A 0
 			{
-				A_Explode(1000, 1024, XF_HURTSOURCE, false);
+				A_Explode(300, 256, XF_HURTSOURCE, false);
 				Spawn('COD_Explosion', pos);
 				A_AlertMonsters(4096);
 				A_StartSound("effect/explosion", 0, CHANF_OVERLAP);
@@ -228,7 +228,7 @@ Class ThrownBang : ThrownGrenade
 		Explode:
 			TNT1 A 0
 			{
-				A_RadiusGive("Stunner", 1024, RGF_MONSTERS);
+				A_RadiusGive("Stunner", 256, RGF_MONSTERS | RGF_PLAYERS);
 				//A_Explode(1000, int(24 * 6), XF_HURTSOURCE, true);
 				Spawn('COD_Explosion', pos);
 				A_AlertMonsters(512);
@@ -250,22 +250,73 @@ Class Stunner : Powerup
 	}
 	
 	int Ticker;
+	double normspeed;
 	
 	Override Void InitEffect()
 	{
 		Owner.SetStateLabel("Pain");
+		normspeed = Owner.Speed;
+		Owner.Speed = 2;
 		Ticker = 0;
+		Super.InitEffect();
 	}
 	Override Void DoEffect()
 	{
 		If(Owner.Health>0)
 		{
 			Ticker++;
-			if(Ticker >= 4)
+			if(Ticker >= random(4,12))
 			{
 				Owner.SetStateLabel("Pain");
 				Ticker = 0;
 			}
 		}
+		Super.DoEffect();
+	}
+	override void EndEffect()
+	{
+		Owner.Speed = normspeed;
+		Owner.A_ClearTarget();
+		Super.EndEffect();
+	}
+}
+
+Class HolsterYourShitPrivate : CustomInventory
+{
+	int CooldownTimer;
+	
+	override void DoEffect()
+	{
+		super.DoEffect();
+		if (CooldownTimer < 19)
+		{
+			CooldownTimer++;
+		}
+		if (CooldownTimer == 19)
+		{
+			CooldownTimer = 20;
+		}
+	}
+	
+	Default
+	{
+		Inventory.Amount 1;
+		Inventory.MaxAmount 1;
+		+INVENTORY.UNDROPPABLE;
+	}
+	
+	States 
+	{
+		Use:
+			TNT1 A 0 
+			{
+				if (invoker.CooldownTimer >= 20)
+				{
+					invoker.CooldownTimer = invoker.CooldownTimer - 20;
+					invoker.Owner.A_SelectWeapon("COD_Holster");
+				}
+			}
+			TNT1 A 20;
+			fail;
 	}
 }

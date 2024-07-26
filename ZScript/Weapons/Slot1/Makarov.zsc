@@ -26,6 +26,8 @@ class COD_Makarov : CODWeapon
 		+WEAPON.NOALERT;
 		+WEAPON.AMMO_OPTIONAL;
 		+WEAPON.NOAUTOFIRE;
+		
+		CODWeapon.InfoGraphics "WLLUGER", "ICLUGERN", "ICLUGERU", "WLLUGER";
 	}
 	
 	action void FireWeapon()

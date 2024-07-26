@@ -25,6 +25,8 @@ class COD_SKS : CODWeapon
 		Inventory.PickupSound "weapons/pistol/pickup";
 		+WEAPON.NOALERT;
 		+WEAPON.AMMO_OPTIONAL;
+		
+		CODWeapon.InfoGraphics "ISSKS", "ICSKSN", "ICSKSU", "WLSKS";
 	}
 	
 	action void FireWeapon()

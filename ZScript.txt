@@ -42,3 +42,4 @@ class COD_DummyActor : Actor{}
 
 #include "ZScript/Weapons/Slot10/Medkit.zsc"
 #include "ZScript/Weapons/Slot10/C4.zsc"
+#include "ZScript/Weapons/Slot10/Holster.zsc"

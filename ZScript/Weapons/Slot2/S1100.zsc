@@ -26,6 +26,8 @@ class COD_S1100CB : CODWeapon
 		+WEAPON.NOALERT;
 		+WEAPON.AMMO_OPTIONAL;
 		-WEAPON.NOAUTOFIRE;
+		
+		CODWeapon.InfoGraphics "ISMP34", "ICM3GN", "ICM3GU", "WLM3G";
 	}
 	
 	action void FireWeapon()

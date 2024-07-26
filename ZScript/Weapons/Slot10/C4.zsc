@@ -2,7 +2,7 @@ class COD_C4Thrower : CODWeapon
 {
  	Default
 	{
-		Weapon.AmmoType "COD_Medkit_Ammo";
+		Weapon.AmmoType "COD_C4Ammo";
 		Weapon.AmmoUse 0;
 		Weapon.AmmoGive 0;
 		
@@ -23,6 +23,9 @@ class COD_C4Thrower : CODWeapon
 		+WEAPON.NOALERT;
 		+WEAPON.AMMO_OPTIONAL;
 		+WEAPON.NOAUTOFIRE;
+		+INVENTORY.UNDROPPABLE;
+		
+		CODWeapon.InfoGraphics "ISC4", "ICUSSWN", "ICUSSWU", "WLC4";
 	}
 	
 	action void FireWeapon()

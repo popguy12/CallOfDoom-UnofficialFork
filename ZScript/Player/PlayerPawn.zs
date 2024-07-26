@@ -37,11 +37,14 @@ class CODPlayer : DoomPlayer
 		Player.StartItem "COD_Medkit", 1;
 		Player.StartItem "COD_Medkit_Ammo", 50;
 		Player.StartItem "COD_C4Thrower", 1;
+		Player.StartItem "COD_Holster", 1;
 		
 		Player.StartItem "ThrowableGrenade", 1;
 		Player.StartItem "GrenadeAmmo", 2;
 		Player.StartItem "ThrowableBang", 1;
 		Player.StartItem "BangAmmo", 2;
+		
+		Player.StartItem "HolsterYourShitPrivate", 1;
 		
 		Player.AttackZOffset 16;
 		Player.ViewBobSpeed 15;
@@ -53,6 +56,7 @@ class CODPlayer : DoomPlayer
 	{
 		Spawn:
 			TNT1 A 0 A_JumpIfInventory("AimingToken", 1, "Spawn2");
+			TNT1 A 0 A_Overlay(-50, "StunnerCheck", true);
 			RANG A 10;
 			Loop;
 		Spawn2:
@@ -90,6 +94,22 @@ class CODPlayer : DoomPlayer
 			}
 			NVOV A 35;
 			Loop;
+		StunnerCheck:
+			TNT1 A 0;
+			TNT1 A 1 A_JumpIfInventory("Stunner", 1, "StunBangMeFuckAss");
+			Loop;
+		StunBangMeFuckAss:
+			TNT1 A 0;
+			TNT1 A 0 A_StartSound("CODPlayer/Flashbanged", 0, CHANF_OVERLAP);
+			TNT1 A 3 A_SetBlend("99 99 99", 0.0, 3, "99 99 99", 1.0);
+			TNT1 A 0 A_SetBlend("99 99 99", 1.0, 325, "99 99 99", 0.0);
+			TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 5
+			{
+				A_SetPitch(pitch+frandom(-1,1), SPF_INTERPOLATE);
+				A_SetAngle(angle+frandom(-1,1), SPF_INTERPOLATE);
+			}
+			TNT1 A 20;
+			Goto StunnerCheck;
 	}
 }
 
@@ -148,8 +168,23 @@ class Z_NashMove : CustomInventory
 				// bump up the player's speed to compensate for the deceleration
 				// TO DO: math here is shit and wrong, please fix
 				double s = 0.7 + (1.1 - DECEL_MULT); //1.0
-				Owner.A_SetSpeed(s * 2);
-
+				
+				//[Pop] Handle movement boosts here. IE Stims, holsters gun, etc.
+				if(Owner.CountInv("HolsterToken"))
+				{
+					Owner.A_SetSpeed(s * 3);
+				}
+				//[Pop] Handle movement reductions here. IE Stuns or heavy damage.
+				if(Owner.CountInv("Stunner"))
+				{
+					Owner.A_SetSpeed(s * 1);
+				}
+				//[Pop] TODO, implement dynamic adjustments to this based on held weapon.
+				else
+				{
+					Owner.A_SetSpeed(s * 2);
+				}
+				
 				// decelerate the player, if not in pain
 				if (!bIsInPain())
 				{

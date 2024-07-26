@@ -52,3 +52,5 @@ $playersound CODPlayer male *grunt	IGIOOF
 $playeralias CODPlayer male *revive CODPlayer/Resurrect
 $playeralias CODPlayer male *usefail	CODPlayer/UseFail
 $playersound CODPlayer male *jump	IGIOOF
+
+CODPlayer/Flashbanged	"Sounds/Player/PlayerFlashed.mp3"

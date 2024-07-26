@@ -25,6 +25,8 @@ class COD_MosinNagant : CODWeapon
 		Inventory.PickupSound "weapons/pistol/pickup";
 		+WEAPON.NOALERT;
 		+WEAPON.AMMO_OPTIONAL;
+		
+		CODWeapon.InfoGraphics "ISMOSIN", "ICMOSINN", "ICMOSINU", "WLMOSIN";
 	}
 	
 	action void FireWeapon()
