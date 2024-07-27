@@ -169,35 +169,28 @@ class Z_NashMove : CustomInventory
 				// TO DO: math here is shit and wrong, please fix
 				double s = 0.7 + (1.1 - DECEL_MULT); //1.0
 				
-				//[Pop] Handle movement boosts here. IE Stims, holsters gun, etc.
-				if(Owner.CountInv("HolsterToken"))
-				{
-					Owner.A_SetSpeed(s * 3);
-				}
+				s *= 2;
+				
 				//[Pop] Handle movement reductions here. IE Stuns or heavy damage.
 				if(Owner.CountInv("Stunner"))
 				{
-					Owner.A_SetSpeed(s * 1);
+					Owner.A_SetSpeed(s * 0.4);
 				}
 				//[Pop] TODO, implement dynamic adjustments to this based on held weapon.
 				else
 				{
+					Owner.A_SetSpeed(s * 1);
+				}
+				//[Pop] Handle movement boosts here. IE Stims, holsters gun, etc.
+				if(Owner.CountInv("HolsterToken"))
+				{
 					Owner.A_SetSpeed(s * 2);
 				}
 				
-				// decelerate the player, if not in pain
-				if (!bIsInPain())
-				{
-					Owner.vel.x *= DECEL_MULT;
-					Owner.vel.y *= DECEL_MULT;
-				}
-				else
-				{
-					Owner.vel.x *= DECEL_MULT;
-					Owner.vel.y *= DECEL_MULT;
-				}
+				Owner.vel.x *= DECEL_MULT;
+				Owner.vel.y *= DECEL_MULT;
 				// make the view bobbing match the player's movement
-				PlayerPawn(Owner).ViewBob = DECEL_MULT / 2;
+				PlayerPawn(Owner).ViewBob = Owner.vel.length() / 8;//DECEL_MULT / 2;
 			}
 		}
 

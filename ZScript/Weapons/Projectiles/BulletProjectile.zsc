@@ -27,14 +27,14 @@ class COD_Projectile : FastProjectile abstract
 		if (!bNOCRITICALS && (ang < 30 || ang > 150) && Pos.Z > victim.Pos.Z + victim.Height * 0.65)
 		{
 			//Console.Printf("Critical");
-			scaled_damage = scaled_damage * 1.1;
+			scaled_damage = scaled_damage * 1.25;
 			dmgtype = damagetype;
 			if (Pos.Z > victim.Pos.Z + victim.Height * 0.80)
 			{
 				//Console.Printf("Headshot");
 				dmgtype = "Head";
 				//A_StartSound("headshotmarker", CHAN_AUTO, CHAN_UI);
-				scaled_damage = scaled_damage * 1.25;
+				scaled_damage = scaled_damage * 1.5;
 			}
 			else
 			{
