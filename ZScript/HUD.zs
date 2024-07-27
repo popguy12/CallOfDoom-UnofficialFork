@@ -7,7 +7,7 @@ Class COD_HUD : BaseStatusBar
 	*/
     Override void Init()
     {
-        SetSize(0, 960, 540);
+        SetSize(0, 320, 240);
 		/*
 		hfntS = HUDFont.Create("INDEXFONT");
 		hfnt = HUDFont.Create(smallfont);
@@ -23,7 +23,7 @@ Class COD_HUD : BaseStatusBar
         BeginStatusBar(true);
 		
 		//dummy cut screenshot from cod for reference
-		DrawImage("HUDPIC", (480,270), DI_SCREEN_CENTER | DI_ITEM_CENTER, 1);
+		DrawImage("HUDPIC", (160,120), DI_SCREEN_CENTER | DI_ITEM_CENTER, 1);
 		
         DrawMainBar();
     }
@@ -31,7 +31,7 @@ Class COD_HUD : BaseStatusBar
 	//[Pop] this is the actual function that draws all the hud stuff
     void DrawMainBar()
     {
-		
+		DrawTexture(GetMugShot(5), (100, 100), DI_ITEM_OFFSETS);
     }
 	
 	//[Pop] This is a nice function to quickly grab the exact amount of an item only

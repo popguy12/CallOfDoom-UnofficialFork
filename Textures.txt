@@ -3,8 +3,8 @@
 
 Graphic "HUDPIC", 1920, 1080
 {
-	XScale 1.5
-	YScale 2.0
+	XScale 4.5
+	YScale 4.5
 	Offset 0, 0
 	Patch "HUDREF", 0, 0
 }

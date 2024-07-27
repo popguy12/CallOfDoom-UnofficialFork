@@ -6,7 +6,7 @@ Gameinfo
 	AddEventHandlers = "COD_PlayerHandler"
 	DimColor = "Black"
 	DimAmount = 0.70
-	//StatusBarClass = "StatusBarMod"
+	StatusBarClass = "COD_HUD"
 }
 ClearSkills
 

@@ -171,20 +171,17 @@ class Z_NashMove : CustomInventory
 				
 				s *= 2;
 				
+				//[Pop] TODO, implement dynamic adjustments to this based on held weapon.
+				Owner.A_SetSpeed(s * 1);
+				//[Pop] Handle movement boosts here. IE Stims, holsters gun, etc.
+				if(Owner.CountInv("HolsterToken"))
+				{
+					Owner.A_SetSpeed(s * 1.5);
+				}
 				//[Pop] Handle movement reductions here. IE Stuns or heavy damage.
 				if(Owner.CountInv("Stunner"))
 				{
 					Owner.A_SetSpeed(s * 0.4);
-				}
-				//[Pop] TODO, implement dynamic adjustments to this based on held weapon.
-				else
-				{
-					Owner.A_SetSpeed(s * 1);
-				}
-				//[Pop] Handle movement boosts here. IE Stims, holsters gun, etc.
-				if(Owner.CountInv("HolsterToken"))
-				{
-					Owner.A_SetSpeed(s * 2);
 				}
 				
 				Owner.vel.x *= DECEL_MULT;
