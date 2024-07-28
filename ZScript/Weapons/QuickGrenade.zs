@@ -254,9 +254,12 @@ Class Stunner : Powerup
 	
 	Override Void InitEffect()
 	{
-		Owner.SetStateLabel("Pain");
-		normspeed = Owner.Speed;
-		Owner.Speed = 2;
+		if(owner)
+		{
+			Owner.SetStateLabel("Pain");
+			normspeed = Owner.Speed;
+			Owner.Speed = 2;
+		}
 		Ticker = 0;
 		Super.InitEffect();
 	}
@@ -267,7 +270,10 @@ Class Stunner : Powerup
 			Ticker++;
 			if(Ticker >= random(4,12))
 			{
-				Owner.SetStateLabel("Pain");
+				if(owner)
+				{
+					Owner.SetStateLabel("Pain");
+				}
 				Ticker = 0;
 			}
 		}
@@ -275,8 +281,11 @@ Class Stunner : Powerup
 	}
 	override void EndEffect()
 	{
-		Owner.Speed = normspeed;
-		Owner.A_ClearTarget();
+		if(owner)
+		{
+			Owner.Speed = normspeed;
+			Owner.A_ClearTarget();
+		}
 		Super.EndEffect();
 	}
 }

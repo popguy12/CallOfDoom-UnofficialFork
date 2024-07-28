@@ -54,3 +54,17 @@ $playeralias CODPlayer male *usefail	CODPlayer/UseFail
 $playersound CODPlayer male *jump	IGIOOF
 
 CODPlayer/Flashbanged	"Sounds/Player/PlayerFlashed.mp3"
+
+$RANDOM CODPlayer/GMBreath
+{
+	CODPlayer/GMBreath1
+	CODPlayer/GMBreath2
+	CODPlayer/GMBreath3
+	CODPlayer/GMBreath4
+	CODPlayer/GMBreath5
+}
+CODPlayer/GMBreath1	"Sounds/Player/GasMaskBreathing/Breath1.wav"
+CODPlayer/GMBreath2	"Sounds/Player/GasMaskBreathing/Breath2.wav"
+CODPlayer/GMBreath3	"Sounds/Player/GasMaskBreathing/Breath3.wav"
+CODPlayer/GMBreath4	"Sounds/Player/GasMaskBreathing/Breath4.wav"
+CODPlayer/GMBreath5	"Sounds/Player/GasMaskBreathing/Breath5.wav"

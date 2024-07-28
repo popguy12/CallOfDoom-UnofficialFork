@@ -1,0 +1,27 @@
+//Rad suit
+class COD_SuitGiver : PowerupGiver
+{
+	Default
+	{
+		Powerup.Type "COD_PowerIronFeet";
+		Powerup.Duration 0x7FFFFFFD;
+	}
+}
+
+class COD_PowerIronFeet : PowerIronFeet
+{
+	Default
+	{
+		Powerup.Duration 0x7FFFFFFD;
+		Powerup.Color "000000",0;
+	}
+
+	//fuck you leaky suit, go away
+	override void AbsorbDamage(int damage,name damageType,out int newdamage)
+	{
+		if((damagetype == 'Slime')||(damagetype == 'Drowning'))
+		{
+			newdamage = 0;
+		}
+	}
+}

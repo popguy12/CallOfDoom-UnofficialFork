@@ -33,6 +33,10 @@ class COD_Holster : CODWeapon
 		TNT1 A 0 A_StartSound("uni/ClothFoleyS", 0, CHANF_OVERLAP, 1);
 		FRGA PQR 1;
 		Goto NVToggle;
+	User2:
+		TNT1 A 0 A_StartSound("uni/ClothFoleyS", 0, CHANF_OVERLAP, 1);
+		FRGA PQR 1;
+		Goto RadToggle;
 	User3:
 		TNT1 A 0;
 		Goto KnifeAttack;
@@ -46,7 +50,7 @@ class COD_Holster : CODWeapon
 		TNT1 A 0 A_StartSound("uni/ClothFoleyS", 0, CHANF_OVERLAP, 1);
 		FRGA RQP 1;
 	WeaponReady:
-		FRGA P 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
+		FRGA P 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER2 | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
 		TNT1 A 0 A_JumpIfInventory("ThrowGrenade", 1, "FragGrenade");
 		TNT1 A 0 A_JumpIfInventory("ThrowBang", 1, "StunGrenade");
 		Loop;

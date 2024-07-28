@@ -53,6 +53,12 @@ items/NV/Warning	"Sounds/NV/NVWarning.wav"
 items/NV/TurnOff	"Sounds/NV/NVOff.wav"
 items/NV/TakeOff	"Sounds/NV/NVTakeOff.wav"
 
+//Gasmask
+items/GM/Equip	"Sounds/GasMask/MaskEquip.wav"
+items/GM/Engage	"Sounds/GasMask/MaskEngage.wav"
+items/GM/Break	"Sounds/GasMask/MaskBreak.wav"
+items/GM/Remove	"Sounds/GasMask/MaskRemove.wav"
+
 //Foley
 uni/magfol	"Sounds/Foley/MagFoley.ogg"
 uni/magfolbig	"Sounds/Foley/MagFoleyDrum.wav"

@@ -16,6 +16,7 @@ class COD_DummyActor : Actor{}
 #include "ZScript/Weapons/QuickGrenade.zs"
 
 #include "ZScript/Items/C4.zsc"
+#include "ZScript/Items/Powerups.zsc"
 
 #include "ZScript/Effects/Smoke.zs"
 #include "ZScript/Effects/Explosion.zsc"

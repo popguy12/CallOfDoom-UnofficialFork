@@ -84,6 +84,49 @@ class CODWeapon : Weapon
 			TNT1 A 0 A_Jump(256, "Ready");
 			Goto Ready;
 		
+		User2:
+			TNT1 A 0;
+			Goto RadToggle;
+		RadToggle:
+			TNT1 A 0 A_JumpIfInventory("RadToggleToken", 1, "RadOff");
+		RadON:
+			TNT1 A 0;
+			TNT1 A 0 A_SetCrosshair(0);
+			TNT1 A 1;
+			TNT1 A 0 A_StartSound("items/GM/Equip", 0, CHANF_OVERLAP, 1);
+			RADM ABCDEFGHIJKLMNO 2;
+			RADN A 2;
+			TNT1 A 0
+			{
+				if(CountInv("COD_RadAmount") >= 1)
+				{
+					A_GiveInventory("COD_PowerIronFeet", 2);
+					A_SetBlend("00 99 00", 1, 3, "99 99 99", 0.0);
+					A_StartSound("items/GM/Engage", 0, CHANF_OVERLAP, 1);
+				}
+				A_GiveInventory("RadToggleToken", 1);
+				A_Overlay(101, "RadView", false);
+				A_OverlayFlags(101, PSPF_ADDWEAPON, false);
+				A_OverlayFlags(101, PSPF_ADDBOB, false);
+			}
+			TNT1 A 0 A_Jump(256, "Ready");
+			Goto Ready;
+		RadOFF:
+			TNT1 A 0;
+			TNT1 A 0 A_TakeInventory("RadToggleToken", 1);
+			TNT1 A 0 A_SetCrosshair(0);
+			TNT1 A 0
+			{
+				A_TakeInventory("RadBreakSound", 1);
+				A_TakeInventory("COD_PowerIronFeet", 2);
+				A_StartSound("items/GM/Break", 0, CHANF_OVERLAP, 1);
+				A_ClearOverlays(101,101);
+			}
+			RADN A 2 A_StartSound("items/GM/Remove", 0, CHANF_OVERLAP, 1);
+			RADO ABCDEFGHIJKL 2;
+			TNT1 A 0 A_Jump(256, "Ready");
+			Goto Ready;
+		
 		User3:
 		KnifeAttack:
 			TNT1 A 0 A_StartSound("melee/knife/slash", 0, CHANF_OVERLAP, 1);
@@ -297,6 +340,36 @@ class AimingToken : Inventory
 	}
 }
 
+class COD_RadAmount : Inventory replaces Radsuit
+{
+	Default
+	{
+		Height 10;
+		Inventory.PickupMessage "Gasmask Filter";
+		Inventory.PickupSound "misc/radsuit_PickUp";
+		-BRIGHT;
+		-COUNTITEM;
+		Scale 0.025;
+		Inventory.Amount 60;
+		Inventory.MaxAmount 300;
+	}
+	
+	States
+	{
+		Spawn:
+			SUIT A -1;
+			stop;
+	}
+}
+
+class RadBreakSound : Inventory
+{
+	Default
+	{
+		Inventory.MaxAmount 1;
+	}
+}
+
 class ChamberMeToken : Inventory
 {
 	Default
@@ -306,6 +379,14 @@ class ChamberMeToken : Inventory
 }
 
 class NVToggleToken : Inventory
+{
+	Default
+	{
+		Inventory.MaxAmount 1;
+	}
+}
+
+class RadToggleToken : Inventory
 {
 	Default
 	{

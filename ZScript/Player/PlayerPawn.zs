@@ -13,7 +13,10 @@ class CODPlayer : DoomPlayer
 		{
 			A_Overlay(100, "NVView", false);
 		}
-		
+		if(CountInv("RadToggleToken"))
+		{
+			A_Overlay(101, "RadView", true);
+		}
 	}
 		
 	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle)
@@ -28,7 +31,9 @@ class CODPlayer : DoomPlayer
 	}
 
 	int grenadecooktimer;
-
+	
+	bool alternateGMSound;
+	
 	Default
 	{
 		Player.StartItem "COD_Makarov", 1;
@@ -94,6 +99,47 @@ class CODPlayer : DoomPlayer
 			}
 			NVOV A 35;
 			Loop;
+			
+		RadView:
+			TNT1 A 0
+			{
+				A_OverlayScale(101, 1.2, 1.0);
+				A_OverlayOffset(101, -50, 32);
+				A_OverlayFlags(101, PSPF_ADDWEAPON, false);
+				A_OverlayFlags(101, PSPF_ADDBOB, false);
+			}
+			RADN A 35;
+			TNT1 A 0
+			{
+				if(CountInv("COD_RadAmount") <= 0)
+				{
+					A_TakeInventory("COD_SuitGiver", 2);
+					A_TakeInventory("COD_PowerIronFeet", 2);
+					if(!CountInv("RadBreakSound"))
+					{
+						A_StartSound("items/GM/Break", 0, CHANF_OVERLAP, 1);
+						A_GiveInventory("RadBreakSound");
+					}
+				}
+				if(CountInv("COD_PowerIronFeet") <= 0 && CountInv("COD_RadAmount") > 1)
+				{
+					A_GiveInventory("COD_PowerIronFeet", 2);
+					A_SetBlend("00 99 00", 1, 3, "99 99 99", 0.0);
+					A_StartSound("items/GM/Engage", 0, CHANF_OVERLAP, 1);
+				}
+				if(alternateGMSound)
+				{
+					A_StartSound("CODPlayer/GMBreath", 0, CHANF_OVERLAP, 1);
+					alternategmsound = false;
+				}
+				else
+				{
+					alternategmsound = true;
+				}
+				A_TakeInventory("COD_RadAmount", 1);
+			}
+			Loop;
+		
 		StunnerCheck:
 			TNT1 A 0;
 			TNT1 A 1 A_JumpIfInventory("Stunner", 1, "StunBangMeFuckAss");
@@ -187,7 +233,7 @@ class Z_NashMove : CustomInventory
 				Owner.vel.x *= DECEL_MULT;
 				Owner.vel.y *= DECEL_MULT;
 				// make the view bobbing match the player's movement
-				PlayerPawn(Owner).ViewBob = Owner.vel.length() / 8;//DECEL_MULT / 2;
+				PlayerPawn(Owner).ViewBob = Owner.vel.length() / 16;//DECEL_MULT / 2;
 			}
 		}
 

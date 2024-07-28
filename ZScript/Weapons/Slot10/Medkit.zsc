@@ -46,6 +46,11 @@ class COD_Medkit : CODWeapon
 		TNT1 A 0 A_StartSound("medkit/reopen", 0, CHANF_OVERLAP, 1);
 		VSTA CBA 2;
 		Goto NVToggle;
+	User4:
+		TNT1 A 0 A_ZoomFactor(1);
+		TNT1 A 0 A_StartSound("medkit/reopen", 0, CHANF_OVERLAP, 1);
+		VSTA CBA 2;
+		Goto RadToggle;
 	User3:
 		TNT1 A 0 A_ZoomFactor(1);
 		Goto KnifeAttack;
@@ -62,12 +67,12 @@ class COD_Medkit : CODWeapon
 		TNT1 A 0 A_StartSound("medkit/open", 0, CHANF_OVERLAP, 1);
 		VSTA ABC 1;
 	WeaponReady:
-		VSTA C 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
+		VSTA C 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER2 | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
 		TNT1 A 0 A_JumpIfInventory("ThrowGrenade", 1, "FragGrenade");
 		TNT1 A 0 A_JumpIfInventory("ThrowBang", 1, "StunGrenade");
 		Loop;
 	WeaponReadyMedical:
-		TNT1 A 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
+		TNT1 A 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER2 | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
 		Loop;
 	Fire:
 		TNT1 A 0 A_JumpIfInventory("MedicalToken", 1, "Fire2");
