@@ -47,7 +47,7 @@ class COD_Medkit : CODWeapon
 		TNT1 A 0 A_StartSound("medkit/reopen", 0, CHANF_OVERLAP, 1);
 		VSTA CBA 2;
 		Goto NVToggle;
-	User4:
+	User2:
 		TNT1 A 0 A_ZoomFactor(1);
 		TNT1 A 0 A_StartSound("medkit/reopen", 0, CHANF_OVERLAP, 1);
 		VSTA CBA 2;
@@ -109,16 +109,26 @@ class COD_Medkit : CODWeapon
 		Goto WeaponReady;
 	AltFire2:
 		TNT1 A 0;
+		TNT1 A 0 A_OverlayFlags(1, PSPF_MIRROR | PSPF_FLIP, random(0,1));
+		TNT1 A 0 A_JumpIf(CountInv("COD_medkit_ammo") <= 0, "WeaponReadyMedical");
 		TNT1 A 0 A_StartSound("medkit/packopen", 0, CHANF_OVERLAP, 1);
 		TNT1 A 10;
 		TNT1 A 0 A_StartSound("uni/ClothFoleyM", 0, CHANF_OVERLAP, 1);
 		VSTA Z 1;
 		VSTB ABCD 1;
-		TNT1 A 0 A_TakeInventory("COD_Medkit_Ammo", 10);
-		TNT1 A 0 A_GiveInventory("Health", 10);
+	HealthLoop:
+		TNT1 A 0 A_GiveInventory("Health", 1);
+		TNT1 A 0 A_TakeInventory("COD_Medkit_ammo", 1);
+		TNT1 A 0 A_GiveInventory("MediCount", 1);
+		TNT1 A 0 A_JumpIfInventory("MediCount", 10, "Cont");
+		TNT1 A 0 A_JumpIfHealthLower(100, "HealthLoop");
+		Goto Cont;
+	Cont:
 		TNT1 A 0 A_StartSound("medkit/use", 0, CHANF_OVERLAP, 1);
+		TNT1 A 0 A_TakeInventory("MediCount", 10);
 		VSTB EFGHI 1;
 		TNT1 A 0 A_StartSound("medkit/reopen", 0, CHANF_OVERLAP, 1);
+		TNT1 A 0 A_OverlayFlags(1, PSPF_MIRROR | PSPF_FLIP, false);
 		Goto WeaponReadyMedical;
 	
 	Reload:
@@ -138,6 +148,14 @@ Class MedicalToken : Inventory
 	Default
 	{
 		Inventory.MaxAmount 1;
+	}
+}
+
+Class MediCount : Inventory
+{
+	Default
+	{
+		Inventory.MaxAmount 10;
 	}
 }
 

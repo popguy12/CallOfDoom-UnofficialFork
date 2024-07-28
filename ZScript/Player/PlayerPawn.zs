@@ -3,6 +3,9 @@ class CODPlayer : DoomPlayer
 	override Void Tick()
 	{
 		Super.Tick();
+		
+		int buttons = GetPlayerInput(-1, INPUT_BUTTONS);
+		
 		//Destroy the night vision shader if a new level is started or if player dies.
 		If(!FindInventory("CODNightVision"))
 		{
@@ -16,6 +19,34 @@ class CODPlayer : DoomPlayer
 		if(CountInv("RadToggleToken"))
 		{
 			A_Overlay(101, "RadView", true);
+		}
+		
+		if(CountInv("IsProne"))
+		{
+			Height = 16;
+			ViewHeight = 12;
+			AttackZOffset = 6;
+			A_SetScale(0.65, 0.20);
+			if(GetCrouchFactor() <= 0.9)
+			{
+				A_TakeInventory("IsProne");
+				ViewHeight = 30;
+				
+			}
+		}
+		else if(GetCrouchFactor() == 0.5)
+		{
+			Height = 32;
+			ViewHeight = 50;
+			AttackZOffset = 16;
+			A_SetScale(0.65, 0.65);
+		}
+		else
+		{
+			Height = 50;
+			AttackZOffset = 22;
+			A_SetScale(0.65, 0.55);
+			ViewHeight = 44;
 		}
 	}
 		
@@ -50,10 +81,12 @@ class CODPlayer : DoomPlayer
 		Player.StartItem "BangAmmo", 2;
 		
 		Player.StartItem "HolsterYourShitPrivate", 1;
+		Player.StartItem "QuickProne", 1;
 		
 		Player.AttackZOffset 16;
 		Player.ViewBobSpeed 15;
-		Scale 0.55;
+		Player.ViewHeight 50;
+		Scale 0.65;
 		Player.SoundClass "CODPlayer";
 	}
 	
@@ -229,6 +262,10 @@ class Z_NashMove : CustomInventory
 				{
 					Owner.A_SetSpeed(s * 0.4);
 				}
+				if(Owner.CountInv("IsProne"))
+				{
+					Owner.A_SetSpeed(s * 0.2);
+				}
 				
 				Owner.vel.x *= DECEL_MULT;
 				Owner.vel.y *= DECEL_MULT;
@@ -256,5 +293,58 @@ class Z_NashMove : CustomInventory
 			return true;
 		}
 		Stop;
+	}
+}
+
+Class QuickProne : CustomInventory
+{
+	int CooldownTimer;
+	
+	override void DoEffect()
+	{
+		super.DoEffect();
+		if (CooldownTimer < 19)
+		{
+			CooldownTimer++;
+		}
+		if (CooldownTimer == 19)
+		{
+			CooldownTimer = 20;
+		}
+	}
+	
+	Default
+	{
+		Inventory.Amount 1;
+		Inventory.MaxAmount 1;
+		+INVENTORY.UNDROPPABLE;
+	}
+	
+	States 
+	{
+		Use:
+			TNT1 A 0 
+			{
+				if (invoker.CooldownTimer >= 20 && !CountInv("IsProne"))
+				{
+					invoker.CooldownTimer = invoker.CooldownTimer - 20;
+					invoker.Owner.A_GiveInventory("IsProne");
+				}
+				if (invoker.CooldownTimer >= 20 && CountInv("IsProne"))
+				{
+					invoker.CooldownTimer = invoker.CooldownTimer - 20;
+					invoker.Owner.A_TakeInventory("IsProne");
+				}
+			}
+			TNT1 A 20;
+			fail;
+	}
+}
+
+class IsProne : Inventory
+{
+	Default
+	{
+		Inventory.MaxAmount 1;
 	}
 }
