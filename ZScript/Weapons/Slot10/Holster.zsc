@@ -2,7 +2,7 @@ class COD_Holster : CODWeapon
 {
  	Default
 	{		
-		Weapon.SlotNumber 0;
+		Weapon.SlotNumber 10;
 		
 		Obituary "$OB_MPPISTOL";
 		Inventory.Pickupmessage "Holstered Gun";

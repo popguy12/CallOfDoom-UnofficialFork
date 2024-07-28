@@ -7,6 +7,7 @@ class COD_Medkit : CODWeapon
 		Weapon.AmmoGive 0;
 		
 		Weapon.SlotNumber 0;
+		Weapon.SlotPriority 3;
 		
 		/*
 		zoom 1.0

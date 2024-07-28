@@ -7,6 +7,7 @@ class COD_C4Thrower : CODWeapon
 		Weapon.AmmoGive 0;
 		
 		Weapon.SlotNumber 0;
+		Weapon.SlotPriority 2;
 		
 		/*
 		zoom 1.0
@@ -107,7 +108,7 @@ Class BlowUpToken : Inventory
 	}
 }
 
-Class COD_C4Ammo : Ammo
+Class COD_C4Ammo : Ammo replaces RocketAmmo
 {
 	Default
 	{
