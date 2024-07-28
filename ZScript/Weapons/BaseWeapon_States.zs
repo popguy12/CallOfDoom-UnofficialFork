@@ -304,6 +304,7 @@ Class CODNightVision : PowerLightAmp
 		Super.EndEffect();
 		if(!owner) return;
 		Shader.SetEnabled(Owner.Player,"nitevis",false);
+		Shader.SetEnabled(Owner.Player,"Pixelize_Scene",false);
 	}
 		
 	Default

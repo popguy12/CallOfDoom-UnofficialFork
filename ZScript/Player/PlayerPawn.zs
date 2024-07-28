@@ -97,7 +97,7 @@ class CODPlayer : DoomPlayer
 				A_OverlayFlags(100, PSPF_ADDWEAPON, false);
 				A_OverlayFlags(100, PSPF_ADDBOB, false);
 			}
-			NVOV A 35;
+			NVOV A 35 BRIGHT;
 			Loop;
 			
 		RadView:
