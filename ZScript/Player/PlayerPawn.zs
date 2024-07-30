@@ -26,12 +26,13 @@ class CODPlayer : DoomPlayer
 			Height = 16;
 			ViewHeight = 12;
 			AttackZOffset = 6;
+			JumpZ = 0;
+			MaxStepHeight = 8;
 			A_SetScale(0.65, 0.20);
 			if(GetCrouchFactor() <= 0.9)
 			{
 				A_TakeInventory("IsProne");
 				ViewHeight = 30;
-				
 			}
 		}
 		else if(GetCrouchFactor() == 0.5)
@@ -39,14 +40,18 @@ class CODPlayer : DoomPlayer
 			Height = 32;
 			ViewHeight = 50;
 			AttackZOffset = 16;
+			JumpZ = 6;
+			MaxStepHeight = 16;
 			A_SetScale(0.65, 0.65);
 		}
 		else
 		{
 			Height = 50;
 			AttackZOffset = 22;
-			A_SetScale(0.65, 0.55);
+			JumpZ = 8;
 			ViewHeight = 44;
+			MaxStepHeight = 24;
+			A_SetScale(0.65, 0.55);
 		}
 	}
 		
@@ -120,6 +125,11 @@ class CODPlayer : DoomPlayer
 			RANG J 2 A_NoBlocking;
 			RANG KL 2;
 			RANG L -1;
+			Stop;
+		
+		DoDolphinDive:
+			TNT1 A 0;
+			TNT1 A 3 A_ChangeVelocity(5, 0, velz+2, CVF_RELATIVE);
 			Stop;
 		
 		NVView:
@@ -329,6 +339,10 @@ Class QuickProne : CustomInventory
 				{
 					invoker.CooldownTimer = invoker.CooldownTimer - 20;
 					invoker.Owner.A_GiveInventory("IsProne");
+					if(invoker.owner.velz > 0)
+					{
+						invoker.owner.A_Overlay(-51, "DoDolphinDive");
+					}
 				}
 				if (invoker.CooldownTimer >= 20 && CountInv("IsProne"))
 				{

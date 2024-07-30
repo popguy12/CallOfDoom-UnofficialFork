@@ -5,7 +5,7 @@ class COD_Auto88 : CODWeapon
 		Weapon.AmmoType "Clip";
 		Weapon.AmmoUse 0;
 		Weapon.AmmoGive 5;
-		Weapon.AmmoType2 "COD_SKS_Mag";
+		Weapon.AmmoType2 "COD_Auto88_Mag";
 		Weapon.AmmoUse2 0;
 		Weapon.AmmoGive2 0;
 		
@@ -19,8 +19,8 @@ class COD_Auto88 : CODWeapon
 		*/
 		
 		Obituary "$OB_MPPISTOL";
-		Inventory.Pickupmessage "[4] SKS";
-		Tag "SKS";
+		Inventory.Pickupmessage "[7] Auto-88c";
+		Tag "Auto-88c";
 		Scale 0.16;
 		Inventory.PickupSound "weapons/pistol/pickup";
 		+WEAPON.NOALERT;
@@ -232,13 +232,13 @@ class COD_Auto88 : CODWeapon
 	}
 }
 
-Class COD_SKS_Mag : Ammo
+Class COD_Auto88_Mag : Ammo
 {
 	Default
 	{
 		Inventory.Amount 0;
-		Inventory.MaxAmount 10;
+		Inventory.MaxAmount 5;
 		Ammo.BackpackAmount 0;
-		Ammo.BackpackMaxAmount 10;
+		Ammo.BackpackMaxAmount 5;
 	}
 }

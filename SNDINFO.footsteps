@@ -132,3 +132,12 @@ step/lava2			DSLVSIZ2
 step/lava3			DSLAVA3
 step/lava4			DSLAVA4
 $random step/lava { step/lava1 step/lava2 step/lava3 step/lava4 }
+
+
+
+//Prone
+prone/default1			"Sounds/Footsteps/Prone/DSPRONE1.wav"
+prone/default2			"Sounds/Footsteps/Prone/DSPRONE2.wav"
+prone/default3			"Sounds/Footsteps/Prone/DSPRONE3.wav"
+prone/default4			"Sounds/Footsteps/Prone/DSPRONE4.wav"
+$random prone/default { prone/default1  prone/default2  prone/default3  prone/default4 }
