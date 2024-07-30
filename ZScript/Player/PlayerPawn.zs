@@ -255,42 +255,42 @@ class CODPlayer : DoomPlayer
 			{
 				A_QuakeEx(1, 1, 1, 15, 0, 500, "", 0, 0, 0, 0, 0, 0, 1);
 				//A_CustomPunch(5, FALSE, 0, 0, 64);
-				A_Recoil(-24);
+				A_Recoil(-12);
 			}
 			TNT1 A 0 A_JumpIf(!PressingCrouch() || JustReleased(BT_CROUCH), "SlideEnd");
 			SLDK E 3
 			{
 				A_QuakeEx(1, 1, 1, 15, 0, 500, "", 0, 0, 0, 0, 0, 0, 1);
 				//A_CustomPunch(5, FALSE, 0, 0, 64);
-				A_Recoil(-24);
+				A_Recoil(-12);
 			}
 			TNT1 A 0 A_JumpIf(!PressingCrouch() || JustReleased(BT_CROUCH), "SlideEnd");
 			SLDK F 2
 			{
 				A_QuakeEx(1, 1, 1, 15, 0, 500, "", 0, 0, 0, 0, 0, 0, 1);
 				//A_CustomPunch(5, FALSE, 0, 0, 64);
-				A_Recoil(-24);
+				A_Recoil(-12);
 			}
 			TNT1 A 0 A_JumpIf(!PressingCrouch() || JustReleased(BT_CROUCH), "SlideEnd");
 			SLDK G 3
 			{
 				A_QuakeEx(1, 1, 1, 15, 0, 500, "", 0, 0, 0, 0, 0, 0, 1);
 				//A_CustomPunch(5, FALSE, 0, 0, 64);
-				A_Recoil(-24);
+				A_Recoil(-12);
 			}
 			TNT1 A 0 A_JumpIf(!PressingCrouch() || JustReleased(BT_CROUCH), "SlideEnd");
 			SLDK F 2
 			{
 				A_QuakeEx(1, 1, 1, 15, 0, 500, "", 0, 0, 0, 0, 0, 0, 1);
 				//A_CustomPunch(5, FALSE, 0, 0, 64);
-				A_Recoil(-24);
+				A_Recoil(-12);
 			}
 			TNT1 A 0 A_JumpIf(!PressingCrouch() || JustReleased(BT_CROUCH), "SlideEnd");
 			SLDK E 3
 			{
 				A_QuakeEx(1, 1, 1, 15, 0, 500, "", 0, 0, 0, 0, 0, 0, 1);
 				//A_CustomPunch(5, FALSE, 0, 0, 64);
-				A_Recoil(-24);
+				A_Recoil(-12);
 			}
 			TNT1 A 0 A_JumpIf(!PressingCrouch() || JustReleased(BT_CROUCH), "SlideEnd");
 			TNT1 A 0; //A_JumpIf(BW_SlideLoopSlope(), "SlideLoop")
