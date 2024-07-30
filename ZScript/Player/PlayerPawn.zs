@@ -1,5 +1,12 @@
 class CODPlayer : DoomPlayer
 {
+	action bool PressingCrouch(){return player.cmd.buttons & BT_CROUCH;}
+	
+	action bool JustReleased(int which)
+    {
+        return !(player.cmd.buttons & which) && player.oldbuttons & which;
+    }
+	
 	override Void Tick()
 	{
 		Super.Tick();
@@ -87,6 +94,7 @@ class CODPlayer : DoomPlayer
 		
 		Player.StartItem "HolsterYourShitPrivate", 1;
 		Player.StartItem "QuickProne", 1;
+		Player.StartItem "QuickKick", 1;
 		
 		Player.AttackZOffset 16;
 		Player.ViewBobSpeed 15;
@@ -199,6 +207,96 @@ class CODPlayer : DoomPlayer
 			}
 			TNT1 A 20;
 			Goto StunnerCheck;
+			
+		KickCheckTakeToken:
+			TNT1 A 0;
+			TNT1 A 1 A_TakeInventory("Kicking",1);
+			Stop;
+		KickCheck:
+			TNT1 A 0;
+			TNT1 A 1;
+		DoKick:
+			TNT1 A 0;
+			TNT1 A 0 A_OverlayFlags(-10, PSPF_ADDWEAPON, false);
+			TNT1 A 0 A_OverlayOffset(-10, 0, 32);
+			TNT1 A 0 A_JumpIf(PressingCrouch() && momx != 0 && momy != 0, "Slide");
+			TNT1 A 0
+			{
+				A_PlaySound("KICK",69);
+			}
+			KICK N 0;
+			"####" A 0;
+			"####" BCD 1;
+			"####" A 0
+			{	
+				if (CountInv("PowerStrength") == 1)
+				{
+					//A_FireCustomMissile("SuperKickAttack", 0, 0, 5, -7);
+					return;
+				}			
+				//A_FireCustomMissile("KickAttack", 0, 0, 0, -7);
+				return;
+			}
+			"####" HHHHH 1;
+			"####" IGFED 1;
+			"####" A 0;
+			"####" CBA 1;
+			TNT1 A 0;
+			Goto KickCheckTakeToken;
+		Slide:
+			TNT1 A 0
+			{
+				A_QuakeEx(1, 1, 1, 15, 0, 500, "", 0, 0, 0, 0, 0, 0, 1);
+				A_StartSound("SLIDE", CHAN_WEAPON, CHAN_OVERLAP);
+			}
+			SLDK ABCD 1;
+		SlideLoop:
+			SLDK F 2
+			{
+				A_QuakeEx(1, 1, 1, 15, 0, 500, "", 0, 0, 0, 0, 0, 0, 1);
+				//A_CustomPunch(5, FALSE, 0, 0, 64);
+				A_Recoil(-24);
+			}
+			TNT1 A 0 A_JumpIf(!PressingCrouch() || JustReleased(BT_CROUCH), "SlideEnd");
+			SLDK E 3
+			{
+				A_QuakeEx(1, 1, 1, 15, 0, 500, "", 0, 0, 0, 0, 0, 0, 1);
+				//A_CustomPunch(5, FALSE, 0, 0, 64);
+				A_Recoil(-24);
+			}
+			TNT1 A 0 A_JumpIf(!PressingCrouch() || JustReleased(BT_CROUCH), "SlideEnd");
+			SLDK F 2
+			{
+				A_QuakeEx(1, 1, 1, 15, 0, 500, "", 0, 0, 0, 0, 0, 0, 1);
+				//A_CustomPunch(5, FALSE, 0, 0, 64);
+				A_Recoil(-24);
+			}
+			TNT1 A 0 A_JumpIf(!PressingCrouch() || JustReleased(BT_CROUCH), "SlideEnd");
+			SLDK G 3
+			{
+				A_QuakeEx(1, 1, 1, 15, 0, 500, "", 0, 0, 0, 0, 0, 0, 1);
+				//A_CustomPunch(5, FALSE, 0, 0, 64);
+				A_Recoil(-24);
+			}
+			TNT1 A 0 A_JumpIf(!PressingCrouch() || JustReleased(BT_CROUCH), "SlideEnd");
+			SLDK F 2
+			{
+				A_QuakeEx(1, 1, 1, 15, 0, 500, "", 0, 0, 0, 0, 0, 0, 1);
+				//A_CustomPunch(5, FALSE, 0, 0, 64);
+				A_Recoil(-24);
+			}
+			TNT1 A 0 A_JumpIf(!PressingCrouch() || JustReleased(BT_CROUCH), "SlideEnd");
+			SLDK E 3
+			{
+				A_QuakeEx(1, 1, 1, 15, 0, 500, "", 0, 0, 0, 0, 0, 0, 1);
+				//A_CustomPunch(5, FALSE, 0, 0, 64);
+				A_Recoil(-24);
+			}
+			TNT1 A 0 A_JumpIf(!PressingCrouch() || JustReleased(BT_CROUCH), "SlideEnd");
+			TNT1 A 0; //A_JumpIf(BW_SlideLoopSlope(), "SlideLoop")
+		SlideEnd:
+			SLDK HIJK 1;
+			Goto KickCheckTakeToken;
 	}
 }
 
@@ -355,7 +453,55 @@ Class QuickProne : CustomInventory
 	}
 }
 
+Class QuickKick : CustomInventory
+{
+	int CooldownTimer;
+	
+	override void DoEffect()
+	{
+		super.DoEffect();
+		if (CooldownTimer < 20)
+		{
+			CooldownTimer++;
+		}
+		if (CooldownTimer == 19)
+		{
+			CooldownTimer = 20;
+		}
+	}
+	
+	Default
+	{
+		Inventory.Amount 1;
+		Inventory.MaxAmount 1;
+		+INVENTORY.UNDROPPABLE;
+	}
+	
+	States 
+	{
+		Use:
+			TNT1 A 0 
+			{
+				if (invoker.CooldownTimer >= 20 && !CountInv("Kicking"))
+				{
+					invoker.CooldownTimer = invoker.CooldownTimer - 20;
+					invoker.owner.A_Overlay(-50, "KickCheck");
+				}
+			}
+			TNT1 A 20;
+			fail;
+	}
+}
+
 class IsProne : Inventory
+{
+	Default
+	{
+		Inventory.MaxAmount 1;
+	}
+}
+
+class Kicking : Inventory
 {
 	Default
 	{

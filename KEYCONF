@@ -15,3 +15,7 @@ defaultbind H +Holster
 addmenukey "Toggle Prone" Prone
 alias Prone "use QuickProne"
 defaultbind LALT +Prone
+
+addmenukey "Kick" Kick
+alias Kick "use QuickKick"
+defaultbind Q +Kick
