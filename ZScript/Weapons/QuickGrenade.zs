@@ -105,6 +105,7 @@ Class GrenadeAmmo : Ammo
 		Inventory.MaxAmount 4;
 		Ammo.BackpackAmount 2;
 		Ammo.BackpackMaxAmount 8;
+		Scale 0.1;
 	}
 	
 	States
@@ -124,6 +125,7 @@ Class BangAmmo : Ammo
 		Inventory.MaxAmount 4;
 		Ammo.BackpackAmount 2;
 		Ammo.BackpackMaxAmount 8;
+		Scale 0.1;
 	}
 	
 	States

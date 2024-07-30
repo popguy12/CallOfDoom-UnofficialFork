@@ -236,3 +236,14 @@ mosin/fire1
 mosin/fire2
 }
 mosin/shell	"Sounds/Weapons/Slot5/Mosin/MOSNREL1"
+
+//Auto88C
+A88/raise	"Sounds/Weapons/Slot7/Auto88/Auto88Raise.wav"
+A88/lower	"Sounds/Weapons/Slot7/Auto88/Auto88Lower.wav"
+A88/rackback	"Sounds/Weapons/Slot7/Auto88/Auto88BoltBack"
+A88/clipset	"Sounds/Weapons/Slot7/Auto88/Auto88ClipSet"
+A88/clipin	"Sounds/Weapons/Slot7/Auto88/Auto88ClipLoad"
+A88/cart	"Sounds/Weapons/Slot7/Auto88/Auto88CartLoad"
+A88/rackforward	"Sounds/Weapons/Slot7/Auto88/Auto88BoltRelease"
+A88/rackquick	"Sounds/Weapons/Slot7/Auto88/Auto88BoltCharge"
+A88/fire	"Sounds/Weapons/Slot7/Auto88/Auto88Fire"

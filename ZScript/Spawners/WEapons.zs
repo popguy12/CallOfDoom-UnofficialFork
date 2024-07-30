@@ -23,3 +23,11 @@ Class ChaingunSpawner : RandomSpawner replaces chaingun
 		DropItem "COD_S1100CB", 255, 1;
 	}
 }
+
+Class PlasmaSpawner : RandomSpawner replaces PlasmaRifle
+{
+	Default
+	{
+		DropItem "COD_Auto88", 255, 1;
+	}
+}
