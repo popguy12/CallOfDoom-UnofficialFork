@@ -1,3 +1,13 @@
+menu/activate	"Sounds/Menu/MenuOpen.flac"
+menu/backup	"Sounds/Menu/MenuBack.flac"
+menu/prompt	"Sounds/Menu/MenuPrompt.flac"
+menu/cursor	"Sounds/Menu/MenuMove.flac"
+menu/change	"Sounds/Menu/MenuSlider.flac"
+menu/invalid	"Sounds/Menu/MenuDeny.flac"
+menu/dismiss	"Sounds/Menu/MenuClose.flac"
+menu/choose	"Sounds/Menu/MenuSelect.flac"
+menu/clear	"Sounds/Menu/MenuClose.flac"
+	
 //Bullet Ricochet
 $random effect/ricochet
 {
