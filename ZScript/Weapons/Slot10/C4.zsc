@@ -26,6 +26,7 @@ class COD_C4Thrower : CODWeapon
 		+WEAPON.NOAUTOFIRE;
 		+INVENTORY.UNDROPPABLE;
 		
+		CODWeapon.SlotType 3;
 		CODWeapon.InfoGraphics "ISC4", "ICUSSWN", "ICUSSWU", "WLC4";
 	}
 	

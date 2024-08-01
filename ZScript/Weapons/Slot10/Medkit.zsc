@@ -26,6 +26,7 @@ class COD_Medkit : CODWeapon
 		+WEAPON.NOAUTOFIRE;
 		+INVENTORY.UNDROPPABLE;
 		
+		CODWeapon.SlotType 3;
 		CODWeapon.InfoGraphics "ISMEDI", "ICUSSWN", "ICUSSWU", "WLMEDI";
 	}
 	

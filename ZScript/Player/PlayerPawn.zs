@@ -198,7 +198,6 @@ class CODPlayer : DoomPlayer
 		StunBangMeFuckAss:
 			TNT1 A 0;
 			TNT1 A 0 A_StartSound("CODPlayer/Flashbanged", 0, CHANF_OVERLAP);
-			TNT1 A 3 A_SetBlend("99 99 99", 0.0, 3, "99 99 99", 1.0);
 			TNT1 A 0 A_SetBlend("99 99 99", 1.0, 325, "99 99 99", 0.0);
 			TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 5
 			{

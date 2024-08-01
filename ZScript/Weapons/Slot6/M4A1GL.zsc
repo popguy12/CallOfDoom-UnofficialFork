@@ -1,11 +1,11 @@
-class COD_S1100CB : CODWeapon
+class COD_M4A1GL : CODWeapon
 {
  	Default
 	{
 		Weapon.AmmoType "Clip";
 		Weapon.AmmoUse 0;
 		Weapon.AmmoGive 20;
-		Weapon.AmmoType2 "COD_S1100_Mag";
+		Weapon.AmmoType2 "COD_M4A1_Mag";
 		Weapon.AmmoUse2 0;
 		Weapon.AmmoGive2 0;
 		
@@ -193,13 +193,13 @@ class COD_S1100CB : CODWeapon
 	}
 }
 
-Class COD_S1100_Mag : Ammo
+Class COD_M4A1_Mag : Ammo
 {
 	Default
 	{
 		Inventory.Amount 0;
-		Inventory.MaxAmount 32;
+		Inventory.MaxAmount 61;
 		Ammo.BackpackAmount 0;
-		Ammo.BackpackMaxAmount 32;
+		Ammo.BackpackMaxAmount 61;
 	}
 }

@@ -25,6 +25,9 @@ class COD_Auto88 : CODWeapon
 		Inventory.PickupSound "weapons/pistol/pickup";
 		+WEAPON.NOALERT;
 		+WEAPON.AMMO_OPTIONAL;
+		
+		CODWeapon.SlotType 1;
+		CODWeapon.InfoGraphics "ISAUTO88", "ICTMPDN", "ICTMPDU", "WLTMPD";
 	}
 	
 	action void FireWeapon()
