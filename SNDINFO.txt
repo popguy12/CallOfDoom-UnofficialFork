@@ -190,6 +190,13 @@ pm/clipout2	"Sounds/Weapons/Slot1/Makarov/MPMREL4.wav"
 pm/raise	"Sounds/Weapons/Slot1/Makarov/MPMRAISE.wav"
 pm/lower	"Sounds/Weapons/Slot1/Makarov/MPMLOWER.wav"
 
+//UP45
+usp45/fire	"Sounds/Weapons/Slot1/USP45/USPFire"
+usp45/magout	"Sounds/Weapons/Slot1/USP45/USP4REL1"
+usp45/magin	"Sounds/Weapons/Slot1/USP45/USP4REL2"
+usp45/lock	"Sounds/Weapons/Slot1/USP45/USP4REL3"
+usp45/raise	"Sounds/Weapons/Slot1/USP45/USPRaise.wav"
+usp45/lower	"Sounds/Weapons/Slot1/USP45/USPLower.wav"
 
 //S1-100 CB
 s1100/fire	"Sounds/Weapons/Slot2/S1100/MP34FIRE"

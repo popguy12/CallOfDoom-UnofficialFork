@@ -3,6 +3,7 @@ Class PistolSpawner : RandomSpawner replaces Pistol
 	Default
 	{
 		DropItem "COD_Makarov",255,1;
+		DropItem "COD_USP45",255,1;
 	}
 }
 

@@ -28,7 +28,7 @@ class COD_M4A1GL : CODWeapon
 		-WEAPON.NOAUTOFIRE;
 		
 		CODWeapon.SlotType 1;
-		CODWeapon.InfoGraphics "ISMP34", "ICM3GN", "ICM3GU", "WLM3G";
+		CODWeapon.InfoGraphics "ISM4A1", "ICM27N", "ICM27U", "WLM27";
 	}
 	
 	action void FireWeapon()
@@ -204,7 +204,7 @@ class COD_M4A1GL : CODWeapon
 		//IS THE SOURCEPORT STUPID? 
 		Goto WeaponReady;
  	Spawn:
-		B002 M -1;
+		B002 O -1;
 		Stop;
 	
 	}

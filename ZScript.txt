@@ -30,6 +30,7 @@ class COD_DummyActor : Actor{}
 #include "ZScript/Weapons/Projectiles/BulletDef.Shells.zsc"
 
 #include "ZScript/Weapons/Slot1/Makarov.zsc"
+#include "ZScript/Weapons/Slot1/USP45.zsc"
 
 #include "ZScript/Weapons/Slot2/S1100.zsc"
 
