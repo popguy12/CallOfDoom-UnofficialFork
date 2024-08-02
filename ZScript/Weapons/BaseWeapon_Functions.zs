@@ -275,7 +275,7 @@ extend class CODWeapon
 		
 		bool geometryBrace = dt1.HitType == FLineTraceData.TRACE_HitWall || dt2.HitType == FLineTraceData.TRACE_HitWall || dt3.HitType == FLineTraceData.TRACE_HitWall || dt4.HitType == FLineTraceData.TRACE_HitWall || dt5.HitType == FLineTraceData.TRACE_HitWall || dt6.HitType == FLineTraceData.TRACE_HitWall;
 		
-		if (!bMELEEWEAPON && (plr.Player.crouchfactor == 0.5 || geometryBrace) && plr.Vel.Length() < 6)
+		if (!bMELEEWEAPON && (plr.Player.crouchfactor == 0.5 || geometryBrace || plr.CountInv("IsProne")) && plr.Vel.Length() < 6)
 		{
 			BraceTicker++;
 			if (BraceTicker == 10)

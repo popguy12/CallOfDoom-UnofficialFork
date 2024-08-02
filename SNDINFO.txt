@@ -247,6 +247,23 @@ mosin/fire2
 }
 mosin/shell	"Sounds/Weapons/Slot5/Mosin/MOSNREL1"
 
+//M4A1GL
+M4GL/raise	"Sounds/Weapons/Slot6/M4A1GL/M4A1Raise.wav"
+M4GL/lower	"Sounds/Weapons/Slot6/M4A1GL/M4A1Lower.wav"
+M4GL/Bolt	"Sounds/Weapons/Slot6/M4A1GL/M4A1BoltLock.wav"
+M4GL/magdrop	"Sounds/Weapons/Slot6/M4A1GL/M4A1MagDrop"
+M4GL/magin	"Sounds/Weapons/Slot6/M4A1GL/M4A1MagIn"
+M4GL/magout	"Sounds/Weapons/Slot6/M4A1GL/M4A1MagOut"
+
+M4GL/GLFire	"Sounds/Weapons/Slot6/M4A1GL/M4A1GLFire"
+M4GL/GLSel	"Sounds/Weapons/Slot6/M4A1GL/M4A1GLSel"
+M4GL/GLOpen	"Sounds/Weapons/Slot6/M4A1GL/M4A1GLOpen"
+M4GL/GLLoad	"Sounds/Weapons/Slot6/M4A1GL/M4A1GLLoad"
+M4GL/GLClose	"Sounds/Weapons/Slot6/M4A1GL/M4A1GLClose"
+
+M4GL/fire1	"Sounds/Weapons/Slot6/M4A1GL/M4A1Fire1"
+M4GL/fire2	"Sounds/Weapons/Slot6/M4A1GL/M4A1Fire2"
+
 //Auto88C
 A88/raise	"Sounds/Weapons/Slot7/Auto88/Auto88Raise.wav"
 A88/lower	"Sounds/Weapons/Slot7/Auto88/Auto88Lower.wav"
