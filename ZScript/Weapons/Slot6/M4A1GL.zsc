@@ -39,7 +39,7 @@ class COD_M4A1GL : CODWeapon
 		A_OverlayFlags(-3, PSPF_RENDERSTYLE, true);
 		A_OverlayRenderstyle(-3, STYLE_ADD);
 		
-		A_StartSound("m4gl/fire1", 0, CHANF_OVERLAP, 1);
+		A_StartSound("m4gl/fire1", 0, CHANF_OVERLAP, 1, ATTN_NORM, frandom(0.9, 1.1));
 		A_StartSound("m4gl/fire2", 0, CHANF_OVERLAP, 0.75);
 		COD_FireBullets("COD_556x45mm", 1, frandom(-0.1, 0.1), 0, 0, frandom(-0.1, 0.1));
 		A_SpawnItemEx("PlayerMuzzleFlash",30,0,45);

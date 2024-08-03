@@ -1,0 +1,249 @@
+class COD_MG338 : CODWeapon
+{
+ 	Default
+	{
+		Weapon.AmmoType "Clip";
+		Weapon.AmmoUse 0;
+		Weapon.AmmoGive 20;
+		Weapon.AmmoType2 "COD_MG338_Mag";
+		Weapon.AmmoUse2 0;
+		Weapon.AmmoGive2 0;
+		
+		Weapon.SlotNumber 8;
+		
+		/*
+		zoom 1.0
+		zoomaim 1.2
+		zoomdelta 0.08
+		zoom tics 1
+		*/
+		
+		Obituary "$OB_MPPISTOL";
+		Inventory.Pickupmessage "[8] MG338";
+		Tag "MG338";
+		Scale 0.16;
+		Inventory.PickupSound "weapons/pistol/pickup";
+		+WEAPON.NOALERT;
+		+WEAPON.AMMO_OPTIONAL;
+		-WEAPON.NOAUTOFIRE;
+		
+		CODWeapon.SlotType 1;
+		CODWeapon.InfoGraphics "ISM4A1", "ICM27N", "ICM27U", "WLM27";
+	}
+	
+	action void FireWeapon()
+	{
+		A_AlertMonsters();
+		A_Overlay(-3, "MuzzleBig");
+		A_OverlayFlags(-3, PSPF_ALPHA, true);
+		A_OverlayFlags(-3, PSPF_RENDERSTYLE, true);
+		A_OverlayRenderstyle(-3, STYLE_ADD);
+		
+		//A_StartSound("m4gl/fire1", 0, CHANF_OVERLAP, 0.75, ATTN_NORM, frandom(0.3, 0.6));
+		A_StartSound("mg338/fire", 0, CHANF_OVERLAP, 0.8, ATTN_NORM, frandom(0.6, 0.8));
+		A_StartSound("mg338/fireadd", 0, CHANF_OVERLAP, 0.65);
+		A_StartSound("mg338/firemech", 0, CHANF_OVERLAP, 1);
+		COD_FireBullets("COD_556x45mm", 1, frandom(-0.1, 0.1), 0, 0, frandom(-0.1, 0.1));
+		A_SpawnItemEx("PlayerMuzzleFlash",30,0,45);
+		
+		//this handles placing the flash correctly
+		if(CountInv("AimingToken"))
+		{
+			A_OverlayOffset(-3, 0 - 24, 32 - 40);
+			COD_HandleWeaponFeedback(2, 2, -1.0, frandom(+0.8, -0.8), 0, 0, 0);
+			A_ZoomFactor(6-0.08);
+		}
+		else
+		{
+			A_OverlayOffset(-3, 0 + 10, 32 - 42);
+			COD_HandleWeaponFeedback(2, 2, -2.0, frandom(+1.60, -1.60), -4, 0, 0);
+			A_ZoomFactor(1-0.08);
+		}
+		//gunsmoke
+		A_TakeInventory("COD_MG338_Mag", 1);
+	}
+	
+	States
+	{
+	
+	Deselect:
+		TNT1 A 0 A_StartSound("mg338/lower", 0, CHANF_OVERLAP, 1);
+		TNT1 A 0 A_ZoomFactor(1);
+		M27A FJIHGEDCBA 1;
+		PSTG A 0 A_Lower(25);
+		Wait;
+	User4:
+		M27A FJIHGED 1;
+		TNT1 A 0 A_ZoomFactor(1);
+		TNT1 A 0 A_TakeInventory("AimingToken");
+		M27A CBA 1;
+		Goto NVToggle;
+	User2:
+		M27A FJIHGED 1;
+		TNT1 A 0 A_ZoomFactor(1);
+		TNT1 A 0 A_TakeInventory("AimingToken");
+		M27A CBA 1;
+		Goto RadToggle;
+	User3:
+		TNT1 A 0 A_ZoomFactor(1);
+		TNT1 A 0 A_TakeInventory("AimingToken");
+		Goto KnifeAttack;
+	Select:
+		TNT1 A 0
+		{
+			A_TakeInventory("AimingToken");
+		}
+		TNT1 A 0 A_Raise(25);
+		Wait;
+	Ready:
+		TNT1 A 0 A_StartSound("mg338/raise", 0, CHANF_OVERLAP, 1);
+		TNT1 A 16;
+		38QA ABCDEGHIJKLMNOPQRSTUF 1;
+	WeaponReady:
+		38QA F 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER2 | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
+		TNT1 A 0 A_JumpIfInventory("ThrowGrenade", 1, "FragGrenade");
+		TNT1 A 0 A_JumpIfInventory("ThrowBang", 1, "StunGrenade");
+		Loop;
+	WeaponReady2:
+		38QC D 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER2 | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
+		TNT1 A 0 A_JumpIfInventory("ThrowGrenade", 1, "FragGrenade");
+		TNT1 A 0 A_JumpIfInventory("ThrowBang", 1, "StunGrenade");
+		Loop;
+	Fire:
+		TNT1 A 0 A_JumpIfInventory("AimingToken", 1, "Fire2");
+		TNT1 A 0 A_JumpIf(CountInv("COD_MG338_Mag") == 0, "DryFire");
+		38QB A 1 FireWeapon();
+		TNT1 A 0 A_ZoomFactor(1);
+		38QB BCD 1;
+		38QB EFG 1 A_ReFire("Fire");
+		Goto WeaponReady;
+	Fire2:
+		TNT1 A 0 A_JumpIf(CountInv("COD_MG338_Mag") == 0, "DryFire2");
+		38QC D 1 FireWeapon();
+		TNT1 A 0 A_ZoomFactor(6);
+		38QC D 3;
+		38QC DDD 1 A_ReFire("Fire2");
+		Goto WeaponReady2;
+	AltFire:
+		TNT1 A 0 A_JumpIfInventory("AimingToken", 1, "AltFire2");
+		TNT1 A 0 A_GiveInventory("AimingToken");
+		TNT1 A 0 A_StartSound("mg338/aim", 0, CHANF_OVERLAP);
+		38QC ABC 1;
+		TNT1 A 0 A_ZoomFactor(1.2);
+		38QC EFGHIJKL 1;
+		38QC D 1 A_ZoomFactor(6, ZOOM_INSTANT);
+		Goto WeaponReady2;
+	AltFire2:
+		TNT1 A 0 A_TakeInventory("AimingToken");
+		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP);
+		38QC D 1;
+		TNT1 A 1 A_ZoomFactor(1.2, ZOOM_INSTANT);
+		38QC LKJIHGFE 1;
+		TNT1 A 0 A_ZoomFactor(1);
+		38QC CBA 1;
+		Goto WeaponReady;
+	
+	DryFire:
+		M27B E 1;
+		Goto WeaponReady;
+	DryFire2:
+		M27D E 1;
+		Goto WeaponReady2;
+	
+	UnAimReload:
+		TNT1 A 0 A_TakeInventory("AimingToken");
+		M3GC DGFE 1;
+		TNT1 A 0 A_ZoomFactor(1);
+		M3GC CBA 1;
+	Reload:
+		TNT1 A 0 A_JumpIf(CountInv("AimingToken") == 1, "UnAimReload");
+		TNT1 A 0 A_JumpIf(CountInv("COD_MG338_Mag") == 0 && CountInv("Clip") == 0, "WeaponReadyEmpty");
+		TNT1 A 0 A_JumpIf(CountInv("COD_MG338_Mag") == 50 || CountInv("Clip") == 0, "WeaponReady");
+		TNT1 A 0 A_JumpIf(CountInv("COD_MG338_Mag") == 0, "ReloadEmpty");
+		TNT1 A 0 A_TakeInventory("AimingToken");
+		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP);
+		38QE ABCDEF 1;
+		TNT1 A 0 A_StartSound("uni/clothfoleys", 0, CHANF_OVERLAP);
+		38QE GHIJK 1;
+		TNT1 A 0 A_StartSound("mg338/LidOpen", 0, CHANF_OVERLAP);
+		38QE LMN 2;
+		38QE OPQ 1;
+		TNT1 A 0 A_StartSound("uni/clothfoleys", 0, CHANF_OVERLAP);
+		38QE RSTU 2;
+		TNT1 A 0 A_StartSound("mg338/BeltClear", 0, CHANF_OVERLAP);
+		38QE VWXYZ 1;
+		TNT1 A 0 A_StartSound("uni/clothfoleys", 0, CHANF_OVERLAP);
+		38QF ABCDEF 1;
+		TNT1 A 0 A_StartSound("mg338/Clear", 0, CHANF_OVERLAP);
+		38QF GHIJ 2;
+	ReloadMiddle:
+		38QF KLM 2;
+		TNT1 A 0 A_StartSound("uni/clothfoleys", 0, CHANF_OVERLAP);
+		TNT1 A 0 A_StartSound("mg338/ClearClose", 0, CHANF_OVERLAP);
+		38QF NOPQRSTU 1;
+		38QF VWXYZ 2;
+		TNT1 A 0 A_StartSound("mg338/boxoff", 0, CHANF_OVERLAP);
+		38QG ABC 2;
+		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP);
+		38QG DEFGH 1;
+		TNT1 A 0 A_StartSound("uni/magfolbig", 0, CHANF_OVERLAP);
+		38QG IJKLMNOP 2;
+		TNT1 A 0 A_StartSound("mg338/boxon", 0, CHANF_OVERLAP);
+		38QG QRS 1;
+		38QG TUV 2;
+		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP);
+		38QG WXYZ 1;
+		TNT1 A 0 A_StartSound("mg338/beltplace", 0, CHANF_OVERLAP);
+		38QH ABCDEFGHIJ 2;
+		TNT1 A 0 COD_AmmoIntoMag("COD_MG338_Mag", "Clip", 50, 1);
+		38QH KLMNOP 2;
+		TNT1 A 0 A_StartSound("uni/clothfoleys", 0, CHANF_OVERLAP);
+		38QH QRST 1;
+		TNT1 A 0 A_StartSound("mg338/lidclose", 0, CHANF_OVERLAP);
+		38QH TUVWXYZ 2;
+		38QI ABCD 2;
+		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP);
+		38QI EF 1;
+		TNT1 A 0 A_StartSound("mg338/endfoley", 0, CHANF_OVERLAP);
+		38QI GHIJKLMNO 1;
+		Goto WeaponReady;
+	ReloadEmpty:
+		TNT1 A 0 A_TakeInventory("AimingToken");
+		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP);
+		38QJ ABCDEFGH 1;
+		TNT1 A 0 A_StartSound("uni/clothfoleys", 0, CHANF_OVERLAP);
+		38QJ IJKL 2;
+		TNT1 A 0 A_StartSound("mg338/boltback", 0, CHANF_OVERLAP);
+		38QJ MNO 1;
+		38QJ PQRST 3;
+		TNT1 A 0 A_StartSound("mg338/boltforward", 0, CHANF_OVERLAP);
+		38QJ UVW 2;
+		TNT1 A 0 A_StartSound("uni/clothfoleys", 0, CHANF_OVERLAP);
+		38QJ XYZ 1;
+		38QK ABCDEF 1;
+		TNT1 A 0 A_StartSound("uni/clothfoleys", 0, CHANF_OVERLAP);
+		38QK GHIJ 1;
+		TNT1 A 0 A_StartSound("mg338/lidopen", 0, CHANF_OVERLAP);
+		38QK KLMNO 2;
+		TNT1 A 0 A_StartSound("uni/clothfoley2", 0, CHANF_OVERLAP);
+		38QK PQRSTUV 1;
+		TNT1 A 0 A_StartSound("mg338/clear", 0, CHANF_OVERLAP);
+		38QK WXYZ 2;
+		Goto ReloadMiddle;
+ 	Spawn:
+		B002 O -1;
+		Stop;
+	
+	}
+}
+
+Class COD_MG338_Mag : Ammo
+{
+	Default
+	{
+		Inventory.Amount 0;
+		Inventory.MaxAmount 50;
+		Ammo.BackpackAmount 0;
+		Ammo.BackpackMaxAmount 50;
+	}
+}

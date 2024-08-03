@@ -281,3 +281,80 @@ A88/cart	"Sounds/Weapons/Slot7/Auto88/Auto88CartLoad"
 A88/rackforward	"Sounds/Weapons/Slot7/Auto88/Auto88BoltRelease"
 A88/rackquick	"Sounds/Weapons/Slot7/Auto88/Auto88BoltCharge"
 A88/fire	"Sounds/Weapons/Slot7/Auto88/Auto88Fire"
+
+//MG338
+
+$random mg338/Fire
+{
+	mg338/Fire1
+	mg338/Fire2
+	mg338/Fire3
+	mg338/Fire4
+	mg338/Fire5
+	mg338/Fire6
+	mg338/Fire7
+	mg338/Fire8
+}
+mg338/Fire1	"Sounds/Weapons/Slot8/MG338/Fire/MG338Fire1.wav"
+mg338/Fire2	"Sounds/Weapons/Slot8/MG338/Fire/MG338Fire2.wav"
+mg338/Fire3	"Sounds/Weapons/Slot8/MG338/Fire/MG338Fire3.wav"
+mg338/Fire4	"Sounds/Weapons/Slot8/MG338/Fire/MG338Fire4.wav"
+mg338/Fire5	"Sounds/Weapons/Slot8/MG338/Fire/MG338Fire5.wav"
+mg338/Fire6	"Sounds/Weapons/Slot8/MG338/Fire/MG338Fire6.wav"
+mg338/Fire7	"Sounds/Weapons/Slot8/MG338/Fire/MG338Fire7.wav"
+mg338/Fire8	"Sounds/Weapons/Slot8/MG338/Fire/MG338Fire8.wav"
+
+$random mg338/FireAdd
+{
+	mg338/FireAdd1
+	mg338/FireAdd2
+	mg338/FireAdd3
+	mg338/FireAdd4
+	mg338/FireAdd5
+	mg338/FireAdd6
+	mg338/FireAdd7
+	mg338/FireAdd8
+}
+mg338/FireAdd1	"Sounds/Weapons/Slot8/MG338/FireAdd/MG338FireAdd1.wav"
+mg338/FireAdd2	"Sounds/Weapons/Slot8/MG338/FireAdd/MG338FireAdd2.wav"
+mg338/FireAdd3	"Sounds/Weapons/Slot8/MG338/FireAdd/MG338FireAdd3.wav"
+mg338/FireAdd4	"Sounds/Weapons/Slot8/MG338/FireAdd/MG338FireAdd4.wav"
+mg338/FireAdd5	"Sounds/Weapons/Slot8/MG338/FireAdd/MG338FireAdd5.wav"
+mg338/FireAdd6	"Sounds/Weapons/Slot8/MG338/FireAdd/MG338FireAdd6.wav"
+mg338/FireAdd7	"Sounds/Weapons/Slot8/MG338/FireAdd/MG338FireAdd7.wav"
+mg338/FireAdd8	"Sounds/Weapons/Slot8/MG338/FireAdd/MG338FireAdd8.wav"
+
+$random mg338/FireMech
+{
+	mg338/FireMech1
+	mg338/FireMech2
+	mg338/FireMech3
+	mg338/FireMech4
+	mg338/FireMech5
+	mg338/FireMech6
+	mg338/FireMech7
+	mg338/FireMech8
+}
+mg338/FireMech1	"Sounds/Weapons/Slot8/MG338/FireMech/MG338FireMech1.wav"
+mg338/FireMech2	"Sounds/Weapons/Slot8/MG338/FireMech/MG338FireMech2.wav"
+mg338/FireMech3	"Sounds/Weapons/Slot8/MG338/FireMech/MG338FireMech3.wav"
+mg338/FireMech4	"Sounds/Weapons/Slot8/MG338/FireMech/MG338FireMech4.wav"
+mg338/FireMech5	"Sounds/Weapons/Slot8/MG338/FireMech/MG338FireMech5.wav"
+mg338/FireMech6	"Sounds/Weapons/Slot8/MG338/FireMech/MG338FireMech6.wav"
+mg338/FireMech7	"Sounds/Weapons/Slot8/MG338/FireMech/MG338FireMech7.wav"
+mg338/FireMech8	"Sounds/Weapons/Slot8/MG338/FireMech/MG338FireMech8.wav"
+
+mg338/Raise	"Sounds/Weapons/Slot8/MG338/MG338Raise"
+mg338/Aim	"Sounds/Weapons/Slot8/MG338/MG338Aim"
+mg338/Lower "Sounds/Weapons/Slot8/MG338/MG338Lower.wav"
+mg338/LidOpen	"Sounds/Weapons/Slot8/MG338/MG338LidRaise"
+mg338/BeltClear	"Sounds/Weapons/Slot8/MG338/MG338BeltClear"
+mg338/Clear	"Sounds/Weapons/Slot8/MG338/MG338Clear"
+mg338/ClearClose	"Sounds/Weapons/Slot8/MG338/MG338ClearClose"
+mg338/BoxOff	"Sounds/Weapons/Slot8/MG338/MG338BoxOff"
+mg338/BoxOn	"Sounds/Weapons/Slot8/MG338/MG338BoxOn"
+mg338/BeltPlace	"Sounds/Weapons/Slot8/MG338/MG338BeltPlace"
+mg338/LidClose	"Sounds/Weapons/Slot8/MG338/MG338LidClose"
+mg338/BoltBack	"Sounds/Weapons/Slot8/MG338/MG338BoltBack"
+mg338/BoltForward	"Sounds/Weapons/Slot8/MG338/MG338BoltForward"
+mg338/EndFoley	"Sounds/Weapons/Slot8/MG338/MG338EndFoley"

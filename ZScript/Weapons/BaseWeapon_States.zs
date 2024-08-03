@@ -18,7 +18,7 @@ class CODWeapon : Weapon
 		SMG and Shotgun class weapons have 6 tic delay
 		Rifle, DMR, and Sniper weapons have 12 tic delay
 		Assault Rifle and Battle Rifle class weapons have 10 tic delay
-		LMGs and above have 18 tic delay.
+		LMGs and above have 16 tic delay.
 		*/
 		
 		//Dummy state for loading alternative sprites into virtual memory
