@@ -27,6 +27,7 @@ class COD_Makarov : CODWeapon
 		+WEAPON.AMMO_OPTIONAL;
 		+WEAPON.NOAUTOFIRE;
 		
+		CODWeapon.PlaySpeed 0.95;
 		CODWeapon.SlotType 2;
 		CODWeapon.InfoGraphics "WLLUGER", "ICLUGERN", "ICLUGERU", "WLLUGER";
 	}

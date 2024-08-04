@@ -354,25 +354,34 @@ class Z_NashMove : CustomInventory
 				// bump up the player's speed to compensate for the deceleration
 				// TO DO: math here is shit and wrong, please fix
 				double s = 0.7 + (1.1 - DECEL_MULT); //1.0
+				double mod = 1;
 				
+				//[Pop] Initialize the base value
 				s *= 2;
 				
-				//[Pop] TODO, implement dynamic adjustments to this based on held weapon.
-				Owner.A_SetSpeed(s * 1);
-				//[Pop] Handle movement boosts here. IE Stims, holsters gun, etc.
-				if(Owner.CountInv("HolsterToken"))
+				//[Pop] Handle movement boosts here at some point if needed. IE Stims, holsters gun, etc.
+				
+				//[Pop] This is the main magic with handling how fast players can move with weapons.
+				//If not a CODWeapon, is ignored.
+				if(Owner.Player.ReadyWeapon)
 				{
-					Owner.A_SetSpeed(s * 1.5);
+					let wpn = CODWeapon(Owner.Player.ReadyWeapon);
+					if(wpn)
+					{
+						mod = wpn.GunSpeedMod;
+					}
 				}
 				//[Pop] Handle movement reductions here. IE Stuns or heavy damage.
 				if(Owner.CountInv("Stunner"))
 				{
-					Owner.A_SetSpeed(s * 0.4);
+					mod = mod * 0.4;
 				}
 				if(Owner.CountInv("IsProne"))
 				{
-					Owner.A_SetSpeed(s * 0.2);
+					mod = mod * 0.2;
 				}
+				
+				Owner.A_SetSpeed(s * mod);
 				
 				Owner.vel.x *= DECEL_MULT;
 				Owner.vel.y *= DECEL_MULT;

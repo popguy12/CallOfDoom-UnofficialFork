@@ -27,6 +27,7 @@ class COD_USP45 : CODWeapon
 		+WEAPON.AMMO_OPTIONAL;
 		+WEAPON.NOAUTOFIRE;
 		
+		CODWeapon.PlaySpeed 0.95;
 		CODWeapon.SlotType 2;
 		CODWeapon.InfoGraphics "WLW99", "ICW99N", "ICW99U", "ISUSP45";
 	}

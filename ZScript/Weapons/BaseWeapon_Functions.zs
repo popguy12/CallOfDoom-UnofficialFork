@@ -308,6 +308,8 @@ extend class CODWeapon
 		Weapon.BobSpeed 2.4;
 		Weapon.BobStyle "InverseSmooth";
 		Weapon.WeaponScaleX 1.2;
+		
+		CODWeapon.PlaySpeed 1;
 		+DONTGIB;
 		+WEAPON.NOAUTOFIRE;
 	}

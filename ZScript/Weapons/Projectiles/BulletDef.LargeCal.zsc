@@ -57,3 +57,13 @@ class COD_127x55mm : COD_Projectile
 		Obituary "";
 	}
 }
+
+class COD_338Lapua : COD_Projectile
+{
+	Default
+	{
+		COD_Projectile.BaseDamage 61;
+		COD_Projectile.RipperCount 5;
+		Obituary "";
+	}
+}

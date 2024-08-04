@@ -27,6 +27,7 @@ class COD_S1100CB : CODWeapon
 		+WEAPON.AMMO_OPTIONAL;
 		-WEAPON.NOAUTOFIRE;
 		
+		CODWeapon.PlaySpeed 0.85;
 		CODWeapon.SlotType 1;
 		CODWeapon.InfoGraphics "ISMP34", "ICM3GN", "ICM3GU", "WLM3G";
 	}

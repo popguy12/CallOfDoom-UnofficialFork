@@ -26,6 +26,7 @@ class COD_SKS : CODWeapon
 		+WEAPON.NOALERT;
 		+WEAPON.AMMO_OPTIONAL;
 		
+		CODWeapon.PlaySpeed 0.75;
 		CODWeapon.SlotType 1;
 		CODWeapon.InfoGraphics "ISSKS", "ICSKSN", "ICSKSU", "WLSKS";
 	}

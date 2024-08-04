@@ -26,6 +26,7 @@ class COD_M1897 : CODWeapon
 		+WEAPON.NOALERT;
 		+WEAPON.AMMO_OPTIONAL;
 		
+		CODWeapon.PlaySpeed 0.8;
 		CODWeapon.SlotType 1;
 		CODWeapon.InfoGraphics "ISM1897", "ICM1897N", "ICM1897U", "WLM1897";
 	}
