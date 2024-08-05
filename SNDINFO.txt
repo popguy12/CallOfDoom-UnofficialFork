@@ -228,6 +228,45 @@ trn/shell2
 trn/shell3
 }
 
+//Model 30
+m30/raise	"Sounds/Weapons/Slot3/M30Drilling/M30Raise"
+m30/lower	"Sounds/Weapons/Slot3/M30Drilling/M30Lower"
+m30/open	"Sounds/Weapons/Slot3/M30Drilling/M30Open"
+m30/close	"Sounds/Weapons/Slot3/M30Drilling/M30Close"
+
+m30/fire1	"Sounds/Weapons/Slot3/M30Drilling/Fire/M30Fire1.wav"
+m30/fire2	"Sounds/Weapons/Slot3/M30Drilling/Fire/M30Fire2.wav"
+m30/fire3	"Sounds/Weapons/Slot3/M30Drilling/Fire/M30Fire3.wav"
+m30/fire4	"Sounds/Weapons/Slot3/M30Drilling/Fire/M30Fire4.wav"
+m30/fire5	"Sounds/Weapons/Slot3/M30Drilling/Fire/M30Fire5.wav"
+m30/fire6	"Sounds/Weapons/Slot3/M30Drilling/Fire/M30Fire6.wav"
+$random m30/fire
+{
+m30/fire1
+m30/fire2
+m30/fire3
+m30/fire4
+m30/fire5
+m30/fire6
+}
+
+m30/fireadd1	"Sounds/Weapons/Slot3/M30Drilling/FireAdd/M30FireAdd1.wav"
+m30/fireadd2	"Sounds/Weapons/Slot3/M30Drilling/FireAdd/M30FireAdd2.wav"
+m30/fireadd3	"Sounds/Weapons/Slot3/M30Drilling/FireAdd/M30FireAdd3.wav"
+m30/fireadd4	"Sounds/Weapons/Slot3/M30Drilling/FireAdd/M30FireAdd4.wav"
+m30/fireadd5	"Sounds/Weapons/Slot3/M30Drilling/FireAdd/M30FireAdd5.wav"
+m30/fireadd6	"Sounds/Weapons/Slot3/M30Drilling/FireAdd/M30FireAdd6.wav"
+$random m30/fireAdd
+{
+m30/fireAdd1
+m30/fireAdd2
+m30/fireAdd3
+m30/fireAdd4
+m30/fireAdd5
+m30/fireAdd6
+}
+m30/shell	"Sounds/Weapons/Slot3/M30Drilling/M30Shell"
+
 //SKS
 SKS/raise	"Sounds/Weapons/Slot4/SKS/SKSUp.wav"
 SKS/lower	"Sounds/Weapons/Slot4/SKS/SKSDown.wav"

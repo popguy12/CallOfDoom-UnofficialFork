@@ -35,6 +35,7 @@ class COD_DummyActor : Actor{}
 #include "ZScript/Weapons/Slot2/S1100.zsc"
 
 #include "ZScript/Weapons/Slot3/M1897.zsc"
+#include "ZScript/Weapons/Slot3/Model30.zsc"
 
 #include "ZScript/Weapons/Slot4/SKS.zsc"
 

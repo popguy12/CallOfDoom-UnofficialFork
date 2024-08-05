@@ -16,6 +16,14 @@ Class ShotgunSpawner : RandomSpawner replaces Shotgun
 	}
 }
 
+Class SuperShotgunSpawner : RandomSpawner replaces SuperShotgun
+{
+	Default
+	{
+		DropItem "COD_Model30", 255, 1;
+	}
+}
+
 Class ChaingunSpawner : RandomSpawner replaces chaingun
 {
 	Default
