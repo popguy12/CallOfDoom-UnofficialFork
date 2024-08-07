@@ -19,3 +19,7 @@ defaultbind LALT +Prone
 addmenukey "Kick" Kick
 alias Kick "use QuickKick"
 defaultbind Q +Kick
+
+addmenukey "Weapon Attachment" WepAttach
+alias WepAttach "use SwapAttachment"
+defaultbind B +WepAttach

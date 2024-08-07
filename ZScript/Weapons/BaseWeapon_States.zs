@@ -31,6 +31,10 @@ class CODWeapon : Weapon
 		Fire:
 			TNT1 A 1;
 			Goto WeaponReady;
+		
+		User1: //replaces BD Weapon Special (which is firemode here) attachment swap will have to be handled on a newly bound one
+			TNT1 A 1;
+			Goto WeaponReady;
 			
 		//Special Handling States
 		User4: //Fake Deselect and GoTo NVToggle
@@ -137,7 +141,11 @@ class CODWeapon : Weapon
 			Goto Ready;
 		
 		FragGrenade:
-			TNT1 A 0 A_ZoomFactor(1);
+			TNT1 A 0
+			{
+				A_ZoomFactor(1);
+				A_ClearOverlays(-2, -2);
+			}
 			TNT1 A 0 A_TakeInventory("AimingToken");
 			FRGA ABCDEFGHI 1;
 			FRGA JK 2;
@@ -158,7 +166,11 @@ class CODWeapon : Weapon
 			Goto Ready;
 		
 		StunGrenade:
-			TNT1 A 0 A_ZoomFactor(1);
+			TNT1 A 0
+			{
+				A_ZoomFactor(1);
+				A_ClearOverlays(-2, -2);
+			}
 			TNT1 A 0 A_TakeInventory("AimingToken");
 			FRGA ABCDEFGHI 1;
 			FRGA JK 2;
@@ -404,6 +416,14 @@ class ThrowGrenade : Inventory
 }
 
 class ThrowBang : Inventory
+{
+	Default
+	{
+		Inventory.MaxAmount 1;
+	}
+}
+
+class DoAttachment : Inventory
 {
 	Default
 	{

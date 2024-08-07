@@ -95,6 +95,7 @@ class CODPlayer : DoomPlayer
 		Player.StartItem "HolsterYourShitPrivate", 1;
 		Player.StartItem "QuickProne", 1;
 		Player.StartItem "QuickKick", 1;
+		Player.StartItem "SwapAttachment", 1;
 		
 		Player.AttackZOffset 16;
 		Player.ViewBobSpeed 15;

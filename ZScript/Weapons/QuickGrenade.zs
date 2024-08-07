@@ -331,3 +331,49 @@ Class HolsterYourShitPrivate : CustomInventory
 			fail;
 	}
 }
+
+Class SwapAttachment : CustomInventory
+{
+	int CooldownTimer;
+	
+	override void DoEffect()
+	{
+		super.DoEffect();
+		if (CooldownTimer < 34)
+		{
+			CooldownTimer++;
+		}
+		if (CooldownTimer == 34)
+		{
+			CooldownTimer = 35;
+		}
+	}
+	
+	Default
+	{
+		Inventory.Amount 1;
+		Inventory.MaxAmount 1;
+		+INVENTORY.UNDROPPABLE;
+	}
+	
+	States 
+	{
+		Use:
+			TNT1 A 0 
+			{
+				if (invoker.CooldownTimer >= 35)
+				{
+					invoker.CooldownTimer = invoker.CooldownTimer - 35;
+					invoker.Owner.A_GiveInventory("DoAttachment");
+				}
+			}
+			TNT1 A 5
+			{
+				//Delete here automatically so i dont have to clutter the weapon code
+				//Maybe i should do this for other stuff too
+				invoker.Owner.A_TakeInventory("DoAttachment");
+			}
+			TNT1 A 30;
+			fail;
+	}
+}

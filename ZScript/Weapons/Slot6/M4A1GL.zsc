@@ -67,24 +67,40 @@ class COD_M4A1GL : CODWeapon
 	
 	Deselect:
 		TNT1 A 0 A_StartSound("m4gl/lower", 0, CHANF_OVERLAP, 1);
-		TNT1 A 0 A_ZoomFactor(1);
+		TNT1 A 0
+		{
+			A_ZoomFactor(1);
+			A_ClearOverlays(-2, -2);
+		}
 		M27A FJIHGEDCBA 1;
 		PSTG A 0 A_Lower(25);
 		Wait;
 	User4:
 		M27A FJIHGED 1;
-		TNT1 A 0 A_ZoomFactor(1);
+		TNT1 A 0
+		{
+			A_ZoomFactor(1);
+			A_ClearOverlays(-2, -2);
+		}
 		TNT1 A 0 A_TakeInventory("AimingToken");
 		M27A CBA 1;
 		Goto NVToggle;
 	User2:
 		M27A FJIHGED 1;
-		TNT1 A 0 A_ZoomFactor(1);
+		TNT1 A 0
+		{
+			A_ZoomFactor(1);
+			A_ClearOverlays(-2, -2);
+		}
 		TNT1 A 0 A_TakeInventory("AimingToken");
 		M27A CBA 1;
 		Goto RadToggle;
 	User3:
-		TNT1 A 0 A_ZoomFactor(1);
+		TNT1 A 0
+		{
+			A_ZoomFactor(1);
+			A_ClearOverlays(-2, -2);
+		}
 		TNT1 A 0 A_TakeInventory("AimingToken");
 		Goto KnifeAttack;
 	Select:
@@ -101,16 +117,31 @@ class COD_M4A1GL : CODWeapon
 		M27A ABCDEGHIJF 1;
 	WeaponReady:
 		M27A F 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER2 | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
+		TNT1 A 0 A_JumpIfInventory("DoAttachment", 1, "AttachmentSwap");
+		TNT1 A 0 A_JumpIfInventory("COD_M4A1_UBMode", 1, "WeaponReadyGL");
 		TNT1 A 0 A_JumpIfInventory("ThrowGrenade", 1, "FragGrenade");
 		TNT1 A 0 A_JumpIfInventory("ThrowBang", 1, "StunGrenade");
 		Loop;
 	WeaponReady2:
 		M27C D 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER2 | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
+		TNT1 A 0 A_JumpIfInventory("COD_M4A1_UBMode", 1, "WeaponReadyGL2");
+		TNT1 A 0 A_JumpIfInventory("ThrowGrenade", 1, "FragGrenade");
+		TNT1 A 0 A_JumpIfInventory("ThrowBang", 1, "StunGrenade");
+		Loop;
+	WeaponReadyGL:
+		M27J F 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER2 | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
+		TNT1 A 0 A_JumpIfInventory("DoAttachment", 1, "AttachmentSwap");
+		TNT1 A 0 A_JumpIfInventory("ThrowGrenade", 1, "FragGrenade");
+		TNT1 A 0 A_JumpIfInventory("ThrowBang", 1, "StunGrenade");
+		Loop;
+	WeaponReadyGL2:
+		M27I D 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER2 | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
 		TNT1 A 0 A_JumpIfInventory("ThrowGrenade", 1, "FragGrenade");
 		TNT1 A 0 A_JumpIfInventory("ThrowBang", 1, "StunGrenade");
 		Loop;
 	Fire:
 		TNT1 A 0 A_JumpIfInventory("AimingToken", 1, "Fire2");
+		TNT1 A 0 A_JumpIfInventory("COD_M4A1_UBMode", 1, "FireGL");
 		TNT1 A 0 A_JumpIf(CountInv("COD_M4A1_Mag") == 0, "DryFire");
 		M27B A 1 FireWeapon();
 		TNT1 A 0 A_ZoomFactor(1);
@@ -124,19 +155,40 @@ class COD_M4A1GL : CODWeapon
 		M27D BC 1;
 		M27D DE 1 A_ReFire("Fire2");
 		Goto WeaponReady2;
+	FireGL:
+		TNT1 A 0 A_JumpIfInventory("AimingToken", 1, "FireGL2");
+		TNT1 A 0 A_JumpIf(CountInv("COD_M4A1_UBMag") == 0, "DryFire");
+		M27K A 1 FireWeapon();
+		TNT1 A 0 A_ZoomFactor(1);
+		M27K BCDE 1;
+		Goto WeaponReadyGL;
+	FireGL2:
+		TNT1 A 0 A_JumpIf(CountInv("COD_M4A1_UBMag") == 0, "DryFire2");
+		M27N A 1 FireWeapon();
+		TNT1 A 0 A_ZoomFactor(1.2);
+		M27N BCDE 1;
+		Goto WeaponReadyGL2;
 	AltFire:
 		TNT1 A 0 A_JumpIfInventory("AimingToken", 1, "AltFire2");
 		TNT1 A 0 A_GiveInventory("AimingToken");
 		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP);
 		M27C ABC 1;
-		TNT1 A 0 A_ZoomFactor(1.2);
+		TNT1 A 0
+		{
+			A_ZoomFactor(1.2);
+			A_Overlay(-2, "Reticle");
+		}
 		M27C EFGD 1;
 		Goto WeaponReady2;
 	AltFire2:
 		TNT1 A 0 A_TakeInventory("AimingToken");
 		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP);
 		M27C DGFE 1;
-		TNT1 A 0 A_ZoomFactor(1);
+		TNT1 A 0
+		{
+			A_ZoomFactor(1);
+			A_ClearOverlays(-2, -2);
+		}
 		M27C CBA 1;
 		Goto WeaponReady;
 	
@@ -150,9 +202,14 @@ class COD_M4A1GL : CODWeapon
 	UnAimReload:
 		TNT1 A 0 A_TakeInventory("AimingToken");
 		M27C DGFE 1;
-		TNT1 A 0 A_ZoomFactor(1);
+		TNT1 A 0
+		{
+			A_ZoomFactor(1);
+			A_ClearOverlays(-2, -2);
+		}
 		M27C CBA 1;
 	Reload:
+		TNT1 A 0 A_JumpIfInventory("COD_M4A1_UBMode", 1, "ReloadGL");
 		TNT1 A 0 A_JumpIf(CountInv("AimingToken") == 1, "UnAimReload");
 		TNT1 A 0 A_JumpIf(CountInv("COD_M4A1_Mag") == 0 && CountInv("Clip") == 0, "WeaponReadyEmpty");
 		TNT1 A 0 A_JumpIf(CountInv("COD_M4A1_Mag") == 61 || CountInv("Clip") == 0, "WeaponReady");
@@ -204,10 +261,42 @@ class COD_M4A1GL : CODWeapon
 		//N27H KLMNOP 1; [Pop] SOME FUCKING REASON THESE ARENT RENDERING?
 		//IS THE SOURCEPORT STUPID? 
 		Goto WeaponReady;
+	UnAimReloadGL:
+		TNT1 A 0 A_TakeInventory("AimingToken");
+		M27I FHGED 1;
+		TNT1 A 0
+		{
+			A_ZoomFactor(1);
+			A_ClearOverlays(-2, -2);
+		}
+		M27I CBA 1;
+	ReloadGL:
+		TNT1 A 0 A_JumpIf(CountInv("AimingToken") == 1, "UnAimReloadGL");
+		TNT1 A 0 A_JumpIf(CountInv("COD_M4A1_UBMag") == 0 && CountInv("RocketAmmo") == 0, "WeaponReadyGL");
+		TNT1 A 0 A_JumpIf(CountInv("COD_M4A1_UBMag") == 1 || CountInv("RocketAmmo") == 0, "WeaponReadyGL");
+		M27L ABCDEFGHIJKLMNOPQRSTUVWXYZ 1;
+		M27M ABCDE 1;
+		TNT1 A 0 COD_AmmoIntoMag("COD_M4A1_UBMag", "RocketAmmo", 1, 1);
+		M27M FGHIJKLMNOPQRS 1;
+		Goto WeaponReadyGL;
+		
  	Spawn:
 		B002 O -1;
 		Stop;
 	
+	Reticle:
+		TNT1 A 0;
+		TNT1 A 0
+		{
+			A_OverlayFlags(-2, PSPF_ADDBOB, false);
+		}
+		G36C X 35;
+		Loop;
+	AttachmentSwap:
+		TNT1 A 0;
+		TNT1 A 0 A_GiveInventory("COD_M4A1_UBMode", 1);
+		M27J ABCDF 1;
+		Goto WeaponReadyGL;
 	}
 }
 
@@ -219,5 +308,34 @@ Class COD_M4A1_Mag : Ammo
 		Inventory.MaxAmount 61;
 		Ammo.BackpackAmount 0;
 		Ammo.BackpackMaxAmount 61;
+	}
+}
+
+Class COD_M4A1_UBMag : Ammo
+{
+	Default
+	{
+		Inventory.Amount 0;
+		Inventory.MaxAmount 1;
+		Ammo.BackpackAmount 0;
+		Ammo.BackpackMaxAmount 1;
+	}
+}
+
+Class COD_M4A1_Mode : Inventory
+{
+	Default
+	{
+		Inventory.Amount 0;
+		Inventory.MaxAmount 1;
+	}
+}
+
+Class COD_M4A1_UBMode : Inventory
+{
+	Default
+	{
+		Inventory.Amount 0;
+		Inventory.MaxAmount 1;
 	}
 }
