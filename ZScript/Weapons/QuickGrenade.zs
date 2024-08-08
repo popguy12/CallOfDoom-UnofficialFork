@@ -333,19 +333,19 @@ Class HolsterYourShitPrivate : CustomInventory
 }
 
 Class SwapAttachment : CustomInventory
-{
+{	
 	int CooldownTimer;
 	
 	override void DoEffect()
 	{
 		super.DoEffect();
-		if (CooldownTimer < 34)
+		if (CooldownTimer < 19)
 		{
 			CooldownTimer++;
 		}
-		if (CooldownTimer == 34)
+		if (CooldownTimer == 19)
 		{
-			CooldownTimer = 35;
+			CooldownTimer = 20;
 		}
 	}
 	
@@ -361,19 +361,13 @@ Class SwapAttachment : CustomInventory
 		Use:
 			TNT1 A 0 
 			{
-				if (invoker.CooldownTimer >= 35)
+				if (invoker.CooldownTimer >= 20)
 				{
-					invoker.CooldownTimer = invoker.CooldownTimer - 35;
-					invoker.Owner.A_GiveInventory("DoAttachment");
+					invoker.CooldownTimer = invoker.CooldownTimer - 20;
+					invoker.Owner.A_GiveInventory("DoAttachment", 1);
 				}
 			}
-			TNT1 A 5
-			{
-				//Delete here automatically so i dont have to clutter the weapon code
-				//Maybe i should do this for other stuff too
-				invoker.Owner.A_TakeInventory("DoAttachment");
-			}
-			TNT1 A 30;
+			TNT1 A 20;
 			fail;
 	}
 }

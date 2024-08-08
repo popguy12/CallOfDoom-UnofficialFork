@@ -310,6 +310,12 @@ M4GL/GLClose	"Sounds/Weapons/Slot6/M4A1GL/M4A1GLClose"
 M4GL/fire1	"Sounds/Weapons/Slot6/M4A1GL/M4A1Fire1"
 M4GL/fire2	"Sounds/Weapons/Slot6/M4A1GL/M4A1Fire2"
 
+M4GL/GL/Fire	"Sounds/Weapons/Slot6/M4A1GL/GL/M4GLFire"
+M4GL/GL/Open	"Sounds/Weapons/Slot6/M4A1GL/GL/M4GLOpen"
+M4GL/GL/ShellOut	"Sounds/Weapons/Slot6/M4A1GL/GL/M4ShellOut"
+M4GL/GL/ShellIn	"Sounds/Weapons/Slot6/M4A1GL/GL/M4ShellIn"
+M4GL/GL/Close	"Sounds/Weapons/Slot6/M4A1GL/GL/M4GLClose"
+
 //Auto88C
 A88/raise	"Sounds/Weapons/Slot7/Auto88/Auto88Raise.wav"
 A88/lower	"Sounds/Weapons/Slot7/Auto88/Auto88Lower.wav"
