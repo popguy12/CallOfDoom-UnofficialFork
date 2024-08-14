@@ -108,10 +108,23 @@ class BD_Footsteps : Actor
 				stepsound = GetFlatSound(Texman.GetName(toFollow.floorpic));
 			//sound volume is amplified by speed.
 			double soundVolume = f_vol * playerVel2D * 0.12; //multiplied by 0.12 because raw value is too high to be used as volume
-			
 			//play the sound if it's non-null
 			if (stepsound != "none")
+			{
 				toFollow.A_StartSound(stepsound, CHAN_AUTO, CHANF_LOCAL|CHANF_UI, volume:soundVolume);
+				if(tofollow.CountInv("COD_AT4"))
+				{
+					toFollow.A_StartSound("uni/gear/big", CHAN_AUTO, CHANF_LOCAL|CHANF_UI, volume:soundVolume / 2);
+				}
+				if(tofollow.CountInv("COD_C4Ammo")) //[Pop] also check Claymore and Phone later.
+				{
+					toFollow.A_StartSound("uni/gear/medium", CHAN_AUTO, CHANF_LOCAL|CHANF_UI, volume:soundVolume / 4);
+				}
+				if(tofollow.CountInv("GrenadeAmmo") || tofollow.CountInv("BangAmmo"))
+				{
+					toFollow.A_StartSound("uni/gear/small", CHAN_AUTO, CHANF_LOCAL|CHANF_UI, volume:soundVolume);
+				}
+			}
 			
 			//delay CVAR value is inverted, where 1.0 is default, higher means more frequent, smaller means less frequent
 			double dmul = (2.1 - Clamp(f_delay,0.1,2));

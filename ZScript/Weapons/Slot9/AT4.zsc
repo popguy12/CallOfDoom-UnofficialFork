@@ -1,4 +1,4 @@
-class COD_Medkit : CODWeapon
+class COD_AT4 : CODWeapon
 {
  	Default
 	{
@@ -6,7 +6,7 @@ class COD_Medkit : CODWeapon
 		Weapon.AmmoUse 0;
 		Weapon.AmmoGive 0;
 		
-		Weapon.SlotNumber 0;
+		Weapon.SlotNumber 9;
 		Weapon.SlotPriority 3;
 		
 		/*
@@ -17,10 +17,11 @@ class COD_Medkit : CODWeapon
 		*/
 		
 		Obituary "$OB_MPPISTOL";
-		Inventory.Pickupmessage "[0] AT4 Rocket Launcher";
-		Tag "Medkit";
+		Inventory.Pickupmessage "[9] AT4 Rocket Launcher";
+		Tag "AT4";
 		Scale 0.16;
 		Inventory.PickupSound "weapons/pistol/pickup";
+		Inventory.MaxAmount 5; //[Pop] the magic behind stacking multiple, might decrease later
 		+WEAPON.NOALERT;
 		+WEAPON.AMMO_OPTIONAL;
 		+WEAPON.NOAUTOFIRE;
@@ -29,7 +30,7 @@ class COD_Medkit : CODWeapon
 		CODWeapon.PlaySpeed 0.8;
 		CODWeapon.PlaySpeed 0.8;
 		CODWeapon.SlotType 3;
-		CODWeapon.InfoGraphics "ISMEDI", "ICUSSWN", "ICUSSWU", "WLMEDI";
+		CODWeapon.InfoGraphics "ISAT4", "ICRPGN", "ICRPGU", "WLUSS411";
 	}
 	
 	action void FireWeapon()
@@ -63,7 +64,23 @@ class COD_Medkit : CODWeapon
 		Wait;
 	Ready:
 		TNT1 A 5;
-		U45A ABCDEGHIJKLMNOPQRSTUVWXYF 1;
+		TNT1 A 0 A_JumpIfInventory("AT4ArmToken", 1, "ReadyAlt");
+		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP);
+		U45A AB 1;
+		TNT1 A 0 A_StartSound("AT4/Arm", 0, CHANF_OVERLAP);
+		U45A CD 1;
+		TNT1 A 0 A_StartSound("AT4/Flip", 0, CHANF_OVERLAP);
+		U45A EGHIJKLMNO 1;
+		TNT1 A 0 A_StartSound("AT4/Arm", 0, CHANF_OVERLAP);
+		U45A PQ 1;
+		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP);
+		U45A RSTUVWXYF 1;
+		TNT1 A 0 A_GiveInventory("AT4ArmToken");
+		Goto WeaponReady;
+	ReadyAlt:
+		TNT1 A 0;
+		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP);
+		U45E ABCDEFG 1;
 	WeaponReady:
 		U45A F 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER2 | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
 		TNT1 A 0 A_JumpIfInventory("ThrowGrenade", 1, "FragGrenade");
@@ -75,28 +92,47 @@ class COD_Medkit : CODWeapon
 		TNT1 A 0 A_JumpIfInventory("ThrowBang", 1, "StunGrenade");
 		Loop;
 	Fire:
-		TNT1 A 0 A_JumpIfInventory("MedicalToken", 1, "Fire2");
-		TNT1 A 0 A_JumpIf(CountInv("COD_medkit_ammo") < 10, "DryFire");
+		TNT1 A 0 A_JumpIfInventory("AimingToken", 1, "SkipAim");
+		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP);
+		TNT1 A 0 A_StartSound("at4/aim", 0, CHANF_OVERLAP);
+		U45C ABCEFGHIJKLMNOD 1;
 		TNT1 A 0 A_GiveInventory("AimingToken", 1);
-		TNT1 A 0 A_StartSound("medkit/open", 0, CHANF_OVERLAP, 1);
-		U45D A 1; //do fire
+	SkipAim:
+		TNT1 A 0 A_StartSound("AT4/Fire", 0, CHANF_OVERLAP);
+		U45D A 1 A_FireMissile();
 		U45D BCDEFGHIJK 1;
+		U45C ONMLKJIHGFECBA 1;
+		U45E GFEDCBA 1;
+		TNT1 A 0 A_TakeInventory("AimingToken", 1);
+		TNT1 A 0 A_TakeInventory("AT4ArmToken", 1);
+		TNT1 A 0 A_TakeInventory("COD_AT4", 1);
 		Goto Ready;
-	Fire2:
-		TNT1 A 0;
-		VSTA YXWVUTS 1;
-		Goto WeaponReady;
 	AltFire:
 		TNT1 A 0;
-		Goto DryFire;
+		TNT1 A 0 A_JumpIfInventory("AimingToken", 1, "AltFire2");
+		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP);
+		TNT1 A 0 A_StartSound("at4/aim", 0, CHANF_OVERLAP);
+		U45C ABCEFGHIJKLMNOD 1;
+		TNT1 A 0 A_GiveInventory("AimingToken", 1);
+		Goto WeaponReady2;
 	AltFire2:
 		TNT1 A 0;
-		VSTA Z 1;
-		VSTB ABCD 1;
+		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP);
+		U45C ONMLKJIHGFECBA 1;
+		TNT1 A 0 A_TakeInventory("AimingToken", 1);
+		Goto WeaponReady;
 	
  	Spawn:
-		MDBG B -1;
+		B003 J -1; //K frame for empty
 		Stop;
 	
+	}
+}
+
+class AT4ArmToken : Inventory
+{
+	Default
+	{
+		Inventory.MaxAmount 1;
 	}
 }

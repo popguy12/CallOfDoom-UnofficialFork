@@ -34,6 +34,14 @@ Class ChaingunSpawner : RandomSpawner replaces chaingun
 	}
 }
 
+Class RocketSpawner : RandomSpawner replaces RocketLauncher
+{
+	Default
+	{
+		DropItem "COD_AT4", 255, 1;
+	}
+}
+
 Class PlasmaSpawner : RandomSpawner replaces PlasmaRifle
 {
 	Default
