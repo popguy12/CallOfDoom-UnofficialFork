@@ -114,7 +114,7 @@ class BD_Footsteps : Actor
 				toFollow.A_StartSound(stepsound, CHAN_AUTO, CHANF_LOCAL|CHANF_UI, volume:soundVolume);
 				if(tofollow.CountInv("COD_AT4"))
 				{
-					toFollow.A_StartSound("uni/gear/big", CHAN_AUTO, CHANF_LOCAL|CHANF_UI, volume:soundVolume / 2);
+					toFollow.A_StartSound("uni/gear/big", CHAN_AUTO, CHANF_LOCAL|CHANF_UI, volume:((soundVolume / 5) * tofollow.countinv("COD_AT4")));
 				}
 				if(tofollow.CountInv("COD_C4Ammo")) //[Pop] also check Claymore and Phone later.
 				{
