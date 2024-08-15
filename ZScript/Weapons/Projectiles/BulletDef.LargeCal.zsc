@@ -48,6 +48,17 @@ class COD_762x54R : COD_Projectile
 	}
 }
 
+class COD_93x74mmR : COD_Projectile
+{
+	Default
+	{
+		COD_Projectile.BaseDamage 90;
+		COD_Projectile.RipperCount 3;
+		Obituary "";
+	}
+}
+
+
 class COD_127x55mm : COD_Projectile
 {
 	Default
