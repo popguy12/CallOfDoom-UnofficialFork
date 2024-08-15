@@ -112,6 +112,10 @@ class BD_Footsteps : Actor
 			if (stepsound != "none")
 			{
 				toFollow.A_StartSound(stepsound, CHAN_AUTO, CHANF_LOCAL|CHANF_UI, volume:soundVolume);
+				if(tofollow.GetCrouchFactor() <= 0.5)
+				{
+					toFollow.A_StartSound("crouch/default", CHAN_AUTO, CHANF_LOCAL|CHANF_UI, volume:soundVolume * 0.75);
+				}
 				if(tofollow.CountInv("COD_AT4"))
 				{
 					toFollow.A_StartSound("uni/gear/big", CHAN_AUTO, CHANF_LOCAL|CHANF_UI, volume:((soundVolume / 5) * tofollow.countinv("COD_AT4")));

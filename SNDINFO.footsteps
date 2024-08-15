@@ -136,8 +136,14 @@ $random step/lava { step/lava1 step/lava2 step/lava3 step/lava4 }
 
 
 //Prone
-prone/default1			"Sounds/Footsteps/Prone/DSPRONE1.wav"
-prone/default2			"Sounds/Footsteps/Prone/DSPRONE2.wav"
-prone/default3			"Sounds/Footsteps/Prone/DSPRONE3.wav"
-prone/default4			"Sounds/Footsteps/Prone/DSPRONE4.wav"
+prone/default1	"Sounds/Footsteps/Prone/DSPRONE1.wav"
+prone/default2	"Sounds/Footsteps/Prone/DSPRONE2.wav"
+prone/default3	"Sounds/Footsteps/Prone/DSPRONE3.wav"
+prone/default4	"Sounds/Footsteps/Prone/DSPRONE4.wav"
 $random prone/default { prone/default1  prone/default2  prone/default3  prone/default4 }
+crouch/default1	"Sounds/Footsteps/crouch/DSCROUCH1.wav"
+crouch/default2	"Sounds/Footsteps/crouch/DSCROUCH2.wav"
+crouch/default3	"Sounds/Footsteps/crouch/DSCROUCH3.wav"
+crouch/default4	"Sounds/Footsteps/crouch/DSCROUCH4.wav"
+crouch/default5	"Sounds/Footsteps/crouch/DSCROUCH5.wav"
+$random crouch/default { crouch/default1  crouch/default2  crouch/default3  crouch/default4 crouch/default5}

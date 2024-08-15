@@ -97,24 +97,24 @@ class COD_Auto88 : CODWeapon
 		TNT1 A 12;
 		TAPA ABCDEGF 1;
 	WeaponReady:
-		TAPA F 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
+		TAPA F 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER2 | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
 		TNT1 A 0 A_JumpIf(CountInv("COD_Auto88_Mag") == 0, "WeaponReadyEmpty");
 		TNT1 A 0 A_JumpIfInventory("ThrowGrenade", 1, "FragGrenade");
 		TNT1 A 0 A_JumpIfInventory("ThrowBang", 1, "StunGrenade");
 		Loop;
 	WeaponReady2:
-		TAPC D 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
+		TAPC D 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER2 | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
 		TNT1 A 0 A_JumpIf(CountInv("COD_Auto88_mag") == 0, "WeaponReady2Empty");
 		TNT1 A 0 A_JumpIfInventory("ThrowGrenade", 1, "FragGrenade");
 		TNT1 A 0 A_JumpIfInventory("ThrowBang", 1, "StunGrenade");
 		Loop;
 	WeaponReadyEmpty:
-		TAPB C 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
+		TAPB C 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER2 | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
 		TNT1 A 0 A_JumpIfInventory("ThrowGrenade", 1, "FragGrenade");
 		TNT1 A 0 A_JumpIfInventory("ThrowBang", 1, "StunGrenade");
 		Loop;
 	WeaponReady2Empty:
-		TAPD C 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
+		TAPD C 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER2 | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
 		TNT1 A 0 A_JumpIfInventory("ThrowGrenade", 1, "FragGrenade");
 		TNT1 A 0 A_JumpIfInventory("ThrowBang", 1, "StunGrenade");
 		Loop;
