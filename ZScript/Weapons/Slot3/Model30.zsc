@@ -28,7 +28,7 @@ class COD_Model30 : CODWeapon
 		
 		CODWeapon.PlaySpeed 0.8;
 		CODWeapon.SlotType 1;
-		CODWeapon.InfoGraphics "ISM1897", "ICM1897N", "ICM1897U", "WLM1897";
+		CODWeapon.InfoGraphics "ISM30LD", "ICAA12N", "ICAA12U", "WLAA12";
 	}
 	
 	action void FireWeapon()
@@ -69,8 +69,8 @@ class COD_Model30 : CODWeapon
 		A_OverlayFlags(-3, PSPF_RENDERSTYLE, true);
 		A_OverlayRenderstyle(-3, STYLE_ADD);
 		
-		A_StartSound("m30/fire", 0, CHANF_OVERLAP, 1);
-		//A_StartSound("m30/fireadd", 0, CHANF_OVERLAP, 0.75);
+		A_StartSound("mg338/fire", 0, CHANF_OVERLAP, 1);
+		A_StartSound("m30/fireadd", 0, CHANF_OVERLAP, 0.75);
 		COD_FireBullets("COD_93x74mmR", 1, frandom(-0.1, 0.1), 0, 0, frandom(-0.1, 0.1));
 		A_SpawnItemEx("PlayerMuzzleFlash",30,0,45);
 		
@@ -117,8 +117,8 @@ class COD_Model30 : CODWeapon
 		Goto KnifeAttack;
 	User1:
 		TNT1 A 0;
-		AA2F ZYXW 1;
-		TNT1 A 0
+		AA2F ZYX 1;
+		AA2F W 1
 		{
 			if(CountInv("COD_M30_UBMode"))
 			{
@@ -130,6 +130,7 @@ class COD_Model30 : CODWeapon
 				A_GiveInventory("COD_M30_UBMode");
 				invoker.AmmoType1 = "Clip";
 			}
+			A_StartSound("uni/slideflip", 0, CHANF_OVERLAP, 1);
 		}
 		AA2F XYZ 1;
 		Goto WeaponReady;
@@ -254,15 +255,32 @@ class COD_Model30 : CODWeapon
 		TNT1 A 0 A_JumpIf(CountInv("COD_M30_UB") == 1 || CountInv("Clip") == 0, "WeaponReady");
 		TNT1 A 0 A_TakeInventory("AimingToken");
 		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP, 1);
-		AA2E ABCDEFG 1;
-		AA2G ABCDEFGHIJKLMNOPQRSTU 1;
+		AA2E ABCDEF 1;
+		TNT1 A 0 A_StartSound("m30/open", 0, CHANF_OVERLAP, 1);
+		AA2E GH 1;
+		AA2G ABC 1;
+		TNT1 A 0 A_StartSound("uni/cartfoley", 0, CHANF_OVERLAP, 1);
+		AA2G DEFG 2;
+		AA2G HIJ 1;
+		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP, 1);
+		AA2G KLMNOP 1;
+		TNT1 A 0 A_StartSound("uni/cartfoley", 0, CHANF_OVERLAP, 1);
+		AA2G QR 2;
+		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP, 1);
+		AA2G STU 2;
+		TNT1 A 0 A_StartSound("mosin/shell", 0, CHANF_OVERLAP, 1);
 		TNT1 A 0 COD_AmmoIntoMag("COD_M30_UB", "Clip", 1, 1);
-		AA2G VWXYZ 1;
-		AA2F KLMNOPQRSTUVWXYZ 1;
+		AA2G VW 2;
+		TNT1 A 0 A_StartSound("uni/clothfoleys", 0, CHANF_OVERLAP, 1);
+		AA2G XYZ 1;
+		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP, 1);
+		AA2F KLMNO 1;
+		TNT1 A 0 A_StartSound("m30/close", 0, CHANF_OVERLAP, 1);
+		AA2F PQRSTUVWXYZ 1;
 		TNT1 A 0 A_JumpIf(CountInv("Shell") == 0, "ReloadEnd");
 		Goto WeaponReady;
  	Spawn:
-		B002 I -1;
+		B001 S -1;
 		Stop;
 	
 	}
