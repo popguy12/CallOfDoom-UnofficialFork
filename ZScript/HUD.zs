@@ -1,18 +1,14 @@
 Class COD_HUD : BaseStatusBar
 {
-	/*
+	
 	HUDFont hfntS;
 	HUDFont hfnt;
-	HUDFont hfntB;
-	*/
+	
     Override void Init()
     {
         SetSize(0, 320, 240);
-		/*
-		hfntS = HUDFont.Create("INDEXFONT");
-		hfnt = HUDFont.Create(smallfont);
-		hfntB = HUDFont.Create(BIGFONT);
-		*/
+		hfntS = HUDFont.Create("INDEXFONT_COD");
+		hfnt = HUDFont.Create("HUDFONT_COD");
 		Super.Init();
 	}
 	
