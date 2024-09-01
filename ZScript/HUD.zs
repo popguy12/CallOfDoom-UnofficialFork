@@ -1,12 +1,26 @@
 Class COD_HUD : BaseStatusBar
 {
+	//only interpolating health and armor
+	DynamicValueInterpolator mHealthBar;
+	DynamicValueInterpolator mArmorBar;
 	
 	HUDFont hfntS;
 	HUDFont hfnt;
 	
+	override void Tick()
+	{
+		Super.Tick();
+		mHealthBar.Update(CPlayer.health);
+		mArmorBar.Update(GetArmorAmount());
+	}
+	
     Override void Init()
     {
         SetSize(0, 320, 240);
+		
+		mHealthBar = DynamicValueInterpolator.Create(0, 0.25, 1, 10);
+		mArmorBar = DynamicValueInterpolator.Create(0, 0.25, 1, 10);
+		
 		hfntS = HUDFont.Create("INDEXFONT_COD");
 		hfnt = HUDFont.Create("HUDFONT_COD");
 		Super.Init();
@@ -18,7 +32,7 @@ Class COD_HUD : BaseStatusBar
         
         BeginStatusBar(true);
 		
-		//dummy cut screenshot from cod for reference
+		//This is the Background reference image, an actual graphic will be actually put in DrawMainBar
 		DrawImage("HUDPIC", (160,120), DI_SCREEN_CENTER | DI_ITEM_CENTER, 1);
 		
         DrawMainBar();
@@ -27,7 +41,66 @@ Class COD_HUD : BaseStatusBar
 	//[Pop] this is the actual function that draws all the hud stuff
     void DrawMainBar()
     {
-		DrawTexture(GetMugShot(5), (100, 100), DI_ITEM_OFFSETS);
+		int health = mHealthBar.GetValue();
+		int armor = mArmorBar.GetValue();
+		
+		/*Bar will be split into 2 parts
+		first part drawn right here is all background elements, this way any
+		HUD bars and stuff can be drawn over it, and then a foreground graphic
+		drawn over that, which has detailing or whatever, like the health bar
+		outlines. Also that means that a less detailed hud can be swapped to on
+		the fly*/
+		
+		
+		//Gonna do the keys and level stats right here
+		DrawKeys("Card", (356, 26), 5, -8);
+        DrawKeys("Skull", (351, 27), 5, -8);
+		
+		if(GetAmountOnly("Backpack") > 0)
+		{
+			DrawImage("Graphics/HUDStuff/HUDGraphics/BackpackIcon.png", (-44.5,195.5), DI_ITEM_OFFSETS, 1, (-1,-1), (0.25,0.25));
+		}
+		
+		if(GetAmountOnly("IsCrouch") > 0)
+		{
+			DrawImage("Graphics/HUDStuff/HUDGraphics/CrouchIcon.png", (-18,182), DI_ITEM_OFFSETS, 1, (-1,-1), (0.25,0.25));
+		}
+		else if(GetAmountOnly("IsProne") > 0)
+		{
+			DrawImage("Graphics/HUDStuff/HUDGraphics/ProneIcon.png", (-18,182), DI_ITEM_OFFSETS, 1, (-1,-1), (0.25,0.25));
+		}
+		
+		//Health and Armor
+		DrawBar("HPBAR2", "HPBAR1", health, 100, (-35.8, 222), 0, 0, DI_ITEM_OFFSETS);
+		DrawBar("HPBAR3", "HPBAR1", health - 100, 100, (-35.8, 222), 0, 0, DI_ITEM_OFFSETS);
+		
+		if (CPlayer.ReadyWeapon != NULL)
+		{
+			let ammo1 = CPlayer.Readyweapon.ammo1;
+			let ammo2 = CPlayer.Readyweapon.ammo2;
+			
+			if (ammo1 && ammo2) //[Pop] If weapon has reloading or alternate ammo
+			{
+				int ammo1amount = ammo1.amount;
+				int ammo2amount = ammo2.amount;
+				
+				DrawString(hfnts, FormatNumber(ammo1amount, 0, 3), (358, 217.5), DI_TEXT_ALIGN_RIGHT);
+				DrawString(hfnts, FormatNumber(ammo2amount, 0, 3), (338, 217.5), DI_TEXT_ALIGN_RIGHT);
+			}
+			
+			let CODWEP = CODWeapon(CPlayer.ReadyWeapon);
+			TextureID icon = GetInventoryIcon(CPlayer.ReadyWeapon, DI_FORCESCALE);
+			if(CODWEP)
+			{
+				DrawImage(CODWEP.HUDInfoGraphic, (300,230), DI_ITEM_OFFSETS, 1, (-1,-1), (0.25,0.25));
+				DrawTexture(icon, (325,221), DI_ITEM_RIGHT | DI_ITEM_CENTER, 1, (-1,-1), (0.10, 0.10));
+			}
+		}
+		
+		DrawString(hfnts, FormatNumber(GetAmountOnly("GrenadeAmmo"), 0, 3), (345, 202), DI_TEXT_ALIGN_RIGHT);
+		DrawString(hfnts, FormatNumber(GetAmountOnly("BangAmmo"), 0, 3), (322, 202), DI_TEXT_ALIGN_RIGHT);
+		
+		DrawTexture(GetMugShot(5), (-55, 3), DI_ITEM_OFFSETS);
     }
 	
 	//[Pop] This is a nice function to quickly grab the exact amount of an item only

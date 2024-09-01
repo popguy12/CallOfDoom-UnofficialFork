@@ -1,4 +1,4 @@
-class COD_Holster : CODWeapon
+class COD_Holster : CODWeapon replaces Fist
 {
  	Default
 	{		

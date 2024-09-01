@@ -50,6 +50,7 @@ class CODPlayer : DoomPlayer
 			JumpZ = 6;
 			MaxStepHeight = 16;
 			A_SetScale(0.65, 0.65);
+			A_GiveInventory("IsCrouch", 1);
 		}
 		else
 		{
@@ -59,6 +60,13 @@ class CODPlayer : DoomPlayer
 			ViewHeight = 44;
 			MaxStepHeight = 24;
 			A_SetScale(0.65, 0.55);
+			A_TakeInventory("IsCrouch", 1);
+		}
+		if(GetCrouchFactor() >= 0.6)
+		{
+			//[Pop] dont worry about this, this is here to prevent
+			//a sticky graphic on the HUD
+			A_TakeInventory("IsCrouch");
 		}
 	}
 		
@@ -496,6 +504,14 @@ Class QuickKick : CustomInventory
 }
 
 class IsProne : Inventory
+{
+	Default
+	{
+		Inventory.MaxAmount 1;
+	}
+}
+
+class IsCrouch : Inventory
 {
 	Default
 	{

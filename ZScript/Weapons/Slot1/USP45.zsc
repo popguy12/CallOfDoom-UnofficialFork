@@ -29,7 +29,7 @@ class COD_USP45 : CODWeapon
 		
 		CODWeapon.PlaySpeed 0.95;
 		CODWeapon.SlotType 2;
-		CODWeapon.InfoGraphics "WLW99", "ICW99N", "ICW99U", "ISUSP45";
+		CODWeapon.InfoGraphics "ISUSP45", "ICW99N", "ICW99U", "WLW99";
 	}
 	
 	action void FireWeapon()
