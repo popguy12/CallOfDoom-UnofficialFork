@@ -71,7 +71,7 @@ Class COD_HUD : BaseStatusBar
 		DrawBar("HPBAR2", "HPBAR1", health, 100, (-35.8, 222), 0, 0, DI_ITEM_OFFSETS);
 		DrawBar("HPBAR3", "HPBAR1", health - 100, 100, (-35.8, 222), 0, 0, DI_ITEM_OFFSETS);
 		
-		DrawBar("Graphics/HUDStuff/HUDGraphics/Armor/ArmorBarFill.png", "Graphics/HUDStuff/HUDGraphics/Armor/ArmorBarEmpty.png", armor, 200, (-35.8, 215), 0, 0, DI_ITEM_OFFSETS);
+		DrawBar("ARMBAR2", "ARMBAR1", armor, 200, (-35.5, 215), 0, 0, DI_ITEM_OFFSETS);
 		
 		if (CPlayer.ReadyWeapon != NULL)
 		{

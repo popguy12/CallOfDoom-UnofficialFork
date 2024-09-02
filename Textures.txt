@@ -16,4 +16,20 @@ Graphic "HUDPIC2", 1920, 1080
 	Offset 0, 0
 	Patch "HUDREF2", 0, 0
 }
+
+Graphic "ARMBAR1", 248, 32
+{
+	XScale 4.5
+	YScale 4.5
+	Offset 0, 0
+	Patch "ARBA1F", 0, 0
+}
+
+Graphic "ARMBAR2", 248, 32
+{
+	XScale 4.5
+	YScale 4.5
+	Offset 0, 0
+	Patch "ARBA2F", 0, 0
+}
 // End of texture definitions
