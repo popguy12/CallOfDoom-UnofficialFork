@@ -32,9 +32,6 @@ Class COD_HUD : BaseStatusBar
         
         BeginStatusBar(true);
 		
-		//This is the Background reference image, an actual graphic will be actually put in DrawMainBar
-		DrawImage("HUDPIC", (160,120), DI_SCREEN_CENTER | DI_ITEM_CENTER, 1);
-		
         DrawMainBar();
     }
 	
@@ -50,7 +47,7 @@ Class COD_HUD : BaseStatusBar
 		drawn over that, which has detailing or whatever, like the health bar
 		outlines. Also that means that a less detailed hud can be swapped to on
 		the fly*/
-		
+		DrawImage("HUDPIC", (160,120), DI_SCREEN_CENTER | DI_ITEM_CENTER, 1);
 		
 		//Gonna do the keys and level stats right here
 		DrawKeys("Card", (356, 26), 5, -8);
@@ -58,21 +55,23 @@ Class COD_HUD : BaseStatusBar
 		
 		if(GetAmountOnly("Backpack") > 0)
 		{
-			DrawImage("Graphics/HUDStuff/HUDGraphics/BackpackIcon.png", (-44.5,195.5), DI_ITEM_OFFSETS, 1, (-1,-1), (0.25,0.25));
+			DrawImage("Graphics/HUDStuff/HUDGraphics/BackpackIcon.png", (-45,195.5), DI_ITEM_OFFSETS, 1, (-1,-1), (0.25,0.25));
 		}
 		
 		if(GetAmountOnly("IsCrouch") > 0)
 		{
-			DrawImage("Graphics/HUDStuff/HUDGraphics/CrouchIcon.png", (-18,182), DI_ITEM_OFFSETS, 1, (-1,-1), (0.25,0.25));
+			DrawImage("Graphics/HUDStuff/HUDGraphics/CrouchIcon.png", (-16,182), DI_ITEM_OFFSETS, 1, (-1,-1), (0.25,0.25));
 		}
 		else if(GetAmountOnly("IsProne") > 0)
 		{
-			DrawImage("Graphics/HUDStuff/HUDGraphics/ProneIcon.png", (-18,182), DI_ITEM_OFFSETS, 1, (-1,-1), (0.25,0.25));
+			DrawImage("Graphics/HUDStuff/HUDGraphics/ProneIcon.png", (-16,182), DI_ITEM_OFFSETS, 1, (-1,-1), (0.25,0.25));
 		}
 		
 		//Health and Armor
 		DrawBar("HPBAR2", "HPBAR1", health, 100, (-35.8, 222), 0, 0, DI_ITEM_OFFSETS);
 		DrawBar("HPBAR3", "HPBAR1", health - 100, 100, (-35.8, 222), 0, 0, DI_ITEM_OFFSETS);
+		
+		DrawBar("Graphics/HUDStuff/HUDGraphics/Armor/ArmorBarFill.png", "Graphics/HUDStuff/HUDGraphics/Armor/ArmorBarEmpty.png", armor, 200, (-35.8, 215), 0, 0, DI_ITEM_OFFSETS);
 		
 		if (CPlayer.ReadyWeapon != NULL)
 		{
@@ -97,11 +96,17 @@ Class COD_HUD : BaseStatusBar
 			}
 		}
 		
+		DrawBar("Graphics/HUDStuff/HUDGraphics/RadSuit2.png", "Graphics/HUDStuff/HUDGraphics/RadSuitEmpty.png", GetAmountOnly("COD_RadAmount"), 300, (-32.5, 195), 0, SHADER_VERT | SHADER_REVERSE, DI_ITEM_OFFSETS, 0.5);
+		
+		DrawImage("Graphics/HUDStuff/HUDGraphics/RadSuit.png", (-24, 203), DI_ITEM_CENTER, 1, (-1,-1), (0.25, 0.25));
+		
 		DrawString(hfnts, FormatNumber(GetAmountOnly("GrenadeAmmo"), 0, 3), (345, 202), DI_TEXT_ALIGN_RIGHT);
 		DrawString(hfnts, FormatNumber(GetAmountOnly("BangAmmo"), 0, 3), (322, 202), DI_TEXT_ALIGN_RIGHT);
 		
 		DrawTexture(GetMugShot(5), (-55, 3), DI_ITEM_OFFSETS);
-    }
+		
+		DrawImage("HUDPIC2", (160,120), DI_SCREEN_CENTER | DI_ITEM_CENTER, 1);
+	}
 	
 	//[Pop] This is a nice function to quickly grab the exact amount of an item only
 	//in the players inventory.

@@ -9,4 +9,11 @@ Graphic "HUDPIC", 1920, 1080
 	Patch "HUDREF", 0, 0
 }
 
+Graphic "HUDPIC2", 1920, 1080
+{
+	XScale 4.5
+	YScale 4.5
+	Offset 0, 0
+	Patch "HUDREF2", 0, 0
+}
 // End of texture definitions
