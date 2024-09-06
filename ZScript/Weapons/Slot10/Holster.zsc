@@ -69,7 +69,7 @@ class COD_Holster : CODWeapon replaces Fist
 		Goto WeaponReady;
 	
  	Spawn:
-		MDBG B -1;
+		B005 C -1;
 		Stop;
 	
 	}

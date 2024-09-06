@@ -96,7 +96,7 @@ class COD_C4Thrower : CODWeapon
 		Goto WeaponReady;
 	
  	Spawn:
-		MDBG B -1;
+		C4XA B -1;
 		Stop;
 	
 	}

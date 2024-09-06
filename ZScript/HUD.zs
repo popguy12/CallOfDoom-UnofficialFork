@@ -78,7 +78,7 @@ Class COD_HUD : BaseStatusBar
 			let ammo1 = CPlayer.Readyweapon.ammo1;
 			let ammo2 = CPlayer.Readyweapon.ammo2;
 			
-			if (ammo1 && ammo2) //[Pop] If weapon has reloading or alternate ammo
+			if(ammo1 && ammo2) //[Pop] If weapon has reloading or alternate ammo
 			{
 				int ammo1amount = ammo1.amount;
 				int ammo2amount = ammo2.amount;
@@ -87,13 +87,19 @@ Class COD_HUD : BaseStatusBar
 				DrawString(hfnts, FormatNumber(ammo2amount, 0, 3), (338, 217.5), DI_TEXT_ALIGN_RIGHT);
 			}
 			
+			if(ammo1)
+			{
+				int ammo1amount = ammo1.amount;
+				DrawString(hfnts, FormatNumber(ammo1amount, 0, 3), (358, 217.5), DI_TEXT_ALIGN_RIGHT);
+			}
+			
 			let CODWEP = CODWeapon(CPlayer.ReadyWeapon);
 			TextureID icon = GetInventoryIcon(CPlayer.ReadyWeapon, DI_FORCESCALE);
 			if(CODWEP)
 			{
 				DrawImage(CODWEP.HUDInfoGraphic, (300,230), DI_ITEM_OFFSETS, 1, (-1,-1), (0.25,0.25));
 				DrawTexture(icon, (325,221), DI_ITEM_RIGHT | DI_ITEM_CENTER, 1, (-1,-1), (0.10, 0.10));
-			}
+			} 
 		}
 		
 		DrawBar("Graphics/HUDStuff/HUDGraphics/RadSuit2.png", "Graphics/HUDStuff/HUDGraphics/RadSuitEmpty.png", GetAmountOnly("COD_RadAmount"), 300, (-32.5, 195), 0, SHADER_VERT | SHADER_REVERSE, DI_ITEM_OFFSETS, 0.5);

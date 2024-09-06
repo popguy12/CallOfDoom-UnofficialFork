@@ -1,11 +1,7 @@
 class COD_AT4 : CODWeapon
 {
  	Default
-	{
-		Weapon.AmmoType "RocketAmmo";
-		Weapon.AmmoUse 0;
-		Weapon.AmmoGive 0;
-		
+	{	
 		Weapon.SlotNumber 9;
 		Weapon.SlotPriority 3;
 		
