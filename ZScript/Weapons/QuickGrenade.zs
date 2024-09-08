@@ -189,7 +189,7 @@ Class ThrownGrenade : Actor
 			FRGX ABCDEFGH 2
 			{
 				A_SetRoll(roll-10, SPF_INTERPOLATE);
-				if(Timer >= 175)
+				if(Timer >= 105)
 				{
 					setstatelabel("Explode");
 				}
@@ -221,7 +221,7 @@ Class ThrownBang : ThrownGrenade
 			TNT1 A 0;
 			GRNX ABCDEFGHIJKLMN 2
 			{
-				if(Timer >= 105)
+				if(Timer >= 70)
 				{
 					setstatelabel("Explode");
 				}
