@@ -9,6 +9,10 @@ class COD_Model30 : CODWeapon
 		Weapon.AmmoUse2 0;
 		Weapon.AmmoGive2 0;
 		
+		CODWeapon.AmmoType3 "COD_M30_UB";
+		CODWeapon.AmmoUse3 0;
+		CODWeapon.AmmoGive3 0;
+		
 		Weapon.SlotNumber 3;
 		
 		/*

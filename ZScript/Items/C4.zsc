@@ -153,7 +153,7 @@ class COD_C4Charge : Actor
 		//	a.A_Explode(200, int(DSCONST_ONEMETER * 3));
 		//}
 		//DSQuaker.Create(a.Pos, 0, 0, 6, 40, DSCONST_ONEMETER * 30, DSCONST_ONEMETER * 20);
-		SpawnBreakEffect(a.Pos, (breakSize / (lineCount ** 0.5), movAmt), smokeCount: 128, debrisCount: 1024);
+		SpawnBreakEffect(a.Pos, (breakSize / (lineCount ** 0.5), movAmt), smokeCount: 64, debrisCount: 256);
 		
 		bool bottom = data.LinePart == Side.Bottom;
 		back.SetTexture(bottom ? Sector.Floor : Sector.Ceiling, flatTex, true);

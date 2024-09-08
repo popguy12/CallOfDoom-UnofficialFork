@@ -18,6 +18,15 @@ extend class CODWeapon
 	double GunSpeedMod;
 	property PlaySpeed: GunSpeedMod;
 	
+	class<Ammo> AmmoType3;
+	int AmmoGive3;
+	int AmmoUse3;
+	
+	property AmmoGive3: AmmoGive3;
+	property AmmoUse3: AmmoUse3;
+	property AmmoType3: AmmoType3;
+	//[Pop] Engine only supports 2 ammo types, so custom third for UB modes
+	
 	/*
 	holser 1.6
 	normal 1

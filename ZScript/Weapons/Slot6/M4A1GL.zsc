@@ -9,6 +9,10 @@ class COD_M4A1GL : CODWeapon
 		Weapon.AmmoUse2 0;
 		Weapon.AmmoGive2 0;
 		
+		CODWeapon.AmmoType3 "COD_M4A1_UBMag";
+		CODWeapon.AmmoUse3 0;
+		CODWeapon.AmmoGive3 0;
+		
 		Weapon.SlotNumber 6;
 		
 		/*
@@ -66,7 +70,7 @@ class COD_M4A1GL : CODWeapon
 	{
 		A_StartSound("m4gl/gl/fire", 0, CHANF_OVERLAP, 1);
 		//COD_FireBullets("COD_556x45mm", 1, frandom(-0.1, 0.1), 0, 0, frandom(-0.1, 0.1));
-		A_ThrowGrenade("Grenade"); //temp
+		A_FireProjectile("COD_40mmGrenade");
 		
 		A_SpawnItemEx("PlayerMuzzleFlash",30,0,45);
 		
