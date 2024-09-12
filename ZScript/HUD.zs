@@ -71,7 +71,21 @@ Class COD_HUD : BaseStatusBar
 		DrawBar("HPBAR2", "HPBAR1", health, 100, (-35.8, 222), 0, 0, DI_ITEM_OFFSETS);
 		DrawBar("HPBAR3", "HPBAR1", health - 100, 100, (-35.8, 222), 0, 0, DI_ITEM_OFFSETS);
 		
-		DrawBar("ARMBAR2", "ARMBAR1", armor, 200, (-35.5, 215), 0, 0, DI_ITEM_OFFSETS);
+		DrawBar("ARMBAR2", "ARMBAR1", armor, 200, (-35, 215), 0, 0, DI_ITEM_OFFSETS);
+		
+		DrawImage("Graphics/HUDStuff/HUDGraphics/HealthIcon.png", (-42,221.2), DI_ITEM_OFFSETS, 1, (-1,-1), (0.15,0.15), translation: CPlayer.mo.translation);
+		/* [Pop] will recode later with proper armor colors once its implemented.
+		if(armortype)
+		{
+			if(armortype = "BlueArmor")
+			{
+				DrawImage("Graphics/HUDStuff/HUDGraphics/ArmorIcon.png", (-42,216.2), DI_ITEM_OFFSETS, 1, (-1,-1), (0.15,0.15), translation: PlayGreenToBlueArm);
+			}
+			if(armortype = "GreenArmor")
+			{
+				DrawImage("Graphics/HUDStuff/HUDGraphics/ArmorIcon.png", (-42,216.2), DI_ITEM_OFFSETS, 1, (-1,-1), (0.15,0.15), translation: PlayGreenToGreenArm);
+			}
+		}*/
 		
 		if (CPlayer.ReadyWeapon != NULL)
 		{
@@ -80,8 +94,8 @@ Class COD_HUD : BaseStatusBar
 			{
 				let ammo3 = CODWEP.AmmoType3;
 				TextureID icon = GetInventoryIcon(CPlayer.ReadyWeapon, DI_FORCESCALE);
-				DrawImage(CODWEP.HUDInfoGraphic, (300,230), DI_ITEM_OFFSETS, 1, (-1,-1), (0.25,0.25));
-				DrawTexture(icon, (325,221), DI_ITEM_RIGHT | DI_ITEM_CENTER, 1, (-1,-1), (0.10, 0.10));
+				DrawImage(CODWEP.HUDInfoGraphic, (275,230), DI_ITEM_OFFSETS, 1, (-1,-1), (0.30,0.30));
+				DrawTexture(icon, (318,221), DI_ITEM_RIGHT | DI_ITEM_CENTER, 1, (-1,-1), (0.10, 0.10));
 				
 				let ammo1 = CPlayer.Readyweapon.ammo1;
 				let ammo2 = CPlayer.Readyweapon.ammo2;
@@ -91,14 +105,14 @@ Class COD_HUD : BaseStatusBar
 					int ammo1amount = ammo1.amount;
 					int ammo2amount = ammo2.amount;
 					
-					DrawString(hfnts, FormatNumber(ammo1amount, 0, 3), (358, 217.5), DI_TEXT_ALIGN_RIGHT);
-					DrawString(hfnts, FormatNumber(ammo2amount, 0, 3), (338, 217.5), DI_TEXT_ALIGN_RIGHT);
+					DrawString(hfnt, FormatNumber(ammo1amount, 0, 3), (358, 217), DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE, 1, -1, 4, (0.5, 0.5));
+					DrawString(hfnt, FormatNumber(ammo2amount, 0, 3), (333, 217), DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE, 1, -1, 4, (0.5, 0.5));
 					
 					if(ammo3)
 					{
 						int ammo3amount = GetAmountOnly(ammo3);
-						DrawImage("Graphics/HUDStuff/HUDGraphics/AmmoSplit.png", (322,217.5), DI_ITEM_OFFSETS, 1, (-1,-1), (1,1));
-						DrawString(hfnts, FormatNumber(ammo3amount, 0, 3), (320, 217.5), DI_TEXT_ALIGN_RIGHT);
+						DrawImage("Graphics/HUDStuff/HUDGraphics/AmmoSplit.png", (315, 217.5), DI_ITEM_OFFSETS, 1, (-1,-1), (1,1));
+						DrawString(hfnt, FormatNumber(ammo3amount, 0, 3), (314, 217), DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE, 1, -1, 4, (0.5, 0.5));
 					}
 			
 				}
@@ -106,7 +120,7 @@ Class COD_HUD : BaseStatusBar
 				else if(ammo1)
 				{
 					int ammo1amount = ammo1.amount;
-					DrawString(hfnts, FormatNumber(ammo1amount, 0, 3), (358, 217.5), DI_TEXT_ALIGN_RIGHT);
+					DrawString(hfnt, FormatNumber(ammo1amount, 0, 3), (358, 217), DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE, 1, -1, 4, (0.5, 0.5));
 				}
 			}
 			else
@@ -115,7 +129,7 @@ Class COD_HUD : BaseStatusBar
 				if(ammo1)
 				{
 					int ammo1amount = ammo1.amount;
-					DrawString(hfnts, FormatNumber(ammo1amount, 0, 3), (358, 217.5), DI_TEXT_ALIGN_RIGHT);
+					DrawString(hfnt, FormatNumber(ammo1amount, 0, 3), (358, 217), DI_TEXT_ALIGN_RIGHT, Font.CR_WHITE, 1, -1, 4, (0.5, 0.5));
 				}
 			}
 		}
@@ -127,7 +141,7 @@ Class COD_HUD : BaseStatusBar
 		DrawString(hfnts, FormatNumber(GetAmountOnly("GrenadeAmmo"), 0, 3), (345, 202), DI_TEXT_ALIGN_RIGHT);
 		DrawString(hfnts, FormatNumber(GetAmountOnly("BangAmmo"), 0, 3), (322, 202), DI_TEXT_ALIGN_RIGHT);
 		
-		DrawTexture(GetMugShot(5), (-55, 3), DI_ITEM_OFFSETS);
+		DrawTexture(GetMugShot(5), (-43, 11), DI_ITEM_OFFSETS, 1, (-1, -1), (0.5, 0.5));
 		
 		DrawImage("HUDPIC2", (160,120), DI_SCREEN_CENTER | DI_ITEM_CENTER, 1);
 	}

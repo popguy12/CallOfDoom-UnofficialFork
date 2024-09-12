@@ -17,7 +17,7 @@ Graphic "HUDPIC2", 1920, 1080
 	Patch "HUDREF2", 0, 0
 }
 
-Graphic "ARMBAR1", 248, 32
+Graphic "ARMBAR1", 244, 32
 {
 	XScale 4.5
 	YScale 4.5
@@ -25,7 +25,7 @@ Graphic "ARMBAR1", 248, 32
 	Patch "ARBA1F", 0, 0
 }
 
-Graphic "ARMBAR2", 248, 32
+Graphic "ARMBAR2", 244, 32
 {
 	XScale 4.5
 	YScale 4.5
