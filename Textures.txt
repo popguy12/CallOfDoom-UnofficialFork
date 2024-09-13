@@ -32,4 +32,20 @@ Graphic "ARMBAR2", 244, 32
 	Offset 0, 0
 	Patch "ARBA2F", 0, 0
 }
+
+Graphic "RADBAR1", 64, 64
+{
+	XScale 4
+	YScale 4
+	Offset 0, 0
+	Patch "NEWRADEM", 0, 0
+}
+
+Graphic "RADBAR2", 64, 64
+{
+	XScale 4
+	YScale 4
+	Offset 0, 0
+	Patch "NEWRADFU", 0, 0
+}
 // End of texture definitions

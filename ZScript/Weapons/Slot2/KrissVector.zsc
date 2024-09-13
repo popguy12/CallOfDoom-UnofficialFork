@@ -29,7 +29,7 @@ class COD_Vector : CODWeapon
 		
 		CODWeapon.PlaySpeed 0.85;
 		CODWeapon.SlotType 1;
-		CODWeapon.InfoGraphics "ISMP34", "ICM3GN", "ICM3GU", "WLM3G";
+		CODWeapon.InfoGraphics "ISVECTOR", "ICVECN", "ICVECU", "WLVECTOR";
 	}
 	
 	action void FireWeapon()

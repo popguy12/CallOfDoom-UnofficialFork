@@ -134,7 +134,7 @@ Class COD_HUD : BaseStatusBar
 			}
 		}
 		
-		DrawBar("Graphics/HUDStuff/HUDGraphics/RadSuit2.png", "Graphics/HUDStuff/HUDGraphics/RadSuitEmpty.png", GetAmountOnly("COD_RadAmount"), 300, (-32.5, 195), 0, SHADER_VERT | SHADER_REVERSE, DI_ITEM_OFFSETS, 0.5);
+		DrawBar("RADBAR2", "RADBAR1", GetAmountOnly("COD_RadAmount"), 300, (-32.5, 195), 0, SHADER_VERT | SHADER_REVERSE, DI_ITEM_OFFSETS, 0.5);
 		
 		DrawImage("Graphics/HUDStuff/HUDGraphics/RadSuit.png", (-24, 203), DI_ITEM_CENTER, 1, (-1,-1), (0.25, 0.25));
 		
