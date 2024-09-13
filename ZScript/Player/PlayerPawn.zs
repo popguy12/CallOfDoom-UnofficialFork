@@ -41,6 +41,15 @@ class CODPlayer : DoomPlayer
 				A_TakeInventory("IsProne");
 				ViewHeight = 30;
 			}
+			
+			if(pitch > 45)
+			{
+				A_SetPitch(45, SPF_INTERPOLATE);
+			}
+			else if(pitch < -35)
+			{
+				A_SetPitch(-35, SPF_INTERPOLATE);
+			}
 		}
 		else if(GetCrouchFactor() == 0.5)
 		{

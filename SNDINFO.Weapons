@@ -7,7 +7,7 @@ pm/clipout2	"Sounds/Weapons/Slot1/Makarov/MPMREL4.wav"
 pm/raise	"Sounds/Weapons/Slot1/Makarov/MPMRAISE.wav"
 pm/lower	"Sounds/Weapons/Slot1/Makarov/MPMLOWER.wav"
 
-//UP45
+//USP45
 usp45/fire	"Sounds/Weapons/Slot1/USP45/USPFire"
 usp45/magout	"Sounds/Weapons/Slot1/USP45/USP4REL1"
 usp45/magin	"Sounds/Weapons/Slot1/USP45/USP4REL2"
@@ -22,6 +22,43 @@ s1100/in	"Sounds/Weapons/Slot2/S1100/MP34REL2"
 s1100/rack	"Sounds/Weapons/Slot2/S1100/MP34REL3"
 s1100/up	"Sounds/Weapons/Slot2/S1100/MP34Up.wav"
 s1100/down	"Sounds/Weapons/Slot2/S1100/MP34Down.wav"
+
+//Kriss Vector
+kriss/MagOut	"Sounds/Weapons/Slot2/Vector/VecMagOut"
+kriss/MagIn	"Sounds/Weapons/Slot2/Vector/VecMagIn"
+kriss/bolt	"Sounds/Weapons/Slot2/Vector/VecBolt"
+
+$RANDOM Kriss/Fire
+{
+	Kriss/Fire1
+	Kriss/Fire2
+	Kriss/Fire3
+	Kriss/Fire4
+	Kriss/Fire5
+	Kriss/Fire6
+}
+Kriss/Fire1	"Sounds/Weapons/Slot2/Vector/Fire/VecFire1.wav"
+Kriss/Fire2	"Sounds/Weapons/Slot2/Vector/Fire/VecFire2.wav"
+Kriss/Fire3	"Sounds/Weapons/Slot2/Vector/Fire/VecFire3.wav"
+Kriss/Fire4	"Sounds/Weapons/Slot2/Vector/Fire/VecFire4.wav"
+Kriss/Fire5	"Sounds/Weapons/Slot2/Vector/Fire/VecFire5.wav"
+Kriss/Fire6	"Sounds/Weapons/Slot2/Vector/Fire/VecFire6.wav"
+
+$RANDOM Kriss/FireAdd
+{
+	Kriss/FireAdd1
+	Kriss/FireAdd2
+	Kriss/FireAdd3
+	Kriss/FireAdd4
+	Kriss/FireAdd5
+	Kriss/FireAdd6
+}
+Kriss/FireAdd1	"Sounds/Weapons/Slot2/Vector/FireAdd/VecFireAdd1.wav"
+Kriss/FireAdd2	"Sounds/Weapons/Slot2/Vector/FireAdd/VecFireAdd2.wav"
+Kriss/FireAdd3	"Sounds/Weapons/Slot2/Vector/FireAdd/VecFireAdd3.wav"
+Kriss/FireAdd4	"Sounds/Weapons/Slot2/Vector/FireAdd/VecFireAdd4.wav"
+Kriss/FireAdd5	"Sounds/Weapons/Slot2/Vector/FireAdd/VecFireAdd5.wav"
+Kriss/FireAdd6	"Sounds/Weapons/Slot2/Vector/FireAdd/VecFireAdd6.wav"
 
 //M1897
 trn/raise	"Sounds/Weapons/Slot3/M1897/TRNRAISE.wav"

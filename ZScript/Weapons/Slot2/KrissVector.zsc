@@ -20,7 +20,7 @@ class COD_Vector : CODWeapon
 		
 		Obituary "$OB_MPPISTOL";
 		Inventory.Pickupmessage "[2] Kriss Vector .45 ACP";
-		Tag "S1-100 CB";
+		Tag "Kriss Vector";
 		Scale 0.16;
 		Inventory.PickupSound "weapons/pistol/pickup";
 		+WEAPON.NOALERT;
@@ -40,20 +40,21 @@ class COD_Vector : CODWeapon
 		//A_OverlayFlags(-3, PSPF_RENDERSTYLE, true);
 		//A_OverlayRenderstyle(-3, STYLE_ADD);
 		
-		A_StartSound("s1100/fire", 0, CHANF_OVERLAP, 1);
+		A_StartSound("kriss/fire", 0, CHANF_OVERLAP, 1);
+		A_StartSound("kriss/fireadd", 0, CHANF_OVERLAP, 0.75);
 		COD_FireBullets("COD_45ACP", 1, frandom(-0.1, 0.1), 0, 0, frandom(-0.1, 0.1));
-		A_SpawnItemEx("PlayerMuzzleFlash",30,0,45);
+		//A_SpawnItemEx("PlayerMuzzleFlash",30,0,45);
 		
 		//this handles placing the flash correctly
 		if(CountInv("AimingToken"))
 		{
-			A_OverlayOffset(-3, 0 - 18, 32 - 54);
+			//A_OverlayOffset(-3, 0 - 18, 32 - 54);
 			COD_HandleWeaponFeedback(2, 2, -0.40, frandom(+0.30, -0.30), 0, 0, 0);
 			A_ZoomFactor(1.2-0.01);
 		}
 		else
 		{
-			A_OverlayOffset(-3, 0 + 20, 32 - 42);
+			//A_OverlayOffset(-3, 0 + 20, 32 - 42);
 			COD_HandleWeaponFeedback(2, 2, -0.80, frandom(+0.60, -0.60), -4, 0, 0);
 			A_ZoomFactor(1-0.01);
 		}
@@ -67,22 +68,26 @@ class COD_Vector : CODWeapon
 	Deselect:
 		TNT1 A 0 A_StartSound("s1100/down", 0, CHANF_OVERLAP, 1);
 		TNT1 A 0 A_ZoomFactor(1);
-		M3GA FGEDCBA 1;
+		TNT1 A 0 A_ClearOverlays(-2,-2);
+		VECA FJIHGEDCBA 1;
 		PSTG A 0 A_Lower(25);
 		Wait;
 	User4:
-		M3GA FGED 1;
+		TNT1 A 0 A_ClearOverlays(-2,-2);
+		VECA FJIHGED 1;
 		TNT1 A 0 A_ZoomFactor(1);
 		TNT1 A 0 A_TakeInventory("AimingToken");
-		M3GA CBA 1;
+		VECA CBA 1;
 		Goto NVToggle;
 	User2:
-		M3GA FGED 1;
+		TNT1 A 0 A_ClearOverlays(-2,-2);
+		VECA FJIHGED 1;
 		TNT1 A 0 A_ZoomFactor(1);
 		TNT1 A 0 A_TakeInventory("AimingToken");
-		M3GA CBA 1;
+		VECA CBA 1;
 		Goto RadToggle;
 	User3:
+		TNT1 A 0 A_ClearOverlays(-2,-2);
 		TNT1 A 0 A_ZoomFactor(1);
 		TNT1 A 0 A_TakeInventory("AimingToken");
 		Goto KnifeAttack;
@@ -104,7 +109,7 @@ class COD_Vector : CODWeapon
 		TNT1 A 0 A_JumpIfInventory("ThrowBang", 1, "StunGrenade");
 		Loop;
 	WeaponReady2:
-		M3GC D 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER2 | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
+		VECC D 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER2 | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
 		TNT1 A 0 A_JumpIfInventory("ThrowGrenade", 1, "FragGrenade");
 		TNT1 A 0 A_JumpIfInventory("ThrowBang", 1, "StunGrenade");
 		Loop;
@@ -127,30 +132,33 @@ class COD_Vector : CODWeapon
 		TNT1 A 0 A_JumpIfInventory("AimingToken", 1, "AltFire2");
 		TNT1 A 0 A_GiveInventory("AimingToken");
 		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP);
-		M3GC ABC 1;
+		VECC AB 1;
 		TNT1 A 0 A_ZoomFactor(1.2);
-		M3GC EFGD 1;
+		TNT1 A 0 A_Overlay(-2, "Reticle");
+		VECC CEF 1;
 		Goto WeaponReady2;
 	AltFire2:
 		TNT1 A 0 A_TakeInventory("AimingToken");
 		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP);
-		M3GC DGFE 1;
+		VECC FE 1;
+		TNT1 A 0 A_ClearOverlays(-2,-2);
 		TNT1 A 0 A_ZoomFactor(1);
-		M3GC CBA 1;
+		VECC CBA 1;
 		Goto WeaponReady;
 	
 	DryFire:
-		M3GB D 1;
+		VECB D 1;
 		Goto WeaponReady;
 	DryFire2:
-		M3GD E 1;
+		VECD D 1;
 		Goto WeaponReady2;
 	
 	UnAimReload:
 		TNT1 A 0 A_TakeInventory("AimingToken");
-		M3GC DGFE 1;
+		VECC FE 1;
+		TNT1 A 0 A_ClearOverlays(-2,-2);
 		TNT1 A 0 A_ZoomFactor(1);
-		M3GC CBA 1;
+		VECC CBA 1;
 	Reload:
 		TNT1 A 0 A_JumpIf(CountInv("AimingToken") == 1, "UnAimReload");
 		TNT1 A 0 A_JumpIf(CountInv("COD_Vector_Mag") == 0 && CountInv("Clip") == 0, "WeaponReadyEmpty");
@@ -164,25 +172,53 @@ class COD_Vector : CODWeapon
 		}
 		TNT1 A 0 A_TakeInventory("AimingToken");
 		TNT1 A 0 A_StartSound("uni/clothfoleym");
-		VECE ABCDEFGHIJKLMNOPQRSTUVWXYZ 1;
-		VECF ABCDEFGHIJKLMNOP 1;
+		VECE ABCDEFGHI 1;
+		TNT1 A 0 A_StartSound("kriss/bolt", 0, CHANF_OVERLAP, 0.25);
+		VECE JKL 2;
+		TNT1 A 0 A_StartSound("kriss/magout", 0, CHANF_OVERLAP, 1);
+		VECE MNOPQRSTU 1;
+		TNT1 A 0 A_StartSound("uni/clothfoleys", 0, CHANF_OVERLAP, 1);
+		VECE VW 1;
+		VECE XYZ 2;
+		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP, 1);
+		VECF ABC 2;
+		TNT1 A 0 A_StartSound("uni/magfoley", 0, CHANF_OVERLAP, 1);
+		VECF DEFGHIJKLM 1;
+		TNT1 A 0 A_StartSound("kriss/magin", 0, CHANF_OVERLAP, 1);
+		VECF NOP 2;
 		TNT1 A 0 A_JumpIfInventory("ChamberMeToken", 1, "Reload2");
 		TNT1 A 0 COD_AmmoIntoMag("COD_Vector_Mag", "Clip", 41, 1);
-		VECF QRSTUVWX 1;
+		VECF QRST 1;
+		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP, 1);
+		VECF UV 2;
+		VECF WX 1;
 		Goto WeaponReady;
 	Reload2:
 		TNT1 A 0 A_TakeInventory("AimingToken");
 		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP);
 		VECF QRST 1;
-		VECG ABCDEFG 1;
-		TNT1 A 0 A_StartSound("s1100/rack", 0, CHANF_OVERLAP);
+		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP, 1);
+		VECG ABCDEF 1;
+		TNT1 A 0 A_StartSound("kriss/bolt", 0, CHANF_OVERLAP);
 		TNT1 A 0 COD_AmmoIntoMag("COD_Vector_Mag", "Clip", 40 , 1);
 		TNT1 A 0 A_TakeInventory("ChamberMeToken", 1);
-		VECG HIJKLMNOPQ 1;
-		TNT1 A 0 A_StartSound("uni/clothfoleyl", 0, CHANF_OVERLAP);
+		VECG G 1;
+		VECG HIJ 2;
+		VECG K 1;
+		TNT1 A 0 A_StartSound("uni/clothfoleys", 0, CHANF_OVERLAP, 1);
+		VECG LMNOPQ 1;
 		Goto WeaponReady;
+	
+	Reticle:
+		TNT1 A 0;
+		TNT1 A 0
+		{
+			A_OverlayFlags(-2, PSPF_ADDBOB, false);
+		}
+		VECC X 35;
+		Loop;
  	Spawn:
-		B002 M -1;
+		B002 B -1;
 		Stop;
 	
 	}
