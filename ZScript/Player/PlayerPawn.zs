@@ -241,10 +241,8 @@ class CODPlayer : DoomPlayer
 			{
 				A_PlaySound("KICK",69);
 			}
-			KICK N 0;
-			"####" A 0;
-			"####" BCD 1;
-			"####" A 0
+			K1CK ABCDE 1;
+			K1CK F 2
 			{	
 				if (CountInv("PowerStrength") == 1)
 				{
@@ -254,10 +252,7 @@ class CODPlayer : DoomPlayer
 				//A_FireCustomMissile("KickAttack", 0, 0, 0, -7);
 				return;
 			}
-			"####" HHHHH 1;
-			"####" IGFED 1;
-			"####" A 0;
-			"####" CBA 1;
+			K1CK EDCBA 1;
 			TNT1 A 0;
 			Goto KickCheckTakeToken;
 		Slide:
