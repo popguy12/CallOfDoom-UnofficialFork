@@ -1,0 +1,16 @@
+class COD_Inventory : Inventory
+{
+    mixin COD_BetterPickupSound;
+	
+	Default
+	{
+		+BRIGHT
+		+COUNTITEM
+		+DONTGIB
+		+INVENTORY.AUTOACTIVATE
+		+INVENTORY.NOSCREENFLASH
+	}
+}
+
+class COD_PowerupGiver : PowerupGiver
+{ Default { +INVENTORY.AUTOACTIVATE +INVENTORY.ALWAYSPICKUP } }

@@ -80,32 +80,3 @@ mixin class COD_BetterPickupSound
 		toucher.A_StartSound(PickupSound,1002,flags,1.0,atten);
 	}
 }
-
-mixin class COD_PowerupTimer
-{
-	int time;
-	bool lf;
-
-	void PowerupTimer(color col, color col2 = 0)
-	{
-		time = EffectTics;
-
-		switch(time)
-		{
-			case 105:
-			case 70:
-			case 35:
-				lf = CVar.GetCVar("pb_lowflashesmode", owner.player).GetBool();
-				owner.A_SetBlend(col, lf ? 0.08 : 0.25, lf ? 20 : 12, col2);
-				owner.A_StartSound("powerup/countdown", CHAN_AUTO, CHANF_OVERLAP | CHANF_UI);
-			default:
-				break;
-		}
-	}
-	
-	void EndBlend(color col, color col2 = 0)
-	{ 
-		owner.A_SetBlend(col, lf ? 0.1 : 0.50, 35, col2);
-		owner.A_StartSound("powerup/ranout", CHAN_AUTO, CHANF_OVERLAP | CHANF_UI); 
-	}
-}

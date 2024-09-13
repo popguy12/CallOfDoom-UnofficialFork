@@ -1,0 +1,14 @@
+class COD_Ammo : Ammo
+{
+    int cap,ca,res; name ammotype; string p;
+	property ammotype : ammotype;
+	
+	mixin COD_BetterPickupSound;
+	
+    Default
+    {
+        +FLOORCLIP
+	    +DONTGIB
+	    +INVENTORY.IGNORESKILL
+    }
+}

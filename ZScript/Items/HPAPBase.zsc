@@ -1,0 +1,25 @@
+class COD_Health : Health abstract
+{
+	mixin COD_BetterPickupSound;
+}
+
+class COD_Armor : BasicArmorPickup abstract
+{
+	mixin COD_BetterPickupSound;
+	
+	Default
+	{
+		+INVENTORY.AUTOACTIVATE;
+		Inventory.MaxAmount 0;
+	}
+}
+
+class COD_Armor2 : BasicArmorBonus abstract
+{
+	mixin COD_BetterPickupSound;
+	
+	Default
+	{
+		+INVENTORY.AUTOACTIVATE;
+	}
+}
