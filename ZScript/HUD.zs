@@ -138,8 +138,20 @@ Class COD_HUD : BaseStatusBar
 		
 		DrawImage("Graphics/HUDStuff/HUDGraphics/RadSuit.png", (-24, 203), DI_ITEM_CENTER, 1, (-1,-1), (0.25, 0.25));
 		
-		DrawString(hfnts, FormatNumber(GetAmountOnly("GrenadeAmmo"), 0, 3), (345, 202), DI_TEXT_ALIGN_RIGHT);
-		DrawString(hfnts, FormatNumber(GetAmountOnly("BangAmmo"), 0, 3), (322, 202), DI_TEXT_ALIGN_RIGHT);
+		//DrawString(hfnts, FormatNumber(GetAmountOnly("GrenadeAmmo"), 0, 3), (345, 202), DI_TEXT_ALIGN_RIGHT);
+		//DrawString(hfnts, FormatNumber(GetAmountOnly("BangAmmo"), 0, 3), (322, 202), DI_TEXT_ALIGN_RIGHT);
+		
+		int BangCount = CPlayer.mo.CountInv("BangAmmo");
+		for (BangCount > 0; BangCount--;)
+		{
+			DrawImage("Graphics/HUDStuff/HUDGraphics/Bang.png", (350 - (5 * BangCount), 195), DI_ITEM_OFFSETS, 1, (-1,-1), (0.2,0.2));
+		}
+		
+		int GrenadeCount = CPlayer.mo.CountInv("GrenadeAmmo");
+		for (GrenadeCount > 0; GrenadeCount--;)
+		{
+			DrawImage("Graphics/HUDStuff/HUDGraphics/Grenade.png", (345 - (5 * GrenadeCount), 200), DI_ITEM_OFFSETS, 1, (-1,-1), (0.2,0.2));
+		}
 		
 		DrawTexture(GetMugShot(5), (-43, 11), DI_ITEM_OFFSETS, 1, (-1, -1), (0.5, 0.5));
 		
