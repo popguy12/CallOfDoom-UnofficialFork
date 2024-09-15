@@ -27,6 +27,8 @@ s1100/down	"Sounds/Weapons/Slot2/S1100/MP34Down.wav"
 kriss/MagOut	"Sounds/Weapons/Slot2/Vector/VecMagOut"
 kriss/MagIn	"Sounds/Weapons/Slot2/Vector/VecMagIn"
 kriss/bolt	"Sounds/Weapons/Slot2/Vector/VecBolt"
+kriss/lower	"Sounds/Weapons/Slot2/Vector/VecLower.wav"
+kriss/raise	"Sounds/Weapons/Slot2/Vector/VecRaise.wav"
 
 $RANDOM Kriss/Fire
 {
