@@ -29,7 +29,7 @@ class COD_Deagle : CODWeapon
 		
 		CODWeapon.PlaySpeed 0.95;
 		CODWeapon.SlotType 2;
-		CODWeapon.InfoGraphics "ISMPM", "ICLUGERN", "ICLUGERU", "WLLUGER";
+		CODWeapon.InfoGraphics "ISDE44", "ICDEN", "ICDEU", "WLDE";
 	}
 	
 	action void FireWeapon()
@@ -218,7 +218,7 @@ class COD_Deagle : CODWeapon
 		DE5H JKLMNOPQR 1;
 		Goto WeaponReady;
  	Spawn:
-		B003 S -1;
+		B002 U -1;
 		Stop;
 	
 	}
