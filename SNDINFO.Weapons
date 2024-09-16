@@ -15,6 +15,38 @@ usp45/lock	"Sounds/Weapons/Slot1/USP45/USP4REL3"
 usp45/raise	"Sounds/Weapons/Slot1/USP45/USPRaise.wav"
 usp45/lower	"Sounds/Weapons/Slot1/USP45/USPLower.wav"
 
+//Deagle
+Deagle/fire	"Sounds/Weapons/Slot1/Deagle/DE4FIRE1"
+
+$Random Deagle/FireAdd
+{
+	Deagle/FireAdd1
+	Deagle/FireAdd2
+	Deagle/FireAdd3
+	Deagle/FireAdd4
+	Deagle/FireAdd5
+	Deagle/FireAdd6
+	Deagle/FireAdd7
+	Deagle/FireAdd8
+}
+Deagle/FireAdd1	"Sounds/Weapons/Slot1/Deagle/Fire/DeFire1.wav"
+Deagle/FireAdd2	"Sounds/Weapons/Slot1/Deagle/Fire/DeFire2.wav"
+Deagle/FireAdd3	"Sounds/Weapons/Slot1/Deagle/Fire/DeFire3.wav"
+Deagle/FireAdd4	"Sounds/Weapons/Slot1/Deagle/Fire/DeFire4.wav"
+Deagle/FireAdd5	"Sounds/Weapons/Slot1/Deagle/Fire/DeFire5.wav"
+Deagle/FireAdd6	"Sounds/Weapons/Slot1/Deagle/Fire/DeFire6.wav"
+Deagle/FireAdd7	"Sounds/Weapons/Slot1/Deagle/Fire/DeFire7.wav"
+Deagle/FireAdd8	"Sounds/Weapons/Slot1/Deagle/Fire/DeFire8.wav"
+
+Deagle/emptymagout	"Sounds/Weapons/Slot1/Deagle/DERelDrop"
+Deagle/emptymagin	"Sounds/Weapons/Slot1/Deagle/DERelIn"
+Deagle/slide	"Sounds/Weapons/Slot1/Deagle/DESlide"
+Deagle/magout	"Sounds/Weapons/Slot1/Deagle/DRelDrop"
+Deagle/magin	"Sounds/Weapons/Slot1/Deagle/DRelIn"
+Deagle/raise	"Sounds/Weapons/Slot1/Deagle/DRaise"
+Deagle/lower	"Sounds/Weapons/Slot1/Deagle/DDrop"
+
+
 //S1-100 CB
 s1100/fire	"Sounds/Weapons/Slot2/S1100/MP34FIRE"
 s1100/out	"Sounds/Weapons/Slot2/S1100/MP34REL1"
