@@ -188,8 +188,8 @@ class COD_Deagle : CODWeapon
 		DE5E OPQRST 1;
 		TNT1 A 0 A_StartSound("uni/magfol", 0, CHANF_OVERLAP, 1);
 		DE5E UVWXYZ 1;
-		DE5F ABCD 1;
 		TNT1 A 0 A_StartSound("deagle/magin", 0, CHANF_OVERLAP, 1);
+		DE5F ABCD 1;
 		TNT1 A 0 COD_AmmoIntoMag("COD_Deagle_Mag", "Clip", 8, 1);
 		DE5F EFGHHIJ 1;
 		TNT1 A 0 A_StartSound("uni/clothfoleys", 0, CHANF_OVERLAP, 1);

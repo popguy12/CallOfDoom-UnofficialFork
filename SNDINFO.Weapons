@@ -179,6 +179,18 @@ $random mosin/fire
 mosin/fire1
 mosin/fire2
 }
+mosin/fireadd	"Sounds/Weapons/Slot5/Mosin/MOSNFIRA"
+mosin/firemech1	"Sounds/Weapons/Slot5/Mosin/Mech/MosFMech4.wav"
+mosin/firemech2	"Sounds/Weapons/Slot5/Mosin/Mech/MosFMech4.wav"
+mosin/firemech3	"Sounds/Weapons/Slot5/Mosin/Mech/MosFMech4.wav"
+mosin/firemech4	"Sounds/Weapons/Slot5/Mosin/Mech/MosFMech4.wav"
+$random mosin/firemech
+{
+mosin/firemech1
+mosin/firemech2
+mosin/firemech3
+mosin/firemech4
+}
 mosin/shell	"Sounds/Weapons/Slot5/Mosin/MOSNREL1"
 
 //M4A1GL

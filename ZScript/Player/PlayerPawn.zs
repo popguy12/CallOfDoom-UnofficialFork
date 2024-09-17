@@ -234,6 +234,7 @@ class CODPlayer : DoomPlayer
 			TNT1 A 1;
 		DoKick:
 			TNT1 A 0;
+			TNT1 A 0 A_JumpIfInventory("IsProne", 1, "KickCheckTakeToken");
 			TNT1 A 0 A_OverlayFlags(-10, PSPF_ADDWEAPON, false);
 			TNT1 A 0 A_OverlayOffset(-10, 0, 32);
 			TNT1 A 0 A_JumpIf(PressingCrouch() && momx != 0 && momy != 0, "Slide");
