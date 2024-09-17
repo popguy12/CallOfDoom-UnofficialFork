@@ -1,0 +1,216 @@
+class COD_AKM : CODWeapon
+{
+ 	Default
+	{
+		Weapon.AmmoType "Clip";
+		Weapon.AmmoUse 0;
+		Weapon.AmmoGive 20;
+		Weapon.AmmoType2 "COD_AKM_Mag";
+		Weapon.AmmoUse2 0;
+		Weapon.AmmoGive2 0;
+		
+		Weapon.SlotNumber 4;
+		
+		/*
+		zoom 1.0
+		zoomaim 1.2
+		zoomdelta 0.03
+		zoom tics 1
+		*/
+		
+		Obituary "$OB_MPPISTOL";
+		Inventory.Pickupmessage "[2] S1-100 CB";
+		Tag "S1-100 CB";
+		Scale 0.16;
+		Inventory.PickupSound "weapons/pistol/pickup";
+		+WEAPON.NOALERT;
+		+WEAPON.AMMO_OPTIONAL;
+		-WEAPON.NOAUTOFIRE;
+		
+		CODWeapon.PlaySpeed 0.85;
+		CODWeapon.SlotType 1;
+		CODWeapon.InfoGraphics "ISMP34", "ICM3GN", "ICM3GU", "WLM3G";
+	}
+	
+	action void FireWeapon()
+	{
+		A_AlertMonsters();
+		A_Overlay(-3, "MuzzleMedium");
+		A_OverlayFlags(-3, PSPF_ALPHA, true);
+		A_OverlayFlags(-3, PSPF_RENDERSTYLE, true);
+		A_OverlayRenderstyle(-3, STYLE_ADD);
+		
+		A_StartSound("AKM/fire", 0, CHANF_OVERLAP, 0.75);
+		A_StartSound("AKM/fireadd", 0, CHANF_OVERLAP, 1);
+		COD_FireBullets("COD_762x25mm", 1, frandom(-0.1, 0.1), 0, 0, frandom(-0.1, 0.1));
+		A_SpawnItemEx("PlayerMuzzleFlash",30,0,45);
+		
+		//this handles placing the flash correctly
+		if(CountInv("AimingToken"))
+		{
+			A_OverlayOffset(-3, 0 - 18, 32 - 54);
+			COD_HandleWeaponFeedback(2, 3, -1.0, frandom(+0.80, -0.80), 0, 0, 0);
+			A_ZoomFactor(1.2-0.03);
+		}
+		else
+		{
+			A_OverlayOffset(-3, 0 + 20, 32 - 42);
+			COD_HandleWeaponFeedback(2, 3, -2.0, frandom(+1.60, -1.60), -4, 0, 0);
+			A_ZoomFactor(1-0.03);
+		}
+		//gunsmoke
+		A_TakeInventory("COD_AKM_Mag", 1);
+	}
+	
+	States
+	{
+	
+	Deselect:
+		TNT1 A 0 A_StartSound("akm/lower", 0, CHANF_OVERLAP, 1);
+		TNT1 A 0 A_ZoomFactor(1);
+		AK4A FKJIHGEDCBA 1;
+		PSTG A 0 A_Lower(25);
+		Wait;
+	User4:
+		AK4A FKJIHGED 1;
+		TNT1 A 0 A_ZoomFactor(1);
+		TNT1 A 0 A_TakeInventory("AimingToken");
+		AK4A CBA 1;
+		Goto NVToggle;
+	User2:
+		AK4A FKJIHGED 1;
+		TNT1 A 0 A_ZoomFactor(1);
+		TNT1 A 0 A_TakeInventory("AimingToken");
+		AK4A CBA 1;
+		Goto RadToggle;
+	User3:
+		TNT1 A 0 A_ZoomFactor(1);
+		TNT1 A 0 A_TakeInventory("AimingToken");
+		Goto KnifeAttack;
+	Select:
+		TNT1 A 0
+		{
+			A_TakeInventory("AimingToken");
+			A_TakeInventory("DoAttachment");
+		}
+		TNT1 A 0 A_Raise(25);
+		Wait;
+	Ready:
+		TNT1 A 0 A_StartSound("akm/raise", 0, CHANF_OVERLAP, 1);
+		TNT1 A 6;
+		AK4A ABCDEGHIJKF 1;
+	WeaponReady:
+		AK4A F 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER2 | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
+		TNT1 A 0 A_JumpIfInventory("ThrowGrenade", 1, "FragGrenade");
+		TNT1 A 0 A_JumpIfInventory("ThrowBang", 1, "StunGrenade");
+		Loop;
+	WeaponReady2:
+		AK4C D 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER2 | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
+		TNT1 A 0 A_JumpIfInventory("ThrowGrenade", 1, "FragGrenade");
+		TNT1 A 0 A_JumpIfInventory("ThrowBang", 1, "StunGrenade");
+		Loop;
+	Fire:
+		TNT1 A 0 A_JumpIfInventory("AimingToken", 1, "Fire2");
+		TNT1 A 0 A_JumpIf(CountInv("COD_AKM_Mag") == 0, "DryFire");
+		AK4B A 1 FireWeapon();
+		TNT1 A 0 A_ZoomFactor(1);
+		AK4B BCD 1;
+		AK4B E 1 A_ReFire("Fire");
+		Goto WeaponReady;
+	Fire2:
+		TNT1 A 0 A_JumpIf(CountInv("COD_AKM_Mag") == 0, "DryFire2");
+		AK4D A 1 FireWeapon();
+		TNT1 A 0 A_ZoomFactor(1.2);
+		AK4D BCD 1;
+		AK4D E 1 A_ReFire("Fire2");
+		Goto WeaponReady2;
+	AltFire:
+		TNT1 A 0 A_JumpIfInventory("AimingToken", 1, "AltFire2");
+		TNT1 A 0 A_GiveInventory("AimingToken");
+		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP);
+		AK4C ABC 1;
+		TNT1 A 0 A_ZoomFactor(1.2);
+		AK4C EFD 1;
+		Goto WeaponReady2;
+	AltFire2:
+		TNT1 A 0 A_TakeInventory("AimingToken");
+		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP);
+		AK4C DFE 1;
+		TNT1 A 0 A_ZoomFactor(1);
+		AK4C CBA 1;
+		Goto WeaponReady;
+	
+	DryFire:
+		AK4A F 1;
+		Goto WeaponReady;
+	DryFire2:
+		AK4C D 1;
+		Goto WeaponReady2;
+	
+	UnAimReload:
+		TNT1 A 0 A_TakeInventory("AimingToken");
+		AK4C DFE 1;
+		TNT1 A 0 A_ZoomFactor(1);
+		AK4C CBA 1;
+	Reload:
+		TNT1 A 0 A_JumpIf(CountInv("AimingToken") == 1, "UnAimReload");
+		TNT1 A 0 A_JumpIf(CountInv("COD_AKM_Mag") == 0 && CountInv("Clip") == 0, "WeaponReadyEmpty");
+		TNT1 A 0 A_JumpIf(CountInv("COD_AKM_Mag") == 32 || CountInv("Clip") == 0, "WeaponReady");
+		TNT1 A 0 A_JumpIf(CountInv("COD_AKM_Mag") == 0, "Reload2");
+		TNT1 A 0 A_TakeInventory("AimingToken");
+		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP);
+		AK4E ABCDEFG 1;
+		TNT1 A 0 A_StartSound("AKM/magout", 0, CHANF_OVERLAP);
+		AK4E HIJKLMNO 1;
+		TNT1 A 0 A_StartSound("uni/magfol", 0, CHANF_OVERLAP);
+		AK4E PQ 1;
+		TNT1 A 0 A_StartSound("uni/clothfoleys", 0, CHANF_OVERLAP);
+		AK4E RSTUVWXYZ 1;
+		AK4F ABC 1;
+		TNT1 A 0 A_StartSound("AKM/magin", 0, CHANF_OVERLAP);
+		AK4F DEFGHIJ 1;
+		TNT1 A 0 COD_AmmoIntoMag("COD_AKM_Mag", "Clip", 31, 1);
+		AK4F KLM 1;
+		TNT1 A 0 A_StartSound("uni/clothfoleys", 0, CHANF_OVERLAP);
+		AK4F NOPQRS 1;
+		Goto WeaponReady;
+	Reload2:
+		TNT1 A 0 A_TakeInventory("AimingToken");
+		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP);
+		AK4G ABCDE 1;
+		TNT1 A 0 A_StartSound("akm/emptymagout", 0, CHANF_OVERLAP);
+		AK4G FGH 1;
+		TNT1 A 0 A_StartSound("uni/clothfoleys", 0, CHANF_OVERLAP);
+		AK4G IJK 1;
+		TNT1 A 0 A_StartSound("uni/magfol", 0, CHANF_OVERLAP);
+		AK4G LMNO 1;
+		TNT1 A 0 A_StartSound("uni/clothfoleys", 0, CHANF_OVERLAP);
+		AK4G PQRST 1;
+		TNT1 A 0 A_StartSound("akm/magin", 0, CHANF_OVERLAP);
+		AK4G UVWXYZ 1;
+		AK4H ABCDE 1;
+		TNT1 A 0 A_StartSound("uni/clothfoleys", 0, CHANF_OVERLAP);
+		AK4H FGHIJKLMN 1;
+		TNT1 A 0 A_StartSound("akm/bolt", 0, CHANF_OVERLAP);
+		TNT1 A 0 COD_AmmoIntoMag("COD_AKM_Mag", "Clip", 30 , 1);
+		AK4H OPQRS 2;
+		TNT1 A 0 A_StartSound("uni/clothfoleys", 0, CHANF_OVERLAP);
+		AK4H TUVWXY 1;
+		Goto WeaponReady;
+ 	Spawn:
+		B002 M -1;
+		Stop;
+	
+	}
+}
+
+Class COD_AKM_Mag : Ammo
+{
+	Default
+	{
+		Inventory.Amount 0;
+		Inventory.MaxAmount 31;
+		Ammo.BackpackAmount 0;
+		Ammo.BackpackMaxAmount 31;
+	}
+}

@@ -167,6 +167,32 @@ SKS/cliprem	"Sounds/Weapons/Slot4/SKS/SKSCLIP1"
 SKS/rackforward	"Sounds/Weapons/Slot4/SKS/SKSRELD6"
 SKS/fire	"Sounds/Weapons/Slot4/SKS/SKSFIRE1"
 
+//AKM
+AKM/raise	"Sounds/Weapons/Slot4/AKM/AKMRaise"
+AKM/lower	"Sounds/Weapons/Slot4/AKM/AKMDrop"
+AKM/emptymagout	"Sounds/Weapons/Slot4/AKM/AKMMagDrop"
+AKM/bolt	"Sounds/Weapons/Slot4/AKM/AKMBolt"
+AKM/magin	"Sounds/Weapons/Slot4/AKM/AKMMagIn"
+AKM/magout	"Sounds/Weapons/Slot4/AKM/AKMMagOut"
+AKM/fire	"Sounds/Weapons/Slot4/AKM/AKMSFIR1"
+
+AKM/fireadd1	"Sounds/Weapons/Slot4/AKM/FireAdd/AKMFIREA1.wav"
+AKM/fireadd2	"Sounds/Weapons/Slot4/AKM/FireAdd/AKMFIREA2.wav"
+AKM/fireadd3	"Sounds/Weapons/Slot4/AKM/FireAdd/AKMFIREA3.wav"
+AKM/fireadd4	"Sounds/Weapons/Slot4/AKM/FireAdd/AKMFIREA4.wav"
+AKM/fireadd5	"Sounds/Weapons/Slot4/AKM/FireAdd/AKMFIREA5.wav"
+AKM/fireadd6	"Sounds/Weapons/Slot4/AKM/FireAdd/AKMFIREA6.wav"
+$random AKM/fireAdd
+{
+AKM/fireAdd1
+AKM/fireAdd2
+AKM/fireAdd3
+AKM/fireAdd4
+AKM/fireAdd5
+AKM/fireAdd6
+}
+
+
 //Mosin
 mosin/raise	"Sounds/Weapons/Slot5/Mosin/MosRaise.wav"
 mosin/lower	"Sounds/Weapons/Slot5/Mosin/MosDrop.wav"
