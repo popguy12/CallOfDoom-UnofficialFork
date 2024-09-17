@@ -19,8 +19,8 @@ class COD_AKM : CODWeapon
 		*/
 		
 		Obituary "$OB_MPPISTOL";
-		Inventory.Pickupmessage "[2] S1-100 CB";
-		Tag "S1-100 CB";
+		Inventory.Pickupmessage "[4] AKM";
+		Tag "AKM";
 		Scale 0.16;
 		Inventory.PickupSound "weapons/pistol/pickup";
 		+WEAPON.NOALERT;
@@ -29,7 +29,7 @@ class COD_AKM : CODWeapon
 		
 		CODWeapon.PlaySpeed 0.85;
 		CODWeapon.SlotType 1;
-		CODWeapon.InfoGraphics "ISMP34", "ICM3GN", "ICM3GU", "WLM3G";
+		CODWeapon.InfoGraphics "ISAKM", "ICAK103N", "ICAK103U", "WLAK103";
 	}
 	
 	action void FireWeapon()
@@ -155,7 +155,7 @@ class COD_AKM : CODWeapon
 	Reload:
 		TNT1 A 0 A_JumpIf(CountInv("AimingToken") == 1, "UnAimReload");
 		TNT1 A 0 A_JumpIf(CountInv("COD_AKM_Mag") == 0 && CountInv("Clip") == 0, "WeaponReadyEmpty");
-		TNT1 A 0 A_JumpIf(CountInv("COD_AKM_Mag") == 32 || CountInv("Clip") == 0, "WeaponReady");
+		TNT1 A 0 A_JumpIf(CountInv("COD_AKM_Mag") == 31 || CountInv("Clip") == 0, "WeaponReady");
 		TNT1 A 0 A_JumpIf(CountInv("COD_AKM_Mag") == 0, "Reload2");
 		TNT1 A 0 A_TakeInventory("AimingToken");
 		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP);
@@ -198,7 +198,7 @@ class COD_AKM : CODWeapon
 		AK4H TUVWXY 1;
 		Goto WeaponReady;
  	Spawn:
-		B002 M -1;
+		B001 R -1;
 		Stop;
 	
 	}

@@ -119,6 +119,7 @@ class CODPlayer : DoomPlayer
 		Player.ViewHeight 50;
 		Scale 0.65;
 		Player.SoundClass "CODPlayer";
+		Player.Face "MOS";
 	}
 	
 	States

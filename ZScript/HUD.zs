@@ -153,7 +153,7 @@ Class COD_HUD : BaseStatusBar
 			DrawImage("Graphics/HUDStuff/HUDGraphics/Grenade.png", (345 - (5 * GrenadeCount), 200), DI_ITEM_OFFSETS, 1, (-1,-1), (0.2,0.2));
 		}
 		
-		DrawTexture(GetMugShot(5), (-43, 11), DI_ITEM_OFFSETS, 1, (-1, -1), (0.5, 0.5));
+		DrawTexture(GetMugShot(5), (-43, 12.25), DI_ITEM_OFFSETS, 1, (-1, -1), (0.5, 0.5));
 		
 		DrawImage("HUDPIC2", (160,120), DI_SCREEN_CENTER | DI_ITEM_CENTER, 1);
 	}
