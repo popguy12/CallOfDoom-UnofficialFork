@@ -29,20 +29,22 @@ class COD_MCXSpear : CODWeapon
 		
 		CODWeapon.PlaySpeed 0.85;
 		CODWeapon.SlotType 1;
-		CODWeapon.InfoGraphics "ISMP34", "ICM3GN", "ICM3GU", "WLM3G";
+		CODWeapon.InfoGraphics "ISMCXP", "ICMCXPN", "ICMCXPU", "WLMCXP";
 	}
 	
 	action void FireWeapon()
 	{
 		A_AlertMonsters();
-		A_Overlay(-3, "MuzzleSmall");
+		//A_Overlay(-3, "MuzzleSmall");
 		A_OverlayFlags(-3, PSPF_ALPHA, true);
 		A_OverlayFlags(-3, PSPF_RENDERSTYLE, true);
 		A_OverlayRenderstyle(-3, STYLE_ADD);
 		
-		A_StartSound("s1100/fire", 0, CHANF_OVERLAP, 1);
-		COD_FireBullets("COD_762x25mm", 1, frandom(-0.1, 0.1), 0, 0, frandom(-0.1, 0.1));
-		A_SpawnItemEx("PlayerMuzzleFlash",30,0,45);
+		A_StartSound("XM7/fire", 0, CHANF_OVERLAP, 1);
+		A_StartSound("XM7/fireadd", 0, CHANF_OVERLAP, 0.75);
+		A_StartSound("XM7/firemech", 0, CHANF_OVERLAP, 1);
+		COD_FireBullets("COD_762x51mm", 1, frandom(-0.1, 0.1), 0, 0, frandom(-0.1, 0.1));
+		//A_SpawnItemEx("PlayerMuzzleFlash",30,0,45);
 		
 		//this handles placing the flash correctly
 		if(CountInv("AimingToken"))
@@ -65,9 +67,11 @@ class COD_MCXSpear : CODWeapon
 	{
 	
 	Deselect:
-		TNT1 A 0 A_StartSound("s1100/down", 0, CHANF_OVERLAP, 1);
+		TNT1 A 0 A_StartSound("XM7/drop1", 0, CHANF_OVERLAP, 1);
 		TNT1 A 0 A_ZoomFactor(1);
-		XQKA IHGEDCBA 1;
+		XQKA IHGE 1;
+		TNT1 A 0 A_StartSound("XM7/drop2", 0, CHANF_OVERLAP, 1);
+		XQKA DCBA 1;
 		PSTG A 0 A_Lower(25);
 		Wait;
 	User4:
@@ -95,7 +99,7 @@ class COD_MCXSpear : CODWeapon
 		TNT1 A 0 A_Raise(25);
 		Wait;
 	Ready:
-		TNT1 A 0 A_StartSound("s1100/up", 0, CHANF_OVERLAP, 1);
+		TNT1 A 0 A_StartSound("xm7/raise", 0, CHANF_OVERLAP, 1);
 		TNT1 A 6;
 		XQKA ABCDEGHIF 1;
 	WeaponReady:
@@ -123,7 +127,7 @@ class COD_MCXSpear : CODWeapon
 		XQKD B 1;
 		TNT1 A 0 A_ZoomFactor(2.5);
 		XQKD CD 1;
-		XQKB E 1 A_ReFire("Fire2");
+		XQKD E 1 A_ReFire("Fire2");
 		Goto WeaponReady2;
 	AltFire:
 		TNT1 A 0 A_JumpIfInventory("AimingToken", 1, "AltFire2");
@@ -142,10 +146,10 @@ class COD_MCXSpear : CODWeapon
 		Goto WeaponReady;
 	
 	DryFire:
-		M3GB D 1;
+		XQKB E 1;
 		Goto WeaponReady;
 	DryFire2:
-		M3GD E 1;
+		XQKD E 1;
 		Goto WeaponReady2;
 	
 	UnAimReload:
@@ -156,26 +160,55 @@ class COD_MCXSpear : CODWeapon
 	Reload:
 		TNT1 A 0 A_JumpIf(CountInv("AimingToken") == 1, "UnAimReload");
 		TNT1 A 0 A_JumpIf(CountInv("COD_MCXSpear_mag") == 0 && CountInv("Clip") == 0, "WeaponReadyEmpty");
-		TNT1 A 0 A_JumpIf(CountInv("COD_MCXSpear_mag") == 32 || CountInv("Clip") == 0, "WeaponReady");
+		TNT1 A 0 A_JumpIf(CountInv("COD_MCXSpear_mag") == 21 || CountInv("Clip") == 0, "WeaponReady");
 		TNT1 A 0 A_JumpIf(CountInv("COD_MCXSpear_mag") == 0, "Reload2");
 		TNT1 A 0 A_TakeInventory("AimingToken");
-		TNT1 A 0 A_StartSound("uni/clothfoleym");
-		XQKE ABCDEFGHIJKLMNOPQRSTUVWXYZ 1;
-		XQKF ABC 1;
+		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP);
+		XQKE ABCDEF 1;
+		TNT1 A 0 A_StartSound("XM7/magout", 0, CHANF_OVERLAP);
+		XQKE GHIJK 1;
+		XQKE LM 2;
+		TNT1 A 0 A_StartSound("uni/magfol", 0, CHANF_OVERLAP);
+		XQKE NOPQRST 2;
+		TNT1 A 0 A_StartSound("uni/clothfoleys", 0, CHANF_OVERLAP);
+		XQKE UVWXYZ 1;
+		TNT1 A 0 A_StartSound("XM7/MagIn", 0, CHANF_OVERLAP);
+		XQKF ABCDE 1;
+		TNT1 A 0 A_StartSound("XM7/Magslide", 0, CHANF_OVERLAP);
+		XQKF EDC 3;
+		TNT1 A 0 A_StartSound("XM7/MagHit", 0, CHANF_OVERLAP);
+		XQKF CDE 1;
 		TNT1 A 0 A_JumpIfInventory("ChamberMeToken", 1, "Reload2");
 		TNT1 A 0 COD_AmmoIntoMag("COD_MCXSpear_mag", "Clip", 21, 1);
-		XQKF CDEFGHIJKLM 1;
+		XQKF FGHI 1;
+		TNT1 A 0 A_StartSound("uni/clothfoleys", 0, CHANF_OVERLAP);
+		XQKF JKLM 1;
 		Goto WeaponReady;
 	Reload2:
 		TNT1 A 0 A_TakeInventory("AimingToken");
 		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP);
-		XQKG ABCDEFGHIJKLMNOPQRSTUVWXYZ 1;
-		XQKH ABCDEFGHIJKL 1;
+		XQKG ABCDEF 1;
+		TNT1 A 0 A_StartSound("XM7/magout", 0, CHANF_OVERLAP);
+		XQKG GHIJ 1;
+		TNT1 A 0 A_StartSound("uni/magfol", 0, CHANF_OVERLAP);
+		XQKG KLMNOP 1;
+		TNT1 A 0 A_StartSound("uni/clothfoleys", 0, CHANF_OVERLAP);
+		XQKG QRSTUVWXYZ 1;
+		TNT1 A 0 A_StartSound("XM7/magin", 0, CHANF_OVERLAP);
+		XQKH ABCDE 1;
+		TNT1 A 0 A_StartSound("XM7/MagSlide", 0, CHANF_OVERLAP);
+		XQKH EDC 3;
+		TNT1 A 0 A_StartSound("XM7/MagHit", 0, CHANF_OVERLAP);
+		XQKH CDEF 1;
+		XQKH GHIJKL 2;
 		TNT1 A 0 COD_AmmoIntoMag("COD_MCXSpear_mag", "Clip", 20, 1);
-		XQKH MNOPQRST 1;
+		TNT1 A 0 A_StartSound("XM7/button", 0, CHANF_OVERLAP);
+		XQKH MNO 1;
+		TNT1 A 0 A_StartSound("uni/clothfoleys", 0, CHANF_OVERLAP);
+		XQKH PQRST 2;
 		Goto WeaponReady;
  	Spawn:
-		B002 M -1;
+		B004 W -1;
 		Stop;
 	
 	}

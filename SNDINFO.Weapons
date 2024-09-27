@@ -253,8 +253,65 @@ A88/rackforward	"Sounds/Weapons/Slot7/Auto88/Auto88BoltRelease"
 A88/rackquick	"Sounds/Weapons/Slot7/Auto88/Auto88BoltCharge"
 A88/fire	"Sounds/Weapons/Slot7/Auto88/Auto88Fire"
 
-//MG338
+//MCX Spear XM7
+XM7/raise	"Sounds/Weapons/Slot7/MCXSpear/XM7Raise"
+XM7/drop1	"Sounds/Weapons/Slot7/MCXSpear/XM7Drop1"
+XM7/drop2	"Sounds/Weapons/Slot7/MCXSpear/XM7Drop2"
+XM7/MagOut	"Sounds/Weapons/Slot7/MCXSpear/XM7MagOut"
+XM7/MagIn	"Sounds/Weapons/Slot7/MCXSpear/XM7MagIn.wav"
+XM7/MagSlide	"Sounds/Weapons/Slot7/MCXSpear/XM7MagSlide"
+XM7/MagHit	"Sounds/Weapons/Slot7/MCXSpear/XM7MagHit"
+XM7/Button	"Sounds/Weapons/Slot7/MCXSpear/XM7Button"
 
+$Random XM7/Fire
+{
+XM7/Fire1
+XM7/Fire2
+XM7/Fire3
+XM7/Fire4
+XM7/Fire5
+XM7/Fire6
+XM7/Fire7
+XM7/Fire8
+}
+XM7/Fire1	"Sounds/Weapons/Slot7/MCXSpear/Fire/Fire1.wav"
+XM7/Fire2	"Sounds/Weapons/Slot7/MCXSpear/Fire/Fire2.wav"
+XM7/Fire3	"Sounds/Weapons/Slot7/MCXSpear/Fire/Fire3.wav"
+XM7/Fire4	"Sounds/Weapons/Slot7/MCXSpear/Fire/Fire4.wav"
+XM7/Fire5	"Sounds/Weapons/Slot7/MCXSpear/Fire/Fire5.wav"
+XM7/Fire6	"Sounds/Weapons/Slot7/MCXSpear/Fire/Fire6.wav"
+XM7/Fire7	"Sounds/Weapons/Slot7/MCXSpear/Fire/Fire7.wav"
+XM7/Fire8	"Sounds/Weapons/Slot7/MCXSpear/Fire/Fire8.wav"
+
+$Random XM7/FireAdd
+{
+XM7/FireAdd1
+XM7/FireAdd2
+XM7/FireAdd3
+XM7/FireAdd4
+}
+XM7/FireAdd1	"Sounds/Weapons/Slot7/MCXSpear/FireAdd/FireAdd1.wav"
+XM7/FireAdd2	"Sounds/Weapons/Slot7/MCXSpear/FireAdd/FireAdd2.wav"
+XM7/FireAdd3	"Sounds/Weapons/Slot7/MCXSpear/FireAdd/FireAdd3.wav"
+XM7/FireAdd4	"Sounds/Weapons/Slot7/MCXSpear/FireAdd/FireAdd4.wav"
+
+$Random XM7/FireMech
+{
+XM7/FireMech1
+XM7/FireMech2
+XM7/FireMech3
+XM7/FireMech4
+XM7/FireMech5
+XM7/FireMech6
+}
+XM7/FireMech1	"Sounds/Weapons/Slot7/MCXSpear/FireMech/FireMech1.wav"
+XM7/FireMech2	"Sounds/Weapons/Slot7/MCXSpear/FireMech/FireMech2.wav"
+XM7/FireMech3	"Sounds/Weapons/Slot7/MCXSpear/FireMech/FireMech3.wav"
+XM7/FireMech4	"Sounds/Weapons/Slot7/MCXSpear/FireMech/FireMech4.wav"
+XM7/FireMech5	"Sounds/Weapons/Slot7/MCXSpear/FireMech/FireMech5.wav"
+XM7/FireMech6	"Sounds/Weapons/Slot7/MCXSpear/FireMech/FireMech6.wav"
+
+//MG338
 $random mg338/Fire
 {
 	mg338/Fire1

@@ -4,6 +4,7 @@ Class PistolSpawner : RandomSpawner replaces Pistol
 	{
 		DropItem "COD_Makarov",255,1;
 		DropItem "COD_USP45",255,1;
+		DropItem "COD_Deagle",255,1;
 	}
 }
 
@@ -31,7 +32,9 @@ Class ChaingunSpawner : RandomSpawner replaces chaingun
 		DropItem "COD_M4A1GL", 255, 1;
 		DropItem "COD_S1100CB", 255, 1;
 		DropItem "COD_Vector", 255, 1;
+		DropItem "COD_MCXSpear", 255, 1;
 		DropItem "COD_MG338", 255, 1;
+		DropItem "COD_AKM", 255, 1;
 	}
 }
 
