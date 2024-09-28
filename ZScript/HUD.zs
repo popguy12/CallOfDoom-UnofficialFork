@@ -7,6 +7,8 @@ Class COD_HUD : BaseStatusBar
 	HUDFont hfntS;
 	HUDFont hfnt;
 	
+	int HUDWepRenderMode;
+	
 	override void Tick()
 	{
 		Super.Tick();
@@ -29,8 +31,10 @@ Class COD_HUD : BaseStatusBar
     Override void Draw (int state, double TicFrac)
     {
         Super.Draw (state, TicFrac);
-        
+		
         BeginStatusBar(true);
+		
+		HUDWepRenderMode = CVar.GetCVAR("COD_HUDWepRender", CPlayer).GetInt();
 		
         DrawMainBar();
     }
@@ -94,8 +98,17 @@ Class COD_HUD : BaseStatusBar
 			{
 				let ammo3 = CODWEP.AmmoType3;
 				TextureID icon = GetInventoryIcon(CPlayer.ReadyWeapon, DI_FORCESCALE);
+				
 				DrawImage(CODWEP.HUDInfoGraphic, (275,230), DI_ITEM_OFFSETS, 1, (-1,-1), (0.30,0.30));
-				DrawTexture(icon, (318,221), DI_ITEM_RIGHT | DI_ITEM_CENTER, 1, (-1,-1), (0.10, 0.10));
+				
+				if(HUDWepRenderMode && HUDWepRenderMode == 1) //[Pop] Standard behavior, horizontally
+				{
+					DrawTexture(icon, (318,221), DI_ITEM_RIGHT | DI_ITEM_CENTER, 1, (-1,-1), (0.10, 0.10));
+				}
+				else if(HUDWepRenderMode && HUDWepRenderMode == 2) //[Pop] Vertical, also future proofing for other modes
+				{
+					DrawImageRotated(TexMan.GetName(icon), (348,183), DI_ITEM_OFFSETS, -90, 1, (2.2,2.2));
+				}
 				
 				let ammo1 = CPlayer.Readyweapon.ammo1;
 				let ammo2 = CPlayer.Readyweapon.ammo2;
@@ -144,13 +157,13 @@ Class COD_HUD : BaseStatusBar
 		int BangCount = CPlayer.mo.CountInv("BangAmmo");
 		for (BangCount > 0; BangCount--;)
 		{
-			DrawImage("Graphics/HUDStuff/HUDGraphics/Bang.png", (350 - (5 * BangCount), 195), DI_ITEM_OFFSETS, 1, (-1,-1), (0.2,0.2));
+			DrawImage("Graphics/HUDStuff/HUDGraphics/Bang.png", ((364 - (14 * HUDWepRenderMode)) - (5 * BangCount), 195), DI_ITEM_OFFSETS, 1, (-1,-1), (0.2,0.2));
 		}
 		
 		int GrenadeCount = CPlayer.mo.CountInv("GrenadeAmmo");
 		for (GrenadeCount > 0; GrenadeCount--;)
 		{
-			DrawImage("Graphics/HUDStuff/HUDGraphics/Grenade.png", (345 - (5 * GrenadeCount), 200), DI_ITEM_OFFSETS, 1, (-1,-1), (0.2,0.2));
+			DrawImage("Graphics/HUDStuff/HUDGraphics/Grenade.png", ((359 - (14 * HUDWepRenderMode)) - (5 * GrenadeCount), 200), DI_ITEM_OFFSETS, 1, (-1,-1), (0.2,0.2));
 		}
 		
 		DrawTexture(GetMugShot(5), (-43, 12.25), DI_ITEM_OFFSETS, 1, (-1, -1), (0.5, 0.5));

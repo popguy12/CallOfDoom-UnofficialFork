@@ -1,0 +1,14 @@
+AddOptionMenu "OptionsMenu"
+{
+	Submenu "Call of Doom Settings", "CODSettings"
+}
+
+OptionMenu "CODSettings"
+{
+	Title "Call of Doom Settings"
+	StaticText " "
+	Slider "HUD Weapon Display Type", "COD_HUDWepRender", 1, 2, 1
+	StaticText " 1: Horizonal "
+	StaticText " 2: Vertical "
+	StaticText " "
+}

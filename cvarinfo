@@ -1,6 +1,7 @@
 user int COD_nvstyle = 0;
 user bool COD_nvscanlines = true;
 user int COD_NVRes = 1;
+user int COD_HUDWepRender = 1;
 
 user float	bdoom_fs_volume_mul = 1.0;
 user float	bdoom_fs_delay_mul = 1.0;
