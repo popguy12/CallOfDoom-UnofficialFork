@@ -13,7 +13,7 @@ class COD_MCXSpear : CODWeapon
 		
 		/*
 		zoom 1.0
-		zoomaim 1.2
+		zoomaim 2.5
 		zoomdelta 0.02
 		zoom tics 1
 		*/
@@ -34,7 +34,7 @@ class COD_MCXSpear : CODWeapon
 	
 	action void FireWeapon()
 	{
-		A_AlertMonsters();
+		//A_AlertMonsters();
 		//A_Overlay(-3, "MuzzleSmall");
 		A_OverlayFlags(-3, PSPF_ALPHA, true);
 		A_OverlayFlags(-3, PSPF_RENDERSTYLE, true);

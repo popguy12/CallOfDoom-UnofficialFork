@@ -27,7 +27,7 @@ Following as he stated himself in his ModDB post alongside the mod:
 > work based on someone's instructions.)
 
 As it stands, I have held Arrowwoods work in high regard due to understanding
-just how much time and effort actually goes into caputring and editing every
+just how much time and effort actually goes into capturing and editing every
 individual frame of animation, on top of completely understanding where he is
 coming from about critics and the like, having witnessed the bullshit that
 happened in that ZDooM thread years back. I hope that this does not come off as
@@ -35,3 +35,14 @@ spiteful or rude or anything of the sort.
 
 I just hope to be able to provide said technology to make further development of
 his mod easier, while allowing more mechanics and stuff to be added as well.
+
+
+# Credits
+
+- All audio, sprites, graphics, and other assets from Call of DooM are, of course,
+credited to Arrowwood and whatever sources he used himself in making Call of DooM.
+
+- Audio I am adding is sourced from several games. Namely Insurgency, Tarkov,
+MW19, MW22, MW23, and various Valve games.
+
+- Most HUD graphics are ripped and credited to MW22 and MW23 as well
