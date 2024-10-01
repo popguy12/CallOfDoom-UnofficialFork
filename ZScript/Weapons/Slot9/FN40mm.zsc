@@ -30,7 +30,7 @@ class COD_FN40 : CODWeapon
 		
 		CODWeapon.PlaySpeed 0.8;
 		CODWeapon.SlotType 3;
-		CODWeapon.InfoGraphics "ISAT4", "ICRPGN", "ICRPGU", "WLUSS411";
+		CODWeapon.InfoGraphics "ISFNGL40", "ICM320N", "ICM320U", "WLM320";
 	}
 	
 	action void FireWeapon()
@@ -60,7 +60,8 @@ class COD_FN40 : CODWeapon
 	{
 	
 	Deselect:
-		U45E GFEDCBA 1;
+		TNT1 A 0 A_StartSound("FN40/Lower", 0, CHANF_OVERLAP);
+		GLMA FIHGEDCBA 1;
 		PSTG A 0 A_Lower(25);
 		Wait;
 	User4:
@@ -84,7 +85,10 @@ class COD_FN40 : CODWeapon
 	Ready:
 		TNT1 A 5;
 		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP);
-		GLMA ABCDEGHIF 1;
+		TNT1 A 0 A_StartSound("FN40/Raise1", 0, CHANF_OVERLAP);
+		GLMA ABCDE 1;
+		TNT1 A 0 A_StartSound("FN40/Raise2", 0, CHANF_OVERLAP);
+		GLMA GHIF 1;
 	WeaponReady:
 		GLMA F 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER2 | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
 		TNT1 A 0 A_JumpIfInventory("ThrowGrenade", 1, "FragGrenade");
@@ -97,6 +101,7 @@ class COD_FN40 : CODWeapon
 		Loop;
 	Fire:
 		TNT1 A 0 A_JumpIfInventory("AimingToken", 1, "Fire2");
+		TNT1 A 0 A_JumpIf(CountInv("COD_FN40Tube") == 0, "DryFire");
 		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP);
 		GLMB A 1 FireWeapon();
 		TNT1 A 0 A_ZoomFactor(1);
@@ -104,6 +109,7 @@ class COD_FN40 : CODWeapon
 		Goto WeaponReady;
 	Fire2:
 		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP);
+		TNT1 A 0 A_JumpIf(CountInv("COD_FN40Tube") == 0, "DryFire2");
 		GLMD A 1 FireWeapon();
 		TNT1 A 0 A_ZoomFactor(1.2);
 		GLMD BCDE 1;
@@ -126,18 +132,49 @@ class COD_FN40 : CODWeapon
 		TNT1 A 0 A_TakeInventory("AimingToken", 1);
 		Goto WeaponReady;
 	
+	DryFire:
+		GLMB E 1;
+		Goto WeaponReady;
+	DryFire2:
+		GLMD E 1;
+		Goto WeaponReady2;
+	
 	UnAimReload:
 		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP);
-		GLMC DIHGFECBA 1;
+		GLMC DIHGFE 1;
+		TNT1 A 0 A_ZoomFactor(1);
+		GLMC CBA 1;
 		TNT1 A 0 A_TakeInventory("AimingToken", 1);
 	Reload:
 		TNT1 A 0 A_JumpIfInventory("AimingToken", 1, "UnAimReload");
-		GLME ABCDEFGHIJKLMNOPQRSTUVWXYZ 1;
-		GLMF ABCDEFGHIJKLMN 1;
+		TNT1 A 0 A_JumpIf(CountInv("COD_FN40Tube") == 1, "WeaponReady");
+		TNT1 A 0 A_StartSound("uni/clothfoleys", 0, CHANF_OVERLAP);
+		GLME ABCD 1;
+		GLME EFGH 2;
+		TNT1 A 0 A_StartSound("FN40/Open", 0, CHANF_OVERLAP);
+		GLME IJ 1;
+		TNT1 A 0 A_StartSound("m4gl/gl/shellout", 0, CHANF_OVERLAP);
+		GLME KL 2;
+		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP);
+		GLME MNOPQ 1;
+		TNT1 A 0 A_StartSound("uni/cartfoley", 0, CHANF_OVERLAP);
+		GLME RSTU 1;
+		GLME VWX 1;
+		TNT1 A 0 A_StartSound("m4gl/gl/shellin", 0, CHANF_OVERLAP);
+		TNT1 A 0 COD_AmmoIntoMag("COD_FN40Tube", "RocketAmmo", 1, 1);
+		GLME YZ 2;
+		TNT1 A 0 A_StartSound("uni/clothfoleys", 0, CHANF_OVERLAP);
+		GLMF A 2;
+		GLMF BC 1;
+		GLMF D 4;
+		GLMF EF 2;
+		TNT1 A 0 A_StartSound("FN40/close", 0, CHANF_OVERLAP);
+		GLMF GH 2;
+		GLMF IJKLMN 1;
 		Goto WeaponReady;
 	
  	Spawn:
-		B003 J -1; //K frame for empty
+		B001 Z -1; //K frame for empty
 		Stop;
 	
 	}

@@ -393,3 +393,10 @@ AT4/Aim	"Sounds/Weapons/Slot9/AT4/AT4Aim"
 AT4/Flip	"Sounds/Weapons/Slot9/AT4/AT4Flip"
 AT4/Arm	"Sounds/Weapons/Slot9/AT4/AT4Safety"
 AT4/RocketLoop	"Sounds/Weapons/Slot9/AT4/RKTLOOP.ogg"
+
+//FN40
+FN40/Open	"Sounds/Weapons/Slot9/FN40/FN40OPEN"
+FN40/Close	"Sounds/Weapons/Slot9/FN40/FN40CLSE"
+FN40/Raise1	"Sounds/Weapons/Slot9/FN40/FN40Raise1.wav"
+FN40/Raise2	"Sounds/Weapons/Slot9/FN40/FN40Raise2.wav"
+FN40/Lower	"Sounds/Weapons/Slot9/FN40/FN40Lower.wav"
