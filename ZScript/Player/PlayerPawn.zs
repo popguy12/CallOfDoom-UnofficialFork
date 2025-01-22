@@ -19,6 +19,7 @@ class CODPlayer : DoomPlayer
 			Shader.SetEnabled(Player,"NiteVis",false);
 			Shader.SetEnabled(Player,"Pixelize_Scene",false);
 		}
+		
 		if(CountInv("CODNightVision"))
 		{
 			A_Overlay(100, "NVView", false);

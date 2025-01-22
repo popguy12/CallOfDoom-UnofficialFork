@@ -43,6 +43,7 @@ Class RocketSpawner : RandomSpawner replaces RocketLauncher
 	Default
 	{
 		DropItem "COD_AT4", 255, 1;
+		DropItem "COD_FN40", 255, 1;
 	}
 }
 

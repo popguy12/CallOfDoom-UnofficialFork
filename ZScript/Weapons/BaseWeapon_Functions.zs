@@ -129,8 +129,8 @@ extend class CODWeapon
 			fac *= 0.33;
 		}
 		
-        A_SetPitch(self.pitch+(pitchDelta * fac), SPF_INTERPOLATE);
-        A_SetAngle(self.angle+(angleDelta * fac), SPF_INTERPOLATE);
+        A_SetPitch(self.pitch+(pitchDelta * fac));
+        A_SetAngle(self.angle+(angleDelta * fac));
 	}
 	
 	//This will allow for direct spawning of shell casings and empty magazines without using an intermediary actor.

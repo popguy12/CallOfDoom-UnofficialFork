@@ -301,7 +301,7 @@ Class CODNightVision : PowerLightAmp
 		
 		Shader.SetEnabled(Owner.Player,"NiteVis",true);
 		Shader.SetUniform1f(Owner.Player, "NiteVis", "timer", Level.time / 6.0);
-		Shader.SetUniform1f(Owner.Player, "NiteVis", "exposure", 1 + sectorlightlevel / 8);
+		Shader.SetUniform1f(Owner.Player, "NiteVis", "exposure", 1 + sectorlightlevel / 8.0);
 		Shader.SetUniform1f(Owner.Player, "NiteVis", "darken", 1);
 		Shader.SetUniform3f(Owner.Player, "NiteVis", "hsl", (clamp(120 / 360.0, 0.0, 1.0), clamp(1.0, 0.0, 1.0), 0.5));
 		
