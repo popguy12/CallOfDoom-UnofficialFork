@@ -204,10 +204,12 @@ extend class CODWeapon
 	{
         CVar crosshair_settings = CVar.FindCVar('cod_weapon_crosshairs');
 		
-		if(crosshair_settings.GetBool()){
+		if(crosshair_settings.GetBool())
+		{
 			A_SetCrosshair(num); // Set crosshair to specific weapon
 		}
-		else {
+		else
+		{
 			A_SetCrosshair(0); // Set crosshair to universal user setting
 		}
 	}
