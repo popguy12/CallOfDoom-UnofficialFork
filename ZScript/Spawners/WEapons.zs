@@ -35,6 +35,7 @@ Class ChaingunSpawner : RandomSpawner replaces chaingun
 		DropItem "COD_MCXSpear", 255, 1;
 		DropItem "COD_MG338", 255, 1;
 		DropItem "COD_AKM", 255, 1;
+		DropItem "COD_L86", 255, 1;
 	}
 }
 

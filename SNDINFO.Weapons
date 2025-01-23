@@ -242,6 +242,27 @@ M4GL/GL/ShellOut	"Sounds/Weapons/Slot6/M4A1GL/GL/M4ShellOut"
 M4GL/GL/ShellIn	"Sounds/Weapons/Slot6/M4A1GL/GL/M4ShellIn"
 M4GL/GL/Close	"Sounds/Weapons/Slot6/M4A1GL/GL/M4GLClose"
 
+//L86 LSW
+L86/raise	"Sounds/Weapons/Slot6/L86/L86Raise.wav"
+L86/lower	"Sounds/Weapons/Slot6/L86/L86Lower.wav"
+L86/Charge	"Sounds/Weapons/Slot6/L86/L86Charge.wav"
+L86/magslide	"Sounds/Weapons/Slot6/L86/L86MagIn2.wav"
+L86/magin	"Sounds/Weapons/Slot6/L86/L86MagIn.wav"
+L86/magout	"Sounds/Weapons/Slot6/L86/L86MagOut.wav"
+L86/maghit	"Sounds/Weapons/Slot6/L86/L86MagHit.wav"
+
+L86/fire	"Sounds/Weapons/Slot6/L86/L86Fire.ogg"
+
+$RANDOM L86/fireadd
+{ L86/fireadd1 L86/fireadd2 L86/fireadd3 L86/fireadd4 L86/fireadd5 L86/fireadd6 }
+
+L86/fireadd1 "Sounds/Weapons/Slot6/L86/FireAdd/L86FireAdd1.wav"
+L86/fireadd2 "Sounds/Weapons/Slot6/L86/FireAdd/L86FireAdd2.wav"
+L86/fireadd3 "Sounds/Weapons/Slot6/L86/FireAdd/L86FireAdd3.wav"
+L86/fireadd4 "Sounds/Weapons/Slot6/L86/FireAdd/L86FireAdd4.wav"
+L86/fireadd5 "Sounds/Weapons/Slot6/L86/FireAdd/L86FireAdd5.wav"
+L86/fireadd6 "Sounds/Weapons/Slot6/L86/FireAdd/L86FireAdd6.wav"
+
 //Auto88C
 A88/raise	"Sounds/Weapons/Slot7/Auto88/Auto88Raise.wav"
 A88/lower	"Sounds/Weapons/Slot7/Auto88/Auto88Lower.wav"
