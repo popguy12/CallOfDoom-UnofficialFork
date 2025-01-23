@@ -274,6 +274,24 @@ A88/rackforward	"Sounds/Weapons/Slot7/Auto88/Auto88BoltRelease"
 A88/rackquick	"Sounds/Weapons/Slot7/Auto88/Auto88BoltCharge"
 A88/fire	"Sounds/Weapons/Slot7/Auto88/Auto88Fire"
 
+//M14 EBR
+M14/raise	"Sounds/Weapons/Slot7/M14/M14Raise.wav"
+M14/lower	"Sounds/Weapons/Slot7/M14/M14Lower.wav"
+M14/MagOut	"Sounds/Weapons/Slot7/M14/M14MagOut"
+M14/MagIn	"Sounds/Weapons/Slot7/M14/M14MagIn"
+M14/Charge	"Sounds/Weapons/Slot7/M14/M14Charge"
+$RANDOM M14/fire { M14/fire1 M14/fire2 }
+M14/fire1	"Sounds/Weapons/Slot7/M14/M14Fire1"
+M14/fire2	"Sounds/Weapons/Slot7/M14/M14Fire2"
+
+$RANDOM M14/fireadd { M14/fireadd1 M14/fireadd2 M14/fireadd3 M14/fireadd4 M14/fireadd5 M14/fireadd6 }
+M14/fireadd1	"Sounds/Weapons/Slot7/M14/FireAdd/M14FireAdd1.wav"
+M14/fireadd2	"Sounds/Weapons/Slot7/M14/FireAdd/M14FireAdd2.wav"
+M14/fireadd3	"Sounds/Weapons/Slot7/M14/FireAdd/M14FireAdd3.wav"
+M14/fireadd4	"Sounds/Weapons/Slot7/M14/FireAdd/M14FireAdd4.wav"
+M14/fireadd5	"Sounds/Weapons/Slot7/M14/FireAdd/M14FireAdd5.wav"
+M14/fireadd6	"Sounds/Weapons/Slot7/M14/FireAdd/M14FireAdd6.wav"
+
 //MCX Spear XM7
 XM7/raise	"Sounds/Weapons/Slot7/MCXSpear/XM7Raise"
 XM7/drop1	"Sounds/Weapons/Slot7/MCXSpear/XM7Drop1"

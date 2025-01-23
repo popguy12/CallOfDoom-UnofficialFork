@@ -135,12 +135,16 @@ class COD_MCXSpear : CODWeapon
 		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP);
 		XQKC ABC 1;
 		TNT1 A 0 A_ZoomFactor(2.5);
-		XQKC EFGD 1;
+		XQKC EF 1;
+		TNT1 A 0 A_Overlay(-2, "ReticleACOG");
+		XQKC GD 1;
 		Goto WeaponReady2;
 	AltFire2:
 		TNT1 A 0 A_TakeInventory("AimingToken");
 		TNT1 A 0 A_StartSound("uni/clothfoleym", 0, CHANF_OVERLAP);
-		XQKC DGFE 1;
+		XQKC DG 1;
+		TNT1 A 0 A_ClearOverlays(-2, -2);
+		XQKC FE 1;
 		TNT1 A 0 A_ZoomFactor(1);
 		XQKC CBA 1;
 		Goto WeaponReady;

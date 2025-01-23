@@ -189,7 +189,26 @@ class CODWeapon : Weapon
 			FRGA WX 2;
 			TNT1 A 0 A_Jump(256, "Ready");
 			Goto Ready;
-			
+		
+		//Reticles
+		ReticleEOTECH:
+			TNT1 A 0;
+			TNT1 A 0
+			{
+				A_OverlayFlags(-2, PSPF_ADDBOB, false);
+			}
+			G36C X 35;
+			Loop;
+		ReticleACOG:
+			TNT1 A 0;
+			TNT1 A 0
+			{
+				A_OverlayFlags(-2, PSPF_ADDBOB, false);
+			}
+			SCAC X 35;
+			Loop;
+		
+		//Muzzle Flashes
 		MuzzleSmall:
 			TNT1 A 0 A_Jump(256, "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8");
 		S1:

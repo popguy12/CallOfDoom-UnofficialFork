@@ -19,7 +19,7 @@ class COD_L86 : CODWeapon
 		*/
 		
 		Obituary "$OB_MPPISTOL";
-		Inventory.Pickupmessage "[6] :86 LSW";
+		Inventory.Pickupmessage "[6] L86 LSW";
 		Tag "L86 LSW";
 		Scale 0.16;
 		Inventory.PickupSound "weapons/pistol/pickup";
