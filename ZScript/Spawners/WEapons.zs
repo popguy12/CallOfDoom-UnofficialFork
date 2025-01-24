@@ -54,5 +54,6 @@ Class PlasmaSpawner : RandomSpawner replaces PlasmaRifle
 	{
 		DropItem "COD_SKS", 255, 1;
 		DropItem "COD_Auto88", 255, 1;
+		DropItem "COD_M14EBR", 255, 1;
 	}
 }
