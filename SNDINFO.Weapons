@@ -116,6 +116,66 @@ trn/shell2
 trn/shell3
 }
 
+//MP155
+mp155/raise	"Sounds/Weapons/Slot3/MP155/MP155Raise.wav"
+mp155/lower	"Sounds/Weapons/Slot3/MP155/MP155Drop.wav"
+mp155/charge	"Sounds/Weapons/Slot3/MP155/MP155Charge.wav"
+mp155/firstshell	"Sounds/Weapons/Slot3/MP155/MP155FirstShell.wav"
+
+mp155/fire1	"Sounds/Weapons/Slot3/MP155/Fire/MP155Fire1.wav"
+mp155/fire2	"Sounds/Weapons/Slot3/MP155/Fire/MP155Fire2.wav"
+mp155/fire3	"Sounds/Weapons/Slot3/MP155/Fire/MP155Fire3.wav"
+mp155/fire4	"Sounds/Weapons/Slot3/MP155/Fire/MP155Fire4.wav"
+mp155/fire5	"Sounds/Weapons/Slot3/MP155/Fire/MP155Fire5.wav"
+mp155/fire6	"Sounds/Weapons/Slot3/MP155/Fire/MP155Fire6.wav"
+mp155/fire7	"Sounds/Weapons/Slot3/MP155/Fire/MP155Fire7.wav"
+mp155/fire8	"Sounds/Weapons/Slot3/MP155/Fire/MP155Fire8.wav"
+$random mp155/fire
+{
+mp155/fire1
+mp155/fire2
+mp155/fire3
+mp155/fire4
+mp155/fire5
+mp155/fire6
+mp155/fire7
+mp155/fire8
+}
+
+mp155/firemech1	"Sounds/Weapons/Slot3/MP155/Firemech/MP155Firemech1.wav"
+mp155/firemech2	"Sounds/Weapons/Slot3/MP155/Firemech/MP155Firemech2.wav"
+mp155/firemech3	"Sounds/Weapons/Slot3/MP155/Firemech/MP155Firemech3.wav"
+mp155/firemech4	"Sounds/Weapons/Slot3/MP155/Firemech/MP155Firemech4.wav"
+mp155/firemech5	"Sounds/Weapons/Slot3/MP155/Firemech/MP155Firemech5.wav"
+mp155/firemech6	"Sounds/Weapons/Slot3/MP155/Firemech/MP155Firemech6.wav"
+mp155/firemech7	"Sounds/Weapons/Slot3/MP155/Firemech/MP155Firemech7.wav"
+mp155/firemech8	"Sounds/Weapons/Slot3/MP155/Firemech/MP155Firemech8.wav"
+$random mp155/firemech
+{
+mp155/firemech1
+mp155/firemech2
+mp155/firemech3
+mp155/firemech4
+mp155/firemech5
+mp155/firemech6
+mp155/firemech7
+mp155/firemech8
+}
+
+mp155/shell1	"Sounds/Weapons/Slot3/MP155/LoadShell/MP155Shell1.wav"
+mp155/shell2	"Sounds/Weapons/Slot3/MP155/LoadShell/MP155Shell2.wav"
+mp155/shell3	"Sounds/Weapons/Slot3/MP155/LoadShell/MP155Shell3.wav"
+mp155/shell4	"Sounds/Weapons/Slot3/MP155/LoadShell/MP155Shell4.wav"
+mp155/shell5	"Sounds/Weapons/Slot3/MP155/LoadShell/MP155Shell5.wav"
+$random mp155/shell
+{
+mp155/shell1
+mp155/shell2
+mp155/shell3
+mp155/shell4
+mp155/shell5
+}
+
 //Model 30
 m30/raise	"Sounds/Weapons/Slot3/M30Drilling/M30Raise"
 m30/lower	"Sounds/Weapons/Slot3/M30Drilling/M30Lower"

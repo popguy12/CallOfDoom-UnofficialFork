@@ -13,6 +13,7 @@ Class ShotgunSpawner : RandomSpawner replaces Shotgun
 	Default
 	{
 		DropItem "COD_M1897", 255, 1;
+		DropItem "COD_MP155", 255, 1;
 		DropItem "COD_MosinNagant", 255, 1;
 	}
 }
@@ -22,6 +23,7 @@ Class SuperShotgunSpawner : RandomSpawner replaces SuperShotgun
 	Default
 	{
 		DropItem "COD_Model30", 255, 1;
+		DropItem "COD_MP155", 255, 1;
 	}
 }
 
