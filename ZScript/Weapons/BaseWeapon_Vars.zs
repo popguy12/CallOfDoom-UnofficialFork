@@ -28,6 +28,7 @@ extend class CODWeapon
 	//[Pop] Engine only supports 2 ammo types, so custom third for UB modes
 	
 	/*
+	[Pop] template PlaySpeed values per weapon type
 	holser 1.6
 	normal 1
 	pistol 0.95

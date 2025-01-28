@@ -69,6 +69,7 @@ class COD_M4A1GL : CODWeapon
 	action void FireWeaponUB()
 	{
 		A_StartSound("m4gl/gl/fire", 0, CHANF_OVERLAP, 1);
+		A_StartSound("m4gl/gl/fireadd", 0, CHANF_OVERLAP, 0.75);
 		//COD_FireBullets("COD_556x45mm", 1, frandom(-0.1, 0.1), 0, 0, frandom(-0.1, 0.1));
 		A_FireProjectile("COD_40mmGrenade");
 		
@@ -363,13 +364,25 @@ class COD_M4A1GL : CODWeapon
 	AttachmentSwap:
 		TNT1 A 0;
 		TNT1 A 0 A_JumpIfInventory("COD_M4A1_UBMode", 1, "AttachmentUnSwap");
-		TNT1 A 0 A_GiveInventory("COD_M4A1_UBMode", 1);
+		TNT1 A 0
+		{
+			A_GiveInventory("COD_M4A1_UBMode", 1);
+			//[Pop] same check mentioned in slot3/Model30.zsc needs to be done
+			//here too and figured out.
+			invoker.HUDInfoGraphic = "ISM4GL";
+			A_StartSound("m4gl/gl/select", 0, CHANF_OVERLAP, 1);
+		}
 		M27J ABCDF 1;
 		TNT1 A 0 A_TakeInventory("DoAttachment");
 		Goto WeaponReadyGL;
 	AttachmentUnSwap:
 		TNT1 A 0;
-		TNT1 A 0 A_TakeInventory("COD_M4A1_UBMode", 1);
+		TNT1 A 0
+		{
+			A_TakeInventory("COD_M4A1_UBMode", 1);
+			invoker.HUDInfoGraphic = "ISM4A1";
+			A_StartSound("m4gl/gl/select", 0, CHANF_OVERLAP, 1);
+		}
 		M27J FDCBA 1;
 		TNT1 A 0 A_TakeInventory("DoAttachment");
 		Goto WeaponReady;

@@ -128,11 +128,16 @@ class COD_Model30 : CODWeapon
 			{
 				A_TakeInventory("COD_M30_UBMode");
 				invoker.AmmoType1 = "Shell";
+				//[Pop] so i guess this doesnt work or something? doesnt seem
+				//to even update in the HUD at least. will have to debug
+				//with PrintF or somethin later.
+				invoker.HUDInfoGraphic = "ISM30LD";
 			}
 			else
 			{
 				A_GiveInventory("COD_M30_UBMode");
-				invoker.AmmoType1 = "Clip";
+				invoker.AmmoType1 = "Clip"; //[Pop] this too
+				invoker.HUDInfoGraphic = "ISM30LDR";
 			}
 			A_StartSound("uni/slideflip", 0, CHANF_OVERLAP, 1);
 		}

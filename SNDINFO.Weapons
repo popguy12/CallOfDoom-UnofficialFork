@@ -287,20 +287,16 @@ M4GL/magdrop	"Sounds/Weapons/Slot6/M4A1GL/M4A1MagDrop"
 M4GL/magin	"Sounds/Weapons/Slot6/M4A1GL/M4A1MagIn"
 M4GL/magout	"Sounds/Weapons/Slot6/M4A1GL/M4A1MagOut"
 
-M4GL/GLFire	"Sounds/Weapons/Slot6/M4A1GL/M4A1GLFire"
-M4GL/GLSel	"Sounds/Weapons/Slot6/M4A1GL/M4A1GLSel"
-M4GL/GLOpen	"Sounds/Weapons/Slot6/M4A1GL/M4A1GLOpen"
-M4GL/GLLoad	"Sounds/Weapons/Slot6/M4A1GL/M4A1GLLoad"
-M4GL/GLClose	"Sounds/Weapons/Slot6/M4A1GL/M4A1GLClose"
+M4GL/GL/FireAdd	"Sounds/Weapons/Slot6/M4A1GL/GL/M4GLFireAdd"
+M4GL/GL/Fire	"Sounds/Weapons/Slot6/M4A1GL/GL/M4GLFire"
+M4GL/GL/Select	"Sounds/Weapons/Slot6/M4A1GL/GL/M4GLSelect"
+M4GL/GL/Open	"Sounds/Weapons/Slot6/M4A1GL/GL/M4GLOpen"
+M4GL/GL/ShellOut	"Sounds/Weapons/Slot6/M4A1GL/GL/M4GLShellOut"
+M4GL/GL/ShellIn	"Sounds/Weapons/Slot6/M4A1GL/GL/M4GLShellIn"
+M4GL/GL/Close	"Sounds/Weapons/Slot6/M4A1GL/GL/M4GLClose"
 
 M4GL/fire1	"Sounds/Weapons/Slot6/M4A1GL/M4A1Fire1"
 M4GL/fire2	"Sounds/Weapons/Slot6/M4A1GL/M4A1Fire2"
-
-M4GL/GL/Fire	"Sounds/Weapons/Slot6/M4A1GL/GL/M4GLFire"
-M4GL/GL/Open	"Sounds/Weapons/Slot6/M4A1GL/GL/M4GLOpen"
-M4GL/GL/ShellOut	"Sounds/Weapons/Slot6/M4A1GL/GL/M4ShellOut"
-M4GL/GL/ShellIn	"Sounds/Weapons/Slot6/M4A1GL/GL/M4ShellIn"
-M4GL/GL/Close	"Sounds/Weapons/Slot6/M4A1GL/GL/M4GLClose"
 
 //L86 LSW
 L86/raise	"Sounds/Weapons/Slot6/L86/L86Raise.wav"
