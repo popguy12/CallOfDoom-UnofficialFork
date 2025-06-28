@@ -33,6 +33,7 @@ class COD_DummyActor : Actor{}
 #include "ZScript/Weapons/Projectiles/BulletDef.LargeCal.zsc"
 #include "ZScript/Weapons/Projectiles/BulletDef.Shells.zsc"
 #include "ZScript/Weapons/Projectiles/BulletDef.Special.zsc"
+#include "ZScript/Weapons/Projectiles/Flames.zsc"
 
 #include "ZScript/Weapons/Slot1/Makarov.zsc"
 #include "ZScript/Weapons/Slot1/USP45.zsc"
@@ -61,6 +62,7 @@ class COD_DummyActor : Actor{}
 
 #include "ZScript/Weapons/Slot9/AT4.zsc"
 #include "ZScript/Weapons/Slot9/FN40mm.zsc"
+#include "ZScript/Weapons/Slot9/M2Flame.zsc"
 
 #include "ZScript/Weapons/Slot10/Medkit.zsc"
 #include "ZScript/Weapons/Slot10/C4.zsc"

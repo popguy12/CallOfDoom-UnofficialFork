@@ -59,3 +59,11 @@ Class PlasmaSpawner : RandomSpawner replaces PlasmaRifle
 		DropItem "COD_M14EBR", 255, 1;
 	}
 }
+
+Class RocketSpawner : RandomSpawner replaces BFG9000
+{
+	Default
+	{
+		DropItem "COD_M2Flamer", 255, 1;
+	}
+}

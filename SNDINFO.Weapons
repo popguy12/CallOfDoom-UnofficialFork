@@ -495,3 +495,61 @@ FN40/Close	"Sounds/Weapons/Slot9/FN40/FN40CLSE"
 FN40/Raise1	"Sounds/Weapons/Slot9/FN40/FN40Raise1.wav"
 FN40/Raise2	"Sounds/Weapons/Slot9/FN40/FN40Raise2.wav"
 FN40/Lower	"Sounds/Weapons/Slot9/FN40/FN40Lower.wav"
+
+//M2 Flamer
+M2Flame/Raise	"Sounds/Weapons/Slot9/M2Flamethrower/M2FlameRaise.wav"
+M2Flame/Lower	"Sounds/Weapons/Slot9/M2Flamethrower/M2FlameLower.wav"
+
+$RANDOM M2Flame/FireStart
+{
+M2Flame/FireStart1
+M2Flame/FireStart2
+M2Flame/FireStart3
+M2Flame/FireStart4
+M2Flame/FireStart5
+M2Flame/FireStart6
+}
+M2Flame/FireStart1	"Sounds/Weapons/Slot9/M2Flamethrower/Fire/M2FireStart1.wav"
+M2Flame/FireStart2	"Sounds/Weapons/Slot9/M2Flamethrower/Fire/M2FireStart2.wav"
+M2Flame/FireStart3	"Sounds/Weapons/Slot9/M2Flamethrower/Fire/M2FireStart3.wav"
+M2Flame/FireStart4	"Sounds/Weapons/Slot9/M2Flamethrower/Fire/M2FireStart4.wav"
+M2Flame/FireStart5	"Sounds/Weapons/Slot9/M2Flamethrower/Fire/M2FireStart5.wav"
+M2Flame/FireStart6	"Sounds/Weapons/Slot9/M2Flamethrower/Fire/M2FireStart6.wav"
+
+M2Flame/FireLoop	"Sounds/Weapons/Slot9/M2Flamethrower/Fire/M2FireLoop.wav"
+
+$RANDOM M2Flame/FireStop
+{
+M2Flame/FireStop1
+M2Flame/FireStop2
+M2Flame/FireStop3
+M2Flame/FireStop4
+}
+M2Flame/FireStop1	"Sounds/Weapons/Slot9/M2Flamethrower/Fire/M2FireStop1.wav"
+M2Flame/FireStop2	"Sounds/Weapons/Slot9/M2Flamethrower/Fire/M2FireStop2.wav"
+M2Flame/FireStop3	"Sounds/Weapons/Slot9/M2Flamethrower/Fire/M2FireStop3.wav"
+M2Flame/FireStop4	"Sounds/Weapons/Slot9/M2Flamethrower/Fire/M2FireStop4.wav"
+
+$RANDOM M2Flame/FireDamage
+{
+M2Flame/FireDamage1
+M2Flame/FireDamage2
+M2Flame/FireDamage3
+M2Flame/FireDamage4
+M2Flame/FireDamage5
+M2Flame/FireDamage6
+M2Flame/FireDamage7
+M2Flame/FireDamage8
+M2Flame/FireDamage9
+M2Flame/FireDamage10
+}
+M2Flame/FireDamage1	"Sounds/Weapons/Slot9/M2Flamethrower/LingerDamage/FlameDamage1.wav"
+M2Flame/FireDamage2	"Sounds/Weapons/Slot9/M2Flamethrower/LingerDamage/FlameDamage2.wav"
+M2Flame/FireDamage3	"Sounds/Weapons/Slot9/M2Flamethrower/LingerDamage/FlameDamage3.wav"
+M2Flame/FireDamage4	"Sounds/Weapons/Slot9/M2Flamethrower/LingerDamage/FlameDamage4.wav"
+M2Flame/FireDamage5	"Sounds/Weapons/Slot9/M2Flamethrower/LingerDamage/FlameDamage5.wav"
+M2Flame/FireDamage6	"Sounds/Weapons/Slot9/M2Flamethrower/LingerDamage/FlameDamage6.wav"
+M2Flame/FireDamage7	"Sounds/Weapons/Slot9/M2Flamethrower/LingerDamage/FlameDamage7.wav"
+M2Flame/FireDamage8	"Sounds/Weapons/Slot9/M2Flamethrower/LingerDamage/FlameDamage8.wav"
+M2Flame/FireDamage9	"Sounds/Weapons/Slot9/M2Flamethrower/LingerDamage/FlameDamage9.wav"
+M2Flame/FireDamage10	"Sounds/Weapons/Slot9/M2Flamethrower/LingerDamage/FlameDamage10.wav"
