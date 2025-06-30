@@ -60,7 +60,7 @@ Class PlasmaSpawner : RandomSpawner replaces PlasmaRifle
 	}
 }
 
-Class RocketSpawner : RandomSpawner replaces BFG9000
+Class BFGSpawner : RandomSpawner replaces BFG9000
 {
 	Default
 	{
