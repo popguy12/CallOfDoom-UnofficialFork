@@ -27,7 +27,7 @@ class COD_M2Flamethrower : CODWeapon
 		
 		CODWeapon.PlaySpeed 0.8;
 		CODWeapon.SlotType 1;
-		CODWeapon.InfoGraphics "ISFNGL40", "ICM320N", "ICM320U", "WLM320";
+		CODWeapon.InfoGraphics "ISM2F", "ICM2FN", "ICM2FU", "WLM2F";
 	}
 	
 	action void FireWeapon(bool take = true)
@@ -103,7 +103,7 @@ class COD_M2Flamethrower : CODWeapon
 		Goto WeaponReady;
 	
  	Spawn:
-		B001 Z -1; //K frame for empty
+		B004 F -1; //K frame for empty
 		Stop;
 	
 	}
