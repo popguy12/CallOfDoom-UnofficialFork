@@ -1,0 +1,13 @@
+class COD_Backpack : Backpack replaces Backpack
+{ 
+	Mixin COD_BetterPickupSound;
+	
+	Default 
+	{ 
+		//$Category Project Brutality - Ammunition
+		//$Sprite BPAKA0
+		Tag "Backpack";
+		Inventory.PickupSound "items/ammo/backpackpickup";
+		Scale .35;
+	}
+}

@@ -1,3 +1,15 @@
+Class ChainsawSpawner : RandomSpawner replaces Chainsaw
+{
+	Default
+	{
+		DropItem "PistolSpawner",255,1;
+		DropItem "ShotgunSpawner",255,1;
+		DropItem "SuperShotgunSpawner",255,1;
+		DropItem "ChaingunSpawner",255,1;
+		DropItem "PlasmaSpawner",255,1;
+	}
+}
+
 Class PistolSpawner : RandomSpawner replaces Pistol
 {
 	Default
@@ -64,6 +76,6 @@ Class BFGSpawner : RandomSpawner replaces BFG9000
 {
 	Default
 	{
-		DropItem "COD_M2Flamer", 255, 1;
+		DropItem "COD_M2Flamethrower", 255, 1;
 	}
 }
