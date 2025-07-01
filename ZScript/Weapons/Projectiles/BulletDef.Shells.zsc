@@ -2,7 +2,17 @@ class COD_12GAPellet : COD_Projectile
 {
 	Default
 	{
-		COD_Projectile.BaseDamage 19;
+		COD_Projectile.BaseDamage 18;
+		COD_Projectile.RipperCount 1;
+		Obituary "";
+	}
+}
+
+class COD_20GAPellet : COD_Projectile
+{
+	Default
+	{
+		COD_Projectile.BaseDamage 9;
 		COD_Projectile.RipperCount 1;
 		Obituary "";
 	}

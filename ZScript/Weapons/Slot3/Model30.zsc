@@ -45,7 +45,7 @@ class COD_Model30 : CODWeapon
 		
 		A_StartSound("m30/fire", 0, CHANF_OVERLAP, 1);
 		A_StartSound("m30/fireadd", 0, CHANF_OVERLAP, 0.75);
-		COD_FireBullets("COD_12GAPellet", 9, frandom(-6.0, 6.0), 0, 0, frandom(-4.0, 4.0));
+		COD_FireBullets("COD_12GAPellet", 8, frandom(-6.0, 6.0), 0, 0, frandom(-4.0, 4.0));
 		A_SpawnItemEx("PlayerMuzzleFlash",30,0,45);
 		
 		//this handles placing the flash correctly
