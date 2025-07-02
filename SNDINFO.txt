@@ -70,17 +70,52 @@ items/GM/Break	"Sounds/GasMask/MaskBreak.wav"
 items/GM/Remove	"Sounds/GasMask/MaskRemove.wav"
 
 //Foley
-uni/magfol	"Sounds/Foley/MagFoley.ogg"
-uni/magfolbig	"Sounds/Foley/MagFoleyDrum.wav"
+$RANDOM uni/magfol
+{
+uni/magfol1
+uni/magfol2
+uni/magfol3
+uni/magfol4
+uni/magfol5
+uni/magfol6
+uni/magfol7
+uni/magfol8
+}
+uni/magfol1	"Sounds/Foley/Mag/MagFoley1.ogg"
+uni/magfol2	"Sounds/Foley/Mag/MagFoley2.wav"
+uni/magfol3	"Sounds/Foley/Mag/MagFoley3.wav"
+uni/magfol4	"Sounds/Foley/Mag/MagFoley4.wav"
+uni/magfol5	"Sounds/Foley/Mag/MagFoley5.wav"
+uni/magfol6	"Sounds/Foley/Mag/MagFoley6.wav"
+uni/magfol7	"Sounds/Foley/Mag/MagFoley7.wav"
+uni/magfol8	"Sounds/Foley/Mag/MagFoley8.wav"
+
+$RANDOM uni/magfolbig
+{
+uni/magfolbig1
+uni/magfolbig2
+uni/magfolbig3
+uni/magfolbig4
+}
+uni/magfolbig1	"Sounds/Foley/MagFoleyDrum1.wav"
+uni/magfolbig2	"Sounds/Foley/MagFoleyDrum2.wav"
+uni/magfolbig3	"Sounds/Foley/MagFoleyDrum3.wav"
+uni/magfolbig4	"Sounds/Foley/MagFoleyDrum4.wav"
+
 uni/ClothFoleyS	"Sounds/Foley/ClothFoleyQuick.wav"
 uni/ClothFoleyM	"Sounds/Foley/ClothFoleyMedium.ogg"
 //Big Cloth Foley
+
 uni/CartFoley1	"Sounds/Foley/CartFoley1.ogg"
 uni/CartFoley2	"Sounds/Foley/CartFoley2.ogg"
+uni/CartFoley3	"Sounds/Foley/CartFoley3.wav"
+uni/CartFoley4	"Sounds/Foley/CartFoley4.wav"
 $random uni/CartFoley
 {
 uni/CartFoley1
 uni/CartFoley2
+uni/CartFoley3
+uni/CartFoley4
 }
 
 $RANDOM uni/gear/small
