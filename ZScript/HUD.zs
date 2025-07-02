@@ -57,7 +57,7 @@ Class COD_HUD : BaseStatusBar
 		DrawKeys("Card", (356, 26), 5, -8);
         DrawKeys("Skull", (351, 27), 5, -8);
 		
-		if(GetAmountOnly("Backpack") > 0)
+		if(GetAmountOnly("COD_Backpack") > 0)
 		{
 			DrawImage("Graphics/HUDStuff/HUDGraphics/BackpackIcon.png", (-45,195.5), DI_ITEM_OFFSETS, 1, (-1,-1), (0.25,0.25));
 		}
