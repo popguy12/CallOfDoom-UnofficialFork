@@ -1,0 +1,393 @@
+class Follower_Sakuya : actor
+{
+	Int TeleTic;	
+	Int	IdleTic;
+	Int HealTimer;
+	
+	Int PrimAmmo;
+	Int SecAmmo;
+	
+	bool SecondaryOut;
+	bool SetIdle;
+	
+	Default
+	{
+		Monster;
+		Health 150;
+		Radius 16;
+		Height 56;
+		Mass 100;
+		Speed 2;
+		PainChance 160;
+		Damage 0;
+		XScale 1;
+		YScale 1;
+		-COUNTKILL
+		+LOOKALLAROUND
+		+FLOORCLIP
+		+FRIENDLY
+		+NOTAUTOAIMED
+		+SLIDESONWALLS
+		+DONTMORPH
+		+NOBLOCKMONST
+		+QUICKTORETALIATE
+		+NOICEDEATH
+		+BUDDHA
+		+AVOIDMELEE
+		MaxStepHeight 48;
+		MaxDropOffHeight 48;
+		PainSound "Sakuya/Pain";
+		DamageFactor "FriendMarineDamage", 0;
+	}
+	
+	override int TakeSpecialDamage(Actor inflictor, Actor source, int damage, Name damagetype)
+	{
+		if (source && (source.player || source is "Follower_Sakuya"))
+		{
+			return 0;
+		}
+		return super.TakeSpecialDamage(inflictor, source, damage, damagetype);
+	}
+	
+	Override Void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		
+		SecondaryOut = false;
+		SetIdle = false;
+		HealTimer = 0;
+		
+		PrimAmmo = 30;
+		SecAmmo = 7;
+		
+		A_StartSound("Sakuya/Spawn",CHAN_VOICE);
+	}
+	
+	override void Tick() 
+	{
+		super.Tick();
+		
+		if (isFrozen())
+		{
+			return;
+		}
+		
+		if(!master)
+		{
+			Spawn("TeleportFog", (pos.x, pos.y, pos.z + height * 0.5));
+			Destroy();
+			return;
+		}
+		
+		if(health < default.health - 15 && HealTimer <= 0)
+		{
+			if(random(1,10) == 3) { A_Pain(); }
+			A_StartSound("medkit/use",0);
+			A_SetHealth(health + 15);
+			HealTimer = random(70,140);
+		}
+		
+		if (health <= 5 && !InStateSequence(curstate, FindState("FakeDeath")))
+		{
+			A_SetHealth(default.health);
+			SetStateLabel("FakeDeath");
+		}
+		
+		HealTimer--;
+	}
+	
+	Override bool CanCollideWith(Actor other, bool Passive)
+	{
+		If(!Other) 
+		Return False;
+		If(Other && !Passive)
+		{
+			If(Other.Player)
+			{
+				If(!Deathmatch) 
+				Return False;
+				Else If(Deathmatch && Other == Master) 
+				Return False;
+			}			
+			If(Other.bMISSILE && Other.Target && Other.Target.Player)
+			{
+				If(!Deathmatch) 
+				Return False;
+				Else If(Deathmatch && Other.Target == Master) 
+				Return False;
+			}			
+			Return True;
+		}
+		If(Other && Passive)
+		{
+			If(Other.Player)
+			{
+				If(!Deathmatch) 
+				Return False;
+				Else If(Deathmatch && Other == Master) 
+				Return False;
+			}			
+			If(Other.bMISSILE && Other.Target && Other.Target.Player)
+			{
+				If(!Deathmatch) 
+				Return False;
+				Else If(Deathmatch && Other.Target == Master) 
+				Return False;
+			}
+			Return True;
+		}
+		Return True;
+	}
+	
+	override bool Used(Actor user)
+	{
+		let plr = CODPlayer(user);
+		
+		if(InStateSequence(curstate, FindState("FakeDeath")))
+		{
+			//[Pop] Maybe spawn particles or something
+			SetStateLabel("FakeRaise");
+		}
+		else
+		{
+			SetIdle = !SetIdle;
+			if(SetIdle) { A_StartSound("Sakuya/Hold",CHAN_VOICE); }
+			else { A_StartSound("Sakuya/Follow",CHAN_VOICE); }
+			//[Pop] Invert This basically
+		}
+		
+		return Super.Used(user);
+	}
+	
+	action void Sakuya_Fire(bool which)
+	{
+		A_SpawnItemEx("PlayerMuzzleFlash",30,0,45);
+		
+		if(which)
+		{
+			A_StartSound("deagle/fire", 0, CHANF_OVERLAP, 0.75);
+			A_SpawnProjectile("COD_44Magnum_Friendly", 48, 0, frandom(5,-5), CMF_AIMDIRECTION, frandom(-5,5));
+			A_AlertMonsters(0,AMF_TARGETEMITTER);
+			invoker.SecAmmo--;
+		}
+		else
+		{
+			A_StartSound("m4gl/fire1", 0, CHANF_OVERLAP, 1, ATTN_NORM, frandom(0.9, 1.1));
+			A_StartSound("m4gl/fire2", 0, CHANF_OVERLAP, 0.75);
+			A_SpawnProjectile("COD_556x45mm_Friendly", 48, 0, frandom(5,-5), CMF_AIMDIRECTION, frandom(-5,5));
+			A_AlertMonsters(0,AMF_TARGETEMITTER);
+			invoker.PrimAmmo--;
+		}
+	}
+	
+	States
+	{
+		Spawn:
+			SAKY E 1 A_Look;
+			TNT1 A 0 A_CheckSight("TeleTic");
+			Loop;
+		See:
+			TNT1 A 0 A_JumpIf(SecondaryOut, "See2");
+			SAKY AAAAAABBBBBB 1
+			{
+				If (Master && Distance3D(master) < 70 || SetIdle)
+				{
+					Return ResolveState("Stand");
+				}
+				A_Chase();
+				A_Recoil(-0.25);
+				Return ResolveState(Null);
+			}
+			TNT1 A 0 A_StartSound("step/hard",0);
+			SAKY CCCCCCDDDDDD 1
+			{
+				If (Master && Distance3D(master) < 70 || SetIdle)
+				{
+					Return ResolveState("Stand");
+				}
+				A_Chase();
+				A_Recoil(-0.25);
+				Return ResolveState(Null);
+			}
+			TNT1 A 0 A_StartSound("step/hard",0);
+			TNT1 A 0 A_CheckSight("TeleTic");
+			Loop;
+		See2:
+			TNT1 A 0 A_JumpIf(!SecondaryOut, "See");
+			SAKY PPPPPPQQQQQQ 1
+			{
+				If (Master && Distance3D(master) < 70 || SetIdle)
+				{
+					Return ResolveState("Stand");
+				}
+				A_Chase();
+				A_Recoil(-0.25);
+				Return ResolveState(Null);
+			}
+			TNT1 A 0 A_StartSound("step/hard",0);
+			SAKY RRRRRRSSSSSS 1
+			{
+				If (Master && Distance3D(master) < 70 || SetIdle)
+				{
+					Return ResolveState("Stand");
+				}
+				A_Chase();
+				A_Recoil(-0.25);
+				Return ResolveState(Null);
+			}
+			TNT1 A 0 A_StartSound("step/hard",0);
+			TNT1 A 0 A_CheckSight("TeleTic");
+			Loop;
+		Stand:
+			SAKY O 0 A_JumpIf(!SecondaryOut, "RealStand");
+			SAKY T 0;
+		RealStand:
+			SAKY # 1
+			{ 
+				If (IdleTic >= GetCVar("CODF_idletalk"))
+				{
+					IdleTic = 0;
+					A_StartSound("Sakuya/Idle", CHAN_VOICE);
+				}
+				IdleTic++;
+				if(random(1,20) <= 3)
+				{
+					A_SetAngle(angle + random(-25,25));
+				}
+				A_Chase(Null,"Missile",CHF_NOPLAYACTIVE|CHF_DONTMOVE|CHF_NODIRECTIONTURN);
+			}
+			Goto See;
+		TeleTic:
+			TNT1 A 0 
+			{
+				if (teletic >= 5)
+				{
+					A_ClearTarget();
+					teletic = 0;
+					Warp(master, frandom(-16, -64), frandom(-64, 64), 0, 0, WARPF_STOP|WARPF_TOFLOOR);
+				}
+				teletic++;
+			}
+			Goto See;
+		Melee:
+			SAKY T 2 { SecondaryOut = true; }
+			TNT1 A 0 A_JumpIf(SecAmmo <= 0, "Reload2");
+			TNT1 A 0 A_Recoil(2);
+			SAKY F 4 A_FaceTarget;
+			SAKY F 1 Bright 
+			{
+				IdleTic = 0;
+				Sakuya_Fire(SecondaryOut);
+				A_ChangeVelocity(random(-1,-5), random(-3,3), random(1,2),CVF_RELATIVE);
+				A_Chase(NULL,NULL,CHF_FASTCHASE);
+			}
+			TNT1 A 0 A_Jump(128,"Melee");
+			Goto See2;
+		
+		Missile:
+			TNT1 A 0 { SecondaryOut = false; }
+			TNT1 A 0 A_JumpIf(PrimAmmo <= 0, "Reload");
+			TNT1 A 0
+			{
+				if(random(1,10) == 5)
+				{
+					A_StartSound("Sakuya/Attack",CHAN_VOICE);
+				}
+				if(!SetIdle)
+				{
+					A_ChangeVelocity(random(2,10), random(-10,10), random(1,2),CVF_RELATIVE);
+				}
+			}
+			TNT1 A 0 A_Jump(256, "Missile1", "Missile3", "Missile5");  
+		Missile5:
+			TNT1 A 0 A_JumpIf(PrimAmmo <= 4, "Reload");
+			SAKY E 3 A_FaceTarget;
+			SAKY E 1 Bright 
+			{	
+				IdleTic = 0;
+				Sakuya_Fire(SecondaryOut);
+			}
+			SAKY E 3 A_FaceTarget;
+			SAKY E 1 Bright Sakuya_Fire(SecondaryOut);
+			SAKY E 3 A_FaceTarget;
+			SAKY E 1 Bright Sakuya_Fire(SecondaryOut);
+			SAKY E 3 A_FaceTarget;
+			SAKY E 1 Bright Sakuya_Fire(SecondaryOut);
+			SAKY E 3 A_FaceTarget;
+			SAKY E 1 Bright Sakuya_Fire(SecondaryOut);
+			TNT1 A 0 A_Jump(128, "Missile5", "Missile3", "Missile1");
+			Goto See;
+		Missile3:
+			TNT1 A 0 A_JumpIf(PrimAmmo <= 2, "Reload");
+			SAKY E 3 A_FaceTarget;
+			SAKY E 1 Bright 
+			{	
+				IdleTic = 0;
+				Sakuya_Fire(SecondaryOut);
+			}
+			SAKY E 3 A_FaceTarget;
+			SAKY E 1 Bright Sakuya_Fire(SecondaryOut);
+			SAKY E 3 A_FaceTarget;
+			SAKY E 1 Bright Sakuya_Fire(SecondaryOut);
+			TNT1 A 0 A_Jump(128, "Missile3", "Missile1");
+			Goto See;
+		Missile1:
+			SAKY E 3 A_FaceTarget;
+			SAKY E 1 Bright 
+			{	
+				IdleTic = 0;
+				Sakuya_Fire(SecondaryOut);
+			}
+			TNT1 A 0 A_Jump(128, "Missile1");
+			Goto See;
+		
+		Reload:
+			SAKY O 2;
+			SAKY O 2 A_StartSound("XM7/MagOut", 0);
+			SAKY O 10 A_StartSound("XM7/MagSlide", 0);
+			SAKY O 8 A_StartSound("XM7/MagIn", 0);
+			SAKY O 6 A_StartSound("XM7/MagHit", 0);
+			SAKY O 4 A_StartSound("XM7/Button", 0);
+			TNT1 A 0 { PrimAmmo = 30; SecondaryOut = false; }
+			Goto See;
+		Reload2:
+			SAKY T 2;
+			SAKY T 10 A_StartSound("Deagle/MagOut", 0);
+			SAKY T 8 A_StartSound("Deagle/MagIn", 0);
+			SAKY T 16 A_StartSound("Deagle/Slide", 0);
+			TNT1 A 0 { SecAmmo = 7; SecondaryOut = true; }
+			Goto See2;
+			
+		Pain:
+			SAKY G 8
+			{
+				A_Pain();
+				A_ChangeVelocity(random(-5,5), random(-5,5), random(1,2),CVF_RELATIVE);
+			}
+			Goto See;
+		Death:
+		XDeath:
+		FakeDeath:
+			TNT1 A 0 
+			{
+				bSHOOTABLE = false;
+			}
+			SAKY G 5;
+			TNT1 A 0 A_StartSound("Sakuya/Death");
+			SAKY HIJKL 5;
+			SAKY M -1;
+		FakeRaise:
+			TNT1 A 0 
+			{
+				A_StartSound("Sakuya/Spawn", CHAN_VOICE);
+			}
+			SAKY LKJIHG 5;
+			TNT1 A 0
+			{
+				bSHOOTABLE = true;
+			}
+			Goto See;
+    }
+}
+
+class Follower_Sakuya_Token : Inventory { Default { Inventory.MaxAmount 1; } }

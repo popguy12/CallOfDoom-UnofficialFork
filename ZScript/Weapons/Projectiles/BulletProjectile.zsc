@@ -74,6 +74,12 @@ class COD_Projectile : FastProjectile abstract
 		
 		scaled_damage = victim.GetModifiedDamage(dmgType, scaled_damage, false, self, target);
 		
+		
+		if(IsFriendlyBullet && victim is 'CODPlayer')
+		{
+			scaled_damage = 0;
+		}
+		
 		victim.DamageMobj(self, target, ceil(scaled_damage), dmgType, 0, angle);
 		
 		if( victim.bISMONSTER && !victim.bNOBLOOD ) 
@@ -381,6 +387,9 @@ class COD_Projectile : FastProjectile abstract
 	int ripamount;
 	Property RipperCount : ripamount;
 	
+	bool IsFriendlyBullet;
+	Property FriendlyFire: IsFriendlyBullet;
+	
 	int destroyRange;
 	Property ProjectileRange : destroyRange;
 	
@@ -416,6 +425,7 @@ class COD_Projectile : FastProjectile abstract
 		+RIPPER
 		-NOGRAVITY
 		+COD_Projectile.RipOnce;
+		COD_Projectile.FriendlyFire false;
 		ProjectileKickBack 20;
 		Renderstyle "Add";
 		Decal "BulletChip";

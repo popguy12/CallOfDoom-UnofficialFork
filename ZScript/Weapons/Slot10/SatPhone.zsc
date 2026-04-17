@@ -32,6 +32,8 @@ class COD_SatPhone : CODWeapon
 		CODWeapon.InfoGraphics "ISC4", "ICUSSWN", "ICUSSWU", "WLC4";
 	}
 	
+	int CallMode;
+	
 	action void FireWeapon()
 	{
 	}
@@ -84,23 +86,59 @@ class COD_SatPhone : CODWeapon
 		PHON W 1;
 	WeaponReady:
 		PHON W 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER2 | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
+		TNT1 A 0
+		{
+			switch(invoker.CallMode)
+			{
+				//[Pop] Yes, every follower type will be its own case here
+				default:
+				case 0:
+					A_Print("Sakuya Izayoi");
+					break;
+				
+			}
+		}
 		TNT1 A 0 A_JumpIfInventory("ThrowGrenade", 1, "FragGrenade");
 		TNT1 A 0 A_JumpIfInventory("ThrowBang", 1, "StunGrenade");
 		Loop;
 	Fire:
-		PHON W 1;
-		TNT1 A 0 A_GiveInventory("BlowUpToken", 1);
-		TNT1 A 0 A_StartSound("C4/wep/click", 0);
-		PHON W 1;
-		TNT1 A 0 A_TakeInventory("BlowUpToken", 1);
+		TNT1 A 0;
+		TNT1 A 0 A_JumpIf(CountInv("COD_SatPhoneBattery") < 1, "DryFire");
+		TNT1 A 0 A_StartSound("Satphone/use", 0);
+		PHON W 8;
+		TNT1 A 0
+		{
+			switch(invoker.CallMode)
+			{
+				default:
+				case 0:
+					if(CountInv("Follower_Sakuya_Token") == 0)
+					{
+						A_GiveInventory("Follower_Sakuya_Token", 1);
+						Let pl = invoker.owner;
+						let SAKIZA = pl.Spawn("Follower_Sakuya",pl.pos,ALLOW_REPLACE);
+						If(SAKIZA)
+						{
+							SAKIZA.Master = pl;
+							SAKIZA.target = pl;
+							SAKIZA.Translation = pl.Translation;
+							SAKIZA.A_FaceMaster();
+						}
+					}
+					else
+					{
+						A_Print("Sir, Sakuya is already with you!");
+					}
+					break;
+			}
+		}
+		PHON W 1 A_AlertMonsters(64);
 		Goto WeaponReady;
 	AltFire:
 		TNT1 A 0;
 		TNT1 A 0 A_JumpIf(CountInv("COD_SatPhoneBattery") < 1, "DryFire");
 		PHON W 1;
-		TNT1 A 0 A_StartSound("C4/wep/throw", 0);
-		TNT1 A 0 A_FireCustomMissile("COD_C4Charge");
-		TNT1 A 0 A_TakeInventory("COD_SatPhoneBattery", 1);
+		TNT1 A 0 A_StartSound("satphone/select", 0);
 		PHON W 1;
 		Goto WeaponReady;
 	

@@ -11,4 +11,9 @@ OptionMenu "CODSettings"
 	StaticText " 1: Horizonal "
 	StaticText " 2: Vertical "
 	StaticText " "
+	StaticText " "
+	StaticText " "
+	StaticText "Follower Options", gold
+	StaticText " "	
+	Slider "Tics inbetween idle chatter", "CODF_idletalk", 500, 2000, 50
 }

@@ -1,0 +1,38 @@
+$RANDOM Sakuya/Pain { Sakuya/Pain1 Sakuya/Pain2 Sakuya/Pain3 }
+Sakuya/Pain1	"Sounds/Friendly/Sakuya/SakuyaPain1.wav"
+Sakuya/Pain2	"Sounds/Friendly/Sakuya/SakuyaPain2.wav"
+Sakuya/Pain3	"Sounds/Friendly/Sakuya/SakuyaPain3.wav"
+
+$RANDOM Sakuya/Attack { Sakuya/Attack1 Sakuya/Attack2 Sakuya/Attack3 Sakuya/Attack4 Sakuya/Attack5 Sakuya/Attack6 Sakuya/Attack7 Sakuya/Attack8 Sakuya/Attack9 Sakuya/Attack10 }
+Sakuya/Attack1	"Sounds/Friendly/Sakuya/SakuyaFire1.wav"
+Sakuya/Attack2	"Sounds/Friendly/Sakuya/SakuyaFire2.wav"
+Sakuya/Attack3	"Sounds/Friendly/Sakuya/SakuyaFire3.wav"
+Sakuya/Attack4	"Sounds/Friendly/Sakuya/SakuyaFire4.wav"
+Sakuya/Attack5	"Sounds/Friendly/Sakuya/SakuyaFire5.wav"
+Sakuya/Attack6	"Sounds/Friendly/Sakuya/SakuyaFire6.wav"
+Sakuya/Attack7	"Sounds/Friendly/Sakuya/SakuyaFire7.wav"
+Sakuya/Attack8	"Sounds/Friendly/Sakuya/SakuyaFire8.wav"
+Sakuya/Attack9	"Sounds/Friendly/Sakuya/SakuyaFire9.wav"
+Sakuya/Attack10	"Sounds/Friendly/Sakuya/SakuyaFire10.wav"
+
+$RANDOM Sakuya/Hold { Sakuya/Hold1 Sakuya/Hold2 Sakuya/Hold3 }
+Sakuya/Hold1	"Sounds/Friendly/Sakuya/SakuyaHold1.wav"
+Sakuya/Hold2	"Sounds/Friendly/Sakuya/SakuyaHold2.wav"
+Sakuya/Hold3	"Sounds/Friendly/Sakuya/SakuyaHold3.wav"
+
+$RANDOM Sakuya/Follow { Sakuya/Follow1 Sakuya/Follow2 Sakuya/Follow3 }
+Sakuya/Follow1	"Sounds/Friendly/Sakuya/SakuyaFollow1.wav"
+Sakuya/Follow2	"Sounds/Friendly/Sakuya/SakuyaFollow2.wav"
+Sakuya/Follow3	"Sounds/Friendly/Sakuya/SakuyaFollow3.wav"
+
+$RANDOM Sakuya/Idle { Sakuya/Idle1 Sakuya/Idle2 Sakuya/Idle3 Sakuya/Idle4 }
+Sakuya/Idle1	"Sounds/Friendly/Sakuya/SakuyaIdle1.wav"
+Sakuya/Idle2	"Sounds/Friendly/Sakuya/SakuyaIdle2.wav"
+Sakuya/Idle3	"Sounds/Friendly/Sakuya/SakuyaIdle3.wav"
+Sakuya/Idle4	"Sounds/Friendly/Sakuya/SakuyaIdle4.wav"
+
+$RANDOM Sakuya/Spawn { Sakuya/Idle1 Sakuya/Idle2 Sakuya/Idle3 Sakuya/Idle4 Sakuya/Follow1 Sakuya/Follow2 Sakuya/Follow3 Sakuya/Hold1 Sakuya/Hold2 Sakuya/Hold3 }
+
+$alias Sakuya/See Sakuya/Spawn
+
+Sakuya/Die	"Sounds/Friendly/Sakuya/SakuyaDead.wav"

@@ -1,0 +1,42 @@
+Class FollowerSpawnTauntHandler : EventHandler
+{
+	Override Void WorldThingDied(WorldEvent e)
+	{
+		Let victim = e.Thing;
+		Let source = e.Thing.Target;		
+		If((victim.bISMONSTER || victim.bCOUNTKILL) && source is "Follower_Sakuya")
+		{
+			If(Source && Source.Health > 0)			
+			{
+				If(Random(0,100) <= 10 || Victim.bBOSS) 
+				{ 
+					Source.A_StartSound("Sakuya/Idle",CHAN_VOICE);
+				}
+			}
+		}
+	}
+	
+	Override Void PlayerEntered(PlayerEvent e)
+	{
+		Let pl = players[e.PlayerNumber].mo;
+		
+		//[Pop] We are about to have gross hacks and a bunch of If statements
+		//only God may help us now.
+		
+		if(pl.CountInv("Follower_Sakuya_Token") == 1)
+		{
+			let SAKIZA = pl.Spawn("Follower_Sakuya",pl.pos,ALLOW_REPLACE);
+			If(SAKIZA)
+			{
+				SAKIZA.Master = pl;
+				SAKIZA.target = pl;
+				SAKIZA.Translation = pl.Translation;
+				SAKIZA.A_FaceMaster();
+			}
+		}
+		
+		//[Pop] After checking all tokens and spawning them, alert in a small
+		//radius just to activate them, just in case.
+		pl.A_AlertMonsters(64);
+	}
+}

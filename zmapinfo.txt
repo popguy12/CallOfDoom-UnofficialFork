@@ -3,7 +3,7 @@ Gameinfo
 
 	NoRandomPlayerClass = True
 	PlayerClasses = "CODPlayer"
-	AddEventHandlers = "COD_PlayerHandler"
+	AddEventHandlers = "COD_PlayerHandler", "FollowerSpawnTauntHandler"
 	DimColor = "Black"
 	DimAmount = 0.70
 	StatusBarClass = "COD_HUD"
