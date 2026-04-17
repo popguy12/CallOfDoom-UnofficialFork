@@ -66,17 +66,21 @@ class COD_Makarov : CODWeapon
 	
 	Deselect:
 		TNT1 A 0 A_ZoomFactor(1);
+		TNT1 A 0 A_StartSound("uni/clothfoleyLower", 0, CHANF_OVERLAP, 0.5);
+		P9PA E 1;
 		TNT1 A 0 A_StartSound("pm/lower", 0, CHANF_OVERLAP, 1);
-		P9PA EDCBA 1;
+		P9PA DCBA 1;
 		PSTG A 0 A_Lower(25);
 		Wait;
 	User4:
+		TNT1 A 0 A_StartSound("uni/clothfoleyLower", 0, CHANF_OVERLAP, 0.5);
 		P9PA ED 1;
 		TNT1 A 0 A_ZoomFactor(1);
 		TNT1 A 0 A_TakeInventory("AimingToken");
 		P9PA CBA 1;
 		Goto NVToggle;
 	User2:
+		TNT1 A 0 A_StartSound("uni/clothfoleyLower", 0, CHANF_OVERLAP, 0.5);
 		P9PA ED 1;
 		TNT1 A 0 A_ZoomFactor(1);
 		TNT1 A 0 A_TakeInventory("AimingToken");
@@ -94,8 +98,10 @@ class COD_Makarov : CODWeapon
 		TNT1 A 0 A_Raise(25);
 		Wait;
 	Ready:
+		TNT1 A 0 A_StartSound("uni/clothfoleyRaise", 0, CHANF_OVERLAP, 0.5);
+		P9PA A 1;
 		TNT1 A 0 A_StartSound("pm/raise", 0, CHANF_OVERLAP, 1);
-		P9PA ABCDE 1;
+		P9PA BCDE 1;
 	WeaponReady:
 		P9PA F 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER2 | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
 		TNT1 A 0 A_JumpIf(CountInv("COD_Makarov_Mag") == 0, "WeaponReadyEmpty");

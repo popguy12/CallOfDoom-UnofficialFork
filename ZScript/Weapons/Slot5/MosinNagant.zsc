@@ -64,18 +64,22 @@ class COD_MosinNagant : CODWeapon
 	States
 	{
 	Deselect:
+		TNT1 A 0 A_StartSound("uni/clothfoleyLower", 0, CHANF_OVERLAP, 0.5);
+		MSNA F 1;
 		TNT1 A 0 A_StartSound("mosin/lower", 0, CHANF_OVERLAP, 1);
 		TNT1 A 0 A_ZoomFactor(1);
-		MSNA FKJIHGEDCBA 1;
+		MSNA KJIHGEDCBA 1;
 		PSTG A 0 A_Lower(25);
 		Wait;
 	User4:
+		TNT1 A 0 A_StartSound("uni/clothfoleyLower", 0, CHANF_OVERLAP, 0.5);
 		MSNA FKJIHGED 1;
 		TNT1 A 0 A_ZoomFactor(1);
 		TNT1 A 0 A_TakeInventory("AimingToken");
 		MSNA CBA 1;
 		Goto NVToggle;
 	User2:
+		TNT1 A 0 A_StartSound("uni/clothfoleyLower", 0, CHANF_OVERLAP, 0.5);
 		MSNA FKJIHGED 1;
 		TNT1 A 0 A_ZoomFactor(1);
 		TNT1 A 0 A_TakeInventory("AimingToken");
@@ -94,8 +98,9 @@ class COD_MosinNagant : CODWeapon
 		TNT1 A 0 A_Raise(25);
 		Wait;
 	Ready:
-		TNT1 A 0 A_StartSound("mosin/raise", 0, CHANF_OVERLAP, 1);
+		TNT1 A 0 A_StartSound("uni/clothfoleyRaise", 0, CHANF_OVERLAP, 0.5);
 		TNT1 A 12;
+		TNT1 A 0 A_StartSound("mosin/raise", 0, CHANF_OVERLAP, 1);
 		MSNA ABCDEGHIJKF 1;
 	WeaponReady:
 		MSNA F 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER2 |  WRF_ALLOWUSER3 | WRF_ALLOWUSER4);

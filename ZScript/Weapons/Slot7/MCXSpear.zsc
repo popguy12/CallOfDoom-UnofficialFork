@@ -67,6 +67,8 @@ class COD_MCXSpear : CODWeapon
 	{
 	
 	Deselect:
+		TNT1 A 0 A_StartSound("uni/clothfoleyLower", 0, CHANF_OVERLAP, 0.5);
+		XQKA F 1;
 		TNT1 A 0 A_StartSound("XM7/drop1", 0, CHANF_OVERLAP, 1);
 		TNT1 A 0 A_ZoomFactor(1);
 		XQKA IHGE 1;
@@ -75,13 +77,14 @@ class COD_MCXSpear : CODWeapon
 		PSTG A 0 A_Lower(25);
 		Wait;
 	User4:
-		XQKA HIGED 1;
+		TNT1 A 0 A_StartSound("uni/clothfoleyLower", 0, CHANF_OVERLAP, 0.5);
+		XQKA FIHGED 1;
 		TNT1 A 0 A_ZoomFactor(1);
 		TNT1 A 0 A_TakeInventory("AimingToken");
 		XQKA CBA 1;
 		Goto NVToggle;
 	User2:
-		XQKA HIGED 1;
+		XQKA FIHGED 1;
 		TNT1 A 0 A_ZoomFactor(1);
 		TNT1 A 0 A_TakeInventory("AimingToken");
 		XQKA CBA 1;
@@ -99,8 +102,9 @@ class COD_MCXSpear : CODWeapon
 		TNT1 A 0 A_Raise(25);
 		Wait;
 	Ready:
-		TNT1 A 0 A_StartSound("xm7/raise", 0, CHANF_OVERLAP, 1);
+		TNT1 A 0 A_StartSound("uni/clothfoleyRaise", 0, CHANF_OVERLAP, 0.5);
 		TNT1 A 10;
+		TNT1 A 0 A_StartSound("xm7/raise", 0, CHANF_OVERLAP, 1);
 		XQKA ABCDEGHIF 1;
 	WeaponReady:
 		XQKA F 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER2 | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
