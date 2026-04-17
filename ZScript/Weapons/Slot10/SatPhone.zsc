@@ -1,13 +1,13 @@
-class COD_C4Thrower : CODWeapon
+class COD_SatPhone : CODWeapon
 {
  	Default
 	{
-		Weapon.AmmoType "COD_C4Ammo";
+		Weapon.AmmoType "COD_SatPhoneBattery";
 		Weapon.AmmoUse 0;
-		Weapon.AmmoGive 0;
+		Weapon.AmmoGive 1;
 		
 		Weapon.SlotNumber 0;
-		Weapon.SlotPriority 2;
+		Weapon.SlotPriority 1;
 		
 		/*
 		zoom 1.0
@@ -17,9 +17,9 @@ class COD_C4Thrower : CODWeapon
 		*/
 		
 		Obituary "$OB_MPPISTOL";
-		Inventory.Pickupmessage "[0] C4 Detonator";
-		Tag "C4 Detonator`";
-		Scale 0.16;
+		Inventory.Pickupmessage "[0] Sattelite Phone";
+		Tag "Satellite Phone";
+		Scale 0.75;
 		Inventory.PickupSound "weapons/pistol/pickup";
 		+WEAPON.NOALERT;
 		+WEAPON.AMMO_OPTIONAL;
@@ -28,6 +28,7 @@ class COD_C4Thrower : CODWeapon
 		
 		CODWeapon.PlaySpeed 1;
 		CODWeapon.SlotType 3;
+		//[Pop] DONT FORGET TO MAKE ACTUAL GRAPHICS FOR THESE LATER, SINCE CODTARK DOESNT HAVE A SAT PHONE
 		CODWeapon.InfoGraphics "ISC4", "ICUSSWN", "ICUSSWU", "WLC4";
 	}
 	
@@ -40,16 +41,16 @@ class COD_C4Thrower : CODWeapon
 	
 	Deselect:
 		TNT1 A 0 A_StartSound("uni/clothfoleyLower", 0);
-		FRGF GFEDCBA 1;
+		PHON XYZ 2;
 		PSTG A 0 A_Lower(25);
 		Wait;
 	User4:
 		TNT1 A 0 A_ZoomFactor(1);
-		VSTA CBA 2;
+		PHON XYZ 2;
 		Goto NVToggle;
 	User2:
 		TNT1 A 0 A_ZoomFactor(1);
-		VSTA CBA 2;
+		PHON XYZ 2;
 		Goto RadToggle;
 	User3:
 		TNT1 A 0 A_ZoomFactor(1);
@@ -64,54 +65,56 @@ class COD_C4Thrower : CODWeapon
 	Ready:
 		TNT1 A 0;
 		TNT1 A 0 A_StartSound("uni/clothfoleyRaise", 0);
-		TNT1 A 0 A_StartSound("C4/wep/up", 0);
-		FRGF ABCDEFG 1;
+		PHON ABCD 2;
+		TNT1 A 0 A_StartSound("satphone/selectbatgrab", 0);
+		PHON EFG 3;
+		TNT1 A 0 A_StartSound("satphone/selectbatin", 0);
+		PHON HIJKLMNO 2;
+		TNT1 A 0 A_StartSound("satphone/selectbeep", 0);
+		PHON PO 3;
+		TNT1 A 0 A_StartSound("satphone/selectbeep", 0);
+		PHON QR 3;
+		TNT1 A 0 A_StartSound("satphone/selectbeep", 0);
+		PHON ST 3;
+		TNT1 A 0 A_StartSound("satphone/Selectflick1", 0);
+		PHON UV 3;
+		TNT1 A 0 A_StartSound("satphone/selectflick2", 0);
+		PHON W 1;
 	WeaponReady:
-		FRGF F 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER2 | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
+		PHON W 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER2 | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
 		TNT1 A 0 A_JumpIfInventory("ThrowGrenade", 1, "FragGrenade");
 		TNT1 A 0 A_JumpIfInventory("ThrowBang", 1, "StunGrenade");
 		Loop;
-	WeaponReadyMedical:
-		TNT1 A 1 COD_WeaponReady(WRF_ALLOWRELOAD | WRF_ALLOWUSER2 | WRF_ALLOWUSER3 | WRF_ALLOWUSER4);
-		Loop;
 	Fire:
-		FRGF GHIJ 1;
+		PHON W 1;
 		TNT1 A 0 A_GiveInventory("BlowUpToken", 1);
 		TNT1 A 0 A_StartSound("C4/wep/click", 0);
-		FRGF JIHG 1;
+		PHON W 1;
 		TNT1 A 0 A_TakeInventory("BlowUpToken", 1);
 		Goto WeaponReady;
 	AltFire:
 		TNT1 A 0;
-		TNT1 A 0 A_JumpIf(CountInv("COD_C4Ammo") < 1, "DryFire");
-		FRGE ABC 1;
+		TNT1 A 0 A_JumpIf(CountInv("COD_SatPhoneBattery") < 1, "DryFire");
+		PHON W 1;
 		TNT1 A 0 A_StartSound("C4/wep/throw", 0);
 		TNT1 A 0 A_FireCustomMissile("COD_C4Charge");
-		TNT1 A 0 A_TakeInventory("COD_C4Ammo", 1);
-		FRGE DEFGHI 1;
+		TNT1 A 0 A_TakeInventory("COD_SatPhoneBattery", 1);
+		PHON W 1;
 		Goto WeaponReady;
 	
 	Reload:
 	DryFire:
-		FRGF F 1;
+		PHON W 1;
 		Goto WeaponReady;
 	
  	Spawn:
-		C4XA B -1;
+		AMMR W -1;
 		Stop;
 	
 	}
 }
 
-Class BlowUpToken : Inventory
-{
-	Default
-	{
-		Inventory.MaxAmount 1;
-	}
-}
-
-Class COD_C4Ammo : Ammo replaces RocketAmmo
+Class COD_SatPhoneBattery : Ammo
 {
 	Default
 	{

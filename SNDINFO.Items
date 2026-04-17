@@ -1,1 +1,35 @@
 items/ammo/backpackpickup	"Sounds/Items/Ammo/BackpackPickup.wav"
+
+medkit/zip	"Sounds/Weapons/Items/Medkit/MKITUnzip.wav"
+medkit/open	"Sounds/Weapons/Items/Medkit/MKITOpen.wav"
+medkit/GrabPack	"Sounds/Weapons/Items/Medkit/MKITGrabPack.wav"
+medkit/PackOpen	"Sounds/Weapons/Items/Medkit/MKITPackOpen.wav"
+medkit/ReOpen	"Sounds/Weapons/Items/Medkit/MKITReopen.wav"
+
+$RANDOM medkit/use
+{
+	medkit/use1
+	medkit/use2
+}
+medkit/use1	"Sounds/Weapons/Items/Medkit/MKITUse1.wav"
+medkit/use2	"Sounds/Weapons/Items/Medkit/MKITUse2.wav"
+
+c4/wep/up	"Sounds/Weapons/Items/C4/C4PICUP"
+c4/wep/throw	"Sounds/Weapons/Items/C4/C4THROW"
+c4/charge/land	"Sounds/Weapons/Items/C4/C4Land"
+c4/wep/click	"Sounds/Weapons/Items/C4/C4CLICK"
+
+satphone/change	"Sounds/Weapons/Items/Phone/SatSelect.lmp"
+satphone/Use	"Sounds/Weapons/Items/Phone/SatUse.lmp"
+satphone/Pickup	"Sounds/Weapons/Items/Phone/SatPhone.wav"
+
+$RANDOM satphone/selectbeep { satphone/selectbeep1 satphone/selectbeep2 satphone/selectbeep3 satphone/selectbeep4 }
+satphone/selectbeep1	"Sounds/Weapons/Items/Phone/D3Beep1.ogg"
+satphone/selectbeep2	"Sounds/Weapons/Items/Phone/D3Beep2.ogg"
+satphone/selectbeep3	"Sounds/Weapons/Items/Phone/D3Beep3.ogg"
+satphone/selectbeep4	"Sounds/Weapons/Items/Phone/D3Beep4.ogg"
+
+satphone/selectBatGrab	"Sounds/Weapons/Items/Phone/SatPhoneBatGrab.wav"
+satphone/selectBatIn	"Sounds/Weapons/Items/Phone/SatPhoneBatIn.wav"
+satphone/selectFlick1	"Sounds/Weapons/Items/Phone/SatPhoneFlick1.wav"
+satphone/selectflick2	"Sounds/Weapons/Items/Phone/SatPhoneFlick2.wav"

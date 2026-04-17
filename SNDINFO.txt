@@ -106,6 +106,23 @@ uni/ClothFoleyS	"Sounds/Foley/ClothFoleyQuick.wav"
 uni/ClothFoleyM	"Sounds/Foley/ClothFoleyMedium.ogg"
 //Big Cloth Foley
 
+$random uni/clothfoleyRaise { uni/clothfoleyRaise1 uni/clothfoleyRaise2 uni/clothfoleyRaise3 uni/clothfoleyRaise4 uni/clothfoleyRaise5uni/clothfoleyRaise6 }
+uni/clothfoleyRaise1	"Sounds/Foley/Cloth/WepRaiseCloth1.wav"
+uni/clothfoleyRaise2	"Sounds/Foley/Cloth/WepRaiseCloth2.wav"
+uni/clothfoleyRaise3	"Sounds/Foley/Cloth/WepRaiseCloth3.wav"
+uni/clothfoleyRaise4	"Sounds/Foley/Cloth/WepRaiseCloth4.wav"
+uni/clothfoleyRaise5	"Sounds/Foley/Cloth/WepRaiseCloth5.wav"
+uni/clothfoleyRaise6	"Sounds/Foley/Cloth/WepRaiseCloth6.wav"
+
+$random uni/clothfoleyLower { uni/clothfoleyLower1 uni/clothfoleyLower2 uni/clothfoleyLower3 uni/clothfoleyLower4 uni/clothfoleyLower5 uni/clothfoleyLower6 uni/clothfoleyLower7 }
+uni/clothfoleyLower1	"Sounds/Foley/Cloth/WepLowerCloth1.wav"
+uni/clothfoleyLower2	"Sounds/Foley/Cloth/WepLowerCloth2.wav"
+uni/clothfoleyLower3	"Sounds/Foley/Cloth/WepLowerCloth3.wav"
+uni/clothfoleyLower4	"Sounds/Foley/Cloth/WepLowerCloth4.wav"
+uni/clothfoleyLower5	"Sounds/Foley/Cloth/WepLowerCloth5.wav"
+uni/clothfoleyLower6	"Sounds/Foley/Cloth/WepLowerCloth6.wav"
+uni/clothfoleyLower7	"Sounds/Foley/Cloth/WepLowerCloth7.wav"
+
 uni/CartFoley1	"Sounds/Foley/CartFoley1.ogg"
 uni/CartFoley2	"Sounds/Foley/CartFoley2.ogg"
 uni/CartFoley3	"Sounds/Foley/CartFoley3.wav"
@@ -174,25 +191,6 @@ melee/knife/hit3	"Sounds/Weapons/Knife/knife_hit3.wav"
 melee/knife/hit4	"Sounds/Weapons/Knife/knife_hit4.wav"
 
 melee/bayonet/stab	"Sounds/Weapons/Knife/TARKBAY1"
-
-medkit/zip	"Sounds/Weapons/Items/Medkit/MKITUnzip.wav"
-medkit/open	"Sounds/Weapons/Items/Medkit/MKITOpen.wav"
-medkit/GrabPack	"Sounds/Weapons/Items/Medkit/MKITGrabPack.wav"
-medkit/PackOpen	"Sounds/Weapons/Items/Medkit/MKITPackOpen.wav"
-medkit/ReOpen	"Sounds/Weapons/Items/Medkit/MKITReopen.wav"
-
-$RANDOM medkit/use
-{
-	medkit/use1
-	medkit/use2
-}
-medkit/use1	"Sounds/Weapons/Items/Medkit/MKITUse1.wav"
-medkit/use2	"Sounds/Weapons/Items/Medkit/MKITUse2.wav"
-
-c4/wep/up	"Sounds/Weapons/Items/C4/C4PICUP"
-c4/wep/throw	"Sounds/Weapons/Items/C4/C4THROW"
-c4/charge/land	"Sounds/Weapons/Items/C4/C4Land"
-c4/wep/click	"Sounds/Weapons/Items/C4/C4CLICK"
 
 throwable/empty	"Sounds/Weapons/Items/metal_click.wav"
 
