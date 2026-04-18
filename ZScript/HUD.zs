@@ -77,7 +77,7 @@ Class COD_HUD : BaseStatusBar
 		
 		DrawBar("ARMBAR2", "ARMBAR1", armor, 200, (-35, 215), 0, 0, DI_ITEM_OFFSETS);
 		
-		DrawImage("Graphics/HUDStuff/HUDGraphics/HealthIcon.png", (-42,221.2), DI_ITEM_OFFSETS, 1, (-1,-1), (0.15,0.15), translation: CPlayer.mo.translation);
+		DrawImage("Graphics/HUDStuff/HUDGraphics/HealthIcon.png", (-42,221.2), DI_ITEM_OFFSETS, 1, (-1,-1), (0.15,0.15), col: CPlayer.GetDisplayColor());
 		/* [Pop] will recode later with proper armor colors once its implemented.
 		if(armortype)
 		{

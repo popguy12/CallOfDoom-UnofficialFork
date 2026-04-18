@@ -7,8 +7,22 @@ class CODPlayer : DoomPlayer
         return !(player.cmd.buttons & which) && player.oldbuttons & which;
     }
 	
+	SpriteID skinSprite;
+	int skinInd;
+	bool hasSkin;
+	void checkSkin()
+	{
+		let plr = self.player;
+		if(plr){
+			skinInd = plr.GetSkin();
+			hasSkin = skinInd != 0;
+			skinSprite = sprite;
+		}
+	}
+	
 	override Void Tick()
 	{
+		checkSkin();
 		Super.Tick();
 		
 		int buttons = GetPlayerInput(-1, INPUT_BUTTONS);
@@ -90,13 +104,30 @@ class CODPlayer : DoomPlayer
 		}*/
 		return super.DamageMobj(inflictor, source, damage, mod, flags, angle);
 	}
-
+	
+	override void PostBeginPlay()
+	{
+		Super.PostBeginPlay();
+		if(!player||(player.mo!=self))
+		{
+			let v = Spawn("CODVoodooDoll",pos);
+			v.angle = angle; v.player = player;
+			Destroy(); return;
+		}
+		if(level.info.mapname == "TITLEMAP")
+		{
+			player.SetFOV(90);
+		}
+	}
+	
 	int grenadecooktimer;
 	
 	bool alternateGMSound;
 	
 	Default
 	{
+		Player.DisplayName "Call of Doom Player";
+		
 		Player.StartItem "COD_Makarov", 1;
 		Player.StartItem "Clip", 16;
 		
@@ -120,40 +151,41 @@ class CODPlayer : DoomPlayer
 		Player.ViewBobSpeed 15;
 		Player.ViewHeight 50;
 		Scale 0.65;
-		Player.SoundClass "CODPlayer";
 		Player.Face "MOS";
+		
+		-NOSKIN;
 	}
 	
 	States
 	{
 		Spawn:
-			TNT1 A 0 A_JumpIfInventory("AimingToken", 1, "Spawn2");
-			TNT1 A 0 A_Overlay(-50, "StunnerCheck", true);
-			RANG A 10;
+			PLAY A 0 A_JumpIfInventory("AimingToken", 1, "Spawn2");
+			PLAY A 0 A_Overlay(-50, "StunnerCheck", true);
+			PLAY A 10;
 			Loop;
 		Spawn2:
 			TNT1 A 0 A_JumpIf(CountInv("AimingToken") == 0, "Spawn");
-			RANG E 10;
+			PLAY E 10;
 			Loop;
 		See:
-			RANG ABCD 3;
+			PLAY ABCD 3;
 			Loop;
 		Missile:
-			RANG E 6;
+			PLAY E 6;
 			Goto Spawn;
 		Melee:
-			RANG F 4 BRIGHT;
+			PLAY F 4 BRIGHT;
 			Goto Missile;
 		Pain:
-			RANG G 2 A_Pain;
+			PLAY G 2 A_Pain;
 			Goto Spawn;
 		Death:
 		XDeath:
-			RANG H 2;
-			RANG I 2 A_PlayerScream;
-			RANG J 2 A_NoBlocking;
-			RANG KL 2;
-			RANG L -1;
+			PLAY H 2;
+			PLAY I 2 A_PlayerScream;
+			PLAY J 2 A_NoBlocking;
+			PLAY KL 2;
+			PLAY L -1;
 			Stop;
 		
 		DoDolphinDive:
@@ -306,6 +338,31 @@ class CODPlayer : DoomPlayer
 		SlideEnd:
 			SLDK HIJK 1;
 			Goto KickCheckTakeToken;
+	}
+}
+
+class CODVoodooDoll : CODPlayer
+{
+	override void PostBeginPlay() {}
+	
+	Default
+	{
+		+NOPAIN;
+		/*+ROLLSPRITE
+		+ROLLCENTER
+		+FLOATBOB*/
+	}
+	
+	States
+	{
+	Spawn:
+		TNT1 A 0;
+		TNT1 A 2;
+	Death:
+	XDeath:
+	VooDoo:
+		PLAY A 1;
+		loop;
 	}
 }
 

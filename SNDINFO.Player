@@ -40,18 +40,18 @@ $random CODPlayer/Resurrect
 	CODPlayer/Resurrect2
 }
 
-$playeralias CODPlayer male *death	CODPlayer/Death
-$playeralias CODPlayer male *xdeath	CODPlayer/XDeath
-$playersound CODPlayer male *gibbed	DSSLOP
-$playeralias CODPlayer male *pain100	CODPlayer/Pain100
-$playeralias CODPlayer male *pain75 CODPlayer/Pain100
-$playeralias CODPlayer male *pain50 CODPlayer/Pain100
-$playeralias CODPlayer male *pain25	CODPlayer/Pain100
-$playeralias CODPlayer male *land	IGIOOF
-$playersound CODPlayer male *grunt	IGIOOF
-$playeralias CODPlayer male *revive CODPlayer/Resurrect
-$playeralias CODPlayer male *usefail	CODPlayer/UseFail
-$playersound CODPlayer male *jump	IGIOOF
+$playeralias Player male *death	CODPlayer/Death
+$playeralias Player male *xdeath	CODPlayer/XDeath
+$playersound Player male *gibbed	DSSLOP
+$playeralias Player male *pain100	CODPlayer/Pain100
+$playeralias Player male *pain75 CODPlayer/Pain100
+$playeralias Player male *pain50 CODPlayer/Pain100
+$playeralias Player male *pain25	CODPlayer/Pain100
+$playeralias Player male *land	IGIOOF
+$playersound Player male *grunt	IGIOOF
+$playeralias Player male *revive CODPlayer/Resurrect
+$playeralias Player male *usefail	CODPlayer/UseFail
+$playersound Player male *jump	IGIOOF
 
 CODPlayer/Flashbanged	"Sounds/Player/PlayerFlashed.mp3"
 

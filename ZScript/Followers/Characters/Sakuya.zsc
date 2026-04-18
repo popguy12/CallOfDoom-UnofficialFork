@@ -60,6 +60,8 @@ class Follower_Sakuya : actor
 		PrimAmmo = 30;
 		SecAmmo = 7;
 		
+		A_GiveInventory("IMAFRIENDLYDIPSHIT");
+		
 		A_StartSound("Sakuya/Spawn",CHAN_VOICE);
 	}
 	
@@ -92,6 +94,9 @@ class Follower_Sakuya : actor
 			A_SetHealth(default.health);
 			SetStateLabel("FakeDeath");
 		}
+		
+		if(health <= default.health / 2 && target != master) { bFRIGHTENED = true; }
+		else { bFRIGHTENED = false; }
 		
 		HealTimer--;
 	}

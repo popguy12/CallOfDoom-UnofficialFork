@@ -253,7 +253,7 @@ Class COD_GroundFire : Actor
 
 Class COD_BurningHandler : inventory
 {
-	uint oldTranslation;
+	textureID oldTranslation;
 	int burnTics;
 	bool burned;
 	override void attachtoowner(actor other)

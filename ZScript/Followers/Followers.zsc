@@ -8,3 +8,5 @@
 //#include "ZScript/Followers/Characters/Maiko.zsc"
 //#include "ZScript/Followers/Characters/Meryl.zsc"
 //#include "ZScript/Followers/Characters/Iris.zsc"
+
+class IMAFRIENDLYDIPSHIT : Inventory { Default { Inventory.MaxAmount 1; } }
