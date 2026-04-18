@@ -1,0 +1,19 @@
+model COD_556x45mm_Friendly
+{
+   Path "models/Tracers"
+   SKIN 0 "tracer1.tga"
+   MODEL 0 "Tracer.md3"
+   Scale 1.0 1.0 1.0
+   PITCHFROMMOMENTUM
+   FrameIndex TRAC A 0 0
+}
+
+model COD_44Magnum_Friendly
+{
+   Path "models/Tracers"
+   SKIN 0 "tracer1.tga"
+   MODEL 0 "Tracer.md3"
+   Scale 1.0 1.0 1.0
+   PITCHFROMMOMENTUM
+   FrameIndex TRAC A 0 0
+}

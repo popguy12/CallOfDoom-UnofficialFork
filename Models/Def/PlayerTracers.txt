@@ -1,0 +1,165 @@
+//Small Cal
+
+model COD_9x18mm
+{
+   Path "models/Tracers"
+   SKIN 0 "tracer1.tga"
+   MODEL 0 "Tracer.md3"
+   Scale 1.0 1.0 1.0
+   PITCHFROMMOMENTUM
+   FrameIndex TRAC A 0 0
+}
+
+model COD_9x19mm
+{
+   Path "models/Tracers"
+   SKIN 0 "tracer1.tga"
+   MODEL 0 "Tracer.md3"
+   Scale 1.0 1.0 1.0
+   PITCHFROMMOMENTUM
+   FrameIndex TRAC A 0 0
+}
+
+model COD_45ACP
+{
+   Path "models/Tracers"
+   SKIN 0 "tracer1.tga"
+   MODEL 0 "Tracer.md3"
+   Scale 1.0 1.0 1.0
+   PITCHFROMMOMENTUM
+   FrameIndex TRAC A 0 0
+}
+
+model COD_44Magnum
+{
+   Path "models/Tracers"
+   SKIN 0 "tracer1.tga"
+   MODEL 0 "Tracer.md3"
+   Scale 1.0 1.0 1.0
+   PITCHFROMMOMENTUM
+   FrameIndex TRAC A 0 0
+}
+
+model COD_762x25mm
+{
+   Path "models/Tracers"
+   SKIN 0 "tracer1.tga"
+   MODEL 0 "Tracer.md3"
+   Scale 1.0 1.0 1.0
+   PITCHFROMMOMENTUM
+   FrameIndex TRAC A 0 0
+}
+
+model COD_57x28mm
+{
+   Path "models/Tracers"
+   SKIN 0 "tracer1.tga"
+   MODEL 0 "Tracer.md3"
+   Scale 1.0 1.0 1.0
+   PITCHFROMMOMENTUM
+   FrameIndex TRAC A 0 0
+}
+
+//Shotgun
+
+model COD_12GAPellet
+{
+   Path "models/Tracers"
+   SKIN 0 "tracer1.tga"
+   MODEL 0 "Tracer.md3"
+   Scale 1.0 1.0 1.0
+   PITCHFROMMOMENTUM
+   FrameIndex TRAC A 0 0
+}
+
+model COD_20GAPellet
+{
+   Path "models/Tracers"
+   SKIN 0 "tracer1.tga"
+   MODEL 0 "Tracer.md3"
+   Scale 1.0 1.0 1.0
+   PITCHFROMMOMENTUM
+   FrameIndex TRAC A 0 0
+}
+
+//Large Cal
+
+model COD_545x39mm
+{
+   Path "models/Tracers"
+   SKIN 0 "tracer1.tga"
+   MODEL 0 "Tracer.md3"
+   Scale 1.0 1.0 1.0
+   PITCHFROMMOMENTUM
+   FrameIndex TRAC A 0 0
+}
+
+model COD_556x45mm
+{
+   Path "models/Tracers"
+   SKIN 0 "tracer1.tga"
+   MODEL 0 "Tracer.md3"
+   Scale 1.0 1.0 1.0
+   PITCHFROMMOMENTUM
+   FrameIndex TRAC A 0 0
+}
+
+model COD_762x39mm
+{
+   Path "models/Tracers"
+   SKIN 0 "tracer1.tga"
+   MODEL 0 "Tracer.md3"
+   Scale 1.0 1.0 1.0
+   PITCHFROMMOMENTUM
+   FrameIndex TRAC A 0 0
+}
+
+model COD_762x51mm
+{
+   Path "models/Tracers"
+   SKIN 0 "tracer1.tga"
+   MODEL 0 "Tracer.md3"
+   Scale 1.0 1.0 1.0
+   PITCHFROMMOMENTUM
+   FrameIndex TRAC A 0 0
+}
+
+model COD_762x54R
+{
+   Path "models/Tracers"
+   SKIN 0 "tracer1.tga"
+   MODEL 0 "Tracer.md3"
+   Scale 1.0 1.0 1.0
+   PITCHFROMMOMENTUM
+   FrameIndex TRAC A 0 0
+}
+
+model COD_93x74mmR
+{
+   Path "models/Tracers"
+   SKIN 0 "tracer1.tga"
+   MODEL 0 "Tracer.md3"
+   Scale 1.0 1.0 1.0
+   PITCHFROMMOMENTUM
+   FrameIndex TRAC A 0 0
+}
+
+model COD_127x55mm
+{
+   Path "models/Tracers"
+   SKIN 0 "tracer1.tga"
+   MODEL 0 "Tracer.md3"
+   Scale 1.0 1.0 1.0
+   PITCHFROMMOMENTUM
+   FrameIndex TRAC A 0 0
+}
+
+model COD_338Lapua
+{
+   Path "models/Tracers"
+   SKIN 0 "tracer1.tga"
+   MODEL 0 "Tracer.md3"
+   Scale 1.0 1.0 1.0
+   PITCHFROMMOMENTUM
+   FrameIndex TRAC A 0 0
+}

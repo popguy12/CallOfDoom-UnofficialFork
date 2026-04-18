@@ -166,7 +166,7 @@ class Follower_Sakuya : actor
 		if(which)
 		{
 			A_StartSound("deagle/fire", 0, CHANF_OVERLAP, 0.75);
-			A_SpawnProjectile("COD_44Magnum_Friendly", 48, 0, frandom(5,-5), CMF_AIMDIRECTION, frandom(-5,5));
+			A_SpawnProjectile("COD_44Magnum_Friendly", 46, 0, frandom(5,-5), CMF_AIMDIRECTION, self.pitch + frandom(-5,5));
 			A_AlertMonsters(0,AMF_TARGETEMITTER);
 			invoker.SecAmmo--;
 		}
@@ -174,7 +174,7 @@ class Follower_Sakuya : actor
 		{
 			A_StartSound("m4gl/fire1", 0, CHANF_OVERLAP, 1, ATTN_NORM, frandom(0.9, 1.1));
 			A_StartSound("m4gl/fire2", 0, CHANF_OVERLAP, 0.75);
-			A_SpawnProjectile("COD_556x45mm_Friendly", 48, 0, frandom(5,-5), CMF_AIMDIRECTION, frandom(-5,5));
+			A_SpawnProjectile("COD_556x45mm_Friendly", 46, 0, frandom(5,-5), CMF_AIMDIRECTION, self.pitch + frandom(-5,5));
 			A_AlertMonsters(0,AMF_TARGETEMITTER);
 			invoker.PrimAmmo--;
 		}
@@ -201,7 +201,7 @@ class Follower_Sakuya : actor
 			TNT1 A 0 A_StartSound("step/hard",0);
 			SAKY CCCCCCDDDDDD 1
 			{
-				If (Master && Distance3D(master) < 70 || SetIdle)
+				If (Master && Distance3D(master) < 128 || SetIdle)
 				{
 					Return ResolveState("Stand");
 				}
@@ -260,7 +260,7 @@ class Follower_Sakuya : actor
 		TeleTic:
 			TNT1 A 0 
 			{
-				if (teletic >= 5)
+				if (teletic >= 15)
 				{
 					A_ClearTarget();
 					teletic = 0;
@@ -273,7 +273,7 @@ class Follower_Sakuya : actor
 			SAKY T 2 { SecondaryOut = true; }
 			TNT1 A 0 A_JumpIf(SecAmmo <= 0, "Reload2");
 			TNT1 A 0 A_Recoil(2);
-			SAKY F 4 A_FaceTarget;
+			SAKY F 4 A_FaceTarget(0,90,0,0, FAF_MIDDLE);
 			SAKY F 1 Bright 
 			{
 				IdleTic = 0;
@@ -301,38 +301,38 @@ class Follower_Sakuya : actor
 			TNT1 A 0 A_Jump(256, "Missile1", "Missile3", "Missile5");  
 		Missile5:
 			TNT1 A 0 A_JumpIf(PrimAmmo <= 4, "Reload");
-			SAKY E 3 A_FaceTarget;
+			SAKY E 3 A_FaceTarget(0,90,0,0, FAF_MIDDLE);
 			SAKY E 1 Bright 
 			{	
 				IdleTic = 0;
 				Sakuya_Fire(SecondaryOut);
 			}
-			SAKY E 3 A_FaceTarget;
+			SAKY E 3 A_FaceTarget(0,90,0,0, FAF_MIDDLE);
 			SAKY E 1 Bright Sakuya_Fire(SecondaryOut);
-			SAKY E 3 A_FaceTarget;
+			SAKY E 3 A_FaceTarget(0,90,0,0, FAF_MIDDLE);
 			SAKY E 1 Bright Sakuya_Fire(SecondaryOut);
-			SAKY E 3 A_FaceTarget;
+			SAKY E 3 A_FaceTarget(0,90,0,0, FAF_MIDDLE);
 			SAKY E 1 Bright Sakuya_Fire(SecondaryOut);
-			SAKY E 3 A_FaceTarget;
+			SAKY E 3 A_FaceTarget(0,90,0,0, FAF_MIDDLE);
 			SAKY E 1 Bright Sakuya_Fire(SecondaryOut);
 			TNT1 A 0 A_Jump(128, "Missile5", "Missile3", "Missile1");
 			Goto See;
 		Missile3:
 			TNT1 A 0 A_JumpIf(PrimAmmo <= 2, "Reload");
-			SAKY E 3 A_FaceTarget;
+			SAKY E 3 A_FaceTarget(0,90,0,0, FAF_MIDDLE);
 			SAKY E 1 Bright 
 			{	
 				IdleTic = 0;
 				Sakuya_Fire(SecondaryOut);
 			}
-			SAKY E 3 A_FaceTarget;
+			SAKY E 3 A_FaceTarget(0,90,0,0, FAF_MIDDLE);
 			SAKY E 1 Bright Sakuya_Fire(SecondaryOut);
-			SAKY E 3 A_FaceTarget;
+			SAKY E 3 A_FaceTarget(0,90,0,0, FAF_MIDDLE);
 			SAKY E 1 Bright Sakuya_Fire(SecondaryOut);
 			TNT1 A 0 A_Jump(128, "Missile3", "Missile1");
 			Goto See;
 		Missile1:
-			SAKY E 3 A_FaceTarget;
+			SAKY E 3 A_FaceTarget(0,90,0,0, FAF_TOP);
 			SAKY E 1 Bright 
 			{	
 				IdleTic = 0;

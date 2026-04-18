@@ -4,6 +4,7 @@ class COD_556x45mm_Friendly : COD_Projectile
 	{
 		COD_Projectile.BaseDamage 30;
 		COD_Projectile.RipperCount 3;
+		Speed 107;
 		Obituary "";
 		COD_Projectile.FriendlyFire true;
 	}
@@ -15,6 +16,7 @@ class COD_44Magnum_Friendly : COD_Projectile
 	{
 		COD_Projectile.BaseDamage 40;
 		COD_Projectile.RipperCount 3;
+		Speed 107;
 		Obituary "";
 		COD_Projectile.FriendlyFire true;
 	}

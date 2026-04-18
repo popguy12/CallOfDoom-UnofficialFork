@@ -1,0 +1,3 @@
+#include "models/Def/PlayerTracers.txt"
+#include "models/Def/FollowerTracers.txt"
+//#include "models/Def/EnemyTracers.txt"
