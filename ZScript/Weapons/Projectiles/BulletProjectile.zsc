@@ -79,6 +79,10 @@ class COD_Projectile : FastProjectile abstract
 		{
 			scaled_damage = 0;
 		}
+		if(IsFriendlyBullet)
+		{
+			dmgtype = "FriendMarineDamage";
+		}
 		
 		victim.DamageMobj(self, target, ceil(scaled_damage), dmgType, 0, angle);
 		

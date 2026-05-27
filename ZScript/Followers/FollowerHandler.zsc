@@ -14,6 +14,16 @@ Class FollowerSpawnTauntHandler : EventHandler
 				}
 			}
 		}
+		If((victim.bISMONSTER || victim.bCOUNTKILL) && source is "Follower_Meryl")
+		{
+			If(Source && Source.Health > 0)			
+			{
+				If(Random(0,100) <= 10 || Victim.bBOSS) 
+				{ 
+					Source.A_StartSound("Sakuya/Idle",CHAN_VOICE);
+				}
+			}
+		}
 	}
 	
 	Override Void PlayerEntered(PlayerEvent e)
@@ -25,15 +35,27 @@ Class FollowerSpawnTauntHandler : EventHandler
 		
 		if(pl.CountInv("Follower_Sakuya_Token") == 1)
 		{
-			let SAKIZA = pl.Spawn("Follower_Sakuya",pl.pos,ALLOW_REPLACE);
-			If(SAKIZA)
+			let SAKUYA = pl.Spawn("Follower_Sakuya",pl.pos,ALLOW_REPLACE);
+			If(SAKUYA)
 			{
-				SAKIZA.Master = pl;
-				SAKIZA.target = pl;
-				SAKIZA.Translation = pl.Translation;
-				SAKIZA.A_FaceMaster();
+				SAKUYA.Master = pl;
+				SAKUYA.target = pl;
+				//SAKUYA.Translation = pl.Translation;
+				SAKUYA.A_FaceMaster();
 			}
 		}
+		if(pl.CountInv("Follower_Meryl_Token") == 1)
+		{
+			let MERYL = pl.Spawn("Follower_Meryl",pl.pos,ALLOW_REPLACE);
+			If(MERYL)
+			{
+				MERYL.Master = pl;
+				MERYL.target = pl;
+				//MERYL.Translation = pl.Translation;
+				MERYL.A_FaceMaster();
+			}
+		}
+		
 		
 		//[Pop] After checking all tokens and spawning them, alert in a small
 		//radius just to activate them, just in case.

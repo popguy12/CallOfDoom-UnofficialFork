@@ -21,3 +21,15 @@ class COD_44Magnum_Friendly : COD_Projectile
 		COD_Projectile.FriendlyFire true;
 	}
 }
+
+class COD_338Lapua_Friendly : COD_Projectile
+{
+	Default
+	{
+		COD_Projectile.BaseDamage 61;
+		COD_Projectile.RipperCount 5;
+		Speed 107;
+		Obituary "";
+		COD_Projectile.FriendlyFire true;
+	}
+}

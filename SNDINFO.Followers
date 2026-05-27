@@ -36,3 +36,38 @@ $RANDOM Sakuya/Spawn { Sakuya/Idle1 Sakuya/Idle2 Sakuya/Idle3 Sakuya/Idle4 Sakuy
 $alias Sakuya/See Sakuya/Spawn
 
 Sakuya/Die	"Sounds/Friendly/Sakuya/SakuyaDead.wav"
+
+
+
+$RANDOM Meryl/Pain { Meryl/Pain1 Meryl/Pain2 Meryl/Pain3 }
+Meryl/Pain1	"Sounds/Friendly/Meryl/MerylPain1.wav"
+Meryl/Pain2	"Sounds/Friendly/Meryl/MerylPain2.wav"
+Meryl/Pain3	"Sounds/Friendly/Meryl/MerylPain3.wav"
+
+$RANDOM Meryl/Attack { Meryl/Attack1 Meryl/Attack2 Meryl/Attack3 }
+Meryl/Attack1	"Sounds/Friendly/Meryl/MerylAttack1.wav"
+Meryl/Attack2	"Sounds/Friendly/Meryl/MerylAttack2.wav"
+Meryl/Attack3	"Sounds/Friendly/Meryl/MerylAttack3.wav"
+
+$RANDOM Meryl/Hold { Meryl/Hold1 Meryl/Hold2 }
+Meryl/Hold1	"Sounds/Friendly/Meryl/MerylHold1.wav"
+Meryl/Hold2	"Sounds/Friendly/Meryl/MerylHold2.wav"
+
+$RANDOM Meryl/Follow { Meryl/Follow1 Meryl/Follow2 }
+Meryl/Follow1	"Sounds/Friendly/Meryl/MerylFollow1.wav"
+Meryl/Follow2	"Sounds/Friendly/Meryl/MerylFollow2.wav"
+
+$RANDOM Meryl/Idle { Meryl/Idle1 Meryl/Idle2 Meryl/Idle3 Meryl/Idle4 Meryl/Idle5 }
+Meryl/Idle1	"Sounds/Friendly/Meryl/MerylIdle1.wav"
+Meryl/Idle2	"Sounds/Friendly/Meryl/MerylIdle2.wav"
+Meryl/Idle3	"Sounds/Friendly/Meryl/MerylIdle3.wav"
+Meryl/Idle4	"Sounds/Friendly/Meryl/MerylIdle4.wav"
+Meryl/Idle5	"Sounds/Friendly/Meryl/MerylIdle5.wav"
+
+$RANDOM Meryl/Spawn { Meryl/Spawn1 Meryl/Spawn2 }
+Meryl/Spawn1	"Sounds/Friendly/Meryl/MerylSpawn1.wav"
+Meryl/Spawn2	"Sounds/Friendly/Meryl/MerylSpawn2.wav"
+
+$RANDOM Meryl/See { Meryl/Spawn Meryl/Attack }
+
+Meryl/Die	"Sounds/Friendly/Meryl/MerylDead.wav"
