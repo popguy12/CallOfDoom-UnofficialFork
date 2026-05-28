@@ -1,15 +1,23 @@
-class NNR_FriendMarine : actor
+class Follower_Iris : actor
 {
 	Int TeleTic;	
 	Int	IdleTic;
+	Int HealTimer;
+	
+	Int PrimAmmo;
+	Int SecAmmo;
+	
+	bool SecondaryOut;
+	bool SetIdle;
+	
 	Default
 	{
 		Monster;
-		Health 200;
+		Health 125;
 		Radius 16;
 		Height 56;
 		Mass 100;
-		Speed 3;
+		Speed 2;
 		PainChance 160;
 		Damage 0;
 		XScale 1;
@@ -28,47 +36,71 @@ class NNR_FriendMarine : actor
 		+AVOIDMELEE
 		MaxStepHeight 48;
 		MaxDropOffHeight 48;
-		PainSound "FM/Pain";
-		DamageFactor "BuildFriendDamage", 0;
+		PainSound "Iris/Pain";
 		DamageFactor "FriendMarineDamage", 0;
 	}
+	
 	override int TakeSpecialDamage(Actor inflictor, Actor source, int damage, Name damagetype)
 	{
-		if (source && (source.player || source is "NNR_FriendMarine"))
+		if (source && (source.player || source is "Follower_Iris"))
 		{
 			return 0;
 		}
 		return super.TakeSpecialDamage(inflictor, source, damage, damagetype);
 	}
+	
 	Override Void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
-		A_StartSound("FriendMarine/Laugh",CHAN_VOICE);
-		A_StartSound("FM/IntroSFX",CHAN_AUTO);
+		
+		SecondaryOut = false;
+		SetIdle = false;
+		HealTimer = 0;
+		
+		PrimAmmo = 5;
+		SecAmmo = 33;
+		
+		A_GiveInventory("IMAFRIENDLYDIPSHIT");
+		
+		A_StartSound("Iris/Spawn",CHAN_VOICE);
 	}
+	
 	override void Tick() 
 	{
 		super.Tick();
+		
 		if (isFrozen())
 		{
 			return;
 		}
-		if (!master)
+		
+		if(!master)
 		{
 			Spawn("TeleportFog", (pos.x, pos.y, pos.z + height * 0.5));
 			Destroy();
 			return;
 		}
-		if (health < default.health)
+		
+		if(health < default.health - 15 && HealTimer <= 0)
 		{
-			A_SetHealth(health + 1);
+			if(random(1,10) == 3) { A_Pain(); }
+			A_StartSound("medkit/use",0);
+			A_SetHealth(health + 15);
+			HealTimer = random(70,140);
 		}
+		
 		if (health <= 5 && !InStateSequence(curstate, FindState("FakeDeath")))
 		{
 			A_SetHealth(default.health);
 			SetStateLabel("FakeDeath");
 		}
+		
+		if(health <= default.health / 2 && target != master) { bFRIGHTENED = true; }
+		else { bFRIGHTENED = false; }
+		
+		HealTimer--;
 	}
+	
 	Override bool CanCollideWith(Actor other, bool Passive)
 	{
 		If(!Other) 
@@ -110,235 +142,207 @@ class NNR_FriendMarine : actor
 			Return True;
 		}
 		Return True;
-	}	
+	}
+	
+	override bool Used(Actor user)
+	{
+		let plr = CODPlayer(user);
+		
+		if(InStateSequence(curstate, FindState("FakeDeath")))
+		{
+			//[Pop] Maybe spawn particles or something
+			SetStateLabel("FakeRaise");
+		}
+		else
+		{
+			SetIdle = !SetIdle;
+			if(SetIdle) { A_StartSound("Iris/Hold",CHAN_VOICE); }
+			else { A_StartSound("Iris/Follow",CHAN_VOICE); }
+			//[Pop] Invert This basically
+		}
+		
+		return Super.Used(user);
+	}
+	
+	action void Iris_Fire(bool which)
+	{
+		A_SpawnItemEx("PlayerMuzzleFlash",30,0,45);
+		
+		if(which)
+		{
+			A_StartSound("G18/fire", 0, CHANF_OVERLAP, 0.75);
+			A_StartSound("G18/fireAdd", 0, CHANF_OVERLAP, 1);
+			A_StartSound("G18/fireTail", 0, CHANF_OVERLAP, 0.5);
+			A_SpawnProjectile("COD_9x19mm_Friendly", 46, 0, frandom(2.5,-2.5), CMF_AIMDIRECTION, self.pitch + frandom(-5,5));
+			A_AlertMonsters(0,AMF_TARGETEMITTER);
+			invoker.SecAmmo--;
+		}
+		else
+		{
+			A_StartSound("M24/Fire", 0, CHANF_OVERLAP, 1);
+			A_SpawnProjectile("COD_762x51mm_Friendly", 46, 0, frandom(0.05,-0.05), CMF_AIMDIRECTION, self.pitch + frandom(-1,1));
+			A_AlertMonsters(0,AMF_TARGETEMITTER);
+			invoker.PrimAmmo--;
+		}
+	}
+	
 	States
 	{
-    Spawn:
-		PLAY E 1 A_Look;
-		TNT1 A 0 A_CheckSight("TeleTic");
-		Loop;
-	See:
-		PLAY AAAABBBBCCCCDDDD 1
-		{
-			If (Master && Distance3D(master) < 70)
+		Spawn:
+			IRIS O 1 A_Look;
+			TNT1 A 0 A_CheckSight("TeleTic");
+			Loop;
+		See:
+			IRIS AAAAAABBBBBB 1
 			{
-				Return ResolveState("Stand");
+				If (Master && Distance3D(master) < 70 || SetIdle)
+				{
+					Return ResolveState("Stand");
+				}
+				A_Chase();
+				A_Recoil(-0.25);
+				Return ResolveState(Null);
 			}
-			A_Chase();
-			A_Recoil(-1);
-			Return ResolveState(Null);
-		}
-		TNT1 A 0 A_CheckSight("TeleTic");
-		Loop;
-	Stand:
-		PLAY E 1
-		{ 
-			If (IdleTic >= GetCVar("blnk_idletalk"))
-            {
-                IdleTic = 0;
-				A_StartSound("FM/Idle", CHAN_VOICE);
-				A_StartSound("FM/IntroSFX",CHAN_AUTO);
-            }
-            IdleTic++;
-			A_Chase(Null,"Missile",CHF_NOPLAYACTIVE|CHF_DONTMOVE);
-		}
-		Goto See;
-	TeleTic:
-        TNT1 A 0 
-        {
-            if (teletic >= 5)
-            {
-                A_ClearTarget();
-				teletic = 0;
-				Warp(master, frandom(-16, -64), frandom(-64, 64), 0, 0, WARPF_STOP|WARPF_TOFLOOR);
-            }
-			teletic++;
-        }
-        Goto See;
-	Melee:
-		TNT1 A 0 A_Jump(64,"Missile");
-		PLAY A 2;
-		TNT1 A 0
-		{
-			IdleTic = 0;
-			A_FaceTarget();
-			A_Recoil(-3);
-		}
-		PLAY E 6 A_CustomMeleeAttack(random(5,10)*random(5,10),"FM/Punch");
-		PLAY A 2;
-		Goto See;
-	Missile:
-		TNT1 A 0 A_Jump(85,"Chaingun");
-		TNT1 A 0 A_Jump(75,"SuperShotgun");
-		TNT1 A 0 A_Jump(55,"Rocket");
-		TNT1 A 0 A_Jump(30,"Plasma");
-		TNT1 A 0 A_Jump(10,"BFG");
-	Shotgun:
-		TNT1 A 0 A_ChangeVelocity(random(2,10), random(-10,10), random(1,2),CVF_RELATIVE);
-		PLAY E 1 A_FaceTarget;
-		PLAY F 2 Bright
-		{
-			IdleTic = 0;
-			A_StartSound("weapons/shotgf", CHAN_WEAPON);
-			A_ChangeVelocity(random(2,10), random(-10,10), random(1,2),CVF_RELATIVE);
-			A_FaceTarget();
-			A_AlertMonsters(0,AMF_TARGETEMITTER);
-			A_CustomBulletAttack(5.6, 0, 7, 5, "FriendMarinePuff");
-		}
-		PLAY F 6 A_ChangeVelocity(random(2,10), random(-10,10), random(1,2),CVF_RELATIVE);
-		PLAY E 1;
-		PLAY AAAABBBBCCCCDDDD 1 A_Chase(NULL,NULL,CHF_FASTCHASE);
-		PLAY AAAABBBBCCC 1 A_Chase(NULL,NULL,CHF_FASTCHASE);
-		Goto See;
-	SuperShotgun:
-		TNT1 A 0 A_ChangeVelocity(random(2,10), random(-10,10), random(1,2),CVF_RELATIVE);
-		PLAY E 1 A_FaceTarget;
-		PLAY F 1 Bright 
-		{
-			IdleTic = 0;
-			A_StartSound ("weapons/sshotf", CHAN_WEAPON);
-			A_CustomBulletAttack (11.2, 7.1, 20, 5, "FriendMarinePuff");
-			A_AlertMonsters(0,AMF_TARGETEMITTER);
-			A_ChangeVelocity(random(2,10), random(-10,10), random(1,2),CVF_RELATIVE);
-		}
-		PLAY F 6 A_ChangeVelocity(random(2,10), random(-10,10), random(1,2),CVF_RELATIVE);
-		PLAY E 1;
-		PLAY AAAABBBBCCCCD 1 A_Chase(NULL,NULL,CHF_FASTCHASE);
-		TNT1 A 0 A_StartSound ("weapons/sshoto", CHAN_WEAPON);
-		PLAY DDAAAABBBBCCC 1 A_Chase(NULL,NULL,CHF_FASTCHASE);
-		TNT1 A 0 A_StartSound ("weapons/sshotl", CHAN_WEAPON);
-		PLAY CDDDDAAAABBBB 1 A_Chase(NULL,NULL,CHF_FASTCHASE);
-		TNT1 A 0 A_StartSound ("weapons/sshotc", CHAN_WEAPON);
-		PLAY CCCCDDDD 1 A_Chase(NULL,NULL,CHF_FASTCHASE);
-		Goto See;
-	Chaingun:
-		PLAY E 2 A_FaceTarget;
-		PLAY F 2 Bright 
-		{	
-			IdleTic = 0;
-			A_StartSound("weapons/chngun", CHAN_WEAPON);
-			A_CustomBulletAttack(5.6, 0, 1, 5, "FriendMarinePuff");
-			A_AlertMonsters(0,AMF_TARGETEMITTER);
-			A_ChangeVelocity(random(2,10), random(-10,10), random(1,2),CVF_RELATIVE);
-			A_Chase(NULL,NULL,CHF_FASTCHASE);
-		}
-		PLAY E 2 A_FaceTarget;
-		PLAY F 2 Bright 
-		{	
-			A_StartSound("weapons/chngun", CHAN_WEAPON);
-			A_CustomBulletAttack(5.6, 0, 1, 5, "FriendMarinePuff");
-		}
-		PLAY E 2 A_FaceTarget;
-		PLAY F 2 Bright 
-		{	
-			A_StartSound("weapons/chngun", CHAN_WEAPON);
-			A_CustomBulletAttack(5.6, 0, 1, 5, "FriendMarinePuff");
-			A_AlertMonsters(0,AMF_TARGETEMITTER);
-			A_ChangeVelocity(random(2,10), random(-10,10), random(1,2),CVF_RELATIVE);
-			A_Chase(NULL,NULL,CHF_FASTCHASE);
-		}
-		PLAY E 2 A_FaceTarget;
-		PLAY F 2 Bright 
-		{	
-			A_StartSound("weapons/chngun", CHAN_WEAPON);
-			A_CustomBulletAttack(5.6, 0, 1, 5, "FriendMarinePuff");
-			A_AlertMonsters(0,AMF_TARGETEMITTER);
-		}
-		TNT1 A 0 A_Jump(166,"See");
-		TNT1 A 0 A_MonsterRefire(0,"See");
-		Goto Chaingun;
-	Rocket:
-		TNT1 A 0 A_ChangeVelocity(random(2,10), random(-10,10), random(1,2),CVF_RELATIVE);
-		PLAY E 1 A_FaceTarget;
-		PLAY F 8 Bright 
-		{
-			IdleTic = 0;
-			A_SpawnProjectile("FriendRocketProjectile");
-			A_ChangeVelocity(random(2,10), random(-10,10), random(1,2),CVF_RELATIVE);
-			A_AlertMonsters(0,AMF_TARGETEMITTER);
-		}
-		PLAY E 1;
-		Goto See;
-	Plasma:
-		PLAY E 2 A_FaceTarget;
-		PLAY F 1 Bright 
-		{
-			IdleTic = 0;
-			A_SpawnProjectile("FriendPlasmaBall");
-			A_ChangeVelocity(random(2,10), random(-10,10), random(1,2),CVF_RELATIVE);
-			A_AlertMonsters(0,AMF_TARGETEMITTER);
-		}
-		PLAY E 2 A_Chase(NULL,NULL,CHF_FASTCHASE);
-		PLAY F 1 Bright 
-		{
-			A_FaceTarget();
-			A_SpawnProjectile("FriendPlasmaBall");
-			A_AlertMonsters(0,AMF_TARGETEMITTER);
-		}
-		PLAY E 2 A_Chase(NULL,NULL,CHF_FASTCHASE);
-		PLAY F 1 Bright 
-		{
-			A_FaceTarget();
-			A_SpawnProjectile("FriendPlasmaBall");
-			A_ChangeVelocity(random(2,10), random(-10,10), random(1,2),CVF_RELATIVE);
-			A_AlertMonsters(0,AMF_TARGETEMITTER);
-		}
-		PLAY E 2 A_Chase(NULL,NULL,CHF_FASTCHASE);
-		PLAY F 1 Bright 
-		{
-			A_FaceTarget();
-			A_SpawnProjectile("FriendPlasmaBall");
-			A_AlertMonsters(0,AMF_TARGETEMITTER);
-		}
-		PLAY E 1;
-		TNT1 A 0 A_Jump(166,"See");
-		TNT1 A 0 A_MonsterRefire(0,"See");
-		Goto Plasma;
-	BFG:
-		TNT1 A 0 A_ChangeVelocity(random(2,10), random(-10,10), random(1,2),CVF_RELATIVE);
-		TNT1 A 0 A_StartSound("weapons/bfgf");
-		PLAY AAAABBBBCCCCDDDD 1 A_Chase(NULL,NULL,CHF_FASTCHASE);
-		PLAY AAAABBBBCCCCDDDD 1 A_Chase(NULL,NULL,CHF_FASTCHASE);
-		PLAY E 1 A_FaceTarget;
-		PLAY F 8 Bright 
-		{
-			A_FaceTarget();
-			IdleTic = 0;
-			A_SpawnProjectile("FriendBFGBall");
-			A_ChangeVelocity(random(2,10), random(-10,10), random(1,2),CVF_RELATIVE);
-			A_AlertMonsters(0,AMF_TARGETEMITTER);
-		}
-		PLAY E 1;
-		Goto See;
-	Pain:
-		PLAY G 2 A_ChangeVelocity(random(2,10), random(-10,10), random(1,2),CVF_RELATIVE);
-		PLAY G 2 Fast
-		{
-			A_Pain();
-			A_ChangeVelocity(random(2,10), random(-10,10), random(1,2),CVF_RELATIVE);
-		}
-		TNT1 A 0 A_ChangeVelocity(random(1,4), random(-5,5), random(1,2),CVF_RELATIVE);
-		Goto See;
-	FakeDeath:
-		TNT1 A 0 
-		{
-			bSHOOTABLE = false;
-		}
-		PLAY I 5;
-		TNT1 A 0 A_StartSound("FM/Death");
-		PLAY JKLM 5;
-		PLAY N 100;
-	FakeRaise:
-		TNT1 A 0 
-		{
-			A_StartSound("FM/Raise", CHAN_VOICE);
-		}
-		PLAY NMLKJI 5;
-		TNT1 A 0
-		{
-			bSHOOTABLE = true;
-		}
-		Goto See;
+			TNT1 A 0 A_StartSound("step/hard",0);
+			IRIS CCCCCCDDDDDD 1
+			{
+				If (Master && Distance3D(master) < 128 || SetIdle)
+				{
+					Return ResolveState("Stand");
+				}
+				A_Chase();
+				A_Recoil(-0.25);
+				Return ResolveState(Null);
+			}
+			TNT1 A 0 A_StartSound("step/hard",0);
+			TNT1 A 0 A_CheckSight("TeleTic");
+			Loop;
+		Stand:
+			IRIS O 1
+			{ 
+				If (IdleTic >= GetCVar("CODF_idletalk"))
+				{
+					IdleTic = 0;
+					A_StartSound("Iris/Idle", CHAN_VOICE);
+				}
+				IdleTic++;
+				if(random(1,20) <= 3)
+				{
+					A_SetAngle(angle + random(-25,25));
+				}
+				A_Chase("Melee","Missile",CHF_NOPLAYACTIVE|CHF_DONTMOVE|CHF_NODIRECTIONTURN);
+			}
+			Goto See;
+		TeleTic:
+			TNT1 A 0 
+			{
+				if (teletic >= 15)
+				{
+					A_ClearTarget();
+					teletic = 0;
+					Warp(master, frandom(-16, -64), frandom(-64, 64), 0, 0, WARPF_STOP|WARPF_TOFLOOR);
+				}
+				teletic++;
+			}
+			Goto See;
+		Melee:
+			IRIS F 2 { SecondaryOut = true; }
+			IRIS F 4 A_FaceTarget(0,90,0,0, FAF_MIDDLE);
+		MeleeSkip:
+			TNT1 A 0 A_JumpIf(SecAmmo <= 4, "Reload2");
+			TNT1 A 0 A_Recoil(2);
+			IRIS F 1 Bright 
+			{
+				IdleTic = 0;
+				Iris_Fire(SecondaryOut);
+				A_ChangeVelocity(random(-5,-10), random(-3,3), random(1,2),CVF_RELATIVE);
+				A_Chase(NULL,NULL,CHF_FASTCHASE);
+			}
+			IRIS F 2 A_FaceTarget(0,90,0,0, FAF_MIDDLE);
+			IRIS F 1 Bright Iris_Fire(SecondaryOut);
+			IRIS F 2 A_FaceTarget(0,90,0,0, FAF_MIDDLE);
+			IRIS F 1 Bright Iris_Fire(SecondaryOut);
+			IRIS F 2 A_FaceTarget(0,90,0,0, FAF_MIDDLE);
+			IRIS F 1 Bright Iris_Fire(SecondaryOut);
+			IRIS F 2 A_FaceTarget(0,90,0,0, FAF_MIDDLE);
+			IRIS F 1 Bright Iris_Fire(SecondaryOut);
+			TNT1 A 0 A_jumpif(checklof() && target.Health > 0,"MeleeSkip");
+			TNT1 A 0 A_Jump(128,"MeleeSkip");
+			Goto See;
+		
+		Missile:
+			TNT1 A 0 { SecondaryOut = false; }
+			TNT1 A 0 A_JumpIf(PrimAmmo <= 0, "Reload");
+			TNT1 A 0
+			{
+				if(random(1,10) == 5)
+				{
+					A_StartSound("Iris/Attack",CHAN_VOICE);
+				}
+				if(!SetIdle)
+				{
+					A_ChangeVelocity(random(-2,-10), random(-10,10), random(1,2),CVF_RELATIVE);
+				}
+			}
+			TNT1 A 0 A_Jump(256, "Missile1");  
+		Missile1:
+			IRIS EEE 1 A_FaceTarget(0,90,0,0, FAF_TOP);
+			IRIS E 1 Bright
+			{	
+				IdleTic = 0;
+				Iris_Fire(SecondaryOut);
+			}
+			IRIS E 6;
+			IRIS E 15 A_StartSound("M24/BoltBack", 0);
+			IRIS E 15 A_StartSound("M24/BoltForward", 0);
+			TNT1 A 0 A_Jump(128, "Missile1");
+			Goto See;
+		
+		Reload:
+			IRIS O 2;
+			IRIS E 15 A_StartSound("M24/BoltBack", 0);
+			IRIS OOOOO 10 A_StartSound("mosin/shell", 0, CHANF_OVERLAP, 1);
+			IRIS E 15 A_StartSound("M24/BoltForward", 0);
+			TNT1 A 0 { PrimAmmo = 5; SecondaryOut = false; }
+			Goto See;
+		Reload2:
+			IRIS F 2;
+			IRIS F 20 A_StartSound("G18/MagOut", 0);
+			IRIS F 20 A_StartSound("G18/MagIn", 0);
+			IRIS F 15 A_StartSound("G18/Charge", 0);
+			TNT1 A 0 { SecAmmo = 33; SecondaryOut = true; }
+			Goto See;
+			
+		Pain:
+			IRIS G 8
+			{
+				A_Pain();
+				A_ChangeVelocity(random(-5,5), random(-5,5), random(1,2),CVF_RELATIVE);
+			}
+			Goto See;
+		Death:
+		XDeath:
+		FakeDeath:
+			TNT1 A 0 
+			{
+				bSHOOTABLE = false;
+			}
+			IRIS G 5;
+			TNT1 A 0 A_StartSound("Iris/Death");
+			IRIS HIJKL 5;
+			IRIS M -1;
+		FakeRaise:
+			TNT1 A 0 
+			{
+				A_StartSound("Iris/Spawn", CHAN_VOICE);
+			}
+			IRIS LKJIHG 5;
+			TNT1 A 0
+			{
+				bSHOOTABLE = true;
+			}
+			Goto See;
     }
 }
 
+class Follower_Iris_Token : Inventory { Default { Inventory.MaxAmount 1; } }

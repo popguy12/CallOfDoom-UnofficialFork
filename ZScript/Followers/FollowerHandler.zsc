@@ -20,7 +20,17 @@ Class FollowerSpawnTauntHandler : EventHandler
 			{
 				If(Random(0,100) <= 10 || Victim.bBOSS) 
 				{ 
-					Source.A_StartSound("Sakuya/Idle",CHAN_VOICE);
+					Source.A_StartSound("Meryl/Idle",CHAN_VOICE);
+				}
+			}
+		}
+		If((victim.bISMONSTER || victim.bCOUNTKILL) && source is "Follower_Iris")
+		{
+			If(Source && Source.Health > 0)			
+			{
+				If(Random(0,100) <= 10 || Victim.bBOSS) 
+				{ 
+					Source.A_StartSound("Iris/Idle",CHAN_VOICE);
 				}
 			}
 		}
@@ -53,6 +63,17 @@ Class FollowerSpawnTauntHandler : EventHandler
 				MERYL.target = pl;
 				//MERYL.Translation = pl.Translation;
 				MERYL.A_FaceMaster();
+			}
+		}
+		if(pl.CountInv("Follower_Iris_Token") == 1)
+		{
+			let IRIS = pl.Spawn("Follower_Iris",pl.pos,ALLOW_REPLACE);
+			If(IRIS)
+			{
+				IRIS.Master = pl;
+				IRIS.target = pl;
+				//IRIS.Translation = pl.Translation;
+				IRIS.A_FaceMaster();
 			}
 		}
 		

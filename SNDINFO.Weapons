@@ -15,6 +15,15 @@ usp45/lock	"Sounds/Weapons/Slot1/USP45/USP4REL3"
 usp45/raise	"Sounds/Weapons/Slot1/USP45/USPRaise.wav"
 usp45/lower	"Sounds/Weapons/Slot1/USP45/USPLower.wav"
 
+//Glock18
+G18/MagOut	"Sounds/Weapons/Slot2/Glock18/Glock18Reload1.wav"
+G18/MagIn	"Sounds/Weapons/Slot2/Glock18/Glock18Reload2.wav"
+G18/Charge	"Sounds/Weapons/Slot2/Glock18/Glock18Reload3.wav"
+
+G18/Fire	"Sounds/Weapons/Slot2/Glock18/Fire/Glock18Fire.wav"
+G18/FireAdd	"Sounds/Weapons/Slot2/Glock18/Fire/Glock18FireAdd.wav"
+G18/FireTail	"Sounds/Weapons/Slot2/Glock18/Fire/Glock18FireTail.wav"
+
 //Deagle
 Deagle/fire	"Sounds/Weapons/Slot1/Deagle/DE4FIRE1"
 
@@ -481,6 +490,13 @@ mg338/LidClose	"Sounds/Weapons/Slot8/MG338/MG338LidClose"
 mg338/BoltBack	"Sounds/Weapons/Slot8/MG338/MG338BoltBack"
 mg338/BoltForward	"Sounds/Weapons/Slot8/MG338/MG338BoltForward"
 mg338/EndFoley	"Sounds/Weapons/Slot8/MG338/MG338EndFoley"
+
+//M24
+M24/Fire	"Sounds/Weapons/Slot8/M24/M24Fire.wav"
+
+M24/BoltBack	"Sounds/Weapons/Slot8/M24/M24Reload1.wav"
+M24/BoltForward	"Sounds/Weapons/Slot8/M24/M24Reload2.wav"
+
 
 //AT4
 AT4/Fire	"Sounds/Weapons/Slot9/AT4/AT4Fire"

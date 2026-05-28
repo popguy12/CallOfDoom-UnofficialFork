@@ -71,3 +71,35 @@ Meryl/Spawn2	"Sounds/Friendly/Meryl/MerylSpawn2.wav"
 $RANDOM Meryl/See { Meryl/Spawn Meryl/Attack }
 
 Meryl/Die	"Sounds/Friendly/Meryl/MerylDead.wav"
+
+
+
+Iris/Pain	"Sounds/Friendly/Iris/IrisPain.wav"
+
+Iris/Die	"Sounds/Friendly/Iris/IrisDead.wav"
+
+$RANDOM Iris/Spawn { Iris/Spawn1 Iris/Spawn2 }
+Iris/Spawn1	"Sounds/Friendly/Iris/IrisSpawn1.wav"
+Iris/Spawn2	"Sounds/Friendly/Iris/IrisSpawn2.wav"
+
+$RANDOM Iris/Fire { Iris/Fire1 Iris/Fire2 Iris/Fire3 Iris/Fire4 Iris/Fire5 Iris/Fire6 }
+Iris/Fire1	"Sounds/Friendly/Iris/IrisFire1.wav"
+Iris/Fire2	"Sounds/Friendly/Iris/IrisFire2.wav"
+Iris/Fire3	"Sounds/Friendly/Iris/IrisFire3.wav"
+Iris/Fire4	"Sounds/Friendly/Iris/IrisFire4.wav"
+Iris/Fire5	"Sounds/Friendly/Iris/IrisFire5.wav"
+Iris/Fire6	"Sounds/Friendly/Iris/IrisFire6.wav"
+
+$RANDOM Iris/Hold { Iris/Hold1 Iris/Hold2 }
+Iris/Hold1	"Sounds/Friendly/Iris/IrisHold1.wav"
+Iris/Hold2	"Sounds/Friendly/Iris/IrisHold2.wav"
+
+$RANDOM Iris/Follow { Iris/Follow1 Iris/Follow2 }
+Iris/Follow1	"Sounds/Friendly/Iris/IrisFollow1.wav"
+Iris/Follow2	"Sounds/Friendly/Iris/IrisFollow2.wav"
+
+$RANDOM Iris/Idle { Iris/Idle1 Iris/Idle2 Iris/Idle3 Iris/Idle4 }
+Iris/Idle1	"Sounds/Friendly/Iris/IrisIdle1.wav"
+Iris/Idle2	"Sounds/Friendly/Iris/IrisIdle2.wav"
+Iris/Idle3	"Sounds/Friendly/Iris/IrisIdle3.wav"
+Iris/Idle4	"Sounds/Friendly/Iris/IrisIdle4.wav"
