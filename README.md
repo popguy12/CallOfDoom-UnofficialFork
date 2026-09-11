@@ -2,7 +2,7 @@
 
 ## Summary
 
-# [EN]
+### [EN]
 A fork of Arrowoods Call of DooM mod, aimed at rewriting the code base, polishing
 the framework mechanics, improving gunplay and feedback, improving the sounds, 
 and improving the visual presentation of the mod.
@@ -43,7 +43,7 @@ I just hope to be able to provide said technology to make further development of
 his mod easier, while allowing it to be more mechanically in depth and be a better
 toy box.
 
-# [JP]
+### [JP]
 To Be Done...
 
 ## Credits
