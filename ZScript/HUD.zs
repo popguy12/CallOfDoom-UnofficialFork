@@ -9,11 +9,16 @@ Class COD_HUD : BaseStatusBar
 	
 	int HUDWepRenderMode;
 	
+	Color pcol;
+	
 	override void Tick()
 	{
 		Super.Tick();
+		
 		mHealthBar.Update(CPlayer.health);
 		mArmorBar.Update(GetArmorAmount());
+		
+		pcol = CPlayer.GetDisplayColor() | 0xFF000000;
 	}
 	
     Override void Init()
@@ -77,7 +82,7 @@ Class COD_HUD : BaseStatusBar
 		
 		DrawBar("ARMBAR2", "ARMBAR1", armor, 200, (-35, 215), 0, 0, DI_ITEM_OFFSETS);
 		
-		DrawImage("Graphics/HUDStuff/HUDGraphics/HealthIcon.png", (-42,221.2), DI_ITEM_OFFSETS, 1, (-1,-1), (0.15,0.15), col: CPlayer.GetDisplayColor());
+		DrawImage("Graphics/HUDStuff/HUDGraphics/HealthIcon.png", (-42,221.2), DI_ITEM_OFFSETS, 1, (-1,-1), (0.15,0.15), col: pcol);
 		/* [Pop] will recode later with proper armor colors once its implemented.
 		if(armortype)
 		{
